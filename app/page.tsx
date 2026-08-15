@@ -130,9 +130,9 @@ export default function Home() {
 
               {/* Floating CTA circle button */}
               <button
-                onClick={() => handleEnquireClick("Kedarnath Yatra")}
+                onClick={() => handleEnquireClick("Manali & Kasol Group Trip")}
                 className="absolute -bottom-2 right-2 sm:bottom-10 sm:-right-4 w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#E05328] text-white flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all border-4 border-[#FAF6F0] cursor-pointer"
-                aria-label="Book Kedarnath"
+                aria-label="Book Manali & Kasol"
               >
                 <ArrowUpRight className="w-7 h-7" />
               </button>

@@ -35,7 +35,7 @@ export default function QRCodeBadge({
               alt="Instagram QR Code"
               width={imageDim}
               height={imageDim}
-              className="w-full h-full object-contain"
+              className="w-25 h-25 object-contain"
               priority
             />
           </div>
