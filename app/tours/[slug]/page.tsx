@@ -23,7 +23,6 @@ import {
 
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
-import WhatsAppFloat from "../../components/WhatsAppFloat";
 import EnquireModal from "../../components/EnquireModal";
 import LightboxModal from "../../components/LightboxModal";
 import { TOURS_DATA } from "../../data/toursData";
@@ -52,14 +51,9 @@ export default function TourDetailsPage({ params }: { params: Promise<{ slug: st
     );
   }
 
-  const whatsappMessage = encodeURIComponent(
-    `Hi Travel With Sonali! I want to enquire about ${tour.title} departing on ${tour.departureDate}.`
-  );
-
   return (
     <div className="min-h-screen bg-[#FAF6F0] text-[#1C1917] flex flex-col font-sans pb-20 md:pb-0">
       <Navbar logoName="Travel With Sonali" />
-      <WhatsAppFloat />
 
       {/* Breadcrumb Bar */}
       <div className="bg-[#F4EFEA] border-b border-[#E8E1D7] py-3">
@@ -116,15 +110,6 @@ export default function TourDetailsPage({ params }: { params: Promise<{ slug: st
             >
               Enquire Now ({tour.price})
             </button>
-            <a
-              href={`https://wa.me/919876543210?text=${whatsappMessage}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-[#25D366] hover:bg-[#20ba5a] text-white font-semibold text-sm shadow-xl"
-            >
-              <MessageCircle className="w-4 h-4" />
-              WhatsApp Us
-            </a>
           </div>
         </div>
       </section>
@@ -300,22 +285,13 @@ export default function TourDetailsPage({ params }: { params: Promise<{ slug: st
                 </div>
               </div>
 
-              <div className="space-y-3 pt-2">
+              <div className="pt-2">
                 <button
                   onClick={() => setEnquireOpen(true)}
                   className="w-full py-3.5 rounded-full bg-[#E05328] hover:bg-[#C8451D] text-white font-semibold text-sm shadow-md transition-all cursor-pointer"
                 >
                   Enquire About This Trip
                 </button>
-                <a
-                  href={`https://wa.me/919876543210?text=${whatsappMessage}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full py-3.5 rounded-full border border-[#25D366] text-[#128C7E] bg-[#25D366]/10 hover:bg-[#25D366]/20 font-semibold text-sm transition-all flex items-center justify-center gap-2"
-                >
-                  <MessageCircle className="w-4 h-4 text-[#25D366]" />
-                  Chat on WhatsApp
-                </a>
               </div>
             </div>
           </div>
@@ -329,22 +305,12 @@ export default function TourDetailsPage({ params }: { params: Promise<{ slug: st
           <span className="text-[10px] uppercase text-[#7A746E] block font-medium">Starting From</span>
           <span className="text-xl font-bold text-[#1C1917]">{tour.price}</span>
         </div>
-        <div className="flex items-center gap-2">
-          <a
-            href={`https://wa.me/919876543210?text=${whatsappMessage}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="p-3 rounded-full bg-[#25D366] text-white"
-          >
-            <MessageCircle className="w-5 h-5" />
-          </a>
-          <button
-            onClick={() => setEnquireOpen(true)}
-            className="px-6 py-3 rounded-full bg-[#E05328] text-white font-semibold text-xs shadow-md"
-          >
-            Enquire Now
-          </button>
-        </div>
+        <button
+          onClick={() => setEnquireOpen(true)}
+          className="px-6 py-3 rounded-full bg-[#E05328] text-white font-semibold text-xs shadow-md"
+        >
+          Enquire About This Trip
+        </button>
       </div>
 
       <Footer />

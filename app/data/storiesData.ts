@@ -67,7 +67,7 @@ export const STORIES_DATA: Story[] = [
     image: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1200&q=80",
     featured: false,
     content: [
-      "How many times has your WhatsApp Goa or Himachal group trip plan died on 'bro next month for sure'?",
+      "How many times has your Goa or Himachal group trip plan died on 'bro next month for sure'?",
       "When you join a group trip with Travel With Sonali, you step out of your comfort zone and into an environment designed for authentic human connection. You travel as an individual, but leave as a tight-knit family."
     ]
   },

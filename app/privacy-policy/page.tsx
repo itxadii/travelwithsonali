@@ -12,7 +12,7 @@ export default function PrivacyPolicyPage() {
 
         <section className="space-y-3">
           <h2 className="text-xl font-bold text-[#1C1917]">1. Information We Collect</h2>
-          <p>When you fill an enquiry form or message us on WhatsApp, we collect basic contact information including your name, mobile number, email address, and travel preferences.</p>
+          <p>When you fill out an enquiry form on our website, we collect basic contact information including your name, mobile number, email address, and travel preferences.</p>
         </section>
 
         <section className="space-y-3">

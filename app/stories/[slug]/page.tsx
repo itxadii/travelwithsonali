@@ -7,7 +7,6 @@ import { ArrowLeft, Clock, Calendar, User, Share2 } from "lucide-react";
 
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
-import WhatsAppFloat from "../../components/WhatsAppFloat";
 import EnquireModal from "../../components/EnquireModal";
 import { STORIES_DATA } from "../../data/storiesData";
 
@@ -35,7 +34,6 @@ export default function StoryDetailPage({ params }: { params: Promise<{ slug: st
   return (
     <div className="min-h-screen bg-[#FAF6F0] text-[#1C1917] flex flex-col font-sans">
       <Navbar logoName="Travel With Sonali" />
-      <WhatsAppFloat />
 
       {/* Breadcrumb */}
       <div className="bg-[#F4EFEA] border-b border-[#E8E1D7] py-3">

@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Compass, MessageCircle, Heart, MapPin, Phone, Mail } from "lucide-react";
+import { Compass, Heart, MapPin, Phone, Mail, Send } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -21,7 +21,7 @@ export default function Footer() {
               </span>
             </Link>
             <p className="text-stone-400 text-sm max-w-sm leading-relaxed">
-              Travel more. Experience more. We curate personal, authentic, and unforgettable group trips across India&apos;s most beautiful landscapes.
+              Travel experience. We curate personal, authentic, and unforgettable group trips across India&apos;s most beautiful landscapes.
             </p>
             
             {/* Social Icons */}
@@ -58,15 +58,6 @@ export default function Footer() {
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
                   <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
                 </svg>
-              </a>
-              <a
-                href="https://wa.me/919876543210"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-9 h-9 rounded-full bg-stone-800 hover:bg-[#25D366] text-stone-300 hover:text-white flex items-center justify-center transition-colors"
-                aria-label="WhatsApp"
-              >
-                <MessageCircle className="w-4 h-4" />
               </a>
             </div>
           </div>
@@ -172,15 +163,13 @@ export default function Footer() {
                 </a>
               </li>
               <li className="pt-2">
-                <a
-                  href="https://wa.me/919876543210"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#25D366] text-white text-xs font-semibold hover:bg-[#20ba5a] transition-all"
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#E05328] text-white text-xs font-semibold hover:bg-[#C8451D] transition-all"
                 >
-                  <MessageCircle className="w-3.5 h-3.5" />
-                  WhatsApp Support
-                </a>
+                  <Send className="w-3.5 h-3.5" />
+                  Website Enquiry
+                </Link>
               </li>
             </ul>
           </div>

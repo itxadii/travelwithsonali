@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Compass, Menu, X, MessageCircle } from "lucide-react";
+import { Compass, Menu, X } from "lucide-react";
 import EnquireModal from "./EnquireModal";
 
 interface NavbarProps {
@@ -51,7 +51,7 @@ export default function Navbar({ logoName = "Travel With Sonali" }: NavbarProps)
               </Link>
             </div>
 
-            {/* Desktop Navigation Links (Tours, Destinations, About Us, Gallery, Contact) */}
+            {/* Desktop Navigation Links */}
             <nav className="hidden lg:flex items-center space-x-6 xl:space-x-8">
               {navLinks.map((link) => {
                 const isActive = pathname === link.href;
@@ -71,21 +71,11 @@ export default function Navbar({ logoName = "Travel With Sonali" }: NavbarProps)
               })}
             </nav>
 
-            {/* Right: Secondary WhatsApp CTA + Primary EXPLORE TOURS CTA */}
+            {/* Right: Primary EXPLORE TOURS CTA */}
             <div className="hidden lg:flex items-center space-x-3.5">
-              <a
-                href="https://wa.me/919876543210?text=Hi%20Sonali!%20I%20want%20to%20enquire%20about%20upcoming%20trips."
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-4.5 py-2.5 rounded-full border border-[#25D366]/40 text-[#128C7E] hover:bg-[#25D366]/10 text-xs font-semibold tracking-wide transition-all shadow-xs"
-              >
-                <MessageCircle className="w-4 h-4 text-[#25D366]" />
-                <span>WhatsApp Us</span>
-              </a>
-
               <button
                 onClick={() => setEnquireOpen(true)}
-                className="px-5 py-2.5 rounded-full bg-[#E05328] hover:bg-[#C8451D] text-white text-xs font-bold tracking-wider uppercase shadow-sm hover:shadow-md transition-all active:scale-95 cursor-pointer"
+                className="px-6 py-2.5 rounded-full bg-[#E05328] hover:bg-[#C8451D] text-white text-xs font-bold tracking-wider uppercase shadow-sm hover:shadow-md transition-all active:scale-95 cursor-pointer"
               >
                 EXPLORE TOURS
               </button>
@@ -93,16 +83,6 @@ export default function Navbar({ logoName = "Travel With Sonali" }: NavbarProps)
 
             {/* Mobile Navigation Toggle Button */}
             <div className="flex lg:hidden items-center gap-2">
-              <a
-                href="https://wa.me/919876543210?text=Hi%20Sonali!%20I%20want%20to%20enquire%20about%20upcoming%20trips."
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2 rounded-full bg-[#25D366]/15 text-[#128C7E]"
-                aria-label="WhatsApp Us"
-              >
-                <MessageCircle className="w-5 h-5 text-[#25D366]" />
-              </a>
-
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="p-2 rounded-lg text-[#1C1917] hover:bg-[#E8E1D7]/50 focus:outline-none"
@@ -133,17 +113,7 @@ export default function Navbar({ logoName = "Travel With Sonali" }: NavbarProps)
               </Link>
             ))}
 
-            <div className="pt-4 space-y-2.5 border-t border-[#E8E1D7]">
-              <a
-                href="https://wa.me/919876543210?text=Hi%20Sonali!%20I%20want%20to%20enquire%20about%20upcoming%20trips."
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 w-full text-center px-5 py-3 rounded-full border border-[#25D366] text-[#128C7E] bg-[#25D366]/10 font-semibold text-sm"
-              >
-                <MessageCircle className="w-4 h-4 text-[#25D366]" />
-                WhatsApp Us
-              </a>
-
+            <div className="pt-4 border-t border-[#E8E1D7]">
               <button
                 onClick={() => {
                   setMobileMenuOpen(false);

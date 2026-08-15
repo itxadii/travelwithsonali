@@ -24,8 +24,8 @@ import {
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import WhatsAppFloat from "./components/WhatsAppFloat";
 import EnquireModal from "./components/EnquireModal";
+import QRCodeBadge from "./components/QRCodeBadge";
 
 import { TOURS_DATA } from "./data/toursData";
 import { DESTINATIONS_DATA } from "./data/destinationsData";
@@ -48,9 +48,6 @@ export default function Home() {
 
       {/* Global Header Navigation */}
       <Navbar logoName="Travel With Sonali" />
-
-      {/* Floating WhatsApp CTA */}
-      <WhatsAppFloat />
 
       {/* ================= SECTION 1: HERO SECTION ================= */}
       <section className="relative w-full min-h-[calc(100vh-80px)] flex flex-col justify-between px-4 sm:px-6 lg:px-8 py-8 lg:py-12 max-w-7xl mx-auto overflow-hidden">
@@ -129,11 +126,6 @@ export default function Home() {
                   className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-
-                <div className="absolute bottom-10 left-6 right-6 text-white text-center">
-                  <p className="text-xs uppercase tracking-widest font-medium opacity-90">Next Departure</p>
-                  <p className="text-2xl font-serif-italic font-bold">Kedarnath Yatra 2027</p>
-                </div>
               </div>
 
               {/* Floating CTA circle button */}
@@ -147,36 +139,70 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Right Column: Quote & Quick Stats */}
-          <div className="lg:col-span-3 flex flex-col justify-between pl-0 lg:pl-8 lg:border-l border-[#E8E1D7] pt-8 lg:pt-0">
+          {/* Right Column: Reviewer, Stats & QR Badge */}
+          <div className="lg:col-span-3 flex flex-col justify-between pl-0 lg:pl-8 lg:border-l border-[#E8E1D7] pt-8 lg:pt-0 space-y-8">
             <div className="space-y-6 pt-4">
-              <div className="flex items-center gap-1">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-[#E05328] text-[#E05328]" />
-                ))}
+              
+              {/* Stars & Reviewer Info */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-[#E05328] text-[#E05328]" />
+                  ))}
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-bold text-[#1C1917]">Roberto Carlos</span>
+                  <div className="relative w-9 h-9 rounded-full overflow-hidden border border-[#D8CFC4]">
+                    <Image src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80" alt="Roberto Carlos" fill className="object-cover" />
+                  </div>
+                </div>
               </div>
-              <p className="text-base text-[#4A4540] italic leading-relaxed">
-                &ldquo;Joining Travel With Sonali felt like taking a trip with lifelong friends. Everything was seamless from start to finish!&rdquo;
+
+              {/* Quote */}
+              <p className="text-sm sm:text-base text-[#4A4540] italic leading-relaxed">
+                &ldquo;Travel With Sonali made finding my perfect group trip effortless with detailed listings and personalized recommendations!&rdquo;
               </p>
-              <div className="flex items-center gap-3">
-                <div className="relative w-10 h-10 rounded-full overflow-hidden border border-[#D8CFC4]">
-                  <Image src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" alt="Reviewer" fill className="object-cover" />
-                </div>
+
+              {/* Stats */}
+              <div className="grid grid-cols-2 gap-4 pt-4 border-t border-[#E8E1D7]">
                 <div>
-                  <p className="text-sm font-semibold text-[#1C1917]">Priya & Rohan</p>
-                  <p className="text-xs text-[#7A746E]">Kedarnath Batch 2026</p>
+                  <div className="text-3xl font-bold tracking-tight text-[#1C1917]">
+                    2,500<span className="text-[#E05328]">+</span>
+                  </div>
+                  <div className="text-xs text-[#7A746E] font-medium mt-0.5">
+                    Happy users
+                  </div>
+                </div>
+
+                <div>
+                  <div className="text-3xl font-bold tracking-tight text-[#1C1917]">
+                    50<span className="text-[#E05328]">+</span>
+                  </div>
+                  <div className="text-xs text-[#7A746E] font-medium mt-0.5">
+                    Group Trips
+                  </div>
                 </div>
               </div>
+
             </div>
 
-            <div className="pt-8 border-t border-[#E8E1D7] flex items-center justify-between">
-              <div>
-                <a href="#tours" className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#1C1917] hover:text-[#E05328] uppercase tracking-wider">
-                  <span>Scroll to explore</span>
-                  <ArrowDown className="w-4 h-4 animate-bounce" />
+            {/* Bottom: Down Arrow & Circular QR Code Badge */}
+            <div className="pt-8 border-t border-[#E8E1D7] flex items-end justify-between">
+              <div className="flex flex-col items-center gap-2 pb-2">
+                <a
+                  href="#tours"
+                  className="p-2.5 rounded-full hover:bg-[#E8E1D7]/50 text-[#1C1917] transition-all hover:translate-y-1"
+                  aria-label="Scroll down"
+                >
+                  <ArrowDown className="w-5 h-5" />
                 </a>
               </div>
+
+              {/* Circular QR Code Badge */}
+              <QRCodeBadge label="SCAN TO FOLLOW" qrImageSrc="/qrimage.png" />
             </div>
+
           </div>
 
         </div>
@@ -471,7 +497,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             {[
               { num: "01", title: "Choose Your Trip", desc: "Find a destination that excites your soul." },
-              { num: "02", title: "Get in Touch", desc: "Connect with us through WhatsApp or quick enquiry." },
+              { num: "02", title: "Get in Touch", desc: "Connect with us through our website enquiry form." },
               { num: "03", title: "Get Ready", desc: "Receive your trip details, packing list & prep guide." },
               { num: "04", title: "Travel With Us", desc: "Meet the group and enjoy an unforgettable experience." }
             ].map((step, idx) => (
@@ -629,17 +655,21 @@ export default function Home() {
             ))}
           </div>
 
-          <a
-            href="https://instagram.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-[#D8CFC4] hover:bg-[#E05328] hover:text-white hover:border-[#E05328] text-[#1C1917] text-sm font-semibold transition-all"
-          >
-            <svg className="w-4 h-4 fill-current inline" viewBox="0 0 24 24">
-              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-            </svg>
-            <span>Follow @travelwithsonali on Instagram</span>
-          </a>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-4">
+            <a
+              href="https://instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-[#D8CFC4] hover:bg-[#E05328] hover:text-white hover:border-[#E05328] text-[#1C1917] text-sm font-semibold transition-all shadow-sm"
+            >
+              <svg className="w-4 h-4 fill-current inline" viewBox="0 0 24 24">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+              </svg>
+              <span>Follow @travelwithsonali</span>
+            </a>
+
+            <QRCodeBadge label="Scan QR Code" qrImageSrc="/qrimage.png" />
+          </div>
 
         </div>
       </section>
@@ -847,15 +877,12 @@ export default function Home() {
               Explore Upcoming Tours
             </Link>
 
-            <a
-              href="https://wa.me/919876543210?text=Hi%20Sonali!%20I%20want%20to%20chat%20about%20a%20trip."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-[#25D366] hover:bg-[#20ba5a] text-white font-semibold text-base shadow-xl transition-all hover:scale-105"
+            <button
+              onClick={() => handleEnquireClick("Final CTA")}
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white hover:bg-stone-100 text-[#1C1917] font-semibold text-base shadow-xl transition-all hover:scale-105 cursor-pointer"
             >
-              <MessageCircle className="w-5 h-5" />
-              Chat on WhatsApp
-            </a>
+              Send An Enquiry
+            </button>
           </div>
         </div>
       </section>

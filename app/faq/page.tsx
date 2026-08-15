@@ -1,11 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
-import { ChevronDown, MessageCircle } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import WhatsAppFloat from "../components/WhatsAppFloat";
 import EnquireModal from "../components/EnquireModal";
 import { FAQS_DATA } from "../data/faqsData";
 
@@ -33,7 +32,6 @@ export default function FAQPage() {
   return (
     <div className="min-h-screen bg-[#FAF6F0] text-[#1C1917] flex flex-col font-sans">
       <Navbar logoName="Travel With Sonali" />
-      <WhatsAppFloat />
 
       {/* Hero */}
       <section className="w-full py-16 sm:py-24 bg-[#F4EFEA] border-b border-[#E8E1D7]">
@@ -100,23 +98,14 @@ export default function FAQPage() {
         <div className="mt-16 p-8 rounded-3xl bg-[#F4EFEA] border border-[#E8E1D7] text-center space-y-4">
           <h3 className="text-2xl font-bold text-[#1C1917]">Still Have Questions?</h3>
           <p className="text-sm text-[#57524C] max-w-md mx-auto">
-            We are here to help! Chat directly with Sonali and our team on WhatsApp for instant guidance.
+            We are here to help! Send an enquiry and our team will get back to you with all details.
           </p>
-          <div className="pt-2 flex flex-wrap justify-center gap-3">
-            <a
-              href="https://wa.me/919876543210?text=Hi%20Sonali!%20I%20have%20a%20question%20about%20a%20trip."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#25D366] text-white text-sm font-semibold shadow-md"
-            >
-              <MessageCircle className="w-4 h-4" />
-              Ask on WhatsApp
-            </a>
+          <div className="pt-2 flex justify-center">
             <button
               onClick={() => setEnquireOpen(true)}
-              className="px-6 py-3 rounded-full bg-[#E05328] text-white text-sm font-semibold cursor-pointer"
+              className="px-8 py-3.5 rounded-full bg-[#E05328] hover:bg-[#C8451D] text-white text-sm font-semibold cursor-pointer shadow-md"
             >
-              Send Enquiry
+              Send Website Enquiry
             </button>
           </div>
         </div>

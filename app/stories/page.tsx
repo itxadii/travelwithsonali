@@ -7,7 +7,6 @@ import { ArrowRight, Clock } from "lucide-react";
 
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import WhatsAppFloat from "../components/WhatsAppFloat";
 import { STORIES_DATA } from "../data/storiesData";
 
 export default function StoriesPage() {
@@ -21,7 +20,6 @@ export default function StoriesPage() {
   return (
     <div className="min-h-screen bg-[#FAF6F0] text-[#1C1917] flex flex-col font-sans">
       <Navbar logoName="Travel With Sonali" />
-      <WhatsAppFloat />
 
       {/* Hero */}
       <section className="w-full py-16 sm:py-24 bg-[#F4EFEA] border-b border-[#E8E1D7]">

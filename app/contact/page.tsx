@@ -1,11 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
-import { MessageCircle, Phone, Mail, MapPin, Send, CheckCircle2 } from "lucide-react";
+import { Phone, Mail, Send, CheckCircle2 } from "lucide-react";
 
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import WhatsAppFloat from "../components/WhatsAppFloat";
 import { TOURS_DATA } from "../data/toursData";
 
 export default function ContactPage() {
@@ -24,14 +23,9 @@ export default function ContactPage() {
     setSubmitted(true);
   };
 
-  const whatsappMsg = encodeURIComponent(
-    `Hi Travel With Sonali! I want to enquire about ${formData.tour}.\nName: ${formData.name || 'Friend'}\nMobile: ${formData.mobile}\nTravellers: ${formData.travellers}`
-  );
-
   return (
     <div className="min-h-screen bg-[#FAF6F0] text-[#1C1917] flex flex-col font-sans">
       <Navbar logoName="Travel With Sonali" />
-      <WhatsAppFloat />
 
       {/* Hero */}
       <section className="w-full py-16 sm:py-24 bg-[#F4EFEA] border-b border-[#E8E1D7]">
@@ -43,7 +37,7 @@ export default function ContactPage() {
             Let&apos;s Plan Your Next Journey.
           </h1>
           <p className="text-[#6B645C] text-base sm:text-lg max-w-2xl mt-3">
-            Have questions about a trip or want to book? Connect with us via WhatsApp, call, or send an enquiry.
+            Have questions about a trip or want to book? Call us, email us, or submit a website enquiry.
           </p>
         </div>
       </section>
@@ -56,26 +50,10 @@ export default function ContactPage() {
           <div className="lg:col-span-5 space-y-8">
             <div>
               <h2 className="text-2xl font-bold text-[#1C1917]">Contact Information</h2>
-              <p className="text-sm text-[#57524C] mt-1">We usually respond within 30 minutes.</p>
+              <p className="text-sm text-[#57524C] mt-1">Our team will respond to your website enquiry promptly.</p>
             </div>
 
             <div className="space-y-4">
-              {/* WhatsApp Card */}
-              <a
-                href={`https://wa.me/919876543210?text=Hi%20Sonali!%20I%20want%20to%20enquire%20about%20trips.`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-5 rounded-2xl bg-[#25D366]/10 border border-[#25D366]/30 flex items-center gap-4 hover:bg-[#25D366]/20 transition-all group"
-              >
-                <div className="w-12 h-12 rounded-full bg-[#25D366] text-white flex items-center justify-center shrink-0 shadow-md">
-                  <MessageCircle className="w-6 h-6" />
-                </div>
-                <div>
-                  <h4 className="text-base font-bold text-[#128C7E]">Chat on WhatsApp</h4>
-                  <p className="text-xs text-[#128C7E]">Fastest response • +91 98765 43210</p>
-                </div>
-              </a>
-
               {/* Phone Card */}
               <a
                 href="tel:+919876543210"
@@ -86,7 +64,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <h4 className="text-base font-bold text-[#1C1917]">Call Support</h4>
-                  <p className="text-xs text-[#7A746E]">Mon - Sat (10:00 AM - 8:00 PM)</p>
+                  <p className="text-xs text-[#7A746E]">Mon - Sat (10:00 AM - 8:00 PM) • +91 98765 43210</p>
                 </div>
               </a>
 
@@ -135,18 +113,15 @@ export default function ContactPage() {
                   Enquiry Received!
                 </h3>
                 <p className="text-sm text-[#57524C] max-w-sm mx-auto">
-                  Thank you {formData.name}! Sonali and our team will get in touch with you on WhatsApp shortly.
+                  Thank you {formData.name}! Sonali and our team will contact you regarding your trip request shortly.
                 </p>
                 <div className="pt-4">
-                  <a
-                    href={`https://wa.me/919876543210?text=${whatsappMsg}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#25D366] text-white font-semibold text-sm"
+                  <button
+                    onClick={() => setSubmitted(false)}
+                    className="px-8 py-3 rounded-full bg-[#E05328] hover:bg-[#C8451D] text-white font-semibold text-sm cursor-pointer"
                   >
-                    <MessageCircle className="w-4 h-4" />
-                    Chat on WhatsApp Now
-                  </a>
+                    Submit Another Enquiry
+                  </button>
                 </div>
               </div>
             ) : (
@@ -177,7 +152,7 @@ export default function ContactPage() {
 
                   <div>
                     <label className="block text-xs font-semibold text-[#1C1917] mb-1">
-                      WhatsApp Mobile Number *
+                      Mobile Number *
                     </label>
                     <input
                       type="tel"
@@ -227,10 +202,11 @@ export default function ContactPage() {
 
                 <div>
                   <label className="block text-xs font-semibold text-[#1C1917] mb-1">
-                    Email Address
+                    Email Address *
                   </label>
                   <input
                     type="email"
+                    required
                     placeholder="name@example.com"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -256,7 +232,7 @@ export default function ContactPage() {
                   className="w-full py-4 rounded-full bg-[#E05328] hover:bg-[#C8451D] text-white font-semibold text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <Send className="w-4 h-4" />
-                  Send Enquiry
+                  Send Website Enquiry
                 </button>
               </form>
             )}

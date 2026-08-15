@@ -7,7 +7,6 @@ import { Heart, Compass, ShieldCheck, Users, Smile, Sparkles } from "lucide-reac
 
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import WhatsAppFloat from "../components/WhatsAppFloat";
 import EnquireModal from "../components/EnquireModal";
 
 export default function AboutPage() {
@@ -16,7 +15,6 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen bg-[#FAF6F0] text-[#1C1917] flex flex-col font-sans">
       <Navbar logoName="Travel With Sonali" />
-      <WhatsAppFloat />
 
       {/* Hero */}
       <section className="w-full py-16 sm:py-24 bg-[#F4EFEA] border-b border-[#E8E1D7]">

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { X, Send, CheckCircle2, MessageCircle } from "lucide-react";
+import { X, Send, CheckCircle2 } from "lucide-react";
 import { TOURS_DATA } from "../data/toursData";
 
 interface EnquireModalProps {
@@ -26,14 +26,7 @@ export default function EnquireModal({ isOpen, onClose, defaultTourName = "" }: 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
-    setTimeout(() => {
-      // Auto close after 3s
-    }, 3000);
   };
-
-  const whatsappMessage = encodeURIComponent(
-    `Hi Travel With Sonali! I want to enquire about ${formData.tour}.\nName: ${formData.name || 'Traveler'}\nTravellers: ${formData.travellers}\nMobile: ${formData.mobile}`
-  );
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fade-in">
@@ -57,27 +50,18 @@ export default function EnquireModal({ isOpen, onClose, defaultTourName = "" }: 
             <h3 className="text-2xl font-serif-italic font-bold text-[#1C1917]">
               Enquiry Received!
             </h3>
-            <p className="text-sm text-[#57524C] max-w-xs mx-auto">
-              Thank you {formData.name || 'friend'}! Sonali and our team will get in touch with you on WhatsApp within 30 minutes.
+            <p className="text-sm text-[#57524C] max-w-xs mx-auto leading-relaxed">
+              Thank you {formData.name || 'friend'}! Sonali and our team have received your website enquiry and will get in touch with you shortly.
             </p>
-            <div className="pt-4 flex flex-col sm:flex-row gap-3 justify-center">
-              <a
-                href={`https://wa.me/919876543210?text=${whatsappMessage}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-[#25D366] hover:bg-[#20ba5a] text-white font-semibold text-sm shadow-md transition-all"
-              >
-                <MessageCircle className="w-4 h-4" />
-                Chat Directly on WhatsApp
-              </a>
+            <div className="pt-4 flex justify-center">
               <button
                 onClick={() => {
                   setSubmitted(false);
                   onClose();
                 }}
-                className="px-6 py-3 rounded-full border border-[#D8CFC4] text-[#57524C] text-sm font-medium hover:bg-[#E8E1D7]/30"
+                className="px-8 py-3 rounded-full bg-[#E05328] hover:bg-[#C8451D] text-white text-sm font-semibold shadow-md cursor-pointer"
               >
-                Close
+                Close Window
               </button>
             </div>
           </div>
@@ -88,10 +72,10 @@ export default function EnquireModal({ isOpen, onClose, defaultTourName = "" }: 
                 Start Your Journey
               </span>
               <h3 className="text-2xl sm:text-3xl font-serif-italic font-bold text-[#1C1917] mt-1">
-                Plan Your Trip
+                Website Enquiry Form
               </h3>
               <p className="text-xs sm:text-sm text-[#7A746E] mt-1">
-                Fill this short enquiry form or instant chat on WhatsApp.
+                Fill this short enquiry form and our team will connect with you directly.
               </p>
             </div>
 
@@ -113,7 +97,7 @@ export default function EnquireModal({ isOpen, onClose, defaultTourName = "" }: 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-semibold text-[#1C1917] mb-1">
-                    WhatsApp Mobile Number *
+                    Mobile Number *
                   </label>
                   <input
                     type="tel"
@@ -162,10 +146,11 @@ export default function EnquireModal({ isOpen, onClose, defaultTourName = "" }: 
 
                 <div>
                   <label className="block text-xs font-semibold text-[#1C1917] mb-1">
-                    Email Address (Optional)
+                    Email Address *
                   </label>
                   <input
                     type="email"
+                    required
                     placeholder="name@example.com"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -187,23 +172,14 @@ export default function EnquireModal({ isOpen, onClose, defaultTourName = "" }: 
                 />
               </div>
 
-              <div className="pt-2 flex flex-col sm:flex-row gap-3">
+              <div className="pt-2">
                 <button
                   type="submit"
-                  className="flex-1 py-3 rounded-full bg-[#E05328] hover:bg-[#C8451D] text-white font-semibold text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full py-3.5 rounded-full bg-[#E05328] hover:bg-[#C8451D] text-white font-semibold text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <Send className="w-4 h-4" />
-                  Submit Enquiry
+                  Submit Website Enquiry
                 </button>
-                <a
-                  href={`https://wa.me/919876543210?text=${whatsappMessage}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="py-3 px-6 rounded-full border border-[#25D366] bg-[#25D366]/10 text-[#128C7E] font-semibold text-sm hover:bg-[#25D366]/20 transition-all flex items-center justify-center gap-2"
-                >
-                  <MessageCircle className="w-4 h-4 text-[#25D366]" />
-                  Chat on WhatsApp
-                </a>
               </div>
             </form>
           </div>
