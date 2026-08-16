@@ -1,20 +1,17 @@
-"use client";
-
-import React, { useState, use } from "react";
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, Clock, Calendar, User, Share2 } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
-import EnquireModal from "../../components/EnquireModal";
-import { STORIES_DATA } from "../../data/storiesData";
+import { getStoryBySlug } from "@/lib/sanity/queries";
 
-export default function StoryDetailPage({ params }: { params: Promise<{ slug: string }> }) {
-  const resolvedParams = use(params);
-  const story = STORIES_DATA.find((s) => s.slug === resolvedParams.slug);
+export const revalidate = 60;
 
-  const [enquireOpen, setEnquireOpen] = useState(false);
+export default async function StoryDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const story = await getStoryBySlug(slug);
 
   if (!story) {
     return (

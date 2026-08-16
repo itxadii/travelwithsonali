@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Compass, Menu, X } from "lucide-react";
 import EnquireModal from "./EnquireModal";
@@ -37,8 +38,15 @@ export default function Navbar({ logoName = "Travel With Sonali" }: NavbarProps)
                 className="flex items-center gap-3 group cursor-pointer"
                 aria-label="Travel With Sonali Homepage"
               >
-                <div className="relative flex items-center justify-center w-10 h-10 rounded-full bg-[#1C1917] text-white group-hover:scale-105 group-hover:bg-[#E05328] transition-all shadow-sm">
-                  <Compass className="w-5 h-5 text-[#E05328] group-hover:text-white transition-colors" />
+                <div className="relative flex items-center justify-center w-10 h-10 rounded-full overflow-hidden border border-[#E8E1D7] shadow-sm group-hover:scale-105 transition-all">
+                  <Image
+                    src="/travelwithsonalilogo.jpg"
+                    alt="Travel With Sonali Logo"
+                    width={40}
+                    height={40}
+                    className="w-full h-full object-cover"
+                    priority
+                  />
                 </div>
                 <div className="flex flex-col">
                   <span className="text-xl sm:text-2xl font-serif-italic font-semibold tracking-tight text-[#1C1917] group-hover:text-[#E05328] transition-colors">
@@ -71,8 +79,14 @@ export default function Navbar({ logoName = "Travel With Sonali" }: NavbarProps)
               })}
             </nav>
 
-            {/* Right: Primary EXPLORE TOURS CTA */}
+            {/* Right: Primary EXPLORE TOURS & MY PORTAL CTAs */}
             <div className="hidden lg:flex items-center space-x-3.5">
+              <Link
+                href="/portal/signup"
+                className="px-5 py-2.5 rounded-full bg-[#FAF6F0] border border-[#E8E1D7] hover:border-[#E05328] hover:bg-[#E05328] hover:text-white text-[#1C1917] text-xs font-bold tracking-wider uppercase transition-all shadow-2xs"
+              >
+                MY PORTAL
+              </Link>
               <button
                 onClick={() => setEnquireOpen(true)}
                 className="px-6 py-2.5 rounded-full bg-[#E05328] hover:bg-[#C8451D] text-white text-xs font-bold tracking-wider uppercase shadow-sm hover:shadow-md transition-all active:scale-95 cursor-pointer"
@@ -113,7 +127,14 @@ export default function Navbar({ logoName = "Travel With Sonali" }: NavbarProps)
               </Link>
             ))}
 
-            <div className="pt-4 border-t border-[#E8E1D7]">
+            <div className="pt-4 border-t border-[#E8E1D7] space-y-2">
+              <Link
+                href="/portal/signup"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block w-full text-center px-5 py-3 rounded-full bg-[#FAF6F0] border border-[#E8E1D7] text-[#1C1917] font-bold text-xs tracking-wider uppercase shadow-2xs"
+              >
+                MY PORTAL / SIGN UP
+              </Link>
               <button
                 onClick={() => {
                   setMobileMenuOpen(false);
