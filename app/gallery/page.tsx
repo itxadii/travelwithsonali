@@ -20,19 +20,19 @@ export default function GalleryPage() {
   });
 
   return (
-    <div className="min-h-screen bg-[#FAF6F0] text-[#1C1917] flex flex-col font-sans">
+    <div className="min-h-screen bg-[#FDF7F4] text-[#685752] flex flex-col font-sans">
       <Navbar logoName="Travel With Sonali" />
 
       {/* Hero */}
-      <section className="w-full py-16 sm:py-24 bg-[#F4EFEA] border-b border-[#E8E1D7]">
+      <section className="w-full py-16 sm:py-24 bg-[#F7EFEA] border-b border-[#E8DCD5]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center sm:text-left">
-          <span className="text-xs uppercase tracking-widest text-[#E05328] font-bold">
+          <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold">
             Visual Storytelling
           </span>
-          <h1 className="text-4xl sm:text-6xl font-bold tracking-tight text-[#1C1917] mt-2">
+          <h1 className="text-4xl sm:text-6xl font-bold tracking-tight text-[#685752] mt-2">
             Photo Gallery
           </h1>
-          <p className="text-[#6B645C] text-base sm:text-lg max-w-2xl mt-3">
+          <p className="text-[#7A6862] text-base sm:text-lg max-w-2xl mt-3">
             Real moments from our group trips. Click any photograph to view in full resolution.
           </p>
         </div>
@@ -42,15 +42,15 @@ export default function GalleryPage() {
       <section className="w-full py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex-1">
         
         {/* Category Pills */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-6 mb-8 border-b border-[#E8E1D7] scrollbar-none">
+        <div className="flex items-center gap-2 overflow-x-auto pb-6 mb-8 border-b border-[#E8DCD5] scrollbar-none">
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
               className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
                 activeCategory === cat
-                  ? "bg-[#E05328] text-white shadow-sm"
-                  : "bg-[#F4EFEA] text-[#57524C] hover:bg-[#E8E1D7]"
+                  ? "bg-[#8EB486] text-white shadow-sm"
+                  : "bg-[#F7EFEA] text-[#7A6862] hover:bg-[#E8DCD5]"
               }`}
             >
               {cat}
@@ -64,7 +64,7 @@ export default function GalleryPage() {
             <div
               key={item.id}
               onClick={() => setActiveItem(item)}
-              className="group relative h-80 rounded-3xl overflow-hidden border border-[#E8E1D7] shadow-sm cursor-pointer"
+              className="group relative h-80 rounded-3xl overflow-hidden border border-[#E8DCD5] shadow-sm cursor-pointer"
             >
               <Image
                 src={item.image}
@@ -74,12 +74,12 @@ export default function GalleryPage() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-6 text-white" />
               <div className="absolute bottom-4 left-4 right-4 text-white z-10 space-y-1">
-                <span className="text-[10px] font-semibold uppercase tracking-wider bg-[#E05328] px-2.5 py-0.5 rounded-full">
+                <span className="text-[10px] font-semibold uppercase tracking-wider bg-[#8EB486] px-2.5 py-0.5 rounded-full">
                   {item.category}
                 </span>
                 <h3 className="text-xl font-bold">{item.title}</h3>
                 <p className="text-xs text-stone-300 flex items-center gap-1">
-                  <MapPin className="w-3.5 h-3.5 text-[#E05328]" />
+                  <MapPin className="w-3.5 h-3.5 text-[#8EB486]" />
                   {item.location}
                 </p>
               </div>

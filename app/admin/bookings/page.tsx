@@ -110,17 +110,17 @@ export default function BookingsPage() {
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#1C1917] font-serif-italic">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#685752] font-serif-italic">
             Bookings Ledger
           </h1>
-          <p className="text-xs text-[#7A746E] mt-1">
+          <p className="text-xs text-[#997C70] mt-1">
             Confirmed group trip reservations, commercial price snapshots & payment statuses.
           </p>
         </div>
 
         <button
           onClick={() => setCreateModalOpen(true)}
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#E05328] hover:bg-[#C8451D] text-white text-xs font-semibold shadow-md transition-all cursor-pointer"
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white text-xs font-semibold shadow-md transition-all cursor-pointer"
         >
           <Plus className="w-4 h-4" />
           <span>Create Booking</span>
@@ -128,7 +128,7 @@ export default function BookingsPage() {
       </div>
 
       {/* Search & Status Filter */}
-      <div className="flex flex-col md:flex-row items-center justify-between gap-4 p-4 rounded-3xl bg-white border border-[#EBE5DF] shadow-xs">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-4 p-4 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs">
         <div className="relative w-full md:w-80">
           <Search className="w-4 h-4 absolute left-3.5 top-3 text-[#9A938C]" />
           <input
@@ -136,16 +136,16 @@ export default function BookingsPage() {
             placeholder="Search booking code, customer, tour..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 rounded-full bg-[#FAF6F0] border border-[#EBE5DF] text-xs text-[#1C1917] placeholder-[#9A938C] focus:outline-none focus:border-[#E05328]"
+            className="w-full pl-10 pr-4 py-2 rounded-full bg-[#FDF7F4] border border-[#E8DCD5] text-xs text-[#685752] placeholder-[#9A938C] focus:outline-none focus:border-[#8EB486]"
           />
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-[11px] uppercase text-[#7A746E] font-bold">Booking Status:</span>
+          <span className="text-[11px] uppercase text-[#997C70] font-bold">Booking Status:</span>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-3 py-1.5 rounded-full bg-[#FAF6F0] border border-[#EBE5DF] text-xs text-[#1C1917] focus:outline-none"
+            className="px-3 py-1.5 rounded-full bg-[#FDF7F4] border border-[#E8DCD5] text-xs text-[#685752] focus:outline-none"
           >
             {["All", "Booking Requested", "Pending Confirmation", "Confirmed", "Completed", "Cancelled"].map(
               (st) => (
@@ -159,16 +159,16 @@ export default function BookingsPage() {
       </div>
 
       {/* Bookings Table */}
-      <div className="p-6 rounded-3xl bg-white border border-[#EBE5DF] shadow-xs">
+      <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs">
         {loading ? (
-          <div className="py-12 text-center text-xs text-[#7A746E]">Loading bookings...</div>
+          <div className="py-12 text-center text-xs text-[#997C70]">Loading bookings...</div>
         ) : filteredBookings.length === 0 ? (
-          <div className="py-16 text-center text-sm text-[#7A746E]">No bookings found.</div>
+          <div className="py-16 text-center text-sm text-[#997C70]">No bookings found.</div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
-                <tr className="border-b border-[#EBE5DF] text-[#7A746E] uppercase tracking-wider">
+                <tr className="border-b border-[#E8DCD5] text-[#997C70] uppercase tracking-wider">
                   <th className="pb-3 font-semibold">Booking Code</th>
                   <th className="pb-3 font-semibold">Customer</th>
                   <th className="pb-3 font-semibold">Tour</th>
@@ -181,15 +181,15 @@ export default function BookingsPage() {
                   <th className="pb-3 font-semibold text-right">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#EBE5DF]">
+              <tbody className="divide-y divide-[#E8DCD5]">
                 {filteredBookings.map((b) => (
-                  <tr key={b.id} className="hover:bg-[#FAF6F0] transition-colors">
-                    <td className="py-3.5 font-bold text-[#E05328]">{b.bookingCode}</td>
-                    <td className="py-3.5 text-[#1C1917] font-semibold">{b.customerName}</td>
-                    <td className="py-3.5 text-[#1C1917] max-w-[180px] truncate">{b.tourTitle}</td>
+                  <tr key={b.id} className="hover:bg-[#FDF7F4] transition-colors">
+                    <td className="py-3.5 font-bold text-[#8EB486]">{b.bookingCode}</td>
+                    <td className="py-3.5 text-[#685752] font-semibold">{b.customerName}</td>
+                    <td className="py-3.5 text-[#685752] max-w-[180px] truncate">{b.tourTitle}</td>
                     <td className="py-3.5 text-[#666059]">{b.departureDate}</td>
-                    <td className="py-3.5 text-[#1C1917] font-medium">{b.travellersCount}</td>
-                    <td className="py-3.5 font-bold text-[#1C1917]">₹{b.totalAmount.toLocaleString("en-IN")}</td>
+                    <td className="py-3.5 text-[#685752] font-medium">{b.travellersCount}</td>
+                    <td className="py-3.5 font-bold text-[#685752]">₹{b.totalAmount.toLocaleString("en-IN")}</td>
                     <td className="py-3.5 font-semibold text-emerald-700">₹{b.paidAmount.toLocaleString("en-IN")}</td>
                     <td className="py-3.5">
                       <span
@@ -205,14 +205,14 @@ export default function BookingsPage() {
                       </span>
                     </td>
                     <td className="py-3.5">
-                      <span className="px-2.5 py-0.5 rounded-md bg-[#FAF6F0] text-[#1C1917] text-[10px] font-semibold border border-[#EBE5DF]">
+                      <span className="px-2.5 py-0.5 rounded-md bg-[#FDF7F4] text-[#685752] text-[10px] font-semibold border border-[#E8DCD5]">
                         {b.bookingStatus}
                       </span>
                     </td>
                     <td className="py-3.5 text-right">
                       <Link
                         href={`/admin/bookings/${b.id}`}
-                        className="px-3 py-1.5 rounded-xl bg-[#FAF6F0] border border-[#EBE5DF] hover:bg-[#E05328] hover:text-white hover:border-[#E05328] text-[#1C1917] text-[11px] font-semibold transition-colors inline-flex items-center gap-1"
+                        className="px-3 py-1.5 rounded-xl bg-[#FDF7F4] border border-[#E8DCD5] hover:bg-[#8EB486] hover:text-white hover:border-[#8EB486] text-[#685752] text-[11px] font-semibold transition-colors inline-flex items-center gap-1"
                       >
                         <span>Manage</span>
                         <ArrowUpRight className="w-3 h-3" />
@@ -229,41 +229,41 @@ export default function BookingsPage() {
       {/* Create Booking Modal */}
       {createModalOpen && (
         <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4 backdrop-blur-xs">
-          <div className="w-full max-w-xl bg-white rounded-3xl p-6 border border-[#EBE5DF] shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
-            <h2 className="text-xl font-bold text-[#1C1917]">Create New Booking</h2>
+          <div className="w-full max-w-xl bg-white rounded-3xl p-6 border border-[#E8DCD5] shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
+            <h2 className="text-xl font-bold text-[#685752]">Create New Booking</h2>
 
             <form onSubmit={handleCreateBooking} className="space-y-4 text-xs">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="text-[#7A746E] font-semibold">Customer Name *</label>
+                  <label className="text-[#997C70] font-semibold">Customer Name *</label>
                   <input
                     type="text"
                     required
                     value={formData.customerName}
                     onChange={(e) => setFormData({ ...formData, customerName: e.target.value })}
                     placeholder="Rahul Verma"
-                    className="w-full p-2.5 rounded-xl bg-[#FAF6F0] border border-[#EBE5DF] text-[#1C1917] focus:outline-none focus:border-[#E05328]"
+                    className="w-full p-2.5 rounded-xl bg-[#FDF7F4] border border-[#E8DCD5] text-[#685752] focus:outline-none focus:border-[#8EB486]"
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[#7A746E] font-semibold">Customer Phone *</label>
+                  <label className="text-[#997C70] font-semibold">Customer Phone *</label>
                   <input
                     type="text"
                     required
                     value={formData.customerPhone}
                     onChange={(e) => setFormData({ ...formData, customerPhone: e.target.value })}
                     placeholder="+91 98765 43210"
-                    className="w-full p-2.5 rounded-xl bg-[#FAF6F0] border border-[#EBE5DF] text-[#1C1917] focus:outline-none focus:border-[#E05328]"
+                    className="w-full p-2.5 rounded-xl bg-[#FDF7F4] border border-[#E8DCD5] text-[#685752] focus:outline-none focus:border-[#8EB486]"
                   />
                 </div>
               </div>
 
               <div className="space-y-1">
-                <label className="text-[#7A746E] font-semibold">Select Tour (from Sanity published list)</label>
+                <label className="text-[#997C70] font-semibold">Select Tour (from Sanity published list)</label>
                 <select
                   value={formData.tourTitle}
                   onChange={(e) => handleTourChange(e.target.value)}
-                  className="w-full p-2.5 rounded-xl bg-[#FAF6F0] border border-[#EBE5DF] text-[#1C1917] focus:outline-none focus:border-[#E05328]"
+                  className="w-full p-2.5 rounded-xl bg-[#FDF7F4] border border-[#E8DCD5] text-[#685752] focus:outline-none focus:border-[#8EB486]"
                 >
                   {TOURS_DATA.map((t) => (
                     <option key={t.id} value={t.title}>
@@ -275,67 +275,67 @@ export default function BookingsPage() {
 
               <div className="grid grid-cols-3 gap-4">
                 <div className="space-y-1">
-                  <label className="text-[#7A746E] font-semibold">Travellers</label>
+                  <label className="text-[#997C70] font-semibold">Travellers</label>
                   <input
                     type="number"
                     min="1"
                     value={formData.travellersCount}
                     onChange={(e) => setFormData({ ...formData, travellersCount: Number(e.target.value) })}
-                    className="w-full p-2.5 rounded-xl bg-[#FAF6F0] border border-[#EBE5DF] text-[#1C1917] focus:outline-none focus:border-[#E05328]"
+                    className="w-full p-2.5 rounded-xl bg-[#FDF7F4] border border-[#E8DCD5] text-[#685752] focus:outline-none focus:border-[#8EB486]"
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[#7A746E] font-semibold">Price / Person (₹)</label>
+                  <label className="text-[#997C70] font-semibold">Price / Person (₹)</label>
                   <input
                     type="number"
                     value={formData.pricePerTraveller}
                     onChange={(e) => setFormData({ ...formData, pricePerTraveller: Number(e.target.value) })}
-                    className="w-full p-2.5 rounded-xl bg-[#FAF6F0] border border-[#EBE5DF] text-[#1C1917] focus:outline-none focus:border-[#E05328]"
+                    className="w-full p-2.5 rounded-xl bg-[#FDF7F4] border border-[#E8DCD5] text-[#685752] focus:outline-none focus:border-[#8EB486]"
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[#7A746E] font-semibold">Discount (₹)</label>
+                  <label className="text-[#997C70] font-semibold">Discount (₹)</label>
                   <input
                     type="number"
                     value={formData.discount}
                     onChange={(e) => setFormData({ ...formData, discount: Number(e.target.value) })}
-                    className="w-full p-2.5 rounded-xl bg-[#FAF6F0] border border-[#EBE5DF] text-[#1C1917] focus:outline-none focus:border-[#E05328]"
+                    className="w-full p-2.5 rounded-xl bg-[#FDF7F4] border border-[#E8DCD5] text-[#685752] focus:outline-none focus:border-[#8EB486]"
                   />
                 </div>
               </div>
 
               {/* Price Calculation Summary Box */}
-              <div className="p-4 rounded-2xl bg-[#FAF6F0] border border-[#EBE5DF] space-y-1 text-xs">
-                <div className="flex justify-between text-[#7A746E]">
+              <div className="p-4 rounded-2xl bg-[#FDF7F4] border border-[#E8DCD5] space-y-1 text-xs">
+                <div className="flex justify-between text-[#997C70]">
                   <span>Subtotal ({formData.travellersCount} x ₹{formData.pricePerTraveller}):</span>
-                  <span className="text-[#1C1917] font-bold">₹{(formData.travellersCount * formData.pricePerTraveller).toLocaleString("en-IN")}</span>
+                  <span className="text-[#685752] font-bold">₹{(formData.travellersCount * formData.pricePerTraveller).toLocaleString("en-IN")}</span>
                 </div>
-                <div className="flex justify-between text-[#7A746E]">
+                <div className="flex justify-between text-[#997C70]">
                   <span>Discount:</span>
                   <span className="text-rose-600 font-bold">- ₹{formData.discount.toLocaleString("en-IN")}</span>
                 </div>
-                <div className="flex justify-between text-[#1C1917] font-bold text-sm pt-2 border-t border-[#EBE5DF]">
+                <div className="flex justify-between text-[#685752] font-bold text-sm pt-2 border-t border-[#E8DCD5]">
                   <span>Agreed Booking Total:</span>
-                  <span className="text-[#E05328]">₹{Math.max(0, formData.travellersCount * formData.pricePerTraveller - formData.discount).toLocaleString("en-IN")}</span>
+                  <span className="text-[#8EB486]">₹{Math.max(0, formData.travellersCount * formData.pricePerTraveller - formData.discount).toLocaleString("en-IN")}</span>
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="text-[#7A746E] font-semibold">Advance Payment Amount (₹)</label>
+                  <label className="text-[#997C70] font-semibold">Advance Payment Amount (₹)</label>
                   <input
                     type="number"
                     value={formData.advancePayment}
                     onChange={(e) => setFormData({ ...formData, advancePayment: Number(e.target.value) })}
-                    className="w-full p-2.5 rounded-xl bg-[#FAF6F0] border border-[#EBE5DF] text-[#1C1917] focus:outline-none focus:border-[#E05328]"
+                    className="w-full p-2.5 rounded-xl bg-[#FDF7F4] border border-[#E8DCD5] text-[#685752] focus:outline-none focus:border-[#8EB486]"
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[#7A746E] font-semibold">Payment Method</label>
+                  <label className="text-[#997C70] font-semibold">Payment Method</label>
                   <select
                     value={formData.paymentMethod}
                     onChange={(e) => setFormData({ ...formData, paymentMethod: e.target.value })}
-                    className="w-full p-2.5 rounded-xl bg-[#FAF6F0] border border-[#EBE5DF] text-[#1C1917] focus:outline-none focus:border-[#E05328]"
+                    className="w-full p-2.5 rounded-xl bg-[#FDF7F4] border border-[#E8DCD5] text-[#685752] focus:outline-none focus:border-[#8EB486]"
                   >
                     {["UPI", "Cash", "Bank Transfer", "Other"].map((m) => (
                       <option key={m} value={m}>
@@ -347,13 +347,13 @@ export default function BookingsPage() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-[#7A746E] font-semibold">Departure Date</label>
+                <label className="text-[#997C70] font-semibold">Departure Date</label>
                 <input
                   type="text"
                   value={formData.departureDate}
                   onChange={(e) => setFormData({ ...formData, departureDate: e.target.value })}
                   placeholder="15 September 2026"
-                  className="w-full p-2.5 rounded-xl bg-[#FAF6F0] border border-[#EBE5DF] text-[#1C1917] focus:outline-none focus:border-[#E05328]"
+                  className="w-full p-2.5 rounded-xl bg-[#FDF7F4] border border-[#E8DCD5] text-[#685752] focus:outline-none focus:border-[#8EB486]"
                 />
               </div>
 
@@ -361,13 +361,13 @@ export default function BookingsPage() {
                 <button
                   type="button"
                   onClick={() => setCreateModalOpen(false)}
-                  className="px-4 py-2 rounded-full bg-[#FAF6F0] border border-[#EBE5DF] text-[#1C1917] font-medium cursor-pointer"
+                  className="px-4 py-2 rounded-full bg-[#FDF7F4] border border-[#E8DCD5] text-[#685752] font-medium cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-2 rounded-full bg-[#E05328] text-white font-semibold cursor-pointer shadow-sm"
+                  className="px-6 py-2 rounded-full bg-[#8EB486] text-white font-semibold cursor-pointer shadow-sm"
                 >
                   Create Booking
                 </button>

@@ -3,21 +3,25 @@
 @theme {
   --font-sans: var(--font-sans-jakarta), system-ui, sans-serif;
   --font-serif: var(--font-serif-playfair), Georgia, serif;
-  --color-cream: #FAF6F0;
-  --color-cream-card: #F4EFEA;
-  --color-rust: #E05328;
-  --color-rust-hover: #C8451D;
-  --color-divider: #E8E1D7;
+  --color-cream: #FDF7F4;
+  --color-cream-card: #F7EFEA;
+  --color-sage: #8EB486;
+  --color-sage-hover: #7A9F73;
+  --color-taupe: #997C70;
+  --color-espresso: #685752;
+  --color-divider: #E8DCD5;
+  --color-rust: #8EB486;
+  --color-rust-hover: #7A9F73;
 }
 
 :root {
-  --background: #FAF6F0;
-  --foreground: #1C1917;
+  --background: #FDF7F4;
+  --foreground: #685752;
 }
 
 body {
-  background-color: #FAF6F0;
-  color: #1C1917;
+  background-color: #FDF7F4;
+  color: #685752;
   font-family: var(--font-sans-jakarta), system-ui, sans-serif;
 }
 

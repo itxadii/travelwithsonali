@@ -58,7 +58,7 @@ export const storySchema = defineType({
       name: "author",
       title: "Author Name",
       type: "string",
-      initialValue: "Sonali Sharma",
+      initialValue: "Sonali Palekar",
     }),
     defineField({
       name: "authorRole",

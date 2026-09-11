@@ -31,10 +31,10 @@ export default function ToursClientView({ tours }: { tours: Tour[] }) {
   return (
     <>
       {/* Filter Bar */}
-      <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-10 pb-6 border-b border-[#E8E1D7]">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-10 pb-6 border-b border-[#E8DCD5]">
         {/* Category Filter Pills */}
         <div className="flex items-center gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 scrollbar-none">
-          <span className="text-xs font-semibold text-[#8C847B] uppercase tracking-wider hidden sm:inline mr-2">
+          <span className="text-xs font-semibold text-[#997C70] uppercase tracking-wider hidden sm:inline mr-2">
             Filter:
           </span>
           {categories.map((cat) => (
@@ -43,8 +43,8 @@ export default function ToursClientView({ tours }: { tours: Tour[] }) {
               onClick={() => setCategoryFilter(cat)}
               className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
                 categoryFilter === cat
-                  ? "bg-[#E05328] text-white shadow-sm"
-                  : "bg-[#F4EFEA] text-[#57524C] hover:bg-[#E8E1D7]"
+                  ? "bg-[#8EB486] text-white shadow-sm"
+                  : "bg-[#F7EFEA] text-[#685752] hover:bg-[#E8DCD5]"
               }`}
             >
               {cat}
@@ -54,13 +54,13 @@ export default function ToursClientView({ tours }: { tours: Tour[] }) {
 
         {/* Search Box */}
         <div className="relative w-full md:w-72">
-          <Search className="w-4 h-4 absolute left-3.5 top-3 text-[#8C847B]" />
+          <Search className="w-4 h-4 absolute left-3.5 top-3 text-[#997C70]" />
           <input
             type="text"
             placeholder="Search destination or trip..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 rounded-full border border-[#D8CFC4] bg-white text-xs text-[#1C1917] focus:outline-none focus:border-[#E05328]"
+            className="w-full pl-10 pr-4 py-2 rounded-full border border-[#E8DCD5] bg-white text-xs text-[#685752] focus:outline-none focus:border-[#8EB486]"
           />
         </div>
       </div>
@@ -71,7 +71,7 @@ export default function ToursClientView({ tours }: { tours: Tour[] }) {
           {filteredTours.map((tour) => (
             <div
               key={tour.id}
-              className="group bg-[#F4EFEA] rounded-3xl overflow-hidden border border-[#E8E1D7] shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
+              className="group bg-[#F7EFEA] rounded-3xl overflow-hidden border border-[#E8DCD5] shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
             >
               <div>
                 <div className="relative w-full h-64 overflow-hidden">
@@ -84,40 +84,40 @@ export default function ToursClientView({ tours }: { tours: Tour[] }) {
                   <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-black/60 backdrop-blur-xs text-white text-xs font-medium">
                     {tour.destination}
                   </div>
-                  <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-[#E05328] text-white text-xs font-semibold">
+                  <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-[#8EB486] text-white text-xs font-semibold">
                     {tour.departureDate}
                   </div>
                 </div>
 
                 <div className="p-6 space-y-4">
-                  <div className="flex items-center justify-between text-xs text-[#7A746E]">
+                  <div className="flex items-center justify-between text-xs text-[#997C70]">
                     <span className="flex items-center gap-1 font-medium">
-                      <Clock className="w-3.5 h-3.5 text-[#E05328]" />
+                      <Clock className="w-3.5 h-3.5 text-[#8EB486]" />
                       {tour.duration}
                     </span>
                     <span className="flex items-center gap-1 font-medium">
-                      <Users className="w-3.5 h-3.5 text-[#E05328]" />
+                      <Users className="w-3.5 h-3.5 text-[#8EB486]" />
                       {tour.groupSize}
                     </span>
                   </div>
 
-                  <h3 className="text-xl font-bold text-[#1C1917] group-hover:text-[#E05328] transition-colors">
+                  <h3 className="text-xl font-bold text-[#685752] group-hover:text-[#8EB486] transition-colors">
                     {tour.title}
                   </h3>
 
-                  <p className="text-xs sm:text-sm text-[#57524C] line-clamp-2 leading-relaxed">
+                  <p className="text-xs sm:text-sm text-[#7A6862] line-clamp-2 leading-relaxed">
                     {tour.description}
                   </p>
                 </div>
               </div>
 
-              <div className="px-6 pb-6 pt-4 border-t border-[#E8E1D7]/60 flex items-center justify-between">
+              <div className="px-6 pb-6 pt-4 border-t border-[#E8DCD5]/60 flex items-center justify-between">
                 <div>
-                  <span className="text-[11px] text-[#7A746E] uppercase tracking-wider block">Starting From</span>
+                  <span className="text-[11px] text-[#997C70] uppercase tracking-wider block">Starting From</span>
                   <div className="flex items-baseline gap-2">
-                    <span className="text-2xl font-bold text-[#1C1917]">{tour.price}</span>
+                    <span className="text-2xl font-bold text-[#685752]">{tour.price}</span>
                     {tour.originalPrice && (
-                      <span className="text-xs text-[#8C847B] line-through">{tour.originalPrice}</span>
+                      <span className="text-xs text-[#997C70]/70 line-through">{tour.originalPrice}</span>
                     )}
                   </div>
                 </div>
@@ -125,13 +125,13 @@ export default function ToursClientView({ tours }: { tours: Tour[] }) {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => handleEnquire(tour.title)}
-                    className="px-3.5 py-2 rounded-full border border-[#E05328] text-[#E05328] hover:bg-[#E05328] hover:text-white text-xs font-semibold transition-colors cursor-pointer"
+                    className="px-3.5 py-2 rounded-full border border-[#8EB486] text-[#8EB486] hover:bg-[#8EB486] hover:text-white text-xs font-semibold transition-colors cursor-pointer"
                   >
                     Enquire
                   </button>
                   <Link
                     href={`/tours/${tour.slug}`}
-                    className="inline-flex items-center gap-1 px-4 py-2 rounded-full bg-[#1C1917] hover:bg-[#E05328] text-white text-xs font-semibold transition-colors"
+                    className="inline-flex items-center gap-1 px-4 py-2 rounded-full bg-[#685752] hover:bg-[#8EB486] text-white text-xs font-semibold transition-colors"
                   >
                     <span>Explore</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -143,13 +143,13 @@ export default function ToursClientView({ tours }: { tours: Tour[] }) {
         </div>
       ) : (
         <div className="py-16 text-center space-y-4">
-          <p className="text-lg text-[#57524C]">No tours found matching your search criteria.</p>
+          <p className="text-lg text-[#7A6862]">No tours found matching your search criteria.</p>
           <button
             onClick={() => {
               setCategoryFilter("All");
               setSearchQuery("");
             }}
-            className="px-6 py-2.5 rounded-full bg-[#E05328] text-white text-sm font-medium cursor-pointer"
+            className="px-6 py-2.5 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white text-sm font-medium cursor-pointer"
           >
             Reset Filters
           </button>

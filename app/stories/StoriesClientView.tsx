@@ -22,19 +22,19 @@ export default function StoriesClientView({ initialStories }: StoriesClientViewP
   );
 
   return (
-    <div className="min-h-screen bg-[#FAF6F0] text-[#1C1917] flex flex-col font-sans">
+    <div className="min-h-screen bg-[#FDF7F4] text-[#685752] flex flex-col font-sans">
       <Navbar logoName="Travel With Sonali" />
 
       {/* Hero */}
-      <section className="w-full py-16 sm:py-24 bg-[#F4EFEA] border-b border-[#E8E1D7]">
+      <section className="w-full py-16 sm:py-24 bg-[#F7EFEA] border-b border-[#E8DCD5]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center sm:text-left">
-          <span className="text-xs uppercase tracking-widest text-[#E05328] font-bold">
+          <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold">
             Travel Journal & Blog
           </span>
-          <h1 className="text-4xl sm:text-6xl font-bold tracking-tight text-[#1C1917] mt-2">
+          <h1 className="text-4xl sm:text-6xl font-bold tracking-tight text-[#685752] mt-2">
             Stories From The Road
           </h1>
-          <p className="text-[#6B645C] text-base sm:text-lg max-w-2xl mt-3">
+          <p className="text-[#7A6862] text-base sm:text-lg max-w-2xl mt-3">
             Read authentic trip accounts, packing guides, and stories behind our group departures.
           </p>
         </div>
@@ -44,15 +44,15 @@ export default function StoriesClientView({ initialStories }: StoriesClientViewP
       <section className="w-full py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex-1">
         
         {/* Category Pills */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-6 mb-10 border-b border-[#E8E1D7] scrollbar-none">
+        <div className="flex items-center gap-2 overflow-x-auto pb-6 mb-10 border-b border-[#E8DCD5] scrollbar-none">
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveCat(cat)}
               className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
                 activeCat === cat
-                  ? "bg-[#E05328] text-white shadow-sm"
-                  : "bg-[#F4EFEA] text-[#57524C] hover:bg-[#E8E1D7]"
+                  ? "bg-[#8EB486] text-white shadow-sm"
+                  : "bg-[#F7EFEA] text-[#7A6862] hover:bg-[#E8DCD5]"
               }`}
             >
               {cat}
@@ -65,7 +65,7 @@ export default function StoriesClientView({ initialStories }: StoriesClientViewP
           {filteredStories.map((story) => (
             <div
               key={story.id}
-              className="group bg-[#F4EFEA] rounded-3xl overflow-hidden border border-[#E8E1D7] p-6 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
+              className="group bg-[#F7EFEA] rounded-3xl overflow-hidden border border-[#E8DCD5] p-6 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
             >
               <div className="space-y-4">
                 <div className="relative h-64 rounded-2xl overflow-hidden">
@@ -80,26 +80,26 @@ export default function StoriesClientView({ initialStories }: StoriesClientViewP
                   </span>
                 </div>
 
-                <h3 className="text-2xl font-bold text-[#1C1917] group-hover:text-[#E05328] transition-colors">
+                <h3 className="text-2xl font-bold text-[#685752] group-hover:text-[#8EB486] transition-colors">
                   {story.title}
                 </h3>
 
-                <p className="text-sm text-[#57524C] leading-relaxed line-clamp-3">
+                <p className="text-sm text-[#7A6862] leading-relaxed line-clamp-3">
                   {story.excerpt}
                 </p>
               </div>
 
-              <div className="pt-6 border-t border-[#E8E1D7] flex items-center justify-between mt-6">
+              <div className="pt-6 border-t border-[#E8DCD5] flex items-center justify-between mt-6">
                 <div className="flex items-center gap-2">
-                  <div className="relative w-7 h-7 rounded-full overflow-hidden border border-[#D8CFC4]">
+                  <div className="relative w-7 h-7 rounded-full overflow-hidden border border-[#E8DCD5]">
                     <Image src={story.authorAvatar} alt={story.author} fill className="object-cover" />
                   </div>
-                  <span className="text-xs font-medium text-[#1C1917]">{story.author}</span>
+                  <span className="text-xs font-medium text-[#685752]">{story.author}</span>
                 </div>
 
                 <Link
                   href={`/stories/${story.slug}`}
-                  className="inline-flex items-center gap-1 text-xs font-semibold text-[#E05328] hover:underline"
+                  className="inline-flex items-center gap-1 text-xs font-semibold text-[#8EB486] hover:underline"
                 >
                   <span>Read Story</span>
                   <ArrowRight className="w-3.5 h-3.5" />

@@ -26,8 +26,8 @@ export default function QRCodeBadge({
       title="Scan or click to view Instagram QR code"
     >
       {/* Outer concentric circular pattern */}
-      <div className="p-3 rounded-full border-2 border-[#E05328] bg-[#FAF6F0] shadow-md group-hover:shadow-xl group-hover:scale-105 transition-all duration-300">
-        <div className="p-1 rounded-full border border-[#E8E1D7] bg-[#F4EFEA]">
+      <div className="p-3 rounded-full border-2 border-[#8EB486] bg-[#FDF7F4] shadow-md group-hover:shadow-xl group-hover:scale-105 transition-all duration-300">
+        <div className="p-1 rounded-full border border-[#E8DCD5] bg-[#F7EFEA]">
           {/* Inner Circle with sleek black background */}
           <div className={`relative ${innerSize} rounded-full bg-black flex items-center justify-center p-2.5 sm:p-3 shadow-md overflow-hidden`}>
             <Image
@@ -43,7 +43,7 @@ export default function QRCodeBadge({
       </div>
 
       {label && (
-        <span className="text-xs sm:text-sm font-bold tracking-widest uppercase text-[#E05328] group-hover:underline transition-colors">
+        <span className="text-xs sm:text-sm font-bold tracking-widest uppercase text-[#8EB486] group-hover:underline transition-colors">
           {label}
         </span>
       )}

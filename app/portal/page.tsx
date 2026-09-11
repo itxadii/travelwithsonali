@@ -106,10 +106,10 @@ export default function CustomerDashboardPage() {
   if (loading) {
     return (
       <div className="space-y-6 animate-pulse">
-        <div className="h-64 rounded-3xl bg-white/60 border border-[#EBE5DF]" />
+        <div className="h-64 rounded-3xl bg-white/60 border border-[#E8DCD5]" />
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="h-24 rounded-2xl bg-white/60 border border-[#EBE5DF]" />
+            <div key={i} className="h-24 rounded-2xl bg-white/60 border border-[#E8DCD5]" />
           ))}
         </div>
       </div>
@@ -123,12 +123,12 @@ export default function CustomerDashboardPage() {
   return (
     <div className="space-y-8">
       {/* Welcome Greeting */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#EBE5DF] pb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#E8DCD5] pb-4">
         <div>
-          <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-[#1C1917] font-serif-italic">
+          <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-[#685752] font-serif-italic">
             Hello, {customer.name.split(" ")[0]} 👋
           </h1>
-          <p className="text-xs text-[#7A746E] mt-1">
+          <p className="text-xs text-[#997C70] mt-1">
             Your travel family is excited to explore with you. Here is your trip summary.
           </p>
         </div>
@@ -142,7 +142,7 @@ export default function CustomerDashboardPage() {
 
       {/* 1. HERO NEXT TRIP CARD */}
       {nextTrip ? (
-        <div className="relative rounded-3xl overflow-hidden bg-[#181614] text-white shadow-xl border border-[#EBE5DF] group">
+        <div className="relative rounded-3xl overflow-hidden bg-[#4C3E3A] text-white shadow-xl border border-[#E8DCD5] group">
           {/* Background Tour Cover */}
           <div className="absolute inset-0 opacity-40">
             <Image
@@ -159,14 +159,14 @@ export default function CustomerDashboardPage() {
           <div className="relative p-6 sm:p-10 space-y-6">
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div className="space-y-1">
-                <span className="px-3.5 py-1 rounded-full bg-[#E05328] text-white text-[11px] font-bold uppercase tracking-wider">
+                <span className="px-3.5 py-1 rounded-full bg-[#8EB486] text-white text-[11px] font-bold uppercase tracking-wider">
                   Your Next Adventure
                 </span>
                 <h2 className="text-2xl sm:text-4xl font-serif-italic font-bold tracking-tight text-white mt-2">
                   {nextTrip.booking.tourTitle}
                 </h2>
                 <p className="text-stone-300 text-xs sm:text-sm flex items-center gap-2">
-                  <Calendar className="w-4 h-4 text-[#E05328]" />
+                  <Calendar className="w-4 h-4 text-[#8EB486]" />
                   <span>{nextTrip.booking.departureDate}</span>
                   <span>•</span>
                   <span>Booking {nextTrip.booking.bookingCode}</span>
@@ -196,7 +196,7 @@ export default function CustomerDashboardPage() {
                   </div>
                   <span className="text-stone-500 font-bold">:</span>
                   <div className="bg-black/50 backdrop-blur-md border border-white/10 rounded-2xl px-3 py-2 min-w-[60px]">
-                    <span className="text-2xl font-bold text-[#E05328] block">{String(countdown.minutes).padStart(2, '0')}</span>
+                    <span className="text-2xl font-bold text-[#8EB486] block">{String(countdown.minutes).padStart(2, '0')}</span>
                     <span className="text-[9px] uppercase text-stone-400 font-sans">Mins</span>
                   </div>
                 </div>
@@ -204,7 +204,7 @@ export default function CustomerDashboardPage() {
 
               <Link
                 href={`/portal/trips/${nextTrip.booking.id}`}
-                className="px-6 py-3 rounded-full bg-[#E05328] hover:bg-[#C8451D] text-white text-xs font-bold tracking-wider uppercase shadow-lg transition-all flex items-center gap-2 cursor-pointer"
+                className="px-6 py-3 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white text-xs font-bold tracking-wider uppercase shadow-lg transition-all flex items-center gap-2 cursor-pointer"
               >
                 <span>View My Trip</span>
                 <ArrowRight className="w-4 h-4" />
@@ -214,20 +214,20 @@ export default function CustomerDashboardPage() {
         </div>
       ) : (
         /* NO UPCOMING TRIP STATE */
-        <div className="p-8 sm:p-12 rounded-3xl bg-white border border-[#EBE5DF] shadow-xs text-center space-y-4">
-          <div className="w-16 h-16 rounded-full bg-[#E05328]/10 text-[#E05328] flex items-center justify-center mx-auto">
+        <div className="p-8 sm:p-12 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs text-center space-y-4">
+          <div className="w-16 h-16 rounded-full bg-[#8EB486]/10 text-[#8EB486] flex items-center justify-center mx-auto">
             <Sparkles className="w-8 h-8" />
           </div>
-          <h2 className="text-2xl sm:text-3xl font-bold text-[#1C1917] font-serif-italic">
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#685752] font-serif-italic">
             Ready for Your Next Adventure?
           </h2>
-          <p className="text-xs sm:text-sm text-[#7A746E] max-w-md mx-auto">
+          <p className="text-xs sm:text-sm text-[#997C70] max-w-md mx-auto">
             You don&apos;t have an upcoming group trip booked right now. Explore our upcoming departures and join our next travel family!
           </p>
           <div className="pt-2">
             <Link
               href="/tours"
-              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#E05328] hover:bg-[#C8451D] text-white text-xs font-bold uppercase tracking-wider shadow-md"
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white text-xs font-bold uppercase tracking-wider shadow-md"
             >
               <span>Explore Tours</span>
               <ArrowRight className="w-4 h-4" />
@@ -239,21 +239,21 @@ export default function CustomerDashboardPage() {
       {/* 2. QUICK TRIP SUMMARY CARDS */}
       {nextTrip && (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <div className="p-4 rounded-2xl bg-white border border-[#EBE5DF] shadow-2xs space-y-1">
-            <span className="text-[10px] text-[#7A746E] uppercase font-bold tracking-wider block">Departure</span>
-            <p className="text-xs font-bold text-[#1C1917] truncate">{nextTrip.booking.departureDate}</p>
+          <div className="p-4 rounded-2xl bg-white border border-[#E8DCD5] shadow-2xs space-y-1">
+            <span className="text-[10px] text-[#997C70] uppercase font-bold tracking-wider block">Departure</span>
+            <p className="text-xs font-bold text-[#685752] truncate">{nextTrip.booking.departureDate}</p>
           </div>
-          <div className="p-4 rounded-2xl bg-white border border-[#EBE5DF] shadow-2xs space-y-1">
-            <span className="text-[10px] text-[#7A746E] uppercase font-bold tracking-wider block">Duration</span>
-            <p className="text-xs font-bold text-[#1C1917] truncate">{nextTrip.sanityTour?.duration || "Multiple Days"}</p>
+          <div className="p-4 rounded-2xl bg-white border border-[#E8DCD5] shadow-2xs space-y-1">
+            <span className="text-[10px] text-[#997C70] uppercase font-bold tracking-wider block">Duration</span>
+            <p className="text-xs font-bold text-[#685752] truncate">{nextTrip.sanityTour?.duration || "Multiple Days"}</p>
           </div>
-          <div className="p-4 rounded-2xl bg-white border border-[#EBE5DF] shadow-2xs space-y-1">
-            <span className="text-[10px] text-[#7A746E] uppercase font-bold tracking-wider block">Travellers</span>
-            <p className="text-xs font-bold text-[#1C1917] truncate">{nextTrip.booking.travellersCount} Person(s)</p>
+          <div className="p-4 rounded-2xl bg-white border border-[#E8DCD5] shadow-2xs space-y-1">
+            <span className="text-[10px] text-[#997C70] uppercase font-bold tracking-wider block">Travellers</span>
+            <p className="text-xs font-bold text-[#685752] truncate">{nextTrip.booking.travellersCount} Person(s)</p>
           </div>
-          <div className="p-4 rounded-2xl bg-white border border-[#EBE5DF] shadow-2xs space-y-1">
-            <span className="text-[10px] text-[#7A746E] uppercase font-bold tracking-wider block">Booking ID</span>
-            <p className="text-xs font-bold text-[#E05328] truncate">{nextTrip.booking.bookingCode}</p>
+          <div className="p-4 rounded-2xl bg-white border border-[#E8DCD5] shadow-2xs space-y-1">
+            <span className="text-[10px] text-[#997C70] uppercase font-bold tracking-wider block">Booking ID</span>
+            <p className="text-xs font-bold text-[#8EB486] truncate">{nextTrip.booking.bookingCode}</p>
           </div>
         </div>
       )}
@@ -264,22 +264,22 @@ export default function CustomerDashboardPage() {
           {/* Left: Readiness & Quick Actions */}
           <div className="lg:col-span-8 space-y-6">
             {/* Readiness Card */}
-            <div className="p-6 rounded-3xl bg-white border border-[#EBE5DF] shadow-xs space-y-4">
-              <div className="flex items-center justify-between border-b border-[#EBE5DF] pb-3">
+            <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-4">
+              <div className="flex items-center justify-between border-b border-[#E8DCD5] pb-3">
                 <div>
-                  <h3 className="text-base font-bold text-[#1C1917]">You&apos;re Almost Ready</h3>
-                  <p className="text-xs text-[#7A746E]">Complete required traveller details before departure.</p>
+                  <h3 className="text-base font-bold text-[#685752]">You&apos;re Almost Ready</h3>
+                  <p className="text-xs text-[#997C70]">Complete required traveller details before departure.</p>
                 </div>
                 <div className="text-right">
-                  <span className="text-2xl font-bold text-[#E05328]">{nextTrip.readinessPercentage}%</span>
-                  <span className="text-[10px] text-[#7A746E] block font-semibold">Ready</span>
+                  <span className="text-2xl font-bold text-[#8EB486]">{nextTrip.readinessPercentage}%</span>
+                  <span className="text-[10px] text-[#997C70] block font-semibold">Ready</span>
                 </div>
               </div>
 
               {/* Progress Bar */}
-              <div className="w-full h-2.5 rounded-full bg-[#FAF6F0] overflow-hidden border border-[#EBE5DF]">
+              <div className="w-full h-2.5 rounded-full bg-[#FDF7F4] overflow-hidden border border-[#E8DCD5]">
                 <div
-                  className="h-full bg-gradient-to-r from-[#E05328] to-emerald-500 rounded-full transition-all duration-500"
+                  className="h-full bg-gradient-to-r from-[#8EB486] to-emerald-500 rounded-full transition-all duration-500"
                   style={{ width: `${nextTrip.readinessPercentage}%` }}
                 />
               </div>
@@ -307,7 +307,7 @@ export default function CustomerDashboardPage() {
               <div className="pt-2 flex justify-end">
                 <Link
                   href="/portal/documents"
-                  className="px-5 py-2.5 rounded-full bg-[#E05328] text-white text-xs font-semibold hover:bg-[#C8451D] transition-colors"
+                  className="px-5 py-2.5 rounded-full bg-[#8EB486] text-white text-xs font-semibold hover:bg-[#7A9F73] transition-colors"
                 >
                   Complete My Details →
                 </Link>
@@ -318,39 +318,39 @@ export default function CustomerDashboardPage() {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               <Link
                 href={`/portal/trips/${nextTrip.booking.id}`}
-                className="p-4 rounded-2xl bg-white border border-[#EBE5DF] hover:border-[#E05328] hover:shadow-md transition-all text-center space-y-2 group"
+                className="p-4 rounded-2xl bg-white border border-[#E8DCD5] hover:border-[#8EB486] hover:shadow-md transition-all text-center space-y-2 group"
               >
-                <div className="w-10 h-10 rounded-full bg-[#FAF6F0] text-[#E05328] flex items-center justify-center mx-auto group-hover:bg-[#E05328] group-hover:text-white transition-colors">
+                <div className="w-10 h-10 rounded-full bg-[#FDF7F4] text-[#8EB486] flex items-center justify-center mx-auto group-hover:bg-[#8EB486] group-hover:text-white transition-colors">
                   <Calendar className="w-5 h-5" />
                 </div>
-                <span className="text-xs font-bold text-[#1C1917] block">View Itinerary</span>
+                <span className="text-xs font-bold text-[#685752] block">View Itinerary</span>
               </Link>
               <Link
                 href="/portal/travellers"
-                className="p-4 rounded-2xl bg-white border border-[#EBE5DF] hover:border-[#E05328] hover:shadow-md transition-all text-center space-y-2 group"
+                className="p-4 rounded-2xl bg-white border border-[#E8DCD5] hover:border-[#8EB486] hover:shadow-md transition-all text-center space-y-2 group"
               >
-                <div className="w-10 h-10 rounded-full bg-[#FAF6F0] text-[#E05328] flex items-center justify-center mx-auto group-hover:bg-[#E05328] group-hover:text-white transition-colors">
+                <div className="w-10 h-10 rounded-full bg-[#FDF7F4] text-[#8EB486] flex items-center justify-center mx-auto group-hover:bg-[#8EB486] group-hover:text-white transition-colors">
                   <Users className="w-5 h-5" />
                 </div>
-                <span className="text-xs font-bold text-[#1C1917] block">Manage Travellers</span>
+                <span className="text-xs font-bold text-[#685752] block">Manage Travellers</span>
               </Link>
               <Link
                 href="/portal/documents"
-                className="p-4 rounded-2xl bg-white border border-[#EBE5DF] hover:border-[#E05328] hover:shadow-md transition-all text-center space-y-2 group"
+                className="p-4 rounded-2xl bg-white border border-[#E8DCD5] hover:border-[#8EB486] hover:shadow-md transition-all text-center space-y-2 group"
               >
-                <div className="w-10 h-10 rounded-full bg-[#FAF6F0] text-[#E05328] flex items-center justify-center mx-auto group-hover:bg-[#E05328] group-hover:text-white transition-colors">
+                <div className="w-10 h-10 rounded-full bg-[#FDF7F4] text-[#8EB486] flex items-center justify-center mx-auto group-hover:bg-[#8EB486] group-hover:text-white transition-colors">
                   <FileCheck className="w-5 h-5" />
                 </div>
-                <span className="text-xs font-bold text-[#1C1917] block">Documents</span>
+                <span className="text-xs font-bold text-[#685752] block">Documents</span>
               </Link>
               <Link
                 href="/portal/payments"
-                className="p-4 rounded-2xl bg-white border border-[#EBE5DF] hover:border-[#E05328] hover:shadow-md transition-all text-center space-y-2 group"
+                className="p-4 rounded-2xl bg-white border border-[#E8DCD5] hover:border-[#8EB486] hover:shadow-md transition-all text-center space-y-2 group"
               >
-                <div className="w-10 h-10 rounded-full bg-[#FAF6F0] text-[#E05328] flex items-center justify-center mx-auto group-hover:bg-[#E05328] group-hover:text-white transition-colors">
+                <div className="w-10 h-10 rounded-full bg-[#FDF7F4] text-[#8EB486] flex items-center justify-center mx-auto group-hover:bg-[#8EB486] group-hover:text-white transition-colors">
                   <CreditCard className="w-5 h-5" />
                 </div>
-                <span className="text-xs font-bold text-[#1C1917] block">Payments</span>
+                <span className="text-xs font-bold text-[#685752] block">Payments</span>
               </Link>
             </div>
           </div>
@@ -358,15 +358,15 @@ export default function CustomerDashboardPage() {
           {/* Right Column: Payment Card & Trip Coordinator */}
           <div className="lg:col-span-4 space-y-6">
             {/* Payment Summary */}
-            <div className="p-6 rounded-3xl bg-white border border-[#EBE5DF] shadow-xs space-y-4">
-              <h3 className="text-xs uppercase font-bold text-[#7A746E] border-b border-[#EBE5DF] pb-3">
+            <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-4">
+              <h3 className="text-xs uppercase font-bold text-[#997C70] border-b border-[#E8DCD5] pb-3">
                 Payment Summary
               </h3>
 
               <div className="space-y-2 text-xs">
-                <div className="flex justify-between text-[#7A746E]">
+                <div className="flex justify-between text-[#997C70]">
                   <span>Total Trip Cost:</span>
-                  <span className="text-[#1C1917] font-bold">₹{nextTrip.booking.totalAmount.toLocaleString("en-IN")}</span>
+                  <span className="text-[#685752] font-bold">₹{nextTrip.booking.totalAmount.toLocaleString("en-IN")}</span>
                 </div>
                 <div className="flex justify-between text-emerald-700 font-semibold">
                   <span>Paid:</span>
@@ -378,13 +378,13 @@ export default function CustomerDashboardPage() {
                 </div>
               </div>
 
-              <div className="pt-2 border-t border-[#EBE5DF] space-y-2">
-                <p className="text-[10px] text-[#7A746E] italic">
+              <div className="pt-2 border-t border-[#E8DCD5] space-y-2">
+                <p className="text-[10px] text-[#997C70] italic">
                   Payment updates are recorded by our team upon receiving manual UPI, Cash, or Bank transfers.
                 </p>
                 <Link
                   href="/portal/payments"
-                  className="block text-center w-full py-2.5 rounded-full bg-[#FAF6F0] border border-[#EBE5DF] hover:bg-[#E05328] hover:text-white text-[#1C1917] text-xs font-semibold transition-colors"
+                  className="block text-center w-full py-2.5 rounded-full bg-[#FDF7F4] border border-[#E8DCD5] hover:bg-[#8EB486] hover:text-white text-[#685752] text-xs font-semibold transition-colors"
                 >
                   View Payment History
                 </Link>
@@ -392,31 +392,31 @@ export default function CustomerDashboardPage() {
             </div>
 
             {/* Trip Coordinator Support Card */}
-            <div className="p-6 rounded-3xl bg-[#FFFDF9] border border-[#EBE5DF] shadow-xs space-y-4">
-              <span className="text-[10px] uppercase font-bold text-[#E05328] tracking-widest block">
+            <div className="p-6 rounded-3xl bg-[#FFFDF9] border border-[#E8DCD5] shadow-xs space-y-4">
+              <span className="text-[10px] uppercase font-bold text-[#8EB486] tracking-widest block">
                 YOUR TRIP COORDINATOR
               </span>
 
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full overflow-hidden border border-[#EBE5DF] shrink-0">
+                <div className="w-12 h-12 rounded-full overflow-hidden border border-[#E8DCD5] shrink-0">
                   <Image
-                    src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80"
-                    alt="Sonali Sharma"
+                    src="/images/sonali.png"
+                    alt="Sonali Palekar"
                     width={48}
                     height={48}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover object-top"
                   />
                 </div>
                 <div>
-                  <h4 className="font-bold text-[#1C1917] text-sm">Sonali Sharma</h4>
-                  <p className="text-[11px] text-[#7A746E]">Lead Group Explorer</p>
+                  <h4 className="font-bold text-[#685752] text-sm">Sonali Palekar</h4>
+                  <p className="text-[11px] text-[#997C70]">Lead Group Explorer</p>
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-2 pt-2 text-xs">
                 <a
                   href="tel:+919876543210"
-                  className="flex items-center justify-center gap-2 py-2 rounded-full bg-[#FAF6F0] border border-[#EBE5DF] text-[#1C1917] font-semibold hover:bg-[#1C1917] hover:text-white transition-colors"
+                  className="flex items-center justify-center gap-2 py-2 rounded-full bg-[#FDF7F4] border border-[#E8DCD5] text-[#685752] font-semibold hover:bg-[#685752] hover:text-white transition-colors"
                 >
                   <Phone className="w-3.5 h-3.5" />
                   <span>Call</span>
@@ -439,18 +439,18 @@ export default function CustomerDashboardPage() {
       {/* Featured Tours if No Upcoming Trip */}
       {featuredTours.length > 0 && (
         <div className="space-y-4 pt-4">
-          <h3 className="text-xl font-bold text-[#1C1917] font-serif-italic">Upcoming Group Departures</h3>
+          <h3 className="text-xl font-bold text-[#685752] font-serif-italic">Upcoming Group Departures</h3>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {featuredTours.map((tour) => (
-              <div key={tour.id} className="bg-white rounded-3xl overflow-hidden border border-[#EBE5DF] p-4 shadow-xs space-y-3">
+              <div key={tour.id} className="bg-white rounded-3xl overflow-hidden border border-[#E8DCD5] p-4 shadow-xs space-y-3">
                 <div className="relative h-44 rounded-2xl overflow-hidden">
                   <Image src={tour.image} alt={tour.title} fill className="object-cover" />
                 </div>
-                <h4 className="font-bold text-[#1C1917] text-sm">{tour.title}</h4>
-                <p className="text-xs text-[#7A746E]">{tour.duration} • {tour.price}</p>
+                <h4 className="font-bold text-[#685752] text-sm">{tour.title}</h4>
+                <p className="text-xs text-[#997C70]">{tour.duration} • {tour.price}</p>
                 <Link
                   href={`/tours/${tour.slug}`}
-                  className="block text-center py-2 rounded-full bg-[#E05328] text-white text-xs font-semibold"
+                  className="block text-center py-2 rounded-full bg-[#8EB486] text-white text-xs font-semibold"
                 >
                   View Package Details
                 </Link>

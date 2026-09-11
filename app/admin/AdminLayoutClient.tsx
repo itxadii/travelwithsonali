@@ -64,7 +64,7 @@ export default function AdminLayoutClient({ admin, children }: AdminLayoutClient
   ];
 
   return (
-    <div className="min-h-screen bg-[#FAF6F0] text-[#1C1917] flex font-sans selection:bg-[#E05328] selection:text-white">
+    <div className="min-h-screen bg-[#FDF7F4] text-[#685752] flex font-sans selection:bg-[#8EB486] selection:text-white">
       {/* Mobile Sidebar Overlay */}
       {sidebarOpen && (
         <div
@@ -75,15 +75,15 @@ export default function AdminLayoutClient({ admin, children }: AdminLayoutClient
 
       {/* Left Sidebar */}
       <aside
-        className={`fixed lg:static top-0 bottom-0 left-0 z-50 w-64 bg-[#FFFDF9] border-r border-[#EBE5DF] flex flex-col justify-between transition-transform duration-300 ${
+        className={`fixed lg:static top-0 bottom-0 left-0 z-50 w-64 bg-[#FFFDF9] border-r border-[#E8DCD5] flex flex-col justify-between transition-transform duration-300 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         }`}
       >
         <div>
           {/* Logo Brand Header */}
-          <div className="h-16 px-6 border-b border-[#EBE5DF] flex items-center justify-between">
+          <div className="h-16 px-6 border-b border-[#E8DCD5] flex items-center justify-between">
             <Link href="/admin" className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-full overflow-hidden border border-[#EBE5DF] shadow-xs shrink-0">
+              <div className="w-8 h-8 rounded-full overflow-hidden border border-[#E8DCD5] shadow-xs shrink-0">
                 <Image
                   src="/travelwithsonalilogo.jpg"
                   alt="Travel With Sonali Logo"
@@ -93,17 +93,17 @@ export default function AdminLayoutClient({ admin, children }: AdminLayoutClient
                 />
               </div>
               <div className="flex flex-col">
-                <span className="text-sm font-bold tracking-tight text-[#1C1917] leading-tight font-serif-italic">
+                <span className="text-sm font-bold tracking-tight text-[#685752] leading-tight font-serif-italic">
                   Travel With Sonali
                 </span>
-                <span className="text-[10px] text-[#7A746E] tracking-wider uppercase font-semibold">
+                <span className="text-[10px] text-[#997C70] tracking-wider uppercase font-semibold">
                   Admin Control
                 </span>
               </div>
             </Link>
             <button
               onClick={() => setSidebarOpen(false)}
-              className="lg:hidden text-[#7A746E] hover:text-[#1C1917]"
+              className="lg:hidden text-[#997C70] hover:text-[#685752]"
             >
               <X className="w-5 h-5" />
             </button>
@@ -124,8 +124,8 @@ export default function AdminLayoutClient({ admin, children }: AdminLayoutClient
                   onClick={() => setSidebarOpen(false)}
                   className={`flex items-center gap-3 px-4 py-2.5 rounded-2xl text-xs font-semibold transition-all ${
                     isActive
-                      ? "bg-[#E05328] text-white shadow-md"
-                      : "text-[#666059] hover:bg-[#F2ECE6] hover:text-[#1C1917]"
+                      ? "bg-[#8EB486] text-white shadow-md"
+                      : "text-[#7A6862] hover:bg-[#F7EFEA] hover:text-[#685752]"
                   }`}
                 >
                   <item.icon className="w-4 h-4" />
@@ -135,8 +135,8 @@ export default function AdminLayoutClient({ admin, children }: AdminLayoutClient
             })}
 
             {/* Separator & Link to Sanity Studio */}
-            <div className="pt-4 mt-4 border-t border-[#EBE5DF]">
-              <span className="px-4 text-[10px] uppercase tracking-widest text-[#9A938C] font-bold block mb-2">
+            <div className="pt-4 mt-4 border-t border-[#E8DCD5]">
+              <span className="px-4 text-[10px] uppercase tracking-widest text-[#997C70] font-bold block mb-2">
                 Content Management
               </span>
               <a
@@ -158,19 +158,19 @@ export default function AdminLayoutClient({ admin, children }: AdminLayoutClient
         </div>
 
         {/* User Footer info */}
-        <div className="p-4 border-t border-[#EBE5DF] flex items-center justify-between">
+        <div className="p-4 border-t border-[#E8DCD5] flex items-center justify-between">
           <div className="flex items-center gap-2.5 overflow-hidden">
-            <div className="w-8 h-8 rounded-full bg-[#E05328]/10 text-[#E05328] flex items-center justify-center font-bold text-xs shrink-0">
+            <div className="w-8 h-8 rounded-full bg-[#8EB486]/15 text-[#8EB486] flex items-center justify-center font-bold text-xs shrink-0">
               {admin?.name?.charAt(0) || "A"}
             </div>
             <div className="truncate">
-              <p className="text-xs font-bold text-[#1C1917] truncate">{admin?.name || "Admin"}</p>
-              <p className="text-[10px] text-[#7A746E] truncate">{admin?.email || "admin@example.com"}</p>
+              <p className="text-xs font-bold text-[#685752] truncate">{admin?.name || "Admin"}</p>
+              <p className="text-[10px] text-[#997C70] truncate">{admin?.email || "admin@example.com"}</p>
             </div>
           </div>
           <button
             onClick={handleLogout}
-            className="p-2 rounded-xl text-[#7A746E] hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
+            className="p-2 rounded-xl text-[#997C70] hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
             title="Sign Out"
           >
             <LogOut className="w-4 h-4" />
@@ -181,16 +181,16 @@ export default function AdminLayoutClient({ admin, children }: AdminLayoutClient
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Top Header */}
-        <header className="h-16 bg-[#FFFDF9] border-b border-[#EBE5DF] px-4 sm:px-8 flex items-center justify-between gap-4 sticky top-0 z-30">
+        <header className="h-16 bg-[#FFFDF9] border-b border-[#E8DCD5] px-4 sm:px-8 flex items-center justify-between gap-4 sticky top-0 z-30">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setSidebarOpen(true)}
-              className="lg:hidden p-2 rounded-xl text-[#7A746E] hover:text-[#1C1917] hover:bg-[#F2ECE6]"
+              className="lg:hidden p-2 rounded-xl text-[#997C70] hover:text-[#685752] hover:bg-[#F7EFEA]"
             >
               <Menu className="w-5 h-5" />
             </button>
 
-            <h1 className="text-base font-bold text-[#1C1917] tracking-tight hidden sm:block">
+            <h1 className="text-base font-bold text-[#685752] tracking-tight hidden sm:block">
               Operational Control Center
             </h1>
           </div>
@@ -199,40 +199,40 @@ export default function AdminLayoutClient({ admin, children }: AdminLayoutClient
           <div className="flex items-center gap-3">
             {/* Global Quick Search */}
             <div className="relative hidden md:block w-64">
-              <Search className="w-4 h-4 absolute left-3 top-2.5 text-[#9A938C]" />
+              <Search className="w-4 h-4 absolute left-3 top-2.5 text-[#997C70]" />
               <input
                 type="text"
                 placeholder="Search lead, booking code, phone..."
-                className="w-full pl-9 pr-4 py-1.5 rounded-full bg-[#FAF6F0] border border-[#EBE5DF] text-xs text-[#1C1917] placeholder-[#9A938C] focus:outline-none focus:border-[#E05328]"
+                className="w-full pl-9 pr-4 py-1.5 rounded-full bg-[#FDF7F4] border border-[#E8DCD5] text-xs text-[#685752] placeholder-[#997C70] focus:outline-none focus:border-[#8EB486]"
               />
             </div>
 
             {/* Notification Bell */}
             <Link
               href="/admin/notifications"
-              className="relative p-2 rounded-full bg-[#FAF6F0] text-[#7A746E] hover:text-[#1C1917] hover:bg-[#EBE5DF] transition-colors border border-[#EBE5DF]"
+              className="relative p-2 rounded-full bg-[#FDF7F4] text-[#997C70] hover:text-[#685752] hover:bg-[#E8DCD5] transition-colors border border-[#E8DCD5]"
             >
               <Bell className="w-4 h-4" />
-              <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-[#E05328]" />
+              <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-[#8EB486]" />
             </Link>
 
             {/* Profile Dropdown Toggle */}
             <div className="relative">
               <button
                 onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
-                className="flex items-center gap-2 p-1.5 rounded-full bg-[#FAF6F0] border border-[#EBE5DF] hover:border-[#E05328] transition-all cursor-pointer"
+                className="flex items-center gap-2 p-1.5 rounded-full bg-[#FDF7F4] border border-[#E8DCD5] hover:border-[#8EB486] transition-all cursor-pointer"
               >
-                <div className="w-7 h-7 rounded-full bg-[#E05328] text-white flex items-center justify-center text-xs font-bold">
+                <div className="w-7 h-7 rounded-full bg-[#8EB486] text-white flex items-center justify-center text-xs font-bold">
                   {admin?.name?.charAt(0) || "A"}
                 </div>
               </button>
 
               {profileDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-56 bg-white rounded-2xl p-2 border border-[#EBE5DF] shadow-xl space-y-1 z-50">
-                  <div className="px-3 py-2 border-b border-[#EBE5DF]">
-                    <p className="text-xs font-bold text-[#1C1917]">{admin?.name}</p>
-                    <p className="text-[10px] text-[#7A746E] truncate">{admin?.email}</p>
-                    <span className="text-[9px] uppercase font-bold text-[#E05328] bg-[#E05328]/10 px-2 py-0.5 rounded-md inline-block mt-1">
+                <div className="absolute right-0 mt-2 w-56 bg-white rounded-2xl p-2 border border-[#E8DCD5] shadow-xl space-y-1 z-50">
+                  <div className="px-3 py-2 border-b border-[#E8DCD5]">
+                    <p className="text-xs font-bold text-[#685752]">{admin?.name}</p>
+                    <p className="text-[10px] text-[#997C70] truncate">{admin?.email}</p>
+                    <span className="text-[9px] uppercase font-bold text-[#8EB486] bg-[#8EB486]/15 px-2 py-0.5 rounded-md inline-block mt-1">
                       {admin?.role}
                     </span>
                   </div>
@@ -240,7 +240,7 @@ export default function AdminLayoutClient({ admin, children }: AdminLayoutClient
                   <Link
                     href="/admin/settings"
                     onClick={() => setProfileDropdownOpen(false)}
-                    className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs text-[#666059] hover:text-[#1C1917] hover:bg-[#FAF6F0]"
+                    className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs text-[#7A6862] hover:text-[#685752] hover:bg-[#FDF7F4]"
                   >
                     <User className="w-3.5 h-3.5" />
                     <span>Account Settings</span>

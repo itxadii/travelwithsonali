@@ -76,14 +76,14 @@ export default function PortalLayoutClient({ customer, children }: PortalLayoutC
   ];
 
   return (
-    <div className="min-h-screen bg-[#FAF6F0] text-[#1C1917] flex flex-col font-sans selection:bg-[#E05328] selection:text-white pb-16 lg:pb-0">
+    <div className="min-h-screen bg-[#FDF7F4] text-[#685752] flex flex-col font-sans selection:bg-[#8EB486] selection:text-white pb-16 lg:pb-0">
       
       {/* Desktop Top Navigation Bar */}
-      <header className="h-20 bg-[#FFFDF9] border-b border-[#EBE5DF] sticky top-0 z-40 px-4 sm:px-8 flex items-center justify-between shadow-2xs">
+      <header className="h-20 bg-[#FFFDF9] border-b border-[#E8DCD5] sticky top-0 z-40 px-4 sm:px-8 flex items-center justify-between shadow-2xs">
         {/* Brand Logo & Tagline */}
         <div className="flex items-center gap-3">
           <Link href="/portal" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-full overflow-hidden border border-[#EBE5DF] shadow-xs shrink-0 group-hover:scale-105 transition-transform">
+            <div className="w-10 h-10 rounded-full overflow-hidden border border-[#E8DCD5] shadow-xs shrink-0 group-hover:scale-105 transition-transform">
               <Image
                 src="/travelwithsonalilogo.jpg"
                 alt="Travel With Sonali Logo"
@@ -94,10 +94,10 @@ export default function PortalLayoutClient({ customer, children }: PortalLayoutC
               />
             </div>
             <div className="flex flex-col">
-              <span className="text-lg font-bold tracking-tight text-[#1C1917] font-serif-italic leading-none">
+              <span className="text-lg font-bold tracking-tight text-[#685752] font-serif-italic leading-none">
                 Travel With Sonali
               </span>
-              <span className="text-[10px] text-[#E05328] tracking-widest uppercase font-semibold mt-0.5">
+              <span className="text-[10px] text-[#8EB486] tracking-widest uppercase font-semibold mt-0.5">
                 My Travel Portal
               </span>
             </div>
@@ -120,8 +120,8 @@ export default function PortalLayoutClient({ customer, children }: PortalLayoutC
                 href={item.href}
                 className={`relative flex items-center gap-2 px-3.5 py-2 rounded-full text-xs font-semibold transition-all ${
                   isActive
-                    ? "bg-[#E05328] text-white shadow-sm"
-                    : "text-[#666059] hover:bg-[#FAF6F0] hover:text-[#1C1917]"
+                    ? "bg-[#8EB486] text-white shadow-sm"
+                    : "text-[#7A6862] hover:bg-[#FDF7F4] hover:text-[#685752]"
                 }`}
               >
                 <Icon className="w-4 h-4" />
@@ -129,7 +129,7 @@ export default function PortalLayoutClient({ customer, children }: PortalLayoutC
                 {item.badge && item.badge > 0 ? (
                   <span
                     className={`ml-1 px-1.5 py-0.2 text-[10px] rounded-full font-bold ${
-                      isActive ? "bg-white text-[#E05328]" : "bg-[#E05328] text-white"
+                      isActive ? "bg-white text-[#8EB486]" : "bg-[#8EB486] text-white"
                     }`}
                   >
                     {item.badge}
@@ -144,12 +144,12 @@ export default function PortalLayoutClient({ customer, children }: PortalLayoutC
         <div className="flex items-center gap-3">
           <Link
             href="/portal/notifications"
-            className="relative p-2.5 rounded-full bg-[#FAF6F0] border border-[#EBE5DF] text-[#666059] hover:text-[#1C1917] transition-colors"
+            className="relative p-2.5 rounded-full bg-[#FDF7F4] border border-[#E8DCD5] text-[#7A6862] hover:text-[#685752] transition-colors"
             title="Notifications"
           >
             <Bell className="w-4.5 h-4.5" />
             {unreadCount > 0 && (
-              <span className="absolute top-1 right-1 w-2.5 h-2.5 rounded-full bg-[#E05328] ring-2 ring-white animate-pulse" />
+              <span className="absolute top-1 right-1 w-2.5 h-2.5 rounded-full bg-[#8EB486] ring-2 ring-white animate-pulse" />
             )}
           </Link>
 
@@ -157,40 +157,40 @@ export default function PortalLayoutClient({ customer, children }: PortalLayoutC
           <div className="relative">
             <button
               onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
-              className="flex items-center gap-2.5 p-1.5 pr-3 rounded-full bg-[#FAF6F0] border border-[#EBE5DF] hover:border-[#E05328]/40 transition-colors cursor-pointer"
+              className="flex items-center gap-2.5 p-1.5 pr-3 rounded-full bg-[#FDF7F4] border border-[#E8DCD5] hover:border-[#8EB486]/40 transition-colors cursor-pointer"
             >
-              <div className="w-8 h-8 rounded-full bg-[#E05328] text-white font-bold flex items-center justify-center text-xs">
+              <div className="w-8 h-8 rounded-full bg-[#8EB486] text-white font-bold flex items-center justify-center text-xs">
                 {customer.name.charAt(0).toUpperCase()}
               </div>
-              <span className="hidden sm:inline text-xs font-semibold text-[#1C1917] max-w-[120px] truncate">
+              <span className="hidden sm:inline text-xs font-semibold text-[#685752] max-w-[120px] truncate">
                 {customer.name}
               </span>
-              <ChevronDown className="w-3.5 h-3.5 text-[#7A746E]" />
+              <ChevronDown className="w-3.5 h-3.5 text-[#997C70]" />
             </button>
 
             {profileDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-56 bg-white rounded-2xl p-2 border border-[#EBE5DF] shadow-xl z-50 space-y-1 text-xs">
-                <div className="px-3 py-2 border-b border-[#EBE5DF]">
-                  <p className="font-bold text-[#1C1917]">{customer.name}</p>
-                  <p className="text-[11px] text-[#7A746E] truncate">{customer.email || customer.phone}</p>
+              <div className="absolute right-0 mt-2 w-56 bg-white rounded-2xl p-2 border border-[#E8DCD5] shadow-xl z-50 space-y-1 text-xs">
+                <div className="px-3 py-2 border-b border-[#E8DCD5]">
+                  <p className="font-bold text-[#685752]">{customer.name}</p>
+                  <p className="text-[11px] text-[#997C70] truncate">{customer.email || customer.phone}</p>
                 </div>
                 <Link
                   href="/portal/profile"
                   onClick={() => setProfileDropdownOpen(false)}
-                  className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-[#1C1917] hover:bg-[#FAF6F0] transition-colors"
+                  className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-[#685752] hover:bg-[#FDF7F4] transition-colors"
                 >
-                  <User className="w-4 h-4 text-[#7A746E]" />
+                  <User className="w-4 h-4 text-[#997C70]" />
                   <span>My Profile</span>
                 </Link>
                 <Link
                   href="/portal/help"
                   onClick={() => setProfileDropdownOpen(false)}
-                  className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-[#1C1917] hover:bg-[#FAF6F0] transition-colors"
+                  className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-[#685752] hover:bg-[#FDF7F4] transition-colors"
                 >
-                  <HelpCircle className="w-4 h-4 text-[#7A746E]" />
+                  <HelpCircle className="w-4 h-4 text-[#997C70]" />
                   <span>Help & Support</span>
                 </Link>
-                <div className="border-t border-[#EBE5DF] pt-1">
+                <div className="border-t border-[#E8DCD5] pt-1">
                   <button
                     onClick={handleLogout}
                     className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-rose-600 hover:bg-rose-50 font-semibold transition-colors cursor-pointer"
@@ -211,7 +211,7 @@ export default function PortalLayoutClient({ customer, children }: PortalLayoutC
       </main>
 
       {/* Mobile Bottom Navigation Bar */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-[#FFFDF9] border-t border-[#EBE5DF] z-50 flex items-center justify-around px-2 shadow-lg">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-[#FFFDF9] border-t border-[#E8DCD5] z-50 flex items-center justify-around px-2 shadow-lg">
         {[
           { label: "Home", href: "/portal", icon: Compass },
           { label: "Trips", href: "/portal/trips", icon: MapPin },
@@ -231,7 +231,7 @@ export default function PortalLayoutClient({ customer, children }: PortalLayoutC
               key={item.href}
               href={item.href}
               className={`flex flex-col items-center justify-center w-14 py-1 rounded-xl text-[10px] font-medium transition-colors ${
-                isActive ? "text-[#E05328] font-bold" : "text-[#7A746E] hover:text-[#1C1917]"
+                isActive ? "text-[#8EB486] font-bold" : "text-[#997C70] hover:text-[#685752]"
               }`}
             >
               <Icon className="w-5 h-5 mb-0.5" />

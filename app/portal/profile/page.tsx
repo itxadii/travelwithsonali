@@ -66,42 +66,42 @@ export default function CustomerProfilePage() {
   return (
     <div className="space-y-8 max-w-3xl">
       <div>
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#1C1917] font-serif-italic">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#685752] font-serif-italic">
           My Travel Profile & Account Security
         </h1>
-        <p className="text-xs text-[#7A746E] mt-1">
+        <p className="text-xs text-[#997C70] mt-1">
           Manage your contact details and update your portal account password.
         </p>
       </div>
 
       {/* Profile Card */}
       {customer && (
-        <div className="p-6 rounded-3xl bg-white border border-[#EBE5DF] shadow-xs space-y-4">
-          <h3 className="text-base font-bold text-[#1C1917] flex items-center gap-2">
-            <User className="w-4 h-4 text-[#E05328]" />
+        <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-4">
+          <h3 className="text-base font-bold text-[#685752] flex items-center gap-2">
+            <User className="w-4 h-4 text-[#8EB486]" />
             Personal Details
           </h3>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-            <div className="p-3.5 rounded-2xl bg-[#FAF6F0] border border-[#EBE5DF]">
-              <span className="text-[#7A746E] block font-medium">Full Name</span>
-              <span className="text-[#1C1917] font-bold text-sm">{customer.name}</span>
+            <div className="p-3.5 rounded-2xl bg-[#FDF7F4] border border-[#E8DCD5]">
+              <span className="text-[#997C70] block font-medium">Full Name</span>
+              <span className="text-[#685752] font-bold text-sm">{customer.name}</span>
             </div>
-            <div className="p-3.5 rounded-2xl bg-[#FAF6F0] border border-[#EBE5DF]">
-              <span className="text-[#7A746E] block font-medium">Mobile Phone</span>
-              <span className="text-[#1C1917] font-bold text-sm">{customer.phone}</span>
+            <div className="p-3.5 rounded-2xl bg-[#FDF7F4] border border-[#E8DCD5]">
+              <span className="text-[#997C70] block font-medium">Mobile Phone</span>
+              <span className="text-[#685752] font-bold text-sm">{customer.phone}</span>
             </div>
-            <div className="p-3.5 rounded-2xl bg-[#FAF6F0] border border-[#EBE5DF] sm:col-span-2">
-              <span className="text-[#7A746E] block font-medium">Email Address</span>
-              <span className="text-[#1C1917] font-bold text-sm">{customer.email || "N/A"}</span>
+            <div className="p-3.5 rounded-2xl bg-[#FDF7F4] border border-[#E8DCD5] sm:col-span-2">
+              <span className="text-[#997C70] block font-medium">Email Address</span>
+              <span className="text-[#685752] font-bold text-sm">{customer.email || "N/A"}</span>
             </div>
           </div>
         </div>
       )}
 
       {/* Security Form */}
-      <div className="p-6 rounded-3xl bg-white border border-[#EBE5DF] shadow-xs space-y-6">
-        <h3 className="text-base font-bold text-[#1C1917] flex items-center gap-2">
+      <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-6">
+        <h3 className="text-base font-bold text-[#685752] flex items-center gap-2">
           <Lock className="w-4 h-4 text-emerald-600" />
           Update Password
         </h3>
@@ -120,39 +120,39 @@ export default function CustomerProfilePage() {
 
         <form onSubmit={handlePasswordChange} className="space-y-4 text-xs">
           <div className="space-y-1">
-            <label className="text-[#7A746E] font-semibold">Current Password</label>
+            <label className="text-[#997C70] font-semibold">Current Password</label>
             <input
               type="password"
               required
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
               placeholder="••••••••••••"
-              className="w-full p-2.5 rounded-xl bg-[#FAF6F0] border border-[#EBE5DF] text-[#1C1917] focus:outline-none focus:border-[#E05328]"
+              className="w-full p-2.5 rounded-xl bg-[#FDF7F4] border border-[#E8DCD5] text-[#685752] focus:outline-none focus:border-[#8EB486]"
             />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1">
-              <label className="text-[#7A746E] font-semibold">New Password</label>
+              <label className="text-[#997C70] font-semibold">New Password</label>
               <input
                 type="password"
                 required
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 placeholder="••••••••••••"
-                className="w-full p-2.5 rounded-xl bg-[#FAF6F0] border border-[#EBE5DF] text-[#1C1917] focus:outline-none focus:border-[#E05328]"
+                className="w-full p-2.5 rounded-xl bg-[#FDF7F4] border border-[#E8DCD5] text-[#685752] focus:outline-none focus:border-[#8EB486]"
               />
             </div>
 
             <div className="space-y-1">
-              <label className="text-[#7A746E] font-semibold">Confirm New Password</label>
+              <label className="text-[#997C70] font-semibold">Confirm New Password</label>
               <input
                 type="password"
                 required
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="••••••••••••"
-                className="w-full p-2.5 rounded-xl bg-[#FAF6F0] border border-[#EBE5DF] text-[#1C1917] focus:outline-none focus:border-[#E05328]"
+                className="w-full p-2.5 rounded-xl bg-[#FDF7F4] border border-[#E8DCD5] text-[#685752] focus:outline-none focus:border-[#8EB486]"
               />
             </div>
           </div>
@@ -160,7 +160,7 @@ export default function CustomerProfilePage() {
           <button
             type="submit"
             disabled={loading}
-            className="px-6 py-2.5 rounded-full bg-[#E05328] hover:bg-[#C8451D] text-white font-semibold text-xs cursor-pointer shadow-md disabled:opacity-50"
+            className="px-6 py-2.5 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white font-semibold text-xs cursor-pointer shadow-md disabled:opacity-50"
           >
             {loading ? "Updating..." : "Update Password"}
           </button>

@@ -30,19 +30,19 @@ export default function FAQPage() {
   );
 
   return (
-    <div className="min-h-screen bg-[#FAF6F0] text-[#1C1917] flex flex-col font-sans">
+    <div className="min-h-screen bg-[#FDF7F4] text-[#685752] flex flex-col font-sans">
       <Navbar logoName="Travel With Sonali" />
 
       {/* Hero */}
-      <section className="w-full py-16 sm:py-24 bg-[#F4EFEA] border-b border-[#E8E1D7]">
+      <section className="w-full py-16 sm:py-24 bg-[#F7EFEA] border-b border-[#E8DCD5]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center sm:text-left">
-          <span className="text-xs uppercase tracking-widest text-[#E05328] font-bold">
+          <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold">
             Frequently Asked Questions
           </span>
-          <h1 className="text-4xl sm:text-6xl font-bold tracking-tight text-[#1C1917] mt-2">
+          <h1 className="text-4xl sm:text-6xl font-bold tracking-tight text-[#685752] mt-2">
             Before You Pack Your Bags...
           </h1>
-          <p className="text-[#6B645C] text-base sm:text-lg max-w-2xl mt-3">
+          <p className="text-[#7A6862] text-base sm:text-lg max-w-2xl mt-3">
             Everything you need to know about our group departures, inclusions, booking advance, and travel guidelines.
           </p>
         </div>
@@ -52,15 +52,15 @@ export default function FAQPage() {
       <section className="w-full py-12 max-w-4xl mx-auto px-4 sm:px-6 flex-1">
         
         {/* Category Pills */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-8 border-b border-[#E8E1D7] scrollbar-none">
+        <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-8 border-b border-[#E8DCD5] scrollbar-none">
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setSelectedCat(cat)}
               className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
                 selectedCat === cat
-                  ? "bg-[#E05328] text-white shadow-sm"
-                  : "bg-[#F4EFEA] text-[#57524C] hover:bg-[#E8E1D7]"
+                  ? "bg-[#8EB486] text-white shadow-sm"
+                  : "bg-[#F7EFEA] text-[#7A6862] hover:bg-[#E8DCD5]"
               }`}
             >
               {cat}
@@ -75,17 +75,17 @@ export default function FAQPage() {
             return (
               <div
                 key={idx}
-                className="rounded-2xl bg-[#F4EFEA] border border-[#E8E1D7] overflow-hidden transition-all"
+                className="rounded-2xl bg-[#F7EFEA] border border-[#E8DCD5] overflow-hidden transition-all"
               >
                 <button
                   onClick={() => setOpenIndex(isOpen ? null : idx)}
-                  className="w-full px-6 py-5 text-left font-bold text-[#1C1917] flex items-center justify-between gap-4 cursor-pointer"
+                  className="w-full px-6 py-5 text-left font-bold text-[#685752] flex items-center justify-between gap-4 cursor-pointer"
                 >
                   <span className="text-base sm:text-lg">{faq.question}</span>
-                  <ChevronDown className={`w-5 h-5 text-[#E05328] shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+                  <ChevronDown className={`w-5 h-5 text-[#8EB486] shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
                 </button>
                 {isOpen && (
-                  <div className="px-6 pb-6 pt-2 text-sm text-[#57524C] leading-relaxed border-t border-[#E8E1D7]/50">
+                  <div className="px-6 pb-6 pt-2 text-sm text-[#7A6862] leading-relaxed border-t border-[#E8DCD5]/50">
                     {faq.answer}
                   </div>
                 )}
@@ -95,15 +95,15 @@ export default function FAQPage() {
         </div>
 
         {/* Still have questions banner */}
-        <div className="mt-16 p-8 rounded-3xl bg-[#F4EFEA] border border-[#E8E1D7] text-center space-y-4">
-          <h3 className="text-2xl font-bold text-[#1C1917]">Still Have Questions?</h3>
-          <p className="text-sm text-[#57524C] max-w-md mx-auto">
+        <div className="mt-16 p-8 rounded-3xl bg-[#F7EFEA] border border-[#E8DCD5] text-center space-y-4">
+          <h3 className="text-2xl font-bold text-[#685752]">Still Have Questions?</h3>
+          <p className="text-sm text-[#7A6862] max-w-md mx-auto">
             We are here to help! Send an enquiry and our team will get back to you with all details.
           </p>
           <div className="pt-2 flex justify-center">
             <button
               onClick={() => setEnquireOpen(true)}
-              className="px-8 py-3.5 rounded-full bg-[#E05328] hover:bg-[#C8451D] text-white text-sm font-semibold cursor-pointer shadow-md"
+              className="px-8 py-3.5 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white text-sm font-semibold cursor-pointer shadow-md transition-colors"
             >
               Send Website Enquiry
             </button>

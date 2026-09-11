@@ -64,7 +64,7 @@ export async function GET(
     const stayInfo = null; // Admin can assign when finalized
     const transportInfo = null;
     const coordinatorInfo = {
-      name: "Sonali Sharma",
+      name: "Sonali Palekar",
       role: "Lead Group Coordinator",
       phone: "+91 98765 43210",
       whatsapp: "+91 98765 43210",

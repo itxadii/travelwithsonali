@@ -4,23 +4,23 @@ import { Compass, Heart, MapPin, Phone, Mail, Send } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-[#181614] text-[#E8E1D7] pt-16 pb-12 border-t border-stone-800 relative overflow-hidden">
+    <footer className="w-full bg-[#4C3E3A] text-[#FDF7F4] pt-16 pb-12 border-t border-[#5E4D48] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Main Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-stone-800">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-[#5E4D48]">
           
           {/* Col 1: Brand Info */}
           <div className="lg:col-span-2 space-y-4">
             <Link href="/" className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-[#E05328] text-white flex items-center justify-center">
+              <div className="w-10 h-10 rounded-full bg-[#8EB486] text-white flex items-center justify-center shadow-sm">
                 <Compass className="w-5 h-5" />
               </div>
               <span className="text-2xl font-serif-italic font-bold text-white tracking-tight">
                 Travel With Sonali
               </span>
             </Link>
-            <p className="text-stone-400 text-sm max-w-sm leading-relaxed">
+            <p className="text-[#DFD3CE] text-sm max-w-sm leading-relaxed">
               Travel experience. We curate personal, authentic, and unforgettable group trips across India&apos;s most beautiful landscapes.
             </p>
             
@@ -30,7 +30,7 @@ export default function Footer() {
                 href="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-9 h-9 rounded-full bg-stone-800 hover:bg-[#E05328] text-stone-300 hover:text-white flex items-center justify-center transition-colors"
+                className="w-9 h-9 rounded-full bg-[#3D322E] hover:bg-[#8EB486] text-[#DFD3CE] hover:text-white flex items-center justify-center transition-colors"
                 aria-label="Instagram"
               >
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -41,7 +41,7 @@ export default function Footer() {
                 href="https://facebook.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-9 h-9 rounded-full bg-stone-800 hover:bg-[#E05328] text-stone-300 hover:text-white flex items-center justify-center transition-colors"
+                className="w-9 h-9 rounded-full bg-[#3D322E] hover:bg-[#8EB486] text-[#DFD3CE] hover:text-white flex items-center justify-center transition-colors"
                 aria-label="Facebook"
               >
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -52,7 +52,7 @@ export default function Footer() {
                 href="https://youtube.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-9 h-9 rounded-full bg-stone-800 hover:bg-[#E05328] text-stone-300 hover:text-white flex items-center justify-center transition-colors"
+                className="w-9 h-9 rounded-full bg-[#3D322E] hover:bg-[#8EB486] text-[#DFD3CE] hover:text-white flex items-center justify-center transition-colors"
                 aria-label="YouTube"
               >
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -67,34 +67,34 @@ export default function Footer() {
             <h4 className="text-white text-sm font-semibold tracking-wider uppercase mb-4">
               Explore
             </h4>
-            <ul className="space-y-2.5 text-sm text-stone-400">
+            <ul className="space-y-2.5 text-sm text-[#DFD3CE]">
               <li>
-                <Link href="/tours" className="hover:text-[#E05328] transition-colors">
+                <Link href="/tours" className="hover:text-[#8EB486] transition-colors">
                   Upcoming Tours
                 </Link>
               </li>
               <li>
-                <Link href="/destinations" className="hover:text-[#E05328] transition-colors">
+                <Link href="/destinations" className="hover:text-[#8EB486] transition-colors">
                   Popular Destinations
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="hover:text-[#E05328] transition-colors">
+                <Link href="/about" className="hover:text-[#8EB486] transition-colors">
                   About Sonali
                 </Link>
               </li>
               <li>
-                <Link href="/gallery" className="hover:text-[#E05328] transition-colors">
+                <Link href="/gallery" className="hover:text-[#8EB486] transition-colors">
                   Photo Gallery
                 </Link>
               </li>
               <li>
-                <Link href="/stories" className="hover:text-[#E05328] transition-colors">
+                <Link href="/stories" className="hover:text-[#8EB486] transition-colors">
                   Travel Stories
                 </Link>
               </li>
               <li>
-                <Link href="/testimonials" className="hover:text-[#E05328] transition-colors">
+                <Link href="/testimonials" className="hover:text-[#8EB486] transition-colors">
                   Traveller Reviews
                 </Link>
               </li>
@@ -106,34 +106,34 @@ export default function Footer() {
             <h4 className="text-white text-sm font-semibold tracking-wider uppercase mb-4">
               Destinations
             </h4>
-            <ul className="space-y-2.5 text-sm text-stone-400">
+            <ul className="space-y-2.5 text-sm text-[#DFD3CE]">
               <li>
-                <Link href="/tours/kedarnath-yatra" className="hover:text-[#E05328] transition-colors">
+                <Link href="/tours/kedarnath-yatra" className="hover:text-[#8EB486] transition-colors">
                   Kedarnath Yatra
                 </Link>
               </li>
               <li>
-                <Link href="/tours/kashmir-paradise" className="hover:text-[#E05328] transition-colors">
+                <Link href="/tours/kashmir-paradise" className="hover:text-[#8EB486] transition-colors">
                   Kashmir Paradise
                 </Link>
               </li>
               <li>
-                <Link href="/tours/manali-solang-kasol" className="hover:text-[#E05328] transition-colors">
+                <Link href="/tours/manali-solang-kasol" className="hover:text-[#8EB486] transition-colors">
                   Manali & Kasol
                 </Link>
               </li>
               <li>
-                <Link href="/tours/goa-tropical-escape" className="hover:text-[#E05328] transition-colors">
+                <Link href="/tours/goa-tropical-escape" className="hover:text-[#8EB486] transition-colors">
                   Goa Tropical Escape
                 </Link>
               </li>
               <li>
-                <Link href="/destinations" className="hover:text-[#E05328] transition-colors">
+                <Link href="/destinations" className="hover:text-[#8EB486] transition-colors">
                   Rajasthan Royals
                 </Link>
               </li>
               <li>
-                <Link href="/destinations" className="hover:text-[#E05328] transition-colors">
+                <Link href="/destinations" className="hover:text-[#8EB486] transition-colors">
                   Spiti Valley
                 </Link>
               </li>
@@ -145,19 +145,19 @@ export default function Footer() {
             <h4 className="text-white text-sm font-semibold tracking-wider uppercase mb-4">
               Get in Touch
             </h4>
-            <ul className="space-y-3 text-sm text-stone-400">
+            <ul className="space-y-3 text-sm text-[#DFD3CE]">
               <li className="flex items-start gap-2.5">
-                <MapPin className="w-4 h-4 text-[#E05328] shrink-0 mt-0.5" />
+                <MapPin className="w-4 h-4 text-[#8EB486] shrink-0 mt-0.5" />
                 <span>Mumbai / Delhi & Rishikesh, India</span>
               </li>
               <li className="flex items-center gap-2.5">
-                <Phone className="w-4 h-4 text-[#E05328] shrink-0" />
+                <Phone className="w-4 h-4 text-[#8EB486] shrink-0" />
                 <a href="tel:+919876543210" className="hover:text-white transition-colors">
                   +91 98765 43210
                 </a>
               </li>
               <li className="flex items-center gap-2.5">
-                <Mail className="w-4 h-4 text-[#E05328] shrink-0" />
+                <Mail className="w-4 h-4 text-[#8EB486] shrink-0" />
                 <a href="mailto:hello@travelwithsonali.com" className="hover:text-white transition-colors">
                   hello@travelwithsonali.com
                 </a>
@@ -165,7 +165,7 @@ export default function Footer() {
               <li className="pt-2">
                 <Link
                   href="/contact"
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#E05328] text-white text-xs font-semibold hover:bg-[#C8451D] transition-all"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#8EB486] text-white text-xs font-semibold hover:bg-[#7A9F73] transition-all shadow-sm"
                 >
                   <Send className="w-3.5 h-3.5" />
                   Website Enquiry
@@ -177,18 +177,18 @@ export default function Footer() {
         </div>
 
         {/* Bottom Credits & Legal Links */}
-        <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-stone-500">
+        <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-[#C2B5AF]">
           <p className="flex items-center gap-1">
-            © {new Date().getFullYear()} Travel With Sonali. Designed with <Heart className="w-3.5 h-3.5 text-[#E05328] fill-current inline" /> for travellers.
+            © {new Date().getFullYear()} Travel With Sonali. Designed with <Heart className="w-3.5 h-3.5 text-[#8EB486] fill-current inline" /> for travellers.
           </p>
           <div className="flex items-center space-x-6">
-            <Link href="/privacy-policy" className="hover:text-stone-300 transition-colors">
+            <Link href="/privacy-policy" className="hover:text-white transition-colors">
               Privacy Policy
             </Link>
-            <Link href="/terms-and-conditions" className="hover:text-stone-300 transition-colors">
+            <Link href="/terms-and-conditions" className="hover:text-white transition-colors">
               Terms & Conditions
             </Link>
-            <Link href="/cancellation-policy" className="hover:text-stone-300 transition-colors">
+            <Link href="/cancellation-policy" className="hover:text-white transition-colors">
               Cancellation Policy
             </Link>
           </div>

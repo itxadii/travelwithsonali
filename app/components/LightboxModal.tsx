@@ -52,7 +52,7 @@ export default function LightboxModal({
             {title && <h3 className="text-xl font-serif-italic font-semibold">{title}</h3>}
             {location && (
               <p className="text-xs text-stone-300 flex items-center justify-center gap-1">
-                <MapPin className="w-3.5 h-3.5 text-[#E05328]" />
+                <MapPin className="w-3.5 h-3.5 text-[#8EB486]" />
                 {location}
               </p>
             )}
