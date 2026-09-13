@@ -23,6 +23,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { AdminUserSession } from "@/lib/admin/auth";
+import { GooeyInput } from "@/components/ui/gooey-input";
 
 interface AdminLayoutClientProps {
   admin: AdminUserSession | null;
@@ -198,12 +199,15 @@ export default function AdminLayoutClient({ admin, children }: AdminLayoutClient
           {/* Global Actions Bar */}
           <div className="flex items-center gap-3">
             {/* Global Quick Search */}
-            <div className="relative hidden md:block w-64">
-              <Search className="w-4 h-4 absolute left-3 top-2.5 text-[#997C70]" />
-              <input
-                type="text"
-                placeholder="Search lead, booking code, phone..."
-                className="w-full pl-9 pr-4 py-1.5 rounded-full bg-[#FDF7F4] border border-[#E8DCD5] text-xs text-[#685752] placeholder-[#997C70] focus:outline-none focus:border-[#8EB486]"
+            <div className="hidden md:flex items-center">
+              <GooeyInput
+                placeholder="Search lead, booking, phone..."
+                collapsedWidth={120}
+                expandedWidth={250}
+                expandedOffset={48}
+                classNames={{
+                  surface: "bg-[#685752] text-white shadow-sm ring-1 ring-[#685752]/20 hover:bg-[#5a4a45]",
+                }}
               />
             </div>
 

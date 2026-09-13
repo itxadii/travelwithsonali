@@ -30,3 +30,53 @@ body {
   font-style: italic;
 }
 
+@keyframes float-slow {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(12px, 16px) rotate(2deg); }
+  100% { transform: translate(-10px, -8px) rotate(-1deg); }
+}
+
+@keyframes float-reverse {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(-14px, -10px) rotate(-2deg); }
+  100% { transform: translate(8px, 12px) rotate(1deg); }
+}
+
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 0.9; transform: scale(1.05); }
+}
+
+.animate-float-slow {
+  animation: float-slow 22s ease-in-out infinite alternate;
+}
+
+.animate-float-reverse {
+  animation: float-reverse 26s ease-in-out infinite alternate;
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 10s ease-in-out infinite alternate;
+}
+
+@keyframes marquee-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee-left {
+  display: flex;
+  width: max-content;
+  animation: marquee-left 36s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-left:hover {
+  animation-play-state: paused;
+}
+
+

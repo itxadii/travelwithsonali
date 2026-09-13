@@ -103,3 +103,43 @@ export interface SanityStory {
   content?: string[];
   seo?: SanitySEO;
 }
+
+export interface SanityInstagramMoment {
+  _key?: string;
+  title: string;
+  subtitle?: string;
+  tag?: string;
+  image?: SanityImage | string;
+  postUrl?: string;
+}
+
+export interface SanityInstagramSection {
+  _id?: string;
+  _type?: "instagramSection";
+  badge?: string;
+  heading?: string;
+  subheading?: string;
+  instagramHandle?: string;
+  instagramUrl?: string;
+  buttonText?: string;
+  moments?: SanityInstagramMoment[];
+}
+
+export interface InstagramMoment {
+  id?: string | number;
+  title: string;
+  subtitle: string;
+  tag: string;
+  image: string;
+  postUrl?: string;
+}
+
+export interface InstagramSectionData {
+  badge?: string;
+  heading?: string;
+  subheading?: string;
+  instagramHandle?: string;
+  instagramUrl?: string;
+  buttonText?: string;
+  moments?: InstagramMoment[];
+}

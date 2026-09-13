@@ -11,7 +11,7 @@ import {
   FileCheck,
   CheckCircle2,
   AlertCircle,
-  ArrowRight,
+  ChevronRight,
   Phone,
   MessageCircle,
   Clock,
@@ -207,7 +207,7 @@ export default function CustomerDashboardPage() {
                 className="px-6 py-3 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white text-xs font-bold tracking-wider uppercase shadow-lg transition-all flex items-center gap-2 cursor-pointer"
               >
                 <span>View My Trip</span>
-                <ArrowRight className="w-4 h-4" />
+                <ChevronRight className="w-4 h-4" />
               </Link>
             </div>
           </div>
@@ -230,7 +230,7 @@ export default function CustomerDashboardPage() {
               className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white text-xs font-bold uppercase tracking-wider shadow-md"
             >
               <span>Explore Tours</span>
-              <ArrowRight className="w-4 h-4" />
+              <ChevronRight className="w-4 h-4" />
             </Link>
           </div>
         </div>

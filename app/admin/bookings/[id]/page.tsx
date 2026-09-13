@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, use } from "react";
 import Link from "next/link";
-import { ArrowLeft, Plus, CreditCard, Users } from "lucide-react";
+import { ChevronLeft, Plus, CreditCard, Users } from "lucide-react";
 
 interface BookingDetailData {
   booking: {
@@ -182,7 +182,7 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
             href="/admin/bookings"
             className="p-2 rounded-xl bg-white border border-[#E8DCD5] text-[#997C70] hover:text-[#685752]"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ChevronLeft className="w-4 h-4" />
           </Link>
           <div>
             <div className="flex items-center gap-2">

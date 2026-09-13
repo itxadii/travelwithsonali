@@ -3,11 +3,14 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import AmbientCircles from "../components/AmbientCircles";
 import { Story } from "../data/storiesData";
+import { SquigglyText } from "@/components/ui/squiggly-text";
+import { GooeyInput } from "@/components/ui/gooey-input";
 
 interface StoriesClientViewProps {
   initialStories: Story[];
@@ -15,24 +18,37 @@ interface StoriesClientViewProps {
 
 export default function StoriesClientView({ initialStories }: StoriesClientViewProps) {
   const [activeCat, setActiveCat] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
   const categories = ["All", "Trip Stories", "Travel Guides", "Travel Tips", "Behind the Journey"];
 
-  const filteredStories = initialStories.filter(
-    (s) => activeCat === "All" || s.category === activeCat
-  );
+  const filteredStories = initialStories.filter((s) => {
+    const matchesCat = activeCat === "All" || s.category === activeCat;
+    const matchesSearch =
+      s.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      s.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCat && matchesSearch;
+  });
 
   return (
     <div className="min-h-screen bg-[#FDF7F4] text-[#685752] flex flex-col font-sans">
       <Navbar logoName="Travel With Sonali" />
 
       {/* Hero */}
-      <section className="w-full py-16 sm:py-24 bg-[#F7EFEA] border-b border-[#E8DCD5]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center sm:text-left">
+      <section className="relative overflow-hidden w-full py-16 sm:py-24 bg-[#F7EFEA] border-b border-[#E8DCD5]">
+        <AmbientCircles variant="2" />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center sm:text-left">
           <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold">
             Travel Journal & Blog
           </span>
           <h1 className="text-4xl sm:text-6xl font-bold tracking-tight text-[#685752] mt-2">
-            Stories From The Road
+            Stories From{" "}
+            <SquigglyText
+              stepDuration={70}
+              scale={[4, 7]}
+              className="text-[#8EB486] font-serif-italic"
+            >
+              The Road
+            </SquigglyText>
           </h1>
           <p className="text-[#7A6862] text-base sm:text-lg max-w-2xl mt-3">
             Read authentic trip accounts, packing guides, and stories behind our group departures.
@@ -41,23 +57,41 @@ export default function StoriesClientView({ initialStories }: StoriesClientViewP
       </section>
 
       {/* Content */}
-      <section className="w-full py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex-1">
+      <section className="relative overflow-hidden w-full py-12 flex-1">
+        <AmbientCircles variant="3" />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Category Pills */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-6 mb-10 border-b border-[#E8DCD5] scrollbar-none">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActiveCat(cat)}
-              className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
-                activeCat === cat
-                  ? "bg-[#8EB486] text-white shadow-sm"
-                  : "bg-[#F7EFEA] text-[#7A6862] hover:bg-[#E8DCD5]"
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
+        {/* Filter & Search Bar */}
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-10 pb-6 border-b border-[#E8DCD5]">
+          <div className="flex items-center gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 scrollbar-none">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setActiveCat(cat)}
+                className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
+                  activeCat === cat
+                    ? "bg-[#8EB486] text-white shadow-sm"
+                    : "bg-[#F7EFEA] text-[#7A6862] hover:bg-[#E8DCD5]"
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+
+          <div className="flex items-center justify-end w-full md:w-auto">
+            <GooeyInput
+              placeholder="Search stories & guides..."
+              value={searchQuery}
+              onValueChange={setSearchQuery}
+              collapsedWidth={130}
+              expandedWidth={260}
+              expandedOffset={48}
+              classNames={{
+                surface: "bg-[#685752] text-white shadow-md ring-1 ring-[#685752]/20 hover:bg-[#5a4a45]",
+              }}
+            />
+          </div>
         </div>
 
         {/* Stories Grid */}
@@ -102,14 +136,14 @@ export default function StoriesClientView({ initialStories }: StoriesClientViewP
                   className="inline-flex items-center gap-1 text-xs font-semibold text-[#8EB486] hover:underline"
                 >
                   <span>Read Story</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
+                  <ChevronRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
 
             </div>
           ))}
         </div>
-
+        </div>
       </section>
 
       <Footer />

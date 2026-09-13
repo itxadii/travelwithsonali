@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Clock, Users, ArrowRight, Sparkles, MapPin, Calendar, CheckCircle2 } from "lucide-react";
+import { Clock, Users, ChevronRight, Sparkles, MapPin, Calendar, CheckCircle2 } from "lucide-react";
 import { Tour } from "../data/toursData";
 
 interface StackedTourCardsProps {
@@ -28,7 +28,10 @@ export default function StackedTourCards({
       cards.forEach((card, i) => {
         if (!card) return;
         const rect = card.getBoundingClientRect();
-        const stickyTop = 88 + i * 16;
+        const isMobile = window.innerWidth < 640;
+        const baseTop = isMobile ? 64 : 76;
+        const stepTop = isMobile ? 10 : 14;
+        const stickyTop = baseTop + i * stepTop;
 
         let scale = 1;
         let brightness = 1;
@@ -39,7 +42,7 @@ export default function StackedTourCards({
           const nextCard = cards[j];
           if (!nextCard) continue;
           const nextRect = nextCard.getBoundingClientRect();
-          const nextStickyTop = 88 + j * 16;
+          const nextStickyTop = baseTop + j * stepTop;
 
           // As the next card moves from bottom of the screen to its sticky position
           const totalDist = windowH - nextStickyTop;
@@ -47,9 +50,9 @@ export default function StackedTourCards({
             const currentDist = windowH - nextRect.top;
             const progress = Math.max(0, Math.min(1, currentDist / totalDist));
 
-            // Each card that stacks over this card scales it down noticeably (by ~0.06 each)
-            scale -= progress * 0.06;
-            brightness -= progress * 0.05;
+            // Each card that stacks over this card scales it down noticeably (by ~0.05 each)
+            scale -= progress * 0.05;
+            brightness -= progress * 0.04;
             opacity -= progress * 0.02;
           }
         }
@@ -59,18 +62,18 @@ export default function StackedTourCards({
           const enterTotalDist = windowH - stickyTop;
           if (enterTotalDist > 0) {
             const enterProgress = Math.max(0, Math.min(1, (windowH - rect.top) / enterTotalDist));
-            // Card scales up from 0.90 to 1.0 as it approaches sticky position
-            const enterScale = 0.90 + enterProgress * 0.10;
+            // Card scales up from 0.92 to 1.0 as it approaches sticky position
+            const enterScale = 0.92 + enterProgress * 0.08;
             scale = Math.min(scale, enterScale);
           }
         }
 
         // Boundaries to keep cards clean and visible
         scale = Math.max(0.78, Math.min(1.02, scale));
-        brightness = Math.max(0.72, Math.min(1, brightness));
+        brightness = Math.max(0.75, Math.min(1, brightness));
         opacity = Math.max(0.85, Math.min(1, opacity));
 
-        // Apply scale, brightness, and smooth top-centered perspective
+        // Apply scale, brightness, and smooth top-centered perspective directly without transition lag
         card.style.transform = `scale(${scale})`;
         card.style.filter = `brightness(${brightness})`;
         card.style.opacity = `${opacity}`;
@@ -121,10 +124,10 @@ export default function StackedTourCards({
               cardRefs.current[index] = el;
             }}
             style={{
-              top: `calc(88px + ${index * 16}px)`,
+              top: `calc(76px + ${index * 14}px)`,
               zIndex: 10 + index,
             }}
-            className={`sticky w-full ${bgClass} rounded-3xl sm:rounded-[36px] overflow-hidden border border-[#E8DCD5] shadow-[0_20px_50px_rgba(104,87,82,0.12)] transition-all duration-150 ease-out will-change-transform`}
+            className={`sticky w-full ${bgClass} rounded-3xl sm:rounded-[36px] overflow-hidden border border-[#E8DCD5] shadow-[0_20px_50px_rgba(104,87,82,0.12)] hover:shadow-[0_25px_60px_rgba(104,87,82,0.16)] transition-shadow duration-300 will-change-transform`}
           >
             <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[540px] sm:min-h-[580px] lg:min-h-[600px] items-stretch">
               
@@ -258,7 +261,7 @@ export default function StackedTourCards({
                       className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#685752] hover:bg-[#8EB486] text-white text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-md hover:shadow-lg active:scale-95 group/btn"
                     >
                       <span>Explore Tour</span>
-                      <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                      <ChevronRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
                     </Link>
                   </div>
                 </div>

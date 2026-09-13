@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, Users, MapPin, ArrowRight } from "lucide-react";
+import { Calendar, Users, MapPin, ChevronRight } from "lucide-react";
 
 interface CustomerTrip {
   id: string;
@@ -163,7 +163,7 @@ export default function CustomerTripsPage() {
                   className="px-5 py-2 rounded-full bg-[#FDF7F4] border border-[#E8DCD5] hover:bg-[#8EB486] hover:text-white hover:border-[#8EB486] text-[#685752] text-xs font-semibold transition-all inline-flex items-center gap-1.5"
                 >
                   <span>View Trip</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
+                  <ChevronRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
             </div>

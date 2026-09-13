@@ -1,10 +1,11 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
+import AmbientCircles from "../../components/AmbientCircles";
 import { getStoryBySlug } from "@/lib/sanity/queries";
 
 export const revalidate = 60;
@@ -36,7 +37,7 @@ export default async function StoryDetailPage({ params }: { params: Promise<{ sl
       <div className="bg-[#F7EFEA] border-b border-[#E8DCD5] py-3">
         <div className="max-w-4xl mx-auto px-4 text-xs text-[#997C70] flex items-center gap-2">
           <Link href="/stories" className="hover:text-[#8EB486] flex items-center gap-1">
-            <ArrowLeft className="w-3.5 h-3.5" />
+            <ChevronLeft className="w-3.5 h-3.5" />
             Stories
           </Link>
           <span>/</span>
@@ -45,7 +46,9 @@ export default async function StoryDetailPage({ params }: { params: Promise<{ sl
       </div>
 
       {/* Article Content */}
-      <article className="max-w-4xl mx-auto px-4 sm:px-6 py-12 space-y-8 flex-1">
+      <div className="relative overflow-hidden w-full flex-1">
+        <AmbientCircles variant="1" />
+        <article className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 py-12 space-y-8">
         
         <div className="space-y-4 text-center">
           <span className="px-3.5 py-1 rounded-full bg-[#8EB486]/10 text-[#8EB486] text-xs font-semibold uppercase tracking-wider">
@@ -105,6 +108,7 @@ export default async function StoryDetailPage({ params }: { params: Promise<{ sl
         </div>
 
       </article>
+      </div>
 
       <Footer />
     </div>

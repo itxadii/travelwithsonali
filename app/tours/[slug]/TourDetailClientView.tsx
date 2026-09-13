@@ -11,13 +11,14 @@ import {
   XCircle,
   ChevronDown,
   AlertCircle,
-  ArrowLeft,
+  ChevronLeft,
 } from "lucide-react";
 
 import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
 import EnquireModal from "@/app/components/EnquireModal";
 import LightboxModal from "@/app/components/LightboxModal";
+import AmbientCircles from "@/app/components/AmbientCircles";
 import { Tour } from "@/app/data/toursData";
 
 export default function TourDetailClientView({ tour }: { tour: Tour }) {
@@ -33,7 +34,7 @@ export default function TourDetailClientView({ tour }: { tour: Tour }) {
       <div className="bg-[#F7EFEA] border-b border-[#E8DCD5] py-3">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-xs text-[#997C70] flex items-center gap-2">
           <Link href="/tours" className="hover:text-[#8EB486] flex items-center gap-1">
-            <ArrowLeft className="w-3.5 h-3.5" />
+            <ChevronLeft className="w-3.5 h-3.5" />
             Tours
           </Link>
           <span>/</span>
@@ -96,8 +97,10 @@ export default function TourDetailClientView({ tour }: { tour: Tour }) {
       </section>
 
       {/* Main Content & Sticky Sidebar Grid */}
-      <section className="w-full py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+      <section className="relative overflow-hidden w-full py-12 flex-1">
+        <AmbientCircles variant="2" />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           
           {/* Main Column */}
           <div className="lg:col-span-8 space-y-12">
@@ -283,6 +286,7 @@ export default function TourDetailClientView({ tour }: { tour: Tour }) {
             </div>
           </div>
 
+        </div>
         </div>
       </section>
 

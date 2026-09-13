@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Clock, Users, ArrowRight, Sparkles, MapPin, Calendar, CheckCircle2 } from "lucide-react";
+import { Clock, Users, ChevronRight, Sparkles, MapPin, Calendar, CheckCircle2 } from "lucide-react";
 import { Tour } from "../data/toursData";
 
 interface StackedTourCardProps {
@@ -173,7 +173,7 @@ export default function StackedTourCard({
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#685752] hover:bg-[#8EB486] text-white text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-md hover:shadow-lg active:scale-95 group/btn"
               >
                 <span>Explore Tour</span>
-                <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                <ChevronRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
               </Link>
             </div>
           </div>

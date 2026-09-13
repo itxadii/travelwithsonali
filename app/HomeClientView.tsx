@@ -15,7 +15,7 @@ import {
   Sparkles,
   Smile,
   ChevronDown,
-  ArrowRight,
+  ChevronRight,
 } from "lucide-react";
 
 import Navbar from "./components/Navbar";
@@ -24,22 +24,49 @@ import EnquireModal from "./components/EnquireModal";
 import QRCodeBadge from "./components/QRCodeBadge";
 import StackedTourCards from "./components/StackedTourCards";
 import InstagramRoundCarousel from "./components/InstagramRoundCarousel";
+import AmbientCircles from "./components/AmbientCircles";
+import { ParallaxHeroImages } from "@/components/ui/parallax-hero-images";
+import { SquigglyText } from "@/components/ui/squiggly-text";
+
+export const REAL_DESTINATION_IMAGES = [
+  "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=1200&q=80", // Manali & Kasol
+  "https://images.unsplash.com/photo-1596895111956-bf1cf0599ce5?auto=format&fit=crop&w=1200&q=80", // Kedarnath & Uttarakhand
+  "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1200&q=80", // Spiti Valley
+  "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80", // Mystic Meghalaya
+  "https://images.unsplash.com/photo-1595815771614-ade9d652a65d?auto=format&fit=crop&w=1200&q=80", // Kashmir
+  "https://images.unsplash.com/photo-1581793745862-99fde7fa73d2?auto=format&fit=crop&w=1200&q=80", // Nepal & Muktinath
+  "https://images.unsplash.com/photo-1609766857041-ed402ea8069a?auto=format&fit=crop&w=1200&q=80", // Tirupati Balaji
+  "https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&w=1200&q=80", // Rajasthan Desert
+];
 
 import { Tour } from "./data/toursData";
 import { Destination } from "./data/destinationsData";
 import { STORIES_DATA } from "./data/storiesData";
 import { TESTIMONIALS_DATA } from "./data/testimonialsData";
 import { FAQS_DATA } from "./data/faqsData";
+import { InstagramSectionData } from "@/lib/sanity/types";
 
 interface HomeClientViewProps {
   tours: Tour[];
   destinations: Destination[];
+  instagramData?: InstagramSectionData;
 }
 
-export default function HomeClientView({ tours, destinations }: HomeClientViewProps) {
+export default function HomeClientView({ tours, destinations, instagramData }: HomeClientViewProps) {
   const [enquireOpen, setEnquireOpen] = useState(false);
   const [selectedTourName, setSelectedTourName] = useState("");
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+
+  const destinationImages = React.useMemo(() => {
+    if (destinations && destinations.length > 0) {
+      const dynamicList = destinations
+        .map((d) => d.image)
+        .filter((img): img is string => Boolean(img));
+      const combined = [...dynamicList, ...REAL_DESTINATION_IMAGES];
+      return Array.from(new Set(combined)).slice(0, 8);
+    }
+    return REAL_DESTINATION_IMAGES;
+  }, [destinations]);
 
   const handleEnquireClick = (tourName?: string) => {
     if (tourName) setSelectedTourName(tourName);
@@ -47,7 +74,7 @@ export default function HomeClientView({ tours, destinations }: HomeClientViewPr
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF6F0] text-[#1C1917] flex flex-col font-sans selection:bg-[#E05328] selection:text-white">
+    <div className="min-h-screen bg-[#FDF7F4] text-[#685752] flex flex-col font-sans selection:bg-[#8EB486] selection:text-white">
       {/* Global Header Navigation */}
       <Navbar logoName="Travel With Sonali" />
 
@@ -76,7 +103,13 @@ export default function HomeClientView({ tours, destinations }: HomeClientViewPr
                     Travel More.
                   </span>
                   <span className="font-serif-italic text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-normal leading-[1.05] mt-1 text-[#8EB486]">
-                    Experience More.
+                    <SquigglyText
+                      stepDuration={70}
+                      scale={[5, 8]}
+                      className="text-[#8EB486]"
+                    >
+                      Experience More.
+                    </SquigglyText>
                   </span>
                 </h1>
 
@@ -84,13 +117,38 @@ export default function HomeClientView({ tours, destinations }: HomeClientViewPr
                   Group journeys, unforgettable destinations, and memories you&apos;ll carry home. Travel with a community of warm, adventurous souls.
                 </p>
 
-                <div className="mt-6 sm:mt-8 flex flex-wrap items-center gap-3 sm:gap-4">
+                {/* Mobile-only Sonali Image placed just before Explore Tours */}
+                <div className="lg:hidden my-6 flex justify-center">
+                  <div className="relative w-full max-w-[280px] sm:max-w-[320px]">
+                    <div className="relative w-full h-[360px] sm:h-[420px] rounded-[140px] sm:rounded-[160px] overflow-hidden border-4 border-white/20 shadow-2xl group transition-all duration-500 hover:shadow-3xl">
+                      <Image
+                        src="/images/hero.png"
+                        alt="Sonali Palekar - Travel With Sonali"
+                        fill
+                        priority
+                        className="object-cover object-top group-hover:scale-105 transition-transform duration-700 ease-out"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+                    </div>
+
+                    {/* Floating CTA circle button */}
+                    <button
+                      onClick={() => handleEnquireClick("Manali & Kasol Group Trip")}
+                      className="absolute -bottom-2 right-2 sm:bottom-4 sm:-right-2 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#8EB486] text-white flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all border-3 border-stone-900 cursor-pointer"
+                      aria-label="Book Manali & Kasol"
+                    >
+                      <ArrowUpRight className="w-5 h-5 sm:w-6 sm:h-6" />
+                    </button>
+                  </div>
+                </div>
+
+                <div className="mt-6 sm:mt-8 flex flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-4">
                   <Link
                     href="/tours"
                     className="inline-flex items-center gap-2 bg-[#8EB486] hover:bg-[#7A9F73] text-white px-6 sm:px-7 py-3 sm:py-3.5 rounded-full font-semibold text-sm sm:text-base transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
                   >
                     <span>Explore Tours</span>
-                    <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                    <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-0.5 transition-transform" />
                   </Link>
 
                   <button
@@ -123,8 +181,8 @@ export default function HomeClientView({ tours, destinations }: HomeClientViewPr
               </div>
             </div>
 
-            {/* Center Column: Cinematic Stadium Image featuring Sonali */}
-            <div className="lg:col-span-4 flex items-center justify-center px-0 lg:px-6 py-4 lg:py-0">
+            {/* Center Column: Cinematic Stadium Image featuring Sonali (Desktop) */}
+            <div className="hidden lg:flex lg:col-span-4 items-center justify-center px-0 lg:px-6 py-4 lg:py-0">
               <div className="relative w-full max-w-[280px] sm:max-w-[340px] lg:max-w-[400px]">
                 <div className="relative w-full h-[360px] sm:h-[480px] lg:h-[600px] rounded-[140px] sm:rounded-[180px] lg:rounded-[220px] overflow-hidden border-4 border-white/20 shadow-2xl group transition-all duration-500 hover:shadow-3xl">
                   <Image
@@ -191,24 +249,14 @@ export default function HomeClientView({ tours, destinations }: HomeClientViewPr
                 </div>
               </div>
 
-              <div className="pt-4 lg:pt-8 border-t border-white/15 flex items-center justify-between">
-                <div className="flex flex-col items-start gap-2">
-                </div>
-
-                {/* QR Badge: Full on tablet/desktop, sleek pill link on mobile */}
-                <div className="hidden sm:block">
-                  <QRCodeBadge label="SCAN TO FOLLOW" qrImageSrc="/qrimage.png" size="md" />
-                </div>
-                <div className="sm:hidden">
-                  <a
-                    href="https://instagram.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-white/15 hover:bg-white/25 border border-white/30 text-white text-xs font-semibold tracking-wider uppercase transition-all backdrop-blur-xs"
-                  >
-                    Follow Sonali
-                  </a>
-                </div>
+              {/* Circular QR Badge: Centered in the middle on mobile mode, increased 3x size and without white borders */}
+              <div className="pt-6 lg:pt-8 border-t border-white/15 flex flex-col items-center justify-center w-full text-center">
+                <QRCodeBadge
+                  label="SCAN TO FOLLOW"
+                  qrImageSrc="/qrimage.png"
+                  href="https://www.instagram.com/travel_withsonali"
+                  size="3x"
+                />
               </div>
             </div>
           </div>
@@ -216,18 +264,29 @@ export default function HomeClientView({ tours, destinations }: HomeClientViewPr
       </section>
 
       {/* ================= SECTION 2: INSTAGRAM 3D ROUND CAROUSEL ================= */}
-      <InstagramRoundCarousel />
+      <InstagramRoundCarousel data={instagramData} />
 
       {/* ================= SECTION 3: UPCOMING TOURS ================= */}
-      <section id="tours" className="w-full py-20 border-t border-[#E8DCD5] bg-[#F7EFEA]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="tours" className="relative w-full py-20 border-t border-[#E8DCD5] bg-[#F7EFEA]">
+        {/* Background ambient circles clipped within absolute container */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <AmbientCircles variant="1" />
+        </div>
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
             <div>
               <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold">
                 Upcoming Journeys
               </span>
               <h2 className="text-4xl sm:text-5xl font-bold tracking-tight text-[#685752] mt-2">
-                Where Are We Going Next?
+                Where Are We{" "}
+                <SquigglyText
+                  stepDuration={70}
+                  scale={[4, 7]}
+                  className="text-[#8EB486] font-serif-italic"
+                >
+                  Going Next?
+                </SquigglyText>
               </h2>
               <p className="text-[#7A6862] text-base mt-2">
                 Choose your next adventure and come travel with us.
@@ -239,7 +298,7 @@ export default function HomeClientView({ tours, destinations }: HomeClientViewPr
               className="mt-6 md:mt-0 inline-flex items-center gap-2 text-sm font-semibold text-[#8EB486] hover:text-[#7A9F73] group"
             >
               <span>View All 8+ Upcoming Tours</span>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
 
@@ -252,94 +311,280 @@ export default function HomeClientView({ tours, destinations }: HomeClientViewPr
       </section>
 
       {/* ================= SECTION 3: MEET SONALI & WHY TRAVEL WITH US ================= */}
-      <section className="w-full py-24 bg-[#FDF7F4] border-t border-[#E8DCD5]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative w-full py-24 bg-[#FDF7F4] border-t border-[#E8DCD5] overflow-hidden">
+        <AmbientCircles variant="2" />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
             <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold">
               Meet Sonali & The Personal Touch
             </span>
             <h2 className="text-4xl sm:text-5xl font-bold tracking-tight text-[#685752]">
-              Why Travel With Sonali?
+              Why Travel With{" "}
+              <SquigglyText
+                stepDuration={70}
+                scale={[4, 7]}
+                className="text-[#8EB486] font-serif-italic"
+              >
+                Sonali?
+              </SquigglyText>
             </h2>
             <p className="text-base text-[#7A6862]">
               We aren&apos;t a large corporate agency. We are a personal travel company where every detail matters.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            {/* Left: Sonali Founder Card */}
-            <div className="lg:col-span-5 relative group">
-              <div className="relative h-[460px] sm:h-[520px] rounded-[60px] overflow-hidden shadow-xl border-4 border-[#F7EFEA]">
+          <div className="relative flex flex-col lg:flex-row items-center justify-between">
+            {/* Left: Sonali Founder Card (Layered on top with z-20 so cards slide under it) */}
+            <div className="relative z-20 shrink-0 w-full max-w-[360px] sm:max-w-[400px] lg:w-[420px] shadow-[25px_0_45px_-12px_rgba(0,0,0,0.18)] rounded-[48px] sm:rounded-[60px]">
+              <div className="relative h-[460px] sm:h-[520px] rounded-[48px] sm:rounded-[60px] overflow-hidden border-4 border-[#FDF7F4] bg-[#4C3E3A] group shadow-2xl">
                 <Image
                   src="/images/sonali.png"
                   alt="Meet Sonali Palekar - Founder & Host"
                   fill
                   className="object-cover object-top group-hover:scale-105 transition-transform duration-700"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                <div className="absolute bottom-6 left-6 right-6 text-white space-y-2">
-                  <span className="inline-block px-3 py-1 rounded-full bg-[#8EB486] text-xs font-semibold uppercase tracking-wider">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
+                <div className="absolute bottom-6 left-6 right-6 text-white space-y-2.5">
+                  <span className="inline-block px-3.5 py-1 rounded-full bg-[#8EB486] text-xs font-semibold uppercase tracking-wider shadow-sm">
                     Founder & Tour Leader
                   </span>
-                  <h3 className="text-2xl font-bold font-serif-italic">Sonali Palekar</h3>
-                  <p className="text-xs text-stone-200 leading-relaxed">
+                  <h3 className="text-2xl sm:text-3xl font-bold font-serif-italic">Sonali Palekar</h3>
+                  <p className="text-xs sm:text-sm text-stone-200 leading-relaxed">
                     &ldquo;Every trip is personal. I travel with you as a friend, ensuring every memory is authentic, safe, and unforgettable.&rdquo;
                   </p>
                 </div>
               </div>
             </div>
 
-            {/* Right: Key Highlights */}
-            <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {[
-                {
-                  icon: Smile,
-                  title: "Small Friendly Batches",
-                  desc: "We cap our groups to 12-16 people so nobody gets left behind and everyone leaves as family.",
-                },
-                {
-                  icon: ShieldCheck,
-                  title: "Female-Friendly & Safe",
-                  desc: "100% safe for solo female travellers, curated stays, verified transport and dedicated leaders.",
-                },
-                {
-                  icon: HeartHandshake,
-                  title: "Curated Stays & Vibe",
-                  desc: "Handpicked boutique hotels, lakeside camps, riverside stays and local culinary experiences.",
-                },
-                {
-                  icon: Compass,
-                  title: "Offbeat & Personal",
-                  desc: "Carefully planned itineraries balancing must-see sights with secret spots and leisure time.",
-                },
-              ].map((item, idx) => (
-                <div key={idx} className="p-7 rounded-3xl bg-[#F7EFEA] border border-[#E8DCD5] space-y-3.5 hover:shadow-md transition-all">
-                  <div className="w-12 h-12 rounded-2xl bg-[#8EB486]/15 text-[#8EB486] flex items-center justify-center">
-                    <item.icon className="w-6 h-6" />
-                  </div>
-                  <h4 className="text-lg font-bold text-[#685752]">{item.title}</h4>
-                  <p className="text-xs sm:text-sm text-[#7A6862] leading-relaxed">{item.desc}</p>
+            {/* Right: Horizontally Moving Cards in a Frame Going Under Sonali's Photo */}
+            <div className="relative z-10 w-full lg:flex-1 -mt-10 sm:-mt-14 lg:mt-0 lg:-ml-32 overflow-hidden py-4 group">
+              {/* Framed Viewport */}
+              <div className="rounded-[36px] sm:rounded-[44px] border border-[#E8DCD5]/80 bg-[#F7EFEA]/60 backdrop-blur-xs p-4 sm:p-6 overflow-hidden relative shadow-inner">
+                
+                {/* Frame Header Label */}
+                <div className="flex items-center justify-between px-2 pb-4 text-xs font-semibold text-[#997C70]">
+                  <span className="uppercase tracking-widest text-[#8EB486] flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5" />
+                    Core Trip Pillars
+                  </span>
+                  <span className="text-[11px] text-[#997C70]/80">
+                    Hover to pause
+                  </span>
                 </div>
-              ))}
+
+                {/* Horizontally moving marquee track */}
+                <div className="animate-marquee-left flex gap-6 items-stretch">
+                  {[
+                    ...[
+                      {
+                        num: "01",
+                        icon: Smile,
+                        title: "Small Friendly Batches",
+                        tag: "12–16 Travellers Max",
+                        desc: "We cap our groups to 12–16 people so nobody gets left behind and everyone leaves as family.",
+                        perk: "Lifelong friendships & zero crowds",
+                      },
+                      {
+                        num: "02",
+                        icon: ShieldCheck,
+                        title: "Female-Friendly & Safe",
+                        tag: "100% Solo Safe",
+                        desc: "100% safe for solo female travellers, curated stays, verified transport and dedicated leaders.",
+                        perk: "Verified stays & female tour captains",
+                      },
+                      {
+                        num: "03",
+                        icon: HeartHandshake,
+                        title: "Curated Stays & Vibe",
+                        tag: "Boutique & Riverside",
+                        desc: "Handpicked boutique hotels, lakeside camps, riverside stays and local culinary experiences.",
+                        perk: "Scenic boutique hotels & cozy vibes",
+                      },
+                      {
+                        num: "04",
+                        icon: Compass,
+                        title: "Offbeat & Personal",
+                        tag: "Secret Spots & Leisure",
+                        desc: "Carefully planned itineraries balancing must-see sights with secret spots and leisure time.",
+                        perk: "Hidden views & relaxed pacing",
+                      },
+                    ],
+                    ...[
+                      {
+                        num: "01",
+                        icon: Smile,
+                        title: "Small Friendly Batches",
+                        tag: "12–16 Travellers Max",
+                        desc: "We cap our groups to 12–16 people so nobody gets left behind and everyone leaves as family.",
+                        perk: "Lifelong friendships & zero crowds",
+                      },
+                      {
+                        num: "02",
+                        icon: ShieldCheck,
+                        title: "Female-Friendly & Safe",
+                        tag: "100% Solo Safe",
+                        desc: "100% safe for solo female travellers, curated stays, verified transport and dedicated leaders.",
+                        perk: "Verified stays & female tour captains",
+                      },
+                      {
+                        num: "03",
+                        icon: HeartHandshake,
+                        title: "Curated Stays & Vibe",
+                        tag: "Boutique & Riverside",
+                        desc: "Handpicked boutique hotels, lakeside camps, riverside stays and local culinary experiences.",
+                        perk: "Scenic boutique hotels & cozy vibes",
+                      },
+                      {
+                        num: "04",
+                        icon: Compass,
+                        title: "Offbeat & Personal",
+                        tag: "Secret Spots & Leisure",
+                        desc: "Carefully planned itineraries balancing must-see sights with secret spots and leisure time.",
+                        perk: "Hidden views & relaxed pacing",
+                      },
+                    ],
+                    ...[
+                      {
+                        num: "01",
+                        icon: Smile,
+                        title: "Small Friendly Batches",
+                        tag: "12–16 Travellers Max",
+                        desc: "We cap our groups to 12–16 people so nobody gets left behind and everyone leaves as family.",
+                        perk: "Lifelong friendships & zero crowds",
+                      },
+                      {
+                        num: "02",
+                        icon: ShieldCheck,
+                        title: "Female-Friendly & Safe",
+                        tag: "100% Solo Safe",
+                        desc: "100% safe for solo female travellers, curated stays, verified transport and dedicated leaders.",
+                        perk: "Verified stays & female tour captains",
+                      },
+                      {
+                        num: "03",
+                        icon: HeartHandshake,
+                        title: "Curated Stays & Vibe",
+                        tag: "Boutique & Riverside",
+                        desc: "Handpicked boutique hotels, lakeside camps, riverside stays and local culinary experiences.",
+                        perk: "Scenic boutique hotels & cozy vibes",
+                      },
+                      {
+                        num: "04",
+                        icon: Compass,
+                        title: "Offbeat & Personal",
+                        tag: "Secret Spots & Leisure",
+                        desc: "Carefully planned itineraries balancing must-see sights with secret spots and leisure time.",
+                        perk: "Hidden views & relaxed pacing",
+                      },
+                    ],
+                  ].map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="w-[300px] sm:w-[340px] h-[250px] sm:h-[260px] p-6 rounded-[26px] bg-[#FDF7F4] border border-[#E8DCD5] flex flex-col justify-between shrink-0 shadow-sm hover:shadow-xl hover:border-[#8EB486] transition-all select-none cursor-pointer"
+                    >
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between">
+                          <div className="w-11 h-11 rounded-2xl bg-[#8EB486]/15 text-[#8EB486] flex items-center justify-center shrink-0">
+                            <item.icon className="w-5 h-5" />
+                          </div>
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-[#8EB486] bg-[#8EB486]/10 px-3 py-1 rounded-full border border-[#8EB486]/20">
+                            {item.tag}
+                          </span>
+                        </div>
+
+                        <div>
+                          <h4 className="text-lg font-bold text-[#685752] line-clamp-1">
+                            {item.title}
+                          </h4>
+                          <p className="text-xs text-[#7A6862] leading-relaxed mt-1 line-clamp-3">
+                            {item.desc}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="pt-3 border-t border-[#E8DCD5]/70 flex items-center justify-between text-[11px] text-[#997C70]">
+                        <span className="truncate">{item.perk}</span>
+                        <span className="font-mono text-[#8EB486] font-bold ml-2">{item.num}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Right Gradient Fade */}
+                <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-24 bg-gradient-to-l from-[#F7EFEA] to-transparent pointer-events-none z-10" />
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ================= SECTION 4: DESTINATIONS ================= */}
-      <section className="w-full py-24 bg-[#F7EFEA] border-t border-[#E8DCD5]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* ================= SECTION 4: DESTINATIONS PARALLAX SHOWCASE ================= */}
+      <section className="relative flex min-h-[85vh] lg:min-h-screen w-full items-center justify-center overflow-hidden bg-[#F7EFEA] border-t border-[#E8DCD5]">
+        <ParallaxHeroImages images={destinationImages} />
+        
+        <div className="relative z-20 mx-auto flex max-w-2xl lg:max-w-3xl flex-col items-center gap-5 px-6 sm:px-10 py-10 sm:py-12 rounded-3xl bg-[#F7EFEA]/80 backdrop-blur-md border border-white/80 shadow-xl shadow-stone-900/5 text-center mx-4">
+          <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full border border-[#8EB486]/30 shadow-xs">
+            Handpicked Places & Sacred Valleys
+          </span>
+          
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-[#685752] font-serif-italic drop-shadow-xs">
+            Explore Top{" "}
+            <SquigglyText
+              stepDuration={70}
+              scale={[5, 8]}
+              className="text-[#8EB486]"
+            >
+              Destinations
+            </SquigglyText>
+          </h2>
+          
+          <p className="max-w-lg text-sm sm:text-base text-[#7A6862] leading-relaxed">
+            Move your mouse to see the parallax effect. Images at different depths
+            move at different speeds as you discover our dream mountain escapes and serene valleys.
+          </p>
+
+          <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+            <Link
+              href="/destinations"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white text-xs font-bold tracking-wider uppercase shadow-md hover:shadow-lg transition-all active:scale-95 cursor-pointer"
+            >
+              <span>View All Destinations</span>
+              <ChevronRight className="w-3.5 h-3.5" />
+            </Link>
+            <Link
+              href="/tours"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/90 hover:bg-white text-[#685752] border border-[#E8DCD5] text-xs font-bold tracking-wider uppercase shadow-xs hover:shadow-sm transition-all active:scale-95 cursor-pointer"
+            >
+              <span>Explore Tours</span>
+              <ChevronRight className="w-3.5 h-3.5 text-[#8EB486]" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Destinations Grid */}
+      <section className="relative w-full py-24 bg-[#FDF7F4] border-t border-[#E8DCD5] overflow-hidden">
+        <AmbientCircles variant="3" />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
             <div>
               <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold">
-                Handpicked Places
+                Curated Itineraries
               </span>
-              <h2 className="text-4xl sm:text-5xl font-bold tracking-tight text-[#685752] mt-2">
-                Explore Top Destinations
-              </h2>
+              <h3 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#685752] mt-2">
+                Featured Departure{" "}
+                <SquigglyText
+                  stepDuration={70}
+                  scale={[4, 7]}
+                  className="text-[#8EB486] font-serif-italic"
+                >
+                  Highlights
+                </SquigglyText>
+              </h3>
             </div>
-            <Link href="/destinations" className="mt-4 md:mt-0 text-sm font-semibold text-[#8EB486] hover:underline">
-              View All Destinations →
+            <Link href="/destinations" className="mt-4 md:mt-0 inline-flex items-center gap-1 text-sm font-semibold text-[#8EB486] hover:underline group">
+              <span>View All Destinations</span>
+              <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
             </Link>
           </div>
 
@@ -362,7 +607,7 @@ export default function HomeClientView({ tours, destinations }: HomeClientViewPr
                   <span className="text-[11px] font-semibold uppercase tracking-wider text-[#8EB486] bg-black/60 px-3 py-1 rounded-full backdrop-blur-xs inline-block">
                     {dest.bestTimeToVisit}
                   </span>
-                  <h3 className="text-2xl font-bold font-serif-italic">{dest.name}</h3>
+                  <h4 className="text-2xl font-bold font-serif-italic">{dest.name}</h4>
                   <p className="text-xs text-stone-300 line-clamp-1 italic">&ldquo;{dest.tagline}&rdquo;</p>
                 </div>
               </Link>
@@ -372,14 +617,22 @@ export default function HomeClientView({ tours, destinations }: HomeClientViewPr
       </section>
 
       {/* ================= SECTION 5: TESTIMONIALS ================= */}
-      <section className="w-full py-24 bg-[#FDF7F4] border-t border-[#E8DCD5]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative w-full py-24 bg-[#FDF7F4] border-t border-[#E8DCD5] overflow-hidden">
+        <AmbientCircles variant="4" />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
             <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold">
               Traveller Experiences
             </span>
             <h2 className="text-4xl sm:text-5xl font-bold text-[#685752]">
-              Loved By Fellow Souls
+              Loved By{" "}
+              <SquigglyText
+                stepDuration={70}
+                scale={[4, 7]}
+                className="text-[#8EB486] font-serif-italic"
+              >
+                Fellow Souls
+              </SquigglyText>
             </h2>
             <p className="text-base text-[#7A6862]">
               Here&apos;s what our travelers say about their group trips with Sonali.
@@ -416,21 +669,29 @@ export default function HomeClientView({ tours, destinations }: HomeClientViewPr
           <div className="text-center mt-12">
             <Link href="/testimonials" className="inline-flex items-center gap-2 text-sm font-semibold text-[#8EB486] hover:underline">
               <span>Read All Traveller Reviews</span>
-              <ArrowRight className="w-4 h-4" />
+              <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
         </div>
       </section>
 
       {/* ================= SECTION 6: HOW IT WORKS ================= */}
-      <section className="w-full py-24 bg-[#FDF7F4] border-t border-[#E8DCD5]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative w-full py-24 bg-[#FDF7F4] border-t border-[#E8DCD5] overflow-hidden">
+        <AmbientCircles variant="5" />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16">
             <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold">
               Simple 4-Step Process
             </span>
             <h2 className="text-4xl sm:text-5xl font-bold text-[#685752] mt-2">
-              How It Works
+              How It{" "}
+              <SquigglyText
+                stepDuration={70}
+                scale={[4, 7]}
+                className="text-[#8EB486] font-serif-italic"
+              >
+                Works
+              </SquigglyText>
             </h2>
           </div>
 
@@ -456,19 +717,28 @@ export default function HomeClientView({ tours, destinations }: HomeClientViewPr
 
 
       {/* ================= SECTION 8: STORIES / BLOG ================= */}
-      <section className="w-full py-24 bg-[#FDF7F4] border-t border-[#E8DCD5]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative w-full py-24 bg-[#FDF7F4] border-t border-[#E8DCD5] overflow-hidden">
+        <AmbientCircles variant="1" />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
             <div>
               <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold">
                 Editorial Journal
               </span>
               <h2 className="text-4xl sm:text-5xl font-bold text-[#685752] mt-2">
-                Stories From The Road
+                Stories From{" "}
+                <SquigglyText
+                  stepDuration={70}
+                  scale={[4, 7]}
+                  className="text-[#8EB486] font-serif-italic"
+                >
+                  The Road
+                </SquigglyText>
               </h2>
             </div>
-            <Link href="/stories" className="mt-4 md:mt-0 text-sm font-semibold text-[#8EB486] hover:underline">
-              Read All Stories →
+            <Link href="/stories" className="mt-4 md:mt-0 inline-flex items-center gap-1 text-sm font-semibold text-[#8EB486] hover:underline group">
+              <span>Read All Stories</span>
+              <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
             </Link>
           </div>
 
@@ -491,8 +761,9 @@ export default function HomeClientView({ tours, destinations }: HomeClientViewPr
                 </div>
                 <div className="pt-6 border-t border-[#E8DCD5] flex items-center justify-between mt-4">
                   <span className="text-xs text-[#997C70]">{story.date} • {story.readTime}</span>
-                  <Link href={`/stories/${story.slug}`} className="text-xs font-semibold text-[#8EB486] hover:underline">
-                    Read Story →
+                  <Link href={`/stories/${story.slug}`} className="inline-flex items-center gap-1 text-xs font-semibold text-[#8EB486] hover:underline group">
+                    <span>Read Story</span>
+                    <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                   </Link>
                 </div>
               </div>
@@ -502,8 +773,9 @@ export default function HomeClientView({ tours, destinations }: HomeClientViewPr
       </section>
 
       {/* ================= SECTION 9: ABOUT SONALI ================= */}
-      <section className="w-full py-24 bg-[#F7EFEA] border-t border-[#E8DCD5]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative w-full py-24 bg-[#F7EFEA] border-t border-[#E8DCD5] overflow-hidden">
+        <AmbientCircles variant="2" />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             <div className="lg:col-span-5">
               <div className="relative h-[480px] sm:h-[560px] rounded-[100px] overflow-hidden shadow-2xl border-4 border-[#FDF7F4]">
@@ -521,7 +793,14 @@ export default function HomeClientView({ tours, destinations }: HomeClientViewPr
                 Meet Your Host
               </span>
               <h2 className="text-4xl sm:text-5xl font-serif-italic font-bold text-[#685752]">
-                Meet Sonali
+                Meet{" "}
+                <SquigglyText
+                  stepDuration={70}
+                  scale={[4, 7]}
+                  className="text-[#8EB486]"
+                >
+                  Sonali
+                </SquigglyText>
               </h2>
               <p className="text-lg text-[#685752] font-medium">
                 &ldquo;Behind every journey is someone who cares deeply about the experience.&rdquo;
@@ -538,7 +817,7 @@ export default function HomeClientView({ tours, destinations }: HomeClientViewPr
                   className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white font-semibold text-sm transition-all shadow-md"
                 >
                   <span>Read Our Full Story</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </div>
             </div>
@@ -546,53 +825,23 @@ export default function HomeClientView({ tours, destinations }: HomeClientViewPr
         </div>
       </section>
 
-      {/* ================= SECTION 10: FINAL CTA ================= */}
-      <section className="relative w-full py-32 bg-[#4C3E3A] text-white overflow-hidden">
-        <div className="absolute inset-0 opacity-40">
-          <Image
-            src="https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1600&q=80"
-            alt="Himalayas landscape"
-            fill
-            className="object-cover"
-          />
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
-
-        <div className="relative max-w-5xl mx-auto px-4 text-center space-y-6">
-          <h2 className="text-5xl sm:text-7xl font-serif-italic font-bold tracking-tight leading-none">
-            &ldquo;The world is waiting. Where are you going next?&rdquo;
-          </h2>
-          <p className="text-[#DFD3CE] text-lg sm:text-xl max-w-xl mx-auto">
-            Find your next journey with Travel With Sonali.
-          </p>
-
-          <div className="pt-6 flex flex-wrap items-center justify-center gap-4">
-            <Link
-              href="/tours"
-              className="px-8 py-4 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white font-semibold text-base shadow-xl transition-all hover:scale-105"
-            >
-              Explore Upcoming Tours
-            </Link>
-
-            <button
-              onClick={() => handleEnquireClick("Final CTA")}
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white hover:bg-stone-100 text-[#685752] font-semibold text-base shadow-xl transition-all hover:scale-105 cursor-pointer"
-            >
-              Send An Enquiry
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* ================= SECTION 11: FAQ ACCORDIONS ================= */}
-      <section className="w-full py-24 bg-[#FDF7F4] border-t border-[#E8DCD5]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+      {/* ================= SECTION 10: FAQ ACCORDIONS ================= */}
+      <section className="relative w-full py-24 bg-[#FDF7F4] border-t border-[#E8DCD5] overflow-hidden">
+        <AmbientCircles variant="3" />
+        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-16">
             <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold">
               Clear Answers
             </span>
             <h2 className="text-4xl sm:text-5xl font-bold text-[#685752] mt-2">
-              Before You Pack Your Bags...
+              Before You Pack{" "}
+              <SquigglyText
+                stepDuration={70}
+                scale={[4, 7]}
+                className="text-[#8EB486] font-serif-italic"
+              >
+                Your Bags...
+              </SquigglyText>
             </h2>
           </div>
 
@@ -619,14 +868,15 @@ export default function HomeClientView({ tours, destinations }: HomeClientViewPr
           </div>
 
           <div className="text-center mt-10">
-            <Link href="/faq" className="text-sm font-semibold text-[#8EB486] hover:underline">
-              Have more questions? Read Full FAQ Page →
+            <Link href="/faq" className="inline-flex items-center gap-1 text-sm font-semibold text-[#8EB486] hover:underline group">
+              <span>Have more questions? Read Full FAQ Page</span>
+              <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
             </Link>
           </div>
         </div>
       </section>
 
-      <Footer />
+      <Footer onEnquireClick={() => handleEnquireClick("Footer Reveal")} />
 
       <EnquireModal
         isOpen={enquireOpen}

@@ -3,9 +3,10 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Clock, Users, ArrowRight, Search } from "lucide-react";
+import { Clock, Users, ChevronRight, Search } from "lucide-react";
 import { Tour } from "../data/toursData";
 import EnquireModal from "../components/EnquireModal";
+import { GooeyInput } from "@/components/ui/gooey-input";
 
 export default function ToursClientView({ tours }: { tours: Tour[] }) {
   const [categoryFilter, setCategoryFilter] = useState("All");
@@ -52,15 +53,18 @@ export default function ToursClientView({ tours }: { tours: Tour[] }) {
           ))}
         </div>
 
-        {/* Search Box */}
-        <div className="relative w-full md:w-72">
-          <Search className="w-4 h-4 absolute left-3.5 top-3 text-[#997C70]" />
-          <input
-            type="text"
+        {/* Search Box with Gooey Animation */}
+        <div className="flex items-center justify-end w-full md:w-auto">
+          <GooeyInput
             placeholder="Search destination or trip..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 rounded-full border border-[#E8DCD5] bg-white text-xs text-[#685752] focus:outline-none focus:border-[#8EB486]"
+            onValueChange={setSearchQuery}
+            collapsedWidth={130}
+            expandedWidth={260}
+            expandedOffset={48}
+            classNames={{
+              surface: "bg-[#685752] text-white shadow-md ring-1 ring-[#685752]/20 hover:bg-[#5a4a45]",
+            }}
           />
         </div>
       </div>
@@ -134,7 +138,7 @@ export default function ToursClientView({ tours }: { tours: Tour[] }) {
                     className="inline-flex items-center gap-1 px-4 py-2 rounded-full bg-[#685752] hover:bg-[#8EB486] text-white text-xs font-semibold transition-colors"
                   >
                     <span>Explore</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
+                    <ChevronRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>
               </div>

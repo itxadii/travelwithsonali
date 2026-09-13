@@ -2,6 +2,7 @@ import React, { use } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import DestinationsClientView from "./DestinationsClientView";
+import AmbientCircles from "../components/AmbientCircles";
 import { getDestinations } from "@/lib/sanity/queries";
 
 export default function DestinationsPage() {
@@ -12,8 +13,9 @@ export default function DestinationsPage() {
       <Navbar logoName="Travel With Sonali" />
 
       {/* Hero */}
-      <section className="w-full py-16 sm:py-24 bg-[#F7EFEA] border-b border-[#E8DCD5]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center sm:text-left">
+      <section className="relative overflow-hidden w-full py-16 sm:py-24 bg-[#F7EFEA] border-b border-[#E8DCD5]">
+        <AmbientCircles variant="1" />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center sm:text-left">
           <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold">
             Immersive Destinations
           </span>
@@ -27,8 +29,11 @@ export default function DestinationsPage() {
       </section>
 
       {/* Grid Section */}
-      <section className="w-full py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex-1">
-        <DestinationsClientView destinations={destinations} />
+      <section className="relative overflow-hidden w-full py-12 flex-1">
+        <AmbientCircles variant="4" />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <DestinationsClientView destinations={destinations} />
+        </div>
       </section>
 
       <Footer />

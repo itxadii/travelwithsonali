@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { HelpCircle, Phone, MessageCircle, Mail, ArrowRight } from "lucide-react";
+import { HelpCircle, Phone, MessageCircle, Mail, ChevronRight } from "lucide-react";
 
 export default function CustomerHelpPage() {
   const faqs = [
@@ -86,7 +86,7 @@ export default function CustomerHelpPage() {
           <span className="text-[#997C70]">Looking for tour guidelines?</span>
           <Link href="/faq" className="text-[#8EB486] font-bold hover:underline inline-flex items-center gap-1">
             <span>View Public FAQ</span>
-            <ArrowRight className="w-3.5 h-3.5" />
+            <ChevronRight className="w-3.5 h-3.5" />
           </Link>
         </div>
       </div>

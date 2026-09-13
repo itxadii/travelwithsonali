@@ -8,6 +8,7 @@ import { Heart, Compass, ShieldCheck, Users, Smile, Sparkles } from "lucide-reac
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import EnquireModal from "../components/EnquireModal";
+import AmbientCircles from "../components/AmbientCircles";
 
 export default function AboutPage() {
   const [enquireOpen, setEnquireOpen] = useState(false);
@@ -17,8 +18,9 @@ export default function AboutPage() {
       <Navbar logoName="Travel With Sonali" />
 
       {/* Hero */}
-      <section className="w-full py-16 sm:py-24 bg-[#F7EFEA] border-b border-[#E8DCD5]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center sm:text-left space-y-4">
+      <section className="relative overflow-hidden w-full py-16 sm:py-24 bg-[#F7EFEA] border-b border-[#E8DCD5]">
+        <AmbientCircles variant="1" />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center sm:text-left space-y-4">
           <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold">
             Travel With Sonali
           </span>
@@ -32,8 +34,9 @@ export default function AboutPage() {
       </section>
 
       {/* Founder Story */}
-      <section className="w-full py-20 border-b border-[#E8DCD5] bg-[#FDF7F4]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative overflow-hidden w-full py-20 border-b border-[#E8DCD5] bg-[#FDF7F4]">
+        <AmbientCircles variant="2" />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             
             <div className="lg:col-span-5">
@@ -75,8 +78,9 @@ export default function AboutPage() {
       </section>
 
       {/* Philosophy */}
-      <section className="w-full py-20 bg-[#F7EFEA] border-b border-[#E8DCD5]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative overflow-hidden w-full py-20 bg-[#F7EFEA] border-b border-[#E8DCD5]">
+        <AmbientCircles variant="3" />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-[#685752]">
               Our Core Philosophy

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, use } from "react";
 import Link from "next/link";
-import { ArrowLeft, Phone, Mail, CalendarCheck, ShieldCheck } from "lucide-react";
+import { ChevronLeft, Phone, Mail, CalendarCheck, ShieldCheck } from "lucide-react";
 
 interface CustomerProfileData {
   customer: {
@@ -82,7 +82,7 @@ export default function CustomerProfilePage({ params }: { params: Promise<{ id: 
           href="/admin/customers"
           className="p-2 rounded-xl bg-white border border-[#E8DCD5] text-[#997C70] hover:text-[#685752]"
         >
-          <ArrowLeft className="w-4 h-4" />
+          <ChevronLeft className="w-4 h-4" />
         </Link>
         <div>
           <h1 className="text-2xl font-bold text-[#685752] font-serif-italic">{customer.name}</h1>

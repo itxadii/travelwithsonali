@@ -7,6 +7,7 @@ import { MapPin, Maximize2 } from "lucide-react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import LightboxModal from "../components/LightboxModal";
+import AmbientCircles from "../components/AmbientCircles";
 import { GALLERY_DATA, GalleryItem } from "../data/galleryData";
 
 export default function GalleryPage() {
@@ -24,8 +25,9 @@ export default function GalleryPage() {
       <Navbar logoName="Travel With Sonali" />
 
       {/* Hero */}
-      <section className="w-full py-16 sm:py-24 bg-[#F7EFEA] border-b border-[#E8DCD5]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center sm:text-left">
+      <section className="relative overflow-hidden w-full py-16 sm:py-24 bg-[#F7EFEA] border-b border-[#E8DCD5]">
+        <AmbientCircles variant="5" />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center sm:text-left">
           <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold">
             Visual Storytelling
           </span>
@@ -39,7 +41,9 @@ export default function GalleryPage() {
       </section>
 
       {/* Category Filter & Masonry Grid */}
-      <section className="w-full py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex-1">
+      <section className="relative overflow-hidden w-full py-12 flex-1">
+        <AmbientCircles variant="1" />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Category Pills */}
         <div className="flex items-center gap-2 overflow-x-auto pb-6 mb-8 border-b border-[#E8DCD5] scrollbar-none">
@@ -86,7 +90,7 @@ export default function GalleryPage() {
             </div>
           ))}
         </div>
-
+        </div>
       </section>
 
       <Footer />

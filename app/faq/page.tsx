@@ -6,7 +6,9 @@ import { ChevronDown } from "lucide-react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import EnquireModal from "../components/EnquireModal";
+import AmbientCircles from "../components/AmbientCircles";
 import { FAQS_DATA } from "../data/faqsData";
+import { SquigglyText } from "@/components/ui/squiggly-text";
 
 export default function FAQPage() {
   const [selectedCat, setSelectedCat] = useState("All");
@@ -34,13 +36,21 @@ export default function FAQPage() {
       <Navbar logoName="Travel With Sonali" />
 
       {/* Hero */}
-      <section className="w-full py-16 sm:py-24 bg-[#F7EFEA] border-b border-[#E8DCD5]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center sm:text-left">
+      <section className="relative overflow-hidden w-full py-16 sm:py-24 bg-[#F7EFEA] border-b border-[#E8DCD5]">
+        <AmbientCircles variant="3" />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center sm:text-left">
           <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold">
             Frequently Asked Questions
           </span>
           <h1 className="text-4xl sm:text-6xl font-bold tracking-tight text-[#685752] mt-2">
-            Before You Pack Your Bags...
+            Before You Pack{" "}
+            <SquigglyText
+              stepDuration={70}
+              scale={[4, 7]}
+              className="text-[#8EB486] font-serif-italic"
+            >
+              Your Bags...
+            </SquigglyText>
           </h1>
           <p className="text-[#7A6862] text-base sm:text-lg max-w-2xl mt-3">
             Everything you need to know about our group departures, inclusions, booking advance, and travel guidelines.
@@ -49,7 +59,9 @@ export default function FAQPage() {
       </section>
 
       {/* Category Pills & FAQ Accordions */}
-      <section className="w-full py-12 max-w-4xl mx-auto px-4 sm:px-6 flex-1">
+      <section className="relative overflow-hidden w-full py-12 flex-1">
+        <AmbientCircles variant="5" />
+        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6">
         
         {/* Category Pills */}
         <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-8 border-b border-[#E8DCD5] scrollbar-none">
@@ -109,7 +121,7 @@ export default function FAQPage() {
             </button>
           </div>
         </div>
-
+        </div>
       </section>
 
       <Footer />

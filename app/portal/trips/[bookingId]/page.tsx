@@ -4,7 +4,7 @@ import React, { useState, useEffect, use } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
-  ArrowLeft,
+  ChevronLeft,
   Calendar,
   Users,
   MapPin,
@@ -142,7 +142,7 @@ export default function CustomerTripDetailPage({ params }: { params: Promise<{ b
       {/* Top Breadcrumb */}
       <div className="flex items-center gap-2 text-xs text-[#997C70]">
         <Link href="/portal/trips" className="hover:text-[#8EB486] flex items-center gap-1">
-          <ArrowLeft className="w-3.5 h-3.5" />
+          <ChevronLeft className="w-3.5 h-3.5" />
           <span>My Trips</span>
         </Link>
         <span>/</span>

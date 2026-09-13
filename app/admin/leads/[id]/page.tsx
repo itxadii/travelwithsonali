@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, use } from "react";
 import Link from "next/link";
-import { ArrowLeft, Phone, Mail, Clock, CheckCircle2 } from "lucide-react";
+import { ChevronLeft, Phone, Mail, Clock, CheckCircle2 } from "lucide-react";
 
 interface LeadDetailData {
   lead: {
@@ -93,7 +93,7 @@ export default function LeadDetailPage({ params }: { params: Promise<{ id: strin
           href="/admin/leads"
           className="p-2 rounded-xl bg-white border border-[#E8DCD5] text-[#997C70] hover:text-[#685752]"
         >
-          <ArrowLeft className="w-4 h-4" />
+          <ChevronLeft className="w-4 h-4" />
         </Link>
         <div>
           <h1 className="text-2xl font-bold text-[#685752] font-serif-italic">{lead.name}</h1>

@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Clock, Users, ArrowRight } from "lucide-react";
+import { Clock, Users, ChevronRight } from "lucide-react";
 import { Tour } from "../data/toursData";
 
 interface AnimatedTourCardProps {
@@ -123,7 +123,7 @@ export default function AnimatedTourCard({
             className="inline-flex items-center gap-1 px-4 py-2 rounded-full bg-[#685752] hover:bg-[#8EB486] text-white text-xs font-semibold transition-colors"
           >
             <span>Explore</span>
-            <ArrowRight className="w-3.5 h-3.5" />
+            <ChevronRight className="w-3.5 h-3.5" />
           </Link>
         </div>
       </div>
