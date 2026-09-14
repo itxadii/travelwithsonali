@@ -27,6 +27,11 @@ import InstagramRoundCarousel from "./components/InstagramRoundCarousel";
 import AmbientCircles from "./components/AmbientCircles";
 import { ParallaxHeroImages } from "@/components/ui/parallax-hero-images";
 import { SquigglyText } from "@/components/ui/squiggly-text";
+import {
+  DraggableCardBody,
+  DraggableCardContainer,
+} from "@/components/ui/draggable-card";
+import { cn } from "@/lib/utils";
 
 export const REAL_DESTINATION_IMAGES = [
   "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=1200&q=80", // Manali & Kasol
@@ -312,6 +317,8 @@ export default function HomeClientView({ tours, destinations, instagramData }: H
 
       {/* ================= SECTION 3: MEET SONALI & WHY TRAVEL WITH US ================= */}
       <section className="relative w-full py-24 bg-[#FDF7F4] border-t border-[#E8DCD5] overflow-hidden">
+        {/* Parallax Hero Images floating with mouse move */}
+        <ParallaxHeroImages images={destinationImages} />
         <AmbientCircles variant="2" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
@@ -333,44 +340,24 @@ export default function HomeClientView({ tours, destinations, instagramData }: H
             </p>
           </div>
 
-          <div className="relative flex flex-col lg:flex-row items-center justify-between">
-            {/* Left: Sonali Founder Card (Layered on top with z-20 so cards slide under it) */}
-            <div className="relative z-20 shrink-0 w-full max-w-[360px] sm:max-w-[400px] lg:w-[420px] shadow-[25px_0_45px_-12px_rgba(0,0,0,0.18)] rounded-[48px] sm:rounded-[60px]">
-              <div className="relative h-[460px] sm:h-[520px] rounded-[48px] sm:rounded-[60px] overflow-hidden border-4 border-[#FDF7F4] bg-[#4C3E3A] group shadow-2xl">
-                <Image
-                  src="/images/sonali.png"
-                  alt="Meet Sonali Palekar - Founder & Host"
-                  fill
-                  className="object-cover object-top group-hover:scale-105 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
-                <div className="absolute bottom-6 left-6 right-6 text-white space-y-2.5">
-                  <span className="inline-block px-3.5 py-1 rounded-full bg-[#8EB486] text-xs font-semibold uppercase tracking-wider shadow-sm">
-                    Founder & Tour Leader
-                  </span>
-                  <h3 className="text-2xl sm:text-3xl font-bold font-serif-italic">Sonali Palekar</h3>
-                  <p className="text-xs sm:text-sm text-stone-200 leading-relaxed">
-                    &ldquo;Every trip is personal. I travel with you as a friend, ensuring every memory is authentic, safe, and unforgettable.&rdquo;
-                  </p>
-                </div>
+          {/* Horizontally Moving Core Trip Pillars Marquee */}
+          <div className="relative w-full overflow-hidden py-4 group">
+            {/* Framed Viewport */}
+            <div className="rounded-[36px] sm:rounded-[44px] border border-[#E8DCD5]/80 bg-[#F7EFEA]/60 backdrop-blur-xs p-4 sm:p-6 overflow-hidden relative shadow-inner">
+              
+              {/* Frame Header Label */}
+              <div className="flex items-center justify-between px-2 pb-4 text-xs font-semibold text-[#997C70]">
+                <span className="uppercase tracking-widest text-[#8EB486] flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5" />
+                  Core Trip Pillars
+                </span>
+                <span className="text-[11px] text-[#997C70]/80">
+                  Hover to pause
+                </span>
               </div>
-            </div>
 
-            {/* Right: Horizontally Moving Cards in a Frame Going Under Sonali's Photo */}
-            <div className="relative z-10 w-full lg:flex-1 -mt-10 sm:-mt-14 lg:mt-0 lg:-ml-32 overflow-hidden py-4 group">
-              {/* Framed Viewport */}
-              <div className="rounded-[36px] sm:rounded-[44px] border border-[#E8DCD5]/80 bg-[#F7EFEA]/60 backdrop-blur-xs p-4 sm:p-6 overflow-hidden relative shadow-inner">
-                
-                {/* Frame Header Label */}
-                <div className="flex items-center justify-between px-2 pb-4 text-xs font-semibold text-[#997C70]">
-                  <span className="uppercase tracking-widest text-[#8EB486] flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5" />
-                    Core Trip Pillars
-                  </span>
-                  <span className="text-[11px] text-[#997C70]/80">
-                    Hover to pause
-                  </span>
-                </div>
+              {/* Left Gradient Fade */}
+              <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-24 bg-gradient-to-r from-[#F7EFEA] to-transparent pointer-events-none z-10" />
 
                 {/* Horizontally moving marquee track */}
                 <div className="animate-marquee-left flex gap-6 items-stretch">
@@ -515,105 +502,164 @@ export default function HomeClientView({ tours, destinations, instagramData }: H
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ================= SECTION 4: DESTINATIONS PARALLAX SHOWCASE ================= */}
-      <section className="relative flex min-h-[85vh] lg:min-h-screen w-full items-center justify-center overflow-hidden bg-[#F7EFEA] border-t border-[#E8DCD5]">
-        <ParallaxHeroImages images={destinationImages} />
-        
-        <div className="relative z-20 mx-auto flex max-w-2xl lg:max-w-3xl flex-col items-center gap-5 px-6 sm:px-10 py-10 sm:py-12 rounded-3xl bg-[#F7EFEA]/80 backdrop-blur-md border border-white/80 shadow-xl shadow-stone-900/5 text-center mx-4">
-          <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full border border-[#8EB486]/30 shadow-xs">
-            Handpicked Places & Sacred Valleys
-          </span>
-          
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-[#685752] font-serif-italic drop-shadow-xs">
-            Explore Top{" "}
-            <SquigglyText
-              stepDuration={70}
-              scale={[5, 8]}
-              className="text-[#8EB486]"
-            >
-              Destinations
-            </SquigglyText>
-          </h2>
-          
-          <p className="max-w-lg text-sm sm:text-base text-[#7A6862] leading-relaxed">
-            Move your mouse to see the parallax effect. Images at different depths
-            move at different speeds as you discover our dream mountain escapes and serene valleys.
-          </p>
-
-          <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-            <Link
-              href="/destinations"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white text-xs font-bold tracking-wider uppercase shadow-md hover:shadow-lg transition-all active:scale-95 cursor-pointer"
-            >
-              <span>View All Destinations</span>
-              <ChevronRight className="w-3.5 h-3.5" />
-            </Link>
-            <Link
-              href="/tours"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/90 hover:bg-white text-[#685752] border border-[#E8DCD5] text-xs font-bold tracking-wider uppercase shadow-xs hover:shadow-sm transition-all active:scale-95 cursor-pointer"
-            >
-              <span>Explore Tours</span>
-              <ChevronRight className="w-3.5 h-3.5 text-[#8EB486]" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Destinations Grid */}
-      <section className="relative w-full py-24 bg-[#FDF7F4] border-t border-[#E8DCD5] overflow-hidden">
-        <AmbientCircles variant="3" />
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
-            <div>
-              <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold">
-                Curated Itineraries
-              </span>
-              <h3 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#685752] mt-2">
-                Featured Departure{" "}
-                <SquigglyText
-                  stepDuration={70}
-                  scale={[4, 7]}
-                  className="text-[#8EB486] font-serif-italic"
-                >
-                  Highlights
-                </SquigglyText>
-              </h3>
-            </div>
-            <Link href="/destinations" className="mt-4 md:mt-0 inline-flex items-center gap-1 text-sm font-semibold text-[#8EB486] hover:underline group">
-              <span>View All Destinations</span>
-              <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {destinations.slice(0, 6).map((dest) => (
-              <Link
-                key={dest.id}
-                href={`/destinations/${dest.slug}`}
-                className="group relative h-80 rounded-3xl overflow-hidden shadow-md border border-[#E8DCD5] block"
+      {/* ================= SECTION 4: DRAGGABLE DESTINATIONS SHOWCASE ================= */}
+      <section className="relative flex min-h-[90vh] lg:min-h-screen w-full items-center justify-center overflow-clip bg-[#F7EFEA] border-t border-[#E8DCD5]">
+        <DraggableCardContainer className="relative flex min-h-[90vh] lg:min-h-screen w-full items-center justify-center overflow-clip py-16">
+          {/* Centered Hero Heading & Call to Action */}
+          <div className="pointer-events-none relative z-0 mx-auto flex max-w-2xl flex-col items-center gap-5 px-6 py-8 text-center select-none">
+            <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full border border-[#8EB486]/30 shadow-xs">
+              Handpicked Places & Sacred Valleys
+            </span>
+            
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-[#685752] font-serif-italic drop-shadow-xs">
+              Explore Top{" "}
+              <SquigglyText
+                stepDuration={70}
+                scale={[5, 8]}
+                className="text-[#8EB486]"
               >
-                <Image
-                  src={dest.image}
-                  alt={dest.name}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                Destinations
+              </SquigglyText>
+            </h2>
+            
+            <p className="max-w-md text-sm sm:text-base text-[#7A6862] leading-relaxed">
+              Drag and toss the destination polaroids across the screen to explore our dream mountain escapes, sacred shrines, and serene valleys.
+            </p>
 
-                <div className="absolute bottom-6 left-6 right-6 text-white space-y-1">
-                  <span className="text-[11px] font-semibold uppercase tracking-wider text-[#8EB486] bg-black/60 px-3 py-1 rounded-full backdrop-blur-xs inline-block">
-                    {dest.bestTimeToVisit}
-                  </span>
-                  <h4 className="text-2xl font-bold font-serif-italic">{dest.name}</h4>
-                  <p className="text-xs text-stone-300 line-clamp-1 italic">&ldquo;{dest.tagline}&rdquo;</p>
-                </div>
+            <div className="pointer-events-auto flex flex-wrap items-center justify-center gap-3 pt-2">
+              <Link
+                href="/destinations"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white text-xs font-bold tracking-wider uppercase shadow-md hover:shadow-lg transition-all active:scale-95 cursor-pointer"
+              >
+                <span>View All Destinations</span>
+                <ChevronRight className="w-3.5 h-3.5" />
               </Link>
-            ))}
+              <Link
+                href="/tours"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white hover:bg-[#FDF7F4] text-[#685752] border border-[#E8DCD5] text-xs font-bold tracking-wider uppercase shadow-xs hover:shadow-sm transition-all active:scale-95 cursor-pointer"
+              >
+                <span>Explore Tours</span>
+                <ChevronRight className="w-3.5 h-3.5 text-[#8EB486]" />
+              </Link>
+            </div>
+
+            <div className="inline-flex items-center gap-2 pt-1 text-[11px] font-semibold text-[#997C70]/70 tracking-widest uppercase">
+              <span>✦ Drag any card</span>
+              <span>•</span>
+              <span>Fling to toss</span>
+            </div>
           </div>
-        </div>
+
+          {/* Draggable Destination Polaroid Cards */}
+          {[
+            {
+              title: "Spiti Valley",
+              subtitle: "Ancient Monasteries & Moon Lakes",
+              tag: "Himachal",
+              badge: "1 Batch",
+              slug: "spiti",
+              image: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1200&q=80",
+              className: "absolute top-8 left-[6%] sm:left-[10%] lg:left-[14%] rotate-[-6deg]",
+            },
+            {
+              title: "Mystic Meghalaya",
+              subtitle: "Waterfalls & Living Root Bridges",
+              tag: "Northeast",
+              badge: "Popular",
+              slug: "meghalaya",
+              image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80",
+              className: "absolute top-10 right-[6%] sm:right-[10%] lg:right-[14%] rotate-[7deg]",
+            },
+            {
+              title: "Kedarnath Dham",
+              subtitle: "12th Jyotirlinga & Garhwal Trek",
+              tag: "Uttarakhand",
+              badge: "Spiritual",
+              slug: "kedarnath",
+              image: "https://images.unsplash.com/photo-1596895111956-bf1cf0599ce5?auto=format&fit=crop&w=1200&q=80",
+              className: "absolute bottom-12 left-[5%] sm:left-[8%] lg:left-[12%] rotate-[5deg]",
+            },
+            {
+              title: "Kashmir Valley",
+              subtitle: "Paradise on Earth & Dal Lake",
+              tag: "J&K",
+              badge: "Trending",
+              slug: "kashmir",
+              image: "https://images.unsplash.com/photo-1595815771614-ade9d652a65d?auto=format&fit=crop&w=1200&q=80",
+              className: "absolute bottom-10 right-[5%] sm:right-[8%] lg:right-[12%] rotate-[-6deg]",
+            },
+            {
+              title: "Manali & Kasol",
+              subtitle: "Pine Forests & Parvati Riverside",
+              tag: "Himachal",
+              badge: "Weekly",
+              slug: "manali",
+              image: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=1200&q=80",
+              className: "absolute top-4 left-[34%] sm:left-[38%] rotate-[3deg] hidden md:block",
+            },
+            {
+              title: "Rajasthan Desert",
+              subtitle: "Golden Forts & Thar Dunes",
+              tag: "Royal Heritage",
+              badge: "Winter",
+              slug: "rajasthan",
+              image: "https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&w=1200&q=80",
+              className: "absolute bottom-6 left-[34%] sm:left-[37%] rotate-[-4deg] hidden md:block",
+            },
+            {
+              title: "Nepal & Muktinath",
+              subtitle: "Annapurna Peaks & Sacred Temples",
+              tag: "Himalayas",
+              badge: "Cross-Border",
+              slug: "nepal",
+              image: "https://images.unsplash.com/photo-1581793745862-99fde7fa73d2?auto=format&fit=crop&w=1200&q=80",
+              className: "absolute top-36 right-[26%] rotate-[9deg] hidden lg:block",
+            },
+          ].map((item) => (
+            <DraggableCardBody
+              key={item.title}
+              className={cn(
+                "w-72 sm:w-80 min-h-0 p-3.5 sm:p-4 rounded-3xl bg-[#FDF7F4] border border-[#E8DCD5] shadow-[0_20px_45px_-10px_rgba(104,87,82,0.2)] hover:shadow-[0_25px_55px_-8px_rgba(104,87,82,0.28)] z-10 select-none",
+                item.className
+              )}
+            >
+              <div className="relative h-56 sm:h-64 w-full overflow-hidden rounded-2xl bg-stone-200">
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="pointer-events-none h-full w-full object-cover select-none"
+                />
+                <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-[11px] font-semibold border border-white/20">
+                  {item.tag}
+                </div>
+                <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-[#8EB486] text-white text-[11px] font-bold shadow-xs">
+                  {item.badge}
+                </div>
+              </div>
+
+              <div className="mt-3.5 space-y-1">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xl font-bold font-serif-italic text-[#685752]">
+                    {item.title}
+                  </h3>
+                  <Link
+                    href={`/destinations/${item.slug}`}
+                    className="text-xs font-semibold text-[#8EB486] hover:text-[#7A9F73] flex items-center gap-0.5"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <span>Explore</span>
+                    <ChevronRight className="w-3 h-3" />
+                  </Link>
+                </div>
+                <p className="text-xs text-[#7A6862] line-clamp-1">
+                  {item.subtitle}
+                </p>
+              </div>
+            </DraggableCardBody>
+          ))}
+        </DraggableCardContainer>
       </section>
 
       {/* ================= SECTION 5: TESTIMONIALS ================= */}

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -13,7 +13,6 @@ import {
   ChevronRight,
   Sparkles,
   ArrowUpRight,
-  CheckCircle2,
 } from "lucide-react";
 import { SquigglyText } from "@/components/ui/squiggly-text";
 
@@ -22,17 +21,6 @@ interface FooterProps {
 }
 
 export default function Footer({ onEnquireClick }: FooterProps) {
-  const [email, setEmail] = useState("");
-  const [subscribed, setSubscribed] = useState(false);
-
-  const handleSubscribe = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email || !email.includes("@")) return;
-    setSubscribed(true);
-    setTimeout(() => {
-      setEmail("");
-    }, 3000);
-  };
 
   return (
     <footer className="w-full bg-[#140F0E] relative overflow-hidden">
@@ -353,35 +341,7 @@ export default function Footer({ onEnquireClick }: FooterProps) {
                   )}
                 </div>
 
-                {/* Newsletter / Trip Updates Input (Stylized like the Jitter subscription box) */}
-                <form
-                  onSubmit={handleSubscribe}
-                  className="pt-3 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-2.5 max-w-md mx-auto lg:mx-0"
-                >
-                  <div className="relative w-full sm:w-72">
-                    <input
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="Get early batch updates (email)"
-                      disabled={subscribed}
-                      className="w-full px-4 py-2.5 rounded-full bg-black/40 border border-white/20 text-white placeholder-stone-400 text-xs focus:outline-none focus:border-[#8EB486] transition-colors"
-                    />
-                  </div>
-                  <button
-                    type="submit"
-                    disabled={subscribed}
-                    className="w-full sm:w-auto px-5 py-2.5 rounded-full bg-white/20 hover:bg-[#8EB486] text-white text-xs font-bold uppercase tracking-wider transition-all cursor-pointer shrink-0 disabled:opacity-50"
-                  >
-                    {subscribed ? (
-                      <span className="flex items-center gap-1 text-[#8EB486]">
-                        <CheckCircle2 className="w-3.5 h-3.5" /> Joined
-                      </span>
-                    ) : (
-                      "Subscribe"
-                    )}
-                  </button>
-                </form>
+
 
               </div>
 
