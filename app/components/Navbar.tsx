@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, X, User, ChevronRight, Music } from "lucide-react";
+import { X, User, ChevronRight, Music } from "lucide-react";
 import EnquireModal from "./EnquireModal";
 import { useAudio } from "../context/AudioContext";
 
@@ -39,6 +39,42 @@ export default function Navbar({ logoName = "Travel With Sonali" }: NavbarProps)
   const [scrolled, setScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const pathname = usePathname();
+
+  // Touch swipe gesture refs
+  const touchStartX = useRef<number | null>(null);
+  const touchCurrentX = useRef<number | null>(null);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchCurrentX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStartX.current !== null && touchCurrentX.current !== null) {
+      const diff = touchCurrentX.current - touchStartX.current;
+      // Swiping right by > 60px closes the drawer
+      if (diff > 60) {
+        setMobileMenuOpen(false);
+      }
+    }
+    touchStartX.current = null;
+    touchCurrentX.current = null;
+  };
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
 
   // Reset visibility and close mobile menu on route change
   useEffect(() => {
@@ -106,28 +142,24 @@ export default function Navbar({ logoName = "Travel With Sonali" }: NavbarProps)
   return (
     <>
       <header
-        className={`w-full sticky top-0 z-40 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform border-b ${
-          isDarkHero
+        className={`w-full sticky top-0 z-40 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform border-b ${isDarkHero
             ? "bg-transparent text-white border-white/20"
             : "bg-[#FDF7F4]/85 backdrop-blur-md text-slate-900 border-stone-300/70 shadow-xs"
-        } ${
-          isVisible || mobileMenuOpen ? "translate-y-0" : "-translate-y-full pointer-events-none"
-        }`}
+          } ${isVisible || mobileMenuOpen ? "translate-y-0" : "-translate-y-full pointer-events-none"
+          }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div
-            className={`flex items-stretch h-14 sm:h-16 border-x transition-colors duration-300 ${
-              isDarkHero ? "border-white/20" : "border-stone-300/70"
-            }`}
+            className={`flex items-stretch h-14 sm:h-16 border-x transition-colors duration-300 ${isDarkHero ? "border-white/20" : "border-stone-300/70"
+              }`}
           >
             {/* 1. Left Logo Cell with Divider */}
             <Link
               href="/"
-              className={`flex items-center gap-3 px-3.5 sm:px-5 shrink-0 border-r transition-colors group cursor-pointer ${
-                isDarkHero
+              className={`flex items-center gap-3 px-3.5 sm:px-5 shrink-0 border-r transition-colors group cursor-pointer ${isDarkHero
                   ? "border-white/20 hover:bg-white/5"
                   : "border-stone-300/70 hover:bg-black/5"
-              }`}
+                }`}
               aria-label="Travel With Sonali Homepage"
             >
               <div className="relative flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-full overflow-hidden border border-white/40 shadow-sm bg-white shrink-0">
@@ -142,20 +174,18 @@ export default function Navbar({ logoName = "Travel With Sonali" }: NavbarProps)
               </div>
               <div className="flex flex-col">
                 <span
-                  className={`text-sm sm:text-base font-serif-italic font-semibold tracking-tight transition-colors leading-tight ${
-                    isDarkHero
+                  className={`text-sm sm:text-base font-serif-italic font-semibold tracking-tight transition-colors leading-tight ${isDarkHero
                       ? "text-white group-hover:text-[#8EB486] drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]"
                       : "text-slate-900 group-hover:text-[#8EB486]"
-                  }`}
+                    }`}
                 >
                   {logoName}
                 </span>
                 <span
-                  className={`text-[8px] sm:text-[9px] tracking-widest uppercase font-medium -mt-0.5 transition-colors ${
-                    isDarkHero
+                  className={`text-[8px] sm:text-[9px] tracking-widest uppercase font-medium -mt-0.5 transition-colors ${isDarkHero
                       ? "text-white/80 drop-shadow-[0_1px_1px_rgba(0,0,0,0.8)]"
                       : "text-slate-500"
-                  }`}
+                    }`}
                 >
                   Group Experiences
                 </span>
@@ -170,24 +200,20 @@ export default function Navbar({ logoName = "Travel With Sonali" }: NavbarProps)
                   <Link
                     key={link.href}
                     href={link.href}
-                    className={`relative flex items-center px-4 xl:px-5 h-full text-xs xl:text-sm font-medium transition-all duration-200 border-r group cursor-pointer ${
-                      isDarkHero
-                        ? `border-white/20 ${
-                            isActive
-                              ? "text-[#8EB486] bg-white/10 font-semibold"
-                              : "text-white/90 hover:text-white hover:bg-white/10"
-                          }`
-                        : `border-stone-300/70 ${
-                            isActive
-                              ? "text-[#8EB486] bg-[#8EB486]/10 font-semibold"
-                              : "text-slate-700 hover:text-slate-900 hover:bg-black/5"
-                          }`
-                    }`}
+                    className={`relative flex items-center px-4 xl:px-5 h-full text-xs xl:text-sm font-medium transition-all duration-200 border-r group cursor-pointer ${isDarkHero
+                        ? `border-white/20 ${isActive
+                          ? "text-[#8EB486] bg-white/10 font-semibold"
+                          : "text-white/90 hover:text-white hover:bg-white/10"
+                        }`
+                        : `border-stone-300/70 ${isActive
+                          ? "text-[#8EB486] bg-[#8EB486]/10 font-semibold"
+                          : "text-slate-700 hover:text-slate-900 hover:bg-black/5"
+                        }`
+                      }`}
                   >
                     <span
-                      className={`relative z-10 transition-colors ${
-                        isDarkHero ? "drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]" : ""
-                      }`}
+                      className={`relative z-10 transition-colors ${isDarkHero ? "drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]" : ""
+                        }`}
                     >
                       {link.label}
                     </span>
@@ -206,20 +232,18 @@ export default function Navbar({ logoName = "Travel With Sonali" }: NavbarProps)
 
             {/* 4. Ambient Music Play / Stop Control Cell */}
             <div
-              className={`hidden sm:flex items-stretch border-l transition-colors duration-300 ${
-                isDarkHero ? "border-white/20" : "border-stone-300/70"
-              }`}
+              className={`hidden sm:flex items-stretch border-l transition-colors duration-300 ${isDarkHero ? "border-white/20" : "border-stone-300/70"
+                }`}
             >
               <button
                 onClick={toggleMusic}
                 type="button"
                 aria-label={isPlaying ? "Stop ambient music" : "Play ambient music"}
                 title={isPlaying ? "Music is Playing (Click to mute)" : "Music is Muted (Click to play)"}
-                className={`flex items-center gap-1.5 px-3 sm:px-3.5 h-full text-xs font-semibold transition-all cursor-pointer group ${
-                  isDarkHero
+                className={`flex items-center gap-1.5 px-3 sm:px-3.5 h-full text-xs font-semibold transition-all cursor-pointer group ${isDarkHero
                     ? "text-white/90 hover:text-white hover:bg-white/10"
                     : "text-slate-700 hover:text-slate-900 hover:bg-black/5"
-                }`}
+                  }`}
               >
                 {isPlaying ? (
                   <>
@@ -241,17 +265,15 @@ export default function Navbar({ logoName = "Travel With Sonali" }: NavbarProps)
 
             {/* 5. Secondary Action Cell (Login / Portal) */}
             <div
-              className={`hidden sm:flex items-stretch border-l transition-colors duration-300 ${
-                isDarkHero ? "border-white/20" : "border-stone-300/70"
-              }`}
+              className={`hidden sm:flex items-stretch border-l transition-colors duration-300 ${isDarkHero ? "border-white/20" : "border-stone-300/70"
+                }`}
             >
               <Link
                 href="/portal/login"
-                className={`flex items-center gap-2 px-4 sm:px-5 h-full text-xs sm:text-sm font-medium transition-colors ${
-                  isDarkHero
+                className={`flex items-center gap-2 px-4 sm:px-5 h-full text-xs sm:text-sm font-medium transition-colors ${isDarkHero
                     ? "text-white/90 hover:text-white hover:bg-white/10"
                     : "text-slate-700 hover:text-slate-900 hover:bg-black/5"
-                }`}
+                  }`}
               >
                 <User className="w-3.5 h-3.5 opacity-80" />
                 <span>Login</span>
@@ -261,35 +283,31 @@ export default function Navbar({ logoName = "Travel With Sonali" }: NavbarProps)
             {/* 5. Primary CTA (Explore Tours >) */}
             <button
               onClick={() => setEnquireOpen(true)}
-              className={`hidden sm:flex items-center gap-2 px-5 sm:px-6 h-full font-medium text-xs sm:text-sm border-l transition-all cursor-pointer group ${
-                isDarkHero
+              className={`hidden sm:flex items-center gap-2 px-5 sm:px-6 h-full font-medium text-xs sm:text-sm border-l transition-all cursor-pointer group ${isDarkHero
                   ? "bg-transparent hover:bg-white/10 text-white border-white/20"
                   : "bg-transparent hover:bg-black/5 text-slate-900 border-stone-300/70"
-              }`}
+                }`}
             >
               <span className="group-hover:text-[#8EB486] transition-colors">Explore Tours</span>
               <ChevronRight
-                className={`w-4 h-4 transition-all group-hover:text-[#8EB486] group-hover:translate-x-0.5 ${
-                  isDarkHero ? "text-white/70" : "text-slate-500"
-                }`}
+                className={`w-4 h-4 transition-all group-hover:text-[#8EB486] group-hover:translate-x-0.5 ${isDarkHero ? "text-white/70" : "text-slate-500"
+                  }`}
               />
             </button>
 
             {/* 6. Mobile Toggle, Music & Login */}
             <div
-              className={`flex lg:hidden items-center border-l transition-colors duration-300 ${
-                isDarkHero ? "border-white/20" : "border-stone-300/70"
-              }`}
+              className={`flex lg:hidden items-center border-l transition-colors duration-300 ${isDarkHero ? "border-white/20" : "border-stone-300/70"
+                }`}
             >
               {/* Mobile Music Play / Stop Toggle Button */}
               <button
                 onClick={toggleMusic}
                 type="button"
-                className={`px-3.5 h-full flex items-center justify-center border-r transition-colors cursor-pointer ${
-                  isDarkHero
+                className={`px-3.5 h-full flex items-center justify-center border-r transition-colors cursor-pointer ${isDarkHero
                     ? "text-white/90 hover:bg-white/10 border-white/20"
                     : "text-slate-700 hover:bg-black/5 border-stone-300/70"
-                }`}
+                  }`}
                 title={isPlaying ? "Stop ambient music" : "Play ambient music"}
                 aria-label={isPlaying ? "Stop ambient music" : "Play ambient music"}
               >
@@ -305,89 +323,139 @@ export default function Navbar({ logoName = "Travel With Sonali" }: NavbarProps)
 
               <Link
                 href="/portal/login"
-                className={`px-3.5 h-full flex items-center justify-center border-r sm:hidden transition-colors ${
-                  isDarkHero
+                className={`px-3.5 h-full flex items-center justify-center border-r sm:hidden transition-colors ${isDarkHero
                     ? "text-white/90 hover:bg-white/10 border-white/20"
                     : "text-slate-700 hover:bg-black/5 border-stone-300/70"
-                }`}
+                  }`}
                 aria-label="Login to Customer Portal"
               >
                 <User className="w-4 h-4" />
               </Link>
               <button
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className={`px-4 h-full flex items-center justify-center cursor-pointer transition-colors ${
-                  isDarkHero ? "text-white/90 hover:bg-white/10" : "text-slate-800 hover:bg-black/5"
-                }`}
-                aria-label="Toggle Navigation Menu"
+                onClick={() => setMobileMenuOpen(true)}
+                className={`px-4 h-full flex items-center justify-center cursor-pointer transition-colors group ${isDarkHero ? "text-white/90 hover:bg-white/10" : "text-slate-800 hover:bg-black/5"
+                  }`}
+                aria-label="Open Navigation Menu"
               >
-                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                {/* 2 lines: one is bigger/longer than the other */}
+                <div className="flex flex-col items-end justify-center gap-1.5 w-5 h-5" aria-hidden="true">
+                  <span className="block h-[2px] w-5 rounded-full bg-current transition-all duration-300" />
+                  <span className="block h-[2px] w-3 rounded-full bg-current transition-all duration-300 group-hover:w-5" />
+                </div>
               </button>
             </div>
           </div>
         </div>
-
-        {/* Mobile Drawer Menu */}
-        {mobileMenuOpen && (
-          <div className="relative z-20 lg:hidden border-t border-stone-300/70 shadow-2xl animate-fade-in bg-[#FDF7F4] text-slate-900 divide-y divide-stone-200">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className={`flex items-center justify-between px-5 py-3.5 text-sm font-medium transition-colors ${
-                  pathname === link.href
-                    ? "bg-[#8EB486]/15 text-[#8EB486] font-bold"
-                    : "text-slate-800 hover:bg-stone-100"
-                }`}
-              >
-                <span>{link.label}</span>
-                <ChevronRight className="w-4 h-4 text-stone-400" />
-              </Link>
-            ))}
-
-            {/* Mobile Drawer Ambient Music Control Row */}
-            <div className="flex items-center justify-between px-5 py-3 text-xs bg-stone-100/70 border-t border-stone-200">
-              <div className="flex items-center gap-2 font-semibold text-slate-700">
-                <Music className={`w-4 h-4 ${isPlaying ? "text-[#8EB486]" : "text-stone-400"}`} />
-                <span>Ambient Mountain Sound</span>
-              </div>
-              <button
-                onClick={toggleMusic}
-                type="button"
-                className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all shadow-xs cursor-pointer ${
-                  isPlaying
-                    ? "bg-[#8EB486] text-white hover:bg-[#7A9F73]"
-                    : "bg-white border border-stone-300 text-stone-600 hover:bg-stone-50"
-                }`}
-              >
-                {isPlaying ? "Stop Sound ⏸" : "Play Sound ▶"}
-              </button>
-            </div>
-
-            <div className="p-4 space-y-2.5 bg-stone-100/60">
-              <Link
-                href="/portal/login"
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center justify-center gap-2 w-full text-center px-5 py-3 rounded-full font-bold text-xs tracking-wider uppercase bg-white border border-stone-300 text-slate-800 hover:bg-stone-50 transition-colors shadow-xs"
-              >
-                <User className="w-4 h-4" />
-                <span>CUSTOMER LOGIN</span>
-              </Link>
-              <button
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  setEnquireOpen(true);
-                }}
-                className="flex items-center justify-center gap-2 w-full text-center px-5 py-3 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white font-bold text-xs tracking-wider uppercase shadow-sm cursor-pointer"
-              >
-                <span>EXPLORE TOURS</span>
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-        )}
       </header>
+
+      {/* ================= FULLSCREEN MOBILE SLIDE DRAWER ================= */}
+      {/* 1. Backdrop Overlay */}
+      <div
+        onClick={() => setMobileMenuOpen(false)}
+        className={`fixed inset-0 bg-black/60 backdrop-blur-xs z-50 lg:hidden transition-opacity duration-300 ${mobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+          }`}
+        aria-hidden="true"
+      />
+
+      {/* 2. Slide-In Fullscreen Panel (Slides from Right, Swipeable to Right) */}
+      <div
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        className={`fixed inset-y-0 right-0 w-full sm:w-[420px] h-full bg-[#FFFDF9] z-50 shadow-2xl flex flex-col justify-between transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] transform lg:hidden will-change-transform ${mobileMenuOpen ? "translate-x-0" : "translate-x-full"
+          }`}
+        role="dialog"
+        aria-modal="true"
+      >
+        {/* Drawer Top Header */}
+        <div className="h-16 px-5 border-b border-[#E8DCD5] flex items-center justify-between shrink-0 bg-[#FFFDF9]">
+          <Link
+            href="/"
+            onClick={() => setMobileMenuOpen(false)}
+            className="flex items-center gap-2.5 min-w-0"
+          >
+            <div className="relative flex items-center justify-center w-8 h-8 rounded-full overflow-hidden border border-[#E8DCD5] shadow-xs shrink-0 bg-white">
+              <Image
+                src="/travelwithsonalilogo.jpg"
+                alt="Travel With Sonali Logo"
+                width={32}
+                height={32}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="flex flex-col min-w-0">
+              <span className="text-sm font-bold tracking-tight text-[#685752] leading-tight font-serif-italic truncate">
+                {logoName}
+              </span>
+              <span className="text-[9px] text-[#997C70] tracking-wider uppercase font-semibold">
+                Group Experiences
+              </span>
+            </div>
+          </Link>
+
+          <button
+            onClick={() => setMobileMenuOpen(false)}
+            className="p-2 rounded-xl text-[#997C70] hover:text-[#685752] hover:bg-[#F7EFEA] transition-colors cursor-pointer"
+            aria-label="Close navigation menu"
+            title="Close menu"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        {/* Drawer Body: Navigation Links */}
+        <div className="flex-1 overflow-y-auto px-5 py-6">
+          <div className="space-y-1">
+            <span className="text-[10px] uppercase tracking-widest text-[#997C70] font-bold px-3 block mb-2">
+              Menu Navigation
+            </span>
+            {navLinks.map((link, idx) => {
+              const isActive = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`flex items-center justify-between px-4 py-3 rounded-2xl text-base font-semibold transition-all ${isActive
+                      ? "bg-[#8EB486] text-white shadow-md shadow-[#8EB486]/20 font-bold"
+                      : "text-[#685752] hover:bg-[#F7EFEA] active:bg-[#F4ECE7]"
+                    }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <span className={`text-xs font-mono ${isActive ? "text-white/80" : "text-[#997C70]"}`}>
+                      {String(idx + 1).padStart(2, "0")}
+                    </span>
+                    <span>{link.label}</span>
+                  </div>
+                  <ChevronRight className={`w-4 h-4 ${isActive ? "text-white" : "text-[#997C70]"}`} />
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Drawer Bottom Actions */}
+        <div className="p-5 border-t border-[#E8DCD5] space-y-2.5 shrink-0 bg-[#FFFDF9]">
+          <Link
+            href="/portal/login"
+            onClick={() => setMobileMenuOpen(false)}
+            className="flex items-center justify-center gap-2 w-full text-center px-5 py-3 rounded-full font-bold text-xs tracking-wider uppercase bg-white border border-[#E8DCD5] text-[#685752] hover:bg-[#F7EFEA] transition-colors shadow-xs"
+          >
+            <User className="w-4 h-4" />
+            <span>CUSTOMER LOGIN / MY PORTAL</span>
+          </Link>
+          <button
+            onClick={() => {
+              setMobileMenuOpen(false);
+              setEnquireOpen(true);
+            }}
+            className="flex items-center justify-center gap-2 w-full text-center px-5 py-3 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white font-bold text-xs tracking-wider uppercase shadow-md active:scale-95 transition-all cursor-pointer"
+          >
+            <span>EXPLORE TOURS</span>
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
 
       {/* Global Enquire Modal */}
       <EnquireModal isOpen={enquireOpen} onClose={() => setEnquireOpen(false)} />
