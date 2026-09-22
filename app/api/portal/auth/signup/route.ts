@@ -4,6 +4,7 @@ import { customers, customerSessions } from "@/db/schema";
 import { eq, or } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
+import { findCustomerByIdentifier } from "@/lib/portal/auth";
 
 const CUSTOMER_COOKIE_NAME = "customer_session";
 
@@ -23,18 +24,17 @@ export async function POST(req: Request) {
     const cleanPhone = phone.trim();
     const cleanEmail = email ? email.trim().toLowerCase() : null;
 
-    // Check if customer already exists by phone or email
-    const existing = await db
-      .select()
-      .from(customers)
-      .where(or(eq(customers.phone, cleanPhone), cleanEmail ? eq(customers.email, cleanEmail) : eq(customers.phone, cleanPhone)));
+    // Check if customer already exists by phone or email (using resilient normalization)
+    const existingCustomer =
+      (await findCustomerByIdentifier(cleanPhone)) ||
+      (cleanEmail ? await findCustomerByIdentifier(cleanEmail) : null);
 
     let customerId = "";
 
     const passwordHash = await bcrypt.hash(password, 10);
 
-    if (existing.length > 0) {
-      const cust = existing[0];
+    if (existingCustomer) {
+      const cust = existingCustomer;
       customerId = cust.id;
 
       // If user already has a password set, instruct them to log in instead

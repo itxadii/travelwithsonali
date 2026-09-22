@@ -34,8 +34,14 @@ export default function PortalLayoutClient({ customer, children }: PortalLayoutC
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(1);
 
+  const isAuthPage =
+    pathname === "/portal/login" ||
+    pathname === "/portal/signup" ||
+    pathname === "/portal/forgot-password" ||
+    pathname === "/portal/reset-password";
+
   useEffect(() => {
-    if (pathname === "/portal/login" || pathname === "/portal/signup" || !customer) return;
+    if (isAuthPage || !customer) return;
 
     async function fetchNotifs() {
       try {
@@ -49,9 +55,9 @@ export default function PortalLayoutClient({ customer, children }: PortalLayoutC
       }
     }
     fetchNotifs();
-  }, [pathname, customer]);
+  }, [pathname, customer, isAuthPage]);
 
-  if (pathname === "/portal/login" || pathname === "/portal/signup" || !customer) {
+  if (isAuthPage || !customer) {
     return <>{children}</>;
   }
 

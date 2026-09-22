@@ -26,7 +26,12 @@ export function middleware(request: NextRequest) {
   if (pathname.startsWith("/portal")) {
     const customerToken = request.cookies.get("customer_session")?.value;
 
-    if (pathname === "/portal/login" || pathname === "/portal/signup") {
+    if (
+      pathname === "/portal/login" ||
+      pathname === "/portal/signup" ||
+      pathname === "/portal/forgot-password" ||
+      pathname === "/portal/reset-password"
+    ) {
       if (customerToken) {
         return NextResponse.redirect(new URL("/portal", request.url));
       }

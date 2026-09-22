@@ -126,6 +126,17 @@ export const customerSessions = pgTable("customer_sessions", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+// 6b. Customer Password Resets
+export const customerPasswordResets = pgTable("customer_password_resets", {
+  id: text("id").primaryKey(),
+  customerId: text("customer_id").notNull().references(() => customers.id, { onDelete: "cascade" }),
+  token: text("token").notNull().unique(),
+  code: text("code").notNull(),
+  expiresAt: timestamp("expires_at").notNull(),
+  used: boolean("used").notNull().default(false),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 // 7. Bookings
 export const bookings = pgTable("bookings", {
   id: text("id").primaryKey(),

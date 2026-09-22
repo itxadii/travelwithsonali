@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { ShieldCheck, Search } from "lucide-react";
+import { GooeyInput } from "@/components/ui/gooey-input";
 
 interface DocumentItem {
   id: string;
@@ -72,17 +73,18 @@ export default function DocumentsPage() {
         </p>
       </div>
 
-      <div className="p-4 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs">
-        <div className="relative w-full md:w-80">
-          <Search className="w-4 h-4 absolute left-3.5 top-3 text-[#9A938C]" />
-          <input
-            type="text"
-            placeholder="Search document name or traveller..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 rounded-full bg-[#FDF7F4] border border-[#E8DCD5] text-xs text-[#685752] placeholder-[#9A938C] focus:outline-none focus:border-[#8EB486]"
-          />
-        </div>
+      <div className="p-4 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs flex items-center justify-between">
+        <GooeyInput
+          placeholder="Search document name or traveller..."
+          value={searchQuery}
+          onValueChange={setSearchQuery}
+          collapsedWidth={130}
+          expandedWidth={280}
+          expandedOffset={48}
+          classNames={{
+            surface: "bg-[#685752] text-white shadow-md ring-1 ring-[#685752]/20 hover:bg-[#5a4a45]",
+          }}
+        />
       </div>
 
       <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs">

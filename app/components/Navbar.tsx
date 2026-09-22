@@ -4,14 +4,36 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, X, User, ChevronRight } from "lucide-react";
+import { Menu, X, User, ChevronRight, Music } from "lucide-react";
 import EnquireModal from "./EnquireModal";
+import { useAudio } from "../context/AudioContext";
+
+function MusicSlashIcon({ className = "w-4 h-4" }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <path d="M9 18V5l12-2v13" />
+      <circle cx="6" cy="18" r="3" />
+      <circle cx="18" cy="16" r="3" />
+      <line x1="2" y1="2" x2="22" y2="22" strokeWidth="2.5" />
+    </svg>
+  );
+}
 
 interface NavbarProps {
   logoName?: string;
 }
 
 export default function Navbar({ logoName = "Travel With Sonali" }: NavbarProps) {
+  const { isPlaying, toggleMusic } = useAudio();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [enquireOpen, setEnquireOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -182,7 +204,42 @@ export default function Navbar({ logoName = "Travel With Sonali" }: NavbarProps)
             {/* 3. Flexible Spacer */}
             <div className="flex-1" />
 
-            {/* 4. Secondary Action Cell (Login / Portal) */}
+            {/* 4. Ambient Music Play / Stop Control Cell */}
+            <div
+              className={`hidden sm:flex items-stretch border-l transition-colors duration-300 ${
+                isDarkHero ? "border-white/20" : "border-stone-300/70"
+              }`}
+            >
+              <button
+                onClick={toggleMusic}
+                type="button"
+                aria-label={isPlaying ? "Stop ambient music" : "Play ambient music"}
+                title={isPlaying ? "Music is Playing (Click to mute)" : "Music is Muted (Click to play)"}
+                className={`flex items-center gap-1.5 px-3 sm:px-3.5 h-full text-xs font-semibold transition-all cursor-pointer group ${
+                  isDarkHero
+                    ? "text-white/90 hover:text-white hover:bg-white/10"
+                    : "text-slate-700 hover:text-slate-900 hover:bg-black/5"
+                }`}
+              >
+                {isPlaying ? (
+                  <>
+                    <span className="relative flex items-center justify-center">
+                      <Music className="w-4 h-4 text-[#8EB486] transition-transform group-hover:scale-110" />
+                    </span>
+                    {/* Visual Soundwave Indicator */}
+                    <span className="flex items-end gap-0.5 h-3.5 pb-0.5">
+                      <span className="w-0.5 h-2.5 bg-[#8EB486] rounded-full animate-[bounce_0.8s_infinite_100ms]" />
+                      <span className="w-0.5 h-3.5 bg-[#8EB486] rounded-full animate-[bounce_0.8s_infinite_300ms]" />
+                      <span className="w-0.5 h-2 bg-[#8EB486] rounded-full animate-[bounce_0.8s_infinite_200ms]" />
+                    </span>
+                  </>
+                ) : (
+                  <MusicSlashIcon className="w-4 h-4 text-stone-400 group-hover:text-stone-600 transition-colors group-hover:scale-105" />
+                )}
+              </button>
+            </div>
+
+            {/* 5. Secondary Action Cell (Login / Portal) */}
             <div
               className={`hidden sm:flex items-stretch border-l transition-colors duration-300 ${
                 isDarkHero ? "border-white/20" : "border-stone-300/70"
@@ -218,12 +275,34 @@ export default function Navbar({ logoName = "Travel With Sonali" }: NavbarProps)
               />
             </button>
 
-            {/* 6. Mobile Toggle & Login */}
+            {/* 6. Mobile Toggle, Music & Login */}
             <div
               className={`flex lg:hidden items-center border-l transition-colors duration-300 ${
                 isDarkHero ? "border-white/20" : "border-stone-300/70"
               }`}
             >
+              {/* Mobile Music Play / Stop Toggle Button */}
+              <button
+                onClick={toggleMusic}
+                type="button"
+                className={`px-3.5 h-full flex items-center justify-center border-r transition-colors cursor-pointer ${
+                  isDarkHero
+                    ? "text-white/90 hover:bg-white/10 border-white/20"
+                    : "text-slate-700 hover:bg-black/5 border-stone-300/70"
+                }`}
+                title={isPlaying ? "Stop ambient music" : "Play ambient music"}
+                aria-label={isPlaying ? "Stop ambient music" : "Play ambient music"}
+              >
+                {isPlaying ? (
+                  <span className="relative flex items-center justify-center">
+                    <Music className="w-4 h-4 text-[#8EB486]" />
+                    <span className="absolute -top-1 -right-1 w-1.5 h-1.5 rounded-full bg-[#8EB486] animate-ping" />
+                  </span>
+                ) : (
+                  <MusicSlashIcon className="w-4 h-4 text-stone-400" />
+                )}
+              </button>
+
               <Link
                 href="/portal/login"
                 className={`px-3.5 h-full flex items-center justify-center border-r sm:hidden transition-colors ${
@@ -266,6 +345,25 @@ export default function Navbar({ logoName = "Travel With Sonali" }: NavbarProps)
                 <ChevronRight className="w-4 h-4 text-stone-400" />
               </Link>
             ))}
+
+            {/* Mobile Drawer Ambient Music Control Row */}
+            <div className="flex items-center justify-between px-5 py-3 text-xs bg-stone-100/70 border-t border-stone-200">
+              <div className="flex items-center gap-2 font-semibold text-slate-700">
+                <Music className={`w-4 h-4 ${isPlaying ? "text-[#8EB486]" : "text-stone-400"}`} />
+                <span>Ambient Mountain Sound</span>
+              </div>
+              <button
+                onClick={toggleMusic}
+                type="button"
+                className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all shadow-xs cursor-pointer ${
+                  isPlaying
+                    ? "bg-[#8EB486] text-white hover:bg-[#7A9F73]"
+                    : "bg-white border border-stone-300 text-stone-600 hover:bg-stone-50"
+                }`}
+              >
+                {isPlaying ? "Stop Sound ⏸" : "Play Sound ▶"}
+              </button>
+            </div>
 
             <div className="p-4 space-y-2.5 bg-stone-100/60">
               <Link

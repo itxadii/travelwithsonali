@@ -90,6 +90,18 @@ export async function createTablesIfNotExist() {
   `;
 
   await sql`
+    CREATE TABLE IF NOT EXISTS customer_password_resets (
+      id TEXT PRIMARY KEY,
+      customer_id TEXT NOT NULL REFERENCES customers(id) ON DELETE CASCADE,
+      token TEXT NOT NULL UNIQUE,
+      code TEXT NOT NULL,
+      expires_at TIMESTAMP NOT NULL,
+      used BOOLEAN NOT NULL DEFAULT FALSE,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+    );
+  `;
+
+  await sql`
     CREATE TABLE IF NOT EXISTS bookings (
       id TEXT PRIMARY KEY,
       booking_code TEXT NOT NULL UNIQUE,

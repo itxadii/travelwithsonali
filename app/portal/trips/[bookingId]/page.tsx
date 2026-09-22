@@ -18,6 +18,7 @@ import {
   HelpCircle,
   Building,
   Bus,
+  ChevronRight,
 } from "lucide-react";
 
 interface TripDetailData {
@@ -434,8 +435,9 @@ export default function CustomerTripDetailPage({ params }: { params: Promise<{ b
           <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-bold text-[#685752] font-serif-italic">Identity Documents</h3>
-              <Link href="/portal/documents" className="text-xs font-semibold text-[#8EB486] hover:underline">
-                Upload New Document →
+              <Link href="/portal/documents" className="text-xs font-semibold text-[#8EB486] hover:underline inline-flex items-center gap-1 group">
+                <span>Upload New Document</span>
+                <ChevronRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
               </Link>
             </div>
 

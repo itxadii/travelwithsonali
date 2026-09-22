@@ -4,7 +4,8 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Lock, Mail, User, Phone, Eye, EyeOff, Sparkles, Compass } from "lucide-react";
+import { Lock, Mail, User, Phone, Eye, EyeOff, Compass, ChevronRight } from "lucide-react";
+import AuthBackgroundWrapper from "../components/AuthBackgroundWrapper";
 
 export default function CustomerSignUpPage() {
   const router = useRouter();
@@ -59,12 +60,12 @@ export default function CustomerSignUpPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FDF7F4] text-[#685752] flex items-center justify-center p-4 font-sans selection:bg-[#8EB486] selection:text-white my-8">
-      <div className="w-full max-w-md bg-white rounded-3xl p-8 border border-[#E8DCD5] shadow-xl space-y-6">
+    <AuthBackgroundWrapper>
+      <div className="w-full max-w-md bg-white/95 backdrop-blur-xl rounded-3xl p-7 sm:p-8 border border-white/80 shadow-2xl shadow-stone-950/30 space-y-6 text-[#685752]">
         
         {/* Brand Banner */}
         <div className="text-center space-y-3 flex flex-col items-center">
-          <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-[#8EB486]/30 shadow-md mb-1">
+          <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-[#8EB486]/40 shadow-md mb-1 bg-white">
             <Image
               src="/travelwithsonalilogo.jpg"
               alt="Travel With Sonali Logo"
@@ -77,7 +78,7 @@ export default function CustomerSignUpPage() {
 
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#8EB486]/10 text-[#8EB486] text-xs font-semibold tracking-wider uppercase">
             <Compass className="w-3.5 h-3.5" />
-            Join Travel With Sonali
+            <span>Join Travel With Sonali</span>
           </div>
 
           <h1 className="text-3xl font-bold tracking-tight text-[#685752] font-serif-italic">
@@ -105,7 +106,7 @@ export default function CustomerSignUpPage() {
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Rahul Verma"
+                placeholder="Your Full Name"
                 className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#FDF7F4] border border-[#E8DCD5] text-xs text-[#685752] placeholder-[#9A938C] focus:outline-none focus:border-[#8EB486]"
               />
             </div>
@@ -134,7 +135,7 @@ export default function CustomerSignUpPage() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="rahul.verma@example.com"
+                placeholder="name@example.com"
                 className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#FDF7F4] border border-[#E8DCD5] text-xs text-[#685752] placeholder-[#9A938C] focus:outline-none focus:border-[#8EB486]"
               />
             </div>
@@ -172,22 +173,37 @@ export default function CustomerSignUpPage() {
             </div>
           </div>
 
+          <div className="flex justify-end">
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="text-[11px] text-[#997C70] hover:text-[#685752] inline-flex items-center gap-1"
+            >
+              {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+              <span>{showPassword ? "Hide Passwords" : "Show Passwords"}</span>
+            </button>
+          </div>
+
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white text-xs font-bold tracking-wider uppercase shadow-md transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
+            className="w-full py-3.5 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white text-xs font-bold tracking-wider uppercase shadow-lg shadow-[#8EB486]/30 transition-all active:scale-[0.98] disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2 group"
           >
-            {loading ? "Creating Account..." : "Create My Account →"}
+            <span>{loading ? "Creating Account..." : "Create My Account"}</span>
+            {!loading && (
+              <ChevronRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
+            )}
           </button>
         </form>
 
         <div className="text-center pt-2 border-t border-[#E8DCD5] text-xs text-[#997C70]">
           Already have an account?{" "}
-          <Link href="/portal/login" className="text-[#8EB486] font-bold hover:underline">
-            Sign In
+          <Link href="/portal/login" className="text-[#8EB486] font-bold hover:underline inline-flex items-center gap-1">
+            <span>Sign In</span>
+            <ChevronRight className="w-3.5 h-3.5" />
           </Link>
         </div>
       </div>
-    </div>
+    </AuthBackgroundWrapper>
   );
 }

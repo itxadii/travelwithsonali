@@ -307,9 +307,10 @@ export default function CustomerDashboardPage() {
               <div className="pt-2 flex justify-end">
                 <Link
                   href="/portal/documents"
-                  className="px-5 py-2.5 rounded-full bg-[#8EB486] text-white text-xs font-semibold hover:bg-[#7A9F73] transition-colors"
+                  className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white text-xs font-semibold shadow-xs hover:shadow-md transition-all active:scale-95 group"
                 >
-                  Complete My Details →
+                  <span>Complete My Details</span>
+                  <ChevronRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" />
                 </Link>
               </div>
             </div>

@@ -102,9 +102,10 @@ export default function CustomerTripsPage() {
           {activeTab === "Upcoming" && (
             <Link
               href="/tours"
-              className="inline-block px-6 py-2.5 rounded-full bg-[#8EB486] text-white text-xs font-semibold"
+              className="inline-flex items-center gap-1.5 px-6 py-2.5 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white text-xs font-semibold shadow-xs hover:shadow-md transition-all active:scale-95 group"
             >
-              Explore Group Departures →
+              <span>Explore Group Departures</span>
+              <ChevronRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" />
             </Link>
           )}
         </div>

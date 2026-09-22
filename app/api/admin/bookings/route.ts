@@ -3,6 +3,7 @@ import { getCurrentAdmin } from "@/lib/admin/auth";
 import { db } from "@/db";
 import { bookings, customers, activityLogs, payments, travellers } from "@/db/schema";
 import { desc, eq } from "drizzle-orm";
+import { findCustomerByIdentifier } from "@/lib/portal/auth";
 
 export async function GET() {
   const admin = await getCurrentAdmin();
@@ -68,18 +69,34 @@ export async function POST(request: Request) {
 
     let targetCustomerId = customerId;
 
-    // Create Customer if new
+    // Check if customer exists by phone or email, or create new if not found
     if (!targetCustomerId) {
       if (!customerName || !customerPhone) {
         return NextResponse.json({ error: "Customer Name and Phone are required." }, { status: 400 });
       }
-      targetCustomerId = `cust-${Date.now()}`;
-      await db.insert(customers).values({
-        id: targetCustomerId,
-        name: customerName,
-        phone: customerPhone,
-        email: customerEmail || null,
-      });
+
+      const existingCustomer =
+        (await findCustomerByIdentifier(customerPhone)) ||
+        (customerEmail ? await findCustomerByIdentifier(customerEmail) : null);
+
+      if (existingCustomer) {
+        targetCustomerId = existingCustomer.id;
+        // Update customer email if provided and previously missing
+        if (!existingCustomer.email && customerEmail) {
+          await db
+            .update(customers)
+            .set({ email: customerEmail.trim().toLowerCase() })
+            .where(eq(customers.id, existingCustomer.id));
+        }
+      } else {
+        targetCustomerId = `cust-${Date.now()}`;
+        await db.insert(customers).values({
+          id: targetCustomerId,
+          name: customerName.trim(),
+          phone: customerPhone.trim(),
+          email: customerEmail ? customerEmail.trim().toLowerCase() : null,
+        });
+      }
     }
 
     const tCount = Number(travellersCount) || 1;
