@@ -55,9 +55,9 @@ export default function PaymentInvoiceModal({ payment, onClose }: PaymentInvoice
   const cleanPhone = clientPhone.replace(/[^0-9]/g, "");
   const tourName = payment.tourTitle || "Himalayan Group Tour Experience";
   const displayBookingCode = payment.bookingCode || payment.bookingId;
-  const packageTotal = payment.totalAmount || payment.amount;
-  const totalPaid = payment.paidAmount || payment.amount;
-  const balanceDue = payment.outstandingAmount !== undefined ? payment.outstandingAmount : 0;
+  const packageTotal = payment.totalAmount ?? payment.amount;
+  const totalPaid = payment.paidAmount ?? payment.amount;
+  const balanceDue: number = payment.outstandingAmount ?? 0;
   const displayDate = payment.paymentDate || new Date(payment.createdAt).toLocaleDateString("en-IN", {
     month: "short",
     day: "numeric",
