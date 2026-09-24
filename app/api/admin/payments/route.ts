@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getCurrentAdmin } from "@/lib/admin/auth";
 import { db } from "@/db";
-import { payments, bookings, activityLogs } from "@/db/schema";
+import { payments, bookings, customers, activityLogs } from "@/db/schema";
 import { eq, desc } from "drizzle-orm";
 
 export async function GET() {
@@ -11,7 +11,38 @@ export async function GET() {
   }
 
   try {
-    const list = await db.select().from(payments).orderBy(desc(payments.createdAt));
+    const list = await db
+      .select({
+        id: payments.id,
+        bookingId: payments.bookingId,
+        amount: payments.amount,
+        paymentMethod: payments.paymentMethod,
+        paymentDate: payments.paymentDate,
+        referenceNumber: payments.referenceNumber,
+        notes: payments.notes,
+        recordedBy: payments.recordedBy,
+        createdAt: payments.createdAt,
+        // Booking details
+        bookingCode: bookings.bookingCode,
+        tourTitle: bookings.tourTitle,
+        departureDate: bookings.departureDate,
+        travellersCount: bookings.travellersCount,
+        pricePerTraveller: bookings.pricePerTraveller,
+        discount: bookings.discount,
+        totalAmount: bookings.totalAmount,
+        paidAmount: bookings.paidAmount,
+        outstandingAmount: bookings.outstandingAmount,
+        paymentStatus: bookings.paymentStatus,
+        // Customer details
+        customerName: customers.name,
+        customerPhone: customers.phone,
+        customerEmail: customers.email,
+      })
+      .from(payments)
+      .leftJoin(bookings, eq(payments.bookingId, bookings.id))
+      .leftJoin(customers, eq(bookings.customerId, customers.id))
+      .orderBy(desc(payments.createdAt));
+
     return NextResponse.json(list);
   } catch (err) {
     console.error("GET payments error:", err);

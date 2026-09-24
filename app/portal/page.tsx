@@ -416,14 +416,14 @@ export default function CustomerDashboardPage() {
 
               <div className="grid grid-cols-2 gap-2 pt-2 text-xs">
                 <a
-                  href="tel:+919876543210"
+                  href="tel:+919152975552"
                   className="flex items-center justify-center gap-2 py-2 rounded-full bg-[#FDF7F4] border border-[#E8DCD5] text-[#685752] font-semibold hover:bg-[#685752] hover:text-white transition-colors"
                 >
                   <Phone className="w-3.5 h-3.5" />
                   <span>Call</span>
                 </a>
                 <a
-                  href="https://wa.me/919876543210"
+                  href="https://wa.me/919152975552"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2 py-2 rounded-full bg-emerald-100 text-emerald-800 font-semibold hover:bg-emerald-200 transition-colors"

@@ -187,14 +187,14 @@ export default function Footer({ onEnquireClick }: FooterProps) {
                 </li>
                 <li className="flex items-center gap-2.5">
                   <Phone className="w-4 h-4 text-[#8EB486] shrink-0" />
-                  <a href="tel:+919876543210" className="hover:text-[#8EB486] transition-colors font-medium">
-                    +91 98765 43210
+                  <a href="tel:+919152975552" className="hover:text-[#8EB486] transition-colors font-medium">
+                    +91 9152975552
                   </a>
                 </li>
                 <li className="flex items-center gap-2.5">
                   <Mail className="w-4 h-4 text-[#8EB486] shrink-0" />
-                  <a href="mailto:hello@travelwithsonali.com" className="hover:text-[#8EB486] transition-colors">
-                    hello@travelwithsonali.com
+                  <a href="mailto:travelwithsonaliinfo@gmail.com" className="hover:text-[#8EB486] transition-colors">
+                    travelwithsonaliinfo@gmail.com
                   </a>
                 </li>
                 <li className="pt-2">

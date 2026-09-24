@@ -60,7 +60,7 @@ export default function ContactPage() {
             <div className="space-y-4">
               {/* Phone Card */}
               <a
-                href="tel:+919876543210"
+                href="tel:+919152975552"
                 className="p-5 rounded-2xl bg-[#F7EFEA] border border-[#E8DCD5] flex items-center gap-4 hover:border-[#8EB486] transition-all"
               >
                 <div className="w-12 h-12 rounded-full bg-[#685752] text-white flex items-center justify-center shrink-0">
@@ -68,13 +68,13 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <h4 className="text-base font-bold text-[#685752]">Call Support</h4>
-                  <p className="text-xs text-[#997C70]">Mon - Sat (10:00 AM - 8:00 PM) • +91 98765 43210</p>
+                  <p className="text-xs text-[#997C70]">Mon - Sat (10:00 AM - 8:00 PM) • +91 9152975552</p>
                 </div>
               </a>
 
               {/* Email Card */}
               <a
-                href="mailto:hello@travelwithsonali.com"
+                href="mailto:travelwithsonaliinfo@gmail.com"
                 className="p-5 rounded-2xl bg-[#F7EFEA] border border-[#E8DCD5] flex items-center gap-4 hover:border-[#8EB486] transition-all"
               >
                 <div className="w-12 h-12 rounded-full bg-[#685752] text-white flex items-center justify-center shrink-0">
@@ -82,13 +82,13 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <h4 className="text-base font-bold text-[#685752]">Email Us</h4>
-                  <p className="text-xs text-[#997C70]">hello@travelwithsonali.com</p>
+                  <p className="text-xs text-[#997C70]">travelwithsonaliinfo@gmail.com</p>
                 </div>
               </a>
 
               {/* Instagram Card */}
               <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/travel_withsonali"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-5 rounded-2xl bg-[#F7EFEA] border border-[#E8DCD5] flex items-center gap-4 hover:border-[#8EB486] transition-all"
@@ -100,7 +100,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <h4 className="text-base font-bold text-[#685752]">Instagram DM</h4>
-                  <p className="text-xs text-[#997C70]">@travelwithsonali</p>
+                  <p className="text-xs text-[#997C70]">@travel_withsonali</p>
                 </div>
               </a>
             </div>

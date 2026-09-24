@@ -159,7 +159,7 @@ export default function CustomerLoginPage() {
           </div>
           <div>
             Need help accessing your booking?{" "}
-            <a href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer" className="text-[#8EB486] font-semibold hover:underline">
+            <a href="https://wa.me/919152975552" target="_blank" rel="noopener noreferrer" className="text-[#8EB486] font-semibold hover:underline">
               Contact Support
             </a>
           </div>

@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ToursClientView from "./ToursClientView";
 import AmbientCircles from "../components/AmbientCircles";
+import WhatsAppFloatingButton from "../components/WhatsAppFloatingButton";
 import { getActiveTours } from "@/lib/sanity/queries";
 
 export default function ToursPage() {
@@ -35,6 +36,9 @@ export default function ToursPage() {
           <ToursClientView tours={tours} />
         </div>
       </section>
+
+      {/* Floating WhatsApp Action Button in Right Corner */}
+      <WhatsAppFloatingButton tourName="upcoming tours" />
 
       <Footer />
     </div>

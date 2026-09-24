@@ -9,58 +9,58 @@ const FALLBACK_MOMENTS = [
   {
     id: 1,
     title: "Himachal High Pass",
-    subtitle: "@travelwithsonali • Himachal Batch",
+    subtitle: "@travel_withsonali • Himachal Batch",
     image: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=800&q=80",
     tag: "Group Batch",
-    postUrl: "https://instagram.com",
+    postUrl: "https://www.instagram.com/travel_withsonali",
   },
   {
     id: 2,
     title: "Manali Riverside Bliss",
-    subtitle: "@travelwithsonali • Manali & Kasol",
+    subtitle: "@travel_withsonali • Manali & Kasol",
     image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80",
     tag: "Mountain Retreat",
-    postUrl: "https://instagram.com",
+    postUrl: "https://www.instagram.com/travel_withsonali",
   },
   {
     id: 3,
     title: "Spiti Golden Sunsets",
-    subtitle: "@travelwithsonali • Spiti Valley",
+    subtitle: "@travel_withsonali • Spiti Valley",
     image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
     tag: "Alpine Twilight",
-    postUrl: "https://instagram.com",
+    postUrl: "https://www.instagram.com/travel_withsonali",
   },
   {
     id: 4,
     title: "Kedarnath Divine Silence",
-    subtitle: "@travelwithsonali • Sacred Trails",
+    subtitle: "@travel_withsonali • Sacred Trails",
     image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80",
     tag: "Himalayan Peace",
-    postUrl: "https://instagram.com",
+    postUrl: "https://www.instagram.com/travel_withsonali",
   },
   {
     id: 5,
     title: "Coastal Waves in Gokarna",
-    subtitle: "@travelwithsonali • Ocean Journey",
+    subtitle: "@travel_withsonali • Ocean Journey",
     image: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=800&q=80",
     tag: "Beach Sunshine",
-    postUrl: "https://instagram.com",
+    postUrl: "https://www.instagram.com/travel_withsonali",
   },
   {
     id: 6,
     title: "High Altitude Winter Trail",
-    subtitle: "@travelwithsonali • Winter Trek",
+    subtitle: "@travel_withsonali • Winter Trek",
     image: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=800&q=80",
     tag: "Snow Adventure",
-    postUrl: "https://instagram.com",
+    postUrl: "https://www.instagram.com/travel_withsonali",
   },
   {
     id: 7,
     title: "Kasol Evening Campfire",
-    subtitle: "@travelwithsonali • Community",
+    subtitle: "@travel_withsonali • Community",
     image: "https://images.unsplash.com/photo-1581793745862-99fde7fa73d2?auto=format&fit=crop&w=800&q=80",
     tag: "Campfire Stories",
-    postUrl: "https://instagram.com",
+    postUrl: "https://www.instagram.com/travel_withsonali",
   },
 ];
 
@@ -74,10 +74,19 @@ export default function InstagramRoundCarousel({ data }: InstagramRoundCarouselP
 
   const badge = data?.badge || "Social Community";
   const heading = data?.heading || "Follow Our Moments on Instagram";
-  const subheading = data?.subheading || "Tag @travel_withsonali to get featured in our stories.";
-  const instagramUrl = data?.instagramUrl || "https://www.instagram.com/travel_withsonali";
-  const buttonText = data?.buttonText || (data?.instagramHandle ? `Follow ${data.instagramHandle}` : "Follow @travel_withsonali");
+  const subheading = (data?.subheading || "Tag @travel_withsonali to get featured in our stories.").replace(/@travelwithsonali/gi, "@travel_withsonali");
+  const instagramUrl = !data?.instagramUrl || data.instagramUrl.includes("travelwithsonali") || data.instagramUrl === "https://instagram.com"
+    ? "https://www.instagram.com/travel_withsonali"
+    : data.instagramUrl;
+  const buttonText = (data?.buttonText || (data?.instagramHandle ? `Follow ${data.instagramHandle}` : "Follow @travel_withsonali")).replace(/@travelwithsonali/gi, "@travel_withsonali");
   const moments = data?.moments && data.moments.length > 0 ? data.moments : FALLBACK_MOMENTS;
+
+  const cleanUrl = (url?: string) => {
+    if (!url || url === "https://instagram.com" || url === "https://www.instagram.com" || url.includes("travelwithsonali")) {
+      return "https://www.instagram.com/travel_withsonali";
+    }
+    return url;
+  };
 
   useEffect(() => {
     let ticking = false;
@@ -173,7 +182,7 @@ export default function InstagramRoundCarousel({ data }: InstagramRoundCarouselP
             {moments.map((moment, idx) => (
               <a
                 key={moment.id || idx}
-                href={moment.postUrl || instagramUrl}
+                href={cleanUrl(moment.postUrl) || cleanUrl(instagramUrl)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group w-[320px] sm:w-[420px] md:w-[470px] lg:w-[510px] xl:w-[540px] h-[430px] sm:h-[510px] lg:h-[560px] rounded-[28px] sm:rounded-[36px] bg-[#F7EFEA] border border-[#E8DCD5] flex flex-col justify-between p-3.5 sm:p-5 shrink-0 shadow-sm hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer select-none"
@@ -210,7 +219,7 @@ export default function InstagramRoundCarousel({ data }: InstagramRoundCarouselP
                       {moment.title}
                     </h3>
                     <p className="text-xs text-[#997C70] truncate">
-                      {moment.subtitle}
+                      {moment.subtitle?.replace(/@travelwithsonali/gi, "@travel_withsonali")}
                     </p>
                   </div>
                 </div>
@@ -223,7 +232,7 @@ export default function InstagramRoundCarousel({ data }: InstagramRoundCarouselP
         <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 shrink-0 pb-2 sm:pb-3">
           <div className="flex items-center justify-center">
             <a
-              href={instagramUrl}
+              href={cleanUrl(instagramUrl)}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2.5 px-8 py-3 rounded-full border-2 border-[#8EB486] bg-white hover:bg-[#8EB486] hover:text-white text-[#8EB486] text-xs sm:text-sm font-bold tracking-wider uppercase transition-all duration-300 shadow-sm hover:shadow-md active:scale-95"

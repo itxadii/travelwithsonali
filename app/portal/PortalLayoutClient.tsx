@@ -249,7 +249,7 @@ export default function PortalLayoutClient({ customer, children }: PortalLayoutC
 
       {/* Floating WhatsApp Quick Contact Action Button */}
       <a
-        href="https://wa.me/919876543210?text=Hi%20Travel%20With%20Sonali,%20I%20need%20help%20with%20my%20booking"
+        href="https://wa.me/919152975552?text=Hi%20Travel%20With%20Sonali,%20I%20need%20help%20with%20my%20booking"
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-20 right-4 lg:bottom-8 lg:right-8 z-40 w-12 h-12 rounded-full bg-emerald-600 text-white shadow-xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all"

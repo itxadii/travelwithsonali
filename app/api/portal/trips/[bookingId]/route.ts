@@ -66,8 +66,8 @@ export async function GET(
     const coordinatorInfo = {
       name: "Sonali Palekar",
       role: "Lead Group Coordinator",
-      phone: "+91 98765 43210",
-      whatsapp: "+91 98765 43210",
+      phone: "+91 9152975552",
+      whatsapp: "+91 9152975552",
     };
 
     return NextResponse.json({

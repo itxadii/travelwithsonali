@@ -227,3 +227,21 @@ export const activityLogs = pgTable("activity_logs", {
   metadata: text("metadata"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
+
+// 13. Tour Reviews
+export const reviews = pgTable("reviews", {
+  id: text("id").primaryKey(),
+  tourSlug: text("tour_slug").notNull(),
+  tourTitle: text("tour_title").notNull(),
+  userName: text("user_name").notNull(),
+  userEmail: text("user_email"),
+  rating: integer("rating").notNull().default(5),
+  title: text("title"),
+  comment: text("comment").notNull(),
+  location: text("location"),
+  tripDate: text("trip_date"),
+  isApproved: boolean("is_approved").notNull().default(true),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+

@@ -41,7 +41,7 @@ async function run() {
     title: m.title,
     subtitle: m.subtitle,
     tag: m.tag,
-    postUrl: m.postUrl || "https://instagram.com/travelwithsonali",
+    postUrl: m.postUrl || "https://www.instagram.com/travel_withsonali",
   }));
 
   const instagramSectionDoc = {
@@ -49,10 +49,10 @@ async function run() {
     _type: "instagramSection",
     badge: "Social Community",
     heading: "Follow Our Moments on Instagram",
-    subheading: "Tag @travelwithsonali to get featured in our stories.",
-    instagramHandle: "@travelwithsonali",
-    instagramUrl: "https://instagram.com/travelwithsonali",
-    buttonText: "Follow @travelwithsonali",
+    subheading: "Tag @travel_withsonali to get featured in our stories.",
+    instagramHandle: "@travel_withsonali",
+    instagramUrl: "https://www.instagram.com/travel_withsonali",
+    buttonText: "Follow @travel_withsonali",
     moments: processedMoments,
   };
 

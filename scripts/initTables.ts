@@ -198,5 +198,23 @@ export async function createTablesIfNotExist() {
     );
   `;
 
+  await sql`
+    CREATE TABLE IF NOT EXISTS reviews (
+      id TEXT PRIMARY KEY,
+      tour_slug TEXT NOT NULL,
+      tour_title TEXT NOT NULL,
+      user_name TEXT NOT NULL,
+      user_email TEXT,
+      rating INTEGER NOT NULL DEFAULT 5,
+      title TEXT,
+      comment TEXT NOT NULL,
+      location TEXT,
+      trip_date TEXT,
+      is_approved BOOLEAN NOT NULL DEFAULT TRUE,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+    );
+  `;
+
   console.log("✅ Neon PostgreSQL DDL migration complete!");
 }

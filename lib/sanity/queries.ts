@@ -387,79 +387,110 @@ export const DEFAULT_INSTAGRAM_MOMENTS: InstagramMoment[] = [
   {
     id: 1,
     title: "Himachal High Pass",
-    subtitle: "@travelwithsonali • Himachal Batch",
+    subtitle: "@travel_withsonali • Himachal Batch",
     image: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=800&q=80",
     tag: "Group Batch",
-    postUrl: "https://instagram.com",
+    postUrl: "https://www.instagram.com/travel_withsonali",
   },
   {
     id: 2,
     title: "Manali Riverside Bliss",
-    subtitle: "@travelwithsonali • Manali & Kasol",
+    subtitle: "@travel_withsonali • Manali & Kasol",
     image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80",
     tag: "Mountain Retreat",
-    postUrl: "https://instagram.com",
+    postUrl: "https://www.instagram.com/travel_withsonali",
   },
   {
     id: 3,
     title: "Spiti Golden Sunsets",
-    subtitle: "@travelwithsonali • Spiti Valley",
+    subtitle: "@travel_withsonali • Spiti Valley",
     image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
     tag: "Alpine Twilight",
-    postUrl: "https://instagram.com",
+    postUrl: "https://www.instagram.com/travel_withsonali",
   },
   {
     id: 4,
     title: "Kedarnath Divine Silence",
-    subtitle: "@travelwithsonali • Sacred Trails",
+    subtitle: "@travel_withsonali • Sacred Trails",
     image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80",
     tag: "Himalayan Peace",
-    postUrl: "https://instagram.com",
+    postUrl: "https://www.instagram.com/travel_withsonali",
   },
   {
     id: 5,
     title: "Coastal Waves in Gokarna",
-    subtitle: "@travelwithsonali • Ocean Journey",
+    subtitle: "@travel_withsonali • Ocean Journey",
     image: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=800&q=80",
     tag: "Beach Sunshine",
-    postUrl: "https://instagram.com",
+    postUrl: "https://www.instagram.com/travel_withsonali",
   },
   {
     id: 6,
     title: "High Altitude Winter Trail",
-    subtitle: "@travelwithsonali • Winter Trek",
+    subtitle: "@travel_withsonali • Winter Trek",
     image: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=800&q=80",
     tag: "Snow Adventure",
-    postUrl: "https://instagram.com",
+    postUrl: "https://www.instagram.com/travel_withsonali",
   },
   {
     id: 7,
     title: "Kasol Evening Campfire",
-    subtitle: "@travelwithsonali • Community",
+    subtitle: "@travel_withsonali • Community",
     image: "https://images.unsplash.com/photo-1581793745862-99fde7fa73d2?auto=format&fit=crop&w=800&q=80",
     tag: "Campfire Stories",
-    postUrl: "https://instagram.com",
+    postUrl: "https://www.instagram.com/travel_withsonali",
   },
 ];
+
+function cleanInstagramUrl(url?: string): string {
+  if (!url) return "https://www.instagram.com/travel_withsonali";
+  if (
+    url === "https://instagram.com" ||
+    url === "https://www.instagram.com" ||
+    url === "https://instagram.com/" ||
+    url === "https://www.instagram.com/" ||
+    url.includes("travelwithsonali")
+  ) {
+    return "https://www.instagram.com/travel_withsonali";
+  }
+  return url;
+}
+
+function cleanInstagramHandle(handle?: string): string {
+  if (!handle || handle.includes("travelwithsonali")) {
+    return "@travel_withsonali";
+  }
+  return handle;
+}
+
+function cleanInstagramText(text?: string): string {
+  if (!text) return "";
+  return text.replace(/@travelwithsonali/gi, "@travel_withsonali").replace(/travelwithsonali/gi, "travel_withsonali");
+}
 
 export async function getInstagramSection(): Promise<InstagramSectionData> {
   const data = await sanityFetch<SanityInstagramSection>(instagramSectionQuery);
   if (data && data.heading) {
+    const handle = cleanInstagramHandle(data.instagramHandle);
+    const instagramUrl = cleanInstagramUrl(data.instagramUrl);
+    const subheading = cleanInstagramText(data.subheading) || "Tag @travel_withsonali to get featured in our stories.";
+    const buttonText = cleanInstagramText(data.buttonText) || `Follow ${handle}`;
+
     return {
       badge: data.badge || "Social Community",
       heading: data.heading || "Follow Our Moments on Instagram",
-      subheading: data.subheading || "Tag @travelwithsonali to get featured in our stories.",
-      instagramHandle: data.instagramHandle || "@travelwithsonali",
-      instagramUrl: data.instagramUrl || "https://instagram.com",
-      buttonText: data.buttonText || `Follow ${data.instagramHandle || "@travelwithsonali"}`,
+      subheading,
+      instagramHandle: handle,
+      instagramUrl,
+      buttonText,
       moments: Array.isArray(data.moments) && data.moments.length > 0
         ? data.moments.map((m, idx) => ({
             id: m._key || idx + 1,
             title: m.title || `Moment ${idx + 1}`,
-            subtitle: m.subtitle || data.instagramHandle || "@travelwithsonali",
+            subtitle: cleanInstagramText(m.subtitle) || `${handle} • Group Trip`,
             tag: m.tag || "Travel Moment",
             image: resolveImageUrl(m.image, DEFAULT_IMAGE),
-            postUrl: m.postUrl || data.instagramUrl || "https://instagram.com",
+            postUrl: cleanInstagramUrl(m.postUrl),
           }))
         : DEFAULT_INSTAGRAM_MOMENTS,
     };
@@ -468,10 +499,10 @@ export async function getInstagramSection(): Promise<InstagramSectionData> {
   return {
     badge: "Social Community",
     heading: "Follow Our Moments on Instagram",
-    subheading: "Tag @travelwithsonali to get featured in our stories.",
-    instagramHandle: "@travelwithsonali",
-    instagramUrl: "https://instagram.com",
-    buttonText: "Follow @travelwithsonali",
+    subheading: "Tag @travel_withsonali to get featured in our stories.",
+    instagramHandle: "@travel_withsonali",
+    instagramUrl: "https://www.instagram.com/travel_withsonali",
+    buttonText: "Follow @travel_withsonali",
     moments: DEFAULT_INSTAGRAM_MOMENTS,
   };
 }

@@ -22,25 +22,25 @@ export const instagramSectionSchema = defineType({
       name: "subheading",
       title: "Subheading / Instructions",
       type: "string",
-      initialValue: "Tag @travelwithsonali to get featured in our stories.",
+      initialValue: "Tag @travel_withsonali to get featured in our stories.",
     }),
     defineField({
       name: "instagramHandle",
       title: "Instagram Handle",
       type: "string",
-      initialValue: "@travelwithsonali",
+      initialValue: "@travel_withsonali",
     }),
     defineField({
       name: "instagramUrl",
       title: "Instagram Profile URL",
       type: "url",
-      initialValue: "https://instagram.com",
+      initialValue: "https://www.instagram.com/travel_withsonali",
     }),
     defineField({
       name: "buttonText",
       title: "Follow Button Text",
       type: "string",
-      initialValue: "Follow @travelwithsonali",
+      initialValue: "Follow @travel_withsonali",
     }),
     defineField({
       name: "moments",
@@ -62,7 +62,7 @@ export const instagramSectionSchema = defineType({
               name: "subtitle",
               title: "Subtitle / Batch Tag",
               type: "string",
-              placeholder: "@travelwithsonali • Himachal Batch",
+              placeholder: "@travel_withsonali • Himachal Batch",
             }),
             defineField({
               name: "tag",
@@ -111,7 +111,7 @@ export const instagramSectionSchema = defineType({
     prepare(selection) {
       return {
         title: selection.title || "Instagram Section",
-        subtitle: selection.subtitle || "@travelwithsonali",
+        subtitle: selection.subtitle || "@travel_withsonali",
       };
     },
   },

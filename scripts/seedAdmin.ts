@@ -34,13 +34,13 @@ async function seedAdmin() {
       id: "admin-1",
       email,
       passwordHash,
-      name: "Sonali Sharma",
+      name: "Sonali Palekar",
       role: "SUPER_ADMIN",
     });
     console.log(`✅ Admin user created: ${email}`);
   } else {
-    // Update password hash if exists
-    await db.update(adminUsers).set({ passwordHash }).where(eq(adminUsers.email, email));
+    // Update password hash and name if exists
+    await db.update(adminUsers).set({ passwordHash, name: "Sonali Palekar" }).where(eq(adminUsers.email, email));
     console.log(`✅ Admin user updated: ${email}`);
   }
 
@@ -61,7 +61,7 @@ async function seedAdmin() {
       source: "Instagram",
       travellersCount: 2,
       status: "Converted",
-      assignedTo: "Sonali Sharma",
+      assignedTo: "Sonali Palekar",
       notes: "Interested in September batch, preferred sleeper Volvo.",
     });
 

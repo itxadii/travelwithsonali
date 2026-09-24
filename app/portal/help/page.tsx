@@ -34,7 +34,7 @@ export default function CustomerHelpPage() {
       {/* Direct Contact Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <a
-          href="https://wa.me/919876543210"
+          href="https://wa.me/919152975552"
           target="_blank"
           rel="noopener noreferrer"
           className="p-6 rounded-3xl bg-emerald-50 border border-emerald-100 hover:shadow-md transition-all text-center space-y-2 group"
@@ -47,25 +47,25 @@ export default function CustomerHelpPage() {
         </a>
 
         <a
-          href="tel:+919876543210"
+          href="tel:+919152975552"
           className="p-6 rounded-3xl bg-white border border-[#E8DCD5] hover:shadow-md transition-all text-center space-y-2 group"
         >
           <div className="w-10 h-10 rounded-full bg-[#FDF7F4] text-[#685752] flex items-center justify-center mx-auto group-hover:scale-110 transition-transform">
             <Phone className="w-5 h-5" />
           </div>
           <h3 className="font-bold text-[#685752] text-sm">Call Direct</h3>
-          <p className="text-[11px] text-[#997C70]">+91 98765 43210</p>
+          <p className="text-[11px] text-[#997C70]">+91 9152975552</p>
         </a>
 
         <a
-          href="mailto:support@travelwithsonali.com"
+          href="mailto:travelwithsonaliinfo@gmail.com"
           className="p-6 rounded-3xl bg-white border border-[#E8DCD5] hover:shadow-md transition-all text-center space-y-2 group"
         >
           <div className="w-10 h-10 rounded-full bg-[#FDF7F4] text-[#8EB486] flex items-center justify-center mx-auto group-hover:scale-110 transition-transform">
             <Mail className="w-5 h-5" />
           </div>
           <h3 className="font-bold text-[#685752] text-sm">Email Support</h3>
-          <p className="text-[11px] text-[#997C70]">support@travelwithsonali.com</p>
+          <p className="text-[11px] text-[#997C70]">travelwithsonaliinfo@gmail.com</p>
         </a>
       </div>
 

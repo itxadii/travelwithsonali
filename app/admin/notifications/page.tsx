@@ -22,7 +22,7 @@ export default function NotificationsPage() {
     {
       id: "notif-3",
       title: "Document Verified",
-      message: "Aadhaar document for Rahul Verma verified by Sonali Sharma.",
+      message: "Aadhaar document for Rahul Verma verified by Sonali Palekar.",
       type: "success",
       date: "16 Aug 2026",
     },
