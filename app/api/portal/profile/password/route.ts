@@ -31,16 +31,11 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Customer profile not found." }, { status: 404 });
     }
 
-    if (currentCustomerRecord.passwordHash) {
-      const isValid = await bcrypt.compare(currentPassword, currentCustomerRecord.passwordHash);
-      if (!isValid) {
-        return NextResponse.json({ error: "Current password is incorrect." }, { status: 400 });
-      }
-    } else {
-      // Default initial password check
-      if (currentPassword !== "Customer123!" && currentPassword !== currentCustomerRecord.phone) {
-        return NextResponse.json({ error: "Current password is incorrect." }, { status: 400 });
-      }
+    const isValid =
+      !!currentCustomerRecord.passwordHash &&
+      (await bcrypt.compare(currentPassword, currentCustomerRecord.passwordHash));
+    if (!isValid) {
+      return NextResponse.json({ error: "Current password is incorrect." }, { status: 400 });
     }
 
     const newHash = await bcrypt.hash(newPassword, 10);

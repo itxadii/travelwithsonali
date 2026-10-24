@@ -4,7 +4,7 @@ import React, { useState, Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Lock, Eye, EyeOff, Compass, ArrowLeft, CheckCircle2, KeyRound, ChevronRight } from "lucide-react";
+import { Lock, Mail, Eye, EyeOff, Compass, ArrowLeft, CheckCircle2, KeyRound, ChevronRight } from "lucide-react";
 import AuthBackgroundWrapper from "../components/AuthBackgroundWrapper";
 
 function ResetPasswordForm() {
@@ -16,7 +16,7 @@ function ResetPasswordForm() {
 
   const [token] = useState(tokenParam);
   const [code, setCode] = useState("");
-  const [identifier] = useState(identifierParam);
+  const [identifier, setIdentifier] = useState(identifierParam);
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -48,7 +48,7 @@ function ResetPasswordForm() {
           token: token || undefined,
           code: code || undefined,
           newPassword,
-          identifier: identifier || undefined,
+          identifier: token ? undefined : identifier || undefined,
         }),
       });
 
@@ -120,6 +120,25 @@ function ResetPasswordForm() {
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-4">
+          {!token && (
+            <div className="space-y-1.5">
+              <label className="text-xs font-semibold text-[#997C70]">
+                Email or Mobile Number
+              </label>
+              <div className="relative">
+                <Mail className="w-4 h-4 absolute left-3.5 top-3 text-[#9A938C]" />
+                <input
+                  type="text"
+                  required
+                  value={identifier}
+                  onChange={(e) => setIdentifier(e.target.value)}
+                  placeholder="Enter email or mobile number"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#FDF7F4] border border-[#E8DCD5] text-xs text-[#685752] placeholder-[#9A938C] focus:outline-none focus:border-[#8EB486]"
+                />
+              </div>
+            </div>
+          )}
+
           {!token && (
             <div className="space-y-1.5">
               <label className="text-xs font-semibold text-[#997C70]">

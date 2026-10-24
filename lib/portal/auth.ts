@@ -1,8 +1,10 @@
 import { cookies } from "next/headers";
 import { db } from "@/db";
 import { customers, customerSessions, customerPasswordResets } from "@/db/schema";
-import { eq, and, gt, or, sql } from "drizzle-orm";
+import { eq, and, gt, or, sql, desc } from "drizzle-orm";
 import bcrypt from "bcryptjs";
+import { createHash, randomInt, randomUUID, timingSafeEqual } from "node:crypto";
+import { sendPasswordResetEmail } from "@/lib/mailer";
 
 const CUSTOMER_COOKIE_NAME = "customer_session";
 
@@ -65,6 +67,9 @@ export async function findCustomerByIdentifier(identifier: string) {
   return list[0] || null;
 }
 
+const INVALID_LOGIN_MESSAGE =
+  "Invalid email/phone or password. Never set a password? Use Forgot Password to create one.";
+
 export async function loginCustomer(
   loginIdentifier: string,
   password: string
@@ -72,48 +77,17 @@ export async function loginCustomer(
   try {
     const customer = await findCustomerByIdentifier(loginIdentifier);
 
-    if (!customer) {
-      return { success: false, error: "Invalid credentials. Please check your email or mobile number." };
+    // Customers created by admin (no password yet) must set one via the emailed reset flow.
+    if (!customer || !customer.passwordHash) {
+      return { success: false, error: INVALID_LOGIN_MESSAGE };
     }
 
-    // Default password check if no passwordHash set yet: allow demo login with 'Customer123!' or customer phone
-    if (!customer.passwordHash) {
-      const defaultPass = "Customer123!";
-      const custPhoneDigits = normalizePhoneNumber(customer.phone);
-      if (password !== defaultPass && password !== customer.phone && password !== custPhoneDigits) {
-        return { success: false, error: "Invalid password. Default access password is Customer123!" };
-      }
-    } else {
-      const isValid = await bcrypt.compare(password, customer.passwordHash);
-      if (!isValid) {
-        return { success: false, error: "Invalid email/phone or password." };
-      }
+    const isValid = await bcrypt.compare(password, customer.passwordHash);
+    if (!isValid) {
+      return { success: false, error: INVALID_LOGIN_MESSAGE };
     }
 
-    // Create session token
-    const token = crypto.randomUUID();
-    const expiresAt = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000); // 14 days
-
-    await db.insert(customerSessions).values({
-      id: crypto.randomUUID(),
-      customerId: customer.id,
-      token,
-      expiresAt,
-    });
-
-    try {
-      const cookieStore = await cookies();
-      cookieStore.set(CUSTOMER_COOKIE_NAME, token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-        expires: expiresAt,
-        path: "/",
-      });
-    } catch (cookieErr) {
-      console.warn("Could not set cookie (outside request context):", cookieErr);
-    }
-
+    const { token, expiresAt } = await createCustomerSession(customer.id);
     return { success: true, token, expiresAt };
   } catch (err) {
     console.error("Customer Login Error:", err);
@@ -122,139 +96,178 @@ export async function loginCustomer(
 }
 
 /**
- * Generate a password reset token & 6-digit code for a customer.
+ * Creates a session row and sets the session cookie (when called inside a request).
+ */
+async function createCustomerSession(customerId: string): Promise<{ token: string; expiresAt: Date }> {
+  const token = randomUUID();
+  const expiresAt = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000); // 14 days
+
+  await db.insert(customerSessions).values({
+    id: randomUUID(),
+    customerId,
+    token,
+    expiresAt,
+  });
+
+  try {
+    const cookieStore = await cookies();
+    cookieStore.set(CUSTOMER_COOKIE_NAME, token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      expires: expiresAt,
+      path: "/",
+    });
+  } catch (cookieErr) {
+    console.warn("Could not set cookie (outside request context):", cookieErr);
+  }
+
+  return { token, expiresAt };
+}
+
+const RESET_TTL_MS = 60 * 60 * 1000; // 1 hour
+const MAX_RESET_CODE_ATTEMPTS = 5;
+
+function hashSecret(value: string): string {
+  return createHash("sha256").update(value).digest("hex");
+}
+
+function secretsMatch(a: string, b: string): boolean {
+  const bufA = Buffer.from(a);
+  const bufB = Buffer.from(b);
+  return bufA.length === bufB.length && timingSafeEqual(bufA, bufB);
+}
+
+/**
+ * Generate a password reset token & 6-digit code and email them to the customer.
+ * Always reports success to the caller so the endpoint can't be used to discover
+ * which emails / phone numbers have accounts.
  */
 export async function requestPasswordReset(
-  identifier: string
-): Promise<{ success: boolean; error?: string; message?: string; code?: string; token?: string }> {
+  identifier: string,
+  siteUrl: string
+): Promise<{ success: boolean; error?: string }> {
   try {
     const customer = await findCustomerByIdentifier(identifier);
 
-    if (!customer) {
-      return {
-        success: false,
-        error: "No account found with that email or mobile number.",
-      };
+    if (!customer || !customer.email) {
+      return { success: true };
     }
 
-    // Generate token and 6-digit code
-    const token = crypto.randomUUID();
-    const code = Math.floor(100000 + Math.random() * 900000).toString(); // e.g. 748291
-    const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+    // Only the most recent reset request stays valid
+    await db
+      .update(customerPasswordResets)
+      .set({ used: true })
+      .where(and(eq(customerPasswordResets.customerId, customer.id), eq(customerPasswordResets.used, false)));
+
+    const token = randomUUID();
+    const code = randomInt(100000, 1000000).toString();
 
     await db.insert(customerPasswordResets).values({
-      id: crypto.randomUUID(),
+      id: randomUUID(),
       customerId: customer.id,
-      token,
-      code,
-      expiresAt,
+      token: hashSecret(token),
+      code: hashSecret(code),
+      expiresAt: new Date(Date.now() + RESET_TTL_MS),
       used: false,
     });
 
-    return {
-      success: true,
-      message: "Reset code generated successfully.",
-      code,
-      token,
-    };
+    const resetLink = `${siteUrl}/portal/reset-password?token=${encodeURIComponent(token)}`;
+    await sendPasswordResetEmail(customer.email, customer.name, code, resetLink);
+
+    return { success: true };
   } catch (err) {
     console.error("requestPasswordReset error:", err);
-    return { success: false, error: "Failed to generate password reset request." };
+    return { success: false, error: "We couldn't send the reset email right now. Please try again later." };
   }
 }
 
 /**
- * Verify reset token or 6-digit code and update the customer's password.
+ * Verify a reset link token, or a 6-digit code for a specific customer, and set a new password.
  */
 export async function resetCustomerPassword(
-  tokenOrCode: string,
-  newPassword: string,
-  identifier?: string
+  credentials: { token?: string; code?: string; identifier?: string },
+  newPassword: string
 ): Promise<{ success: boolean; error?: string }> {
+  const invalid = {
+    success: false,
+    error: "Invalid or expired reset code / link. Please request a new one.",
+  };
+
   try {
     if (!newPassword || newPassword.length < 6) {
       return { success: false, error: "Password must be at least 6 characters long." };
     }
 
-    const cleanInput = tokenOrCode.trim();
+    let reset: typeof customerPasswordResets.$inferSelect | undefined;
 
-    // Look for valid reset record by token OR by 6-digit code
-    let resets = await db
-      .select({
-        resetId: customerPasswordResets.id,
-        customerId: customerPasswordResets.customerId,
-        token: customerPasswordResets.token,
-        code: customerPasswordResets.code,
-        expiresAt: customerPasswordResets.expiresAt,
-        used: customerPasswordResets.used,
-      })
-      .from(customerPasswordResets)
-      .where(
-        and(
-          or(eq(customerPasswordResets.token, cleanInput), eq(customerPasswordResets.code, cleanInput)),
-          eq(customerPasswordResets.used, false),
-          gt(customerPasswordResets.expiresAt, new Date())
-        )
-      );
+    if (credentials.token) {
+      reset = (
+        await db
+          .select()
+          .from(customerPasswordResets)
+          .where(
+            and(
+              eq(customerPasswordResets.token, hashSecret(credentials.token.trim())),
+              eq(customerPasswordResets.used, false),
+              gt(customerPasswordResets.expiresAt, new Date())
+            )
+          )
+      )[0];
+      if (!reset) return invalid;
+    } else if (credentials.code && credentials.identifier) {
+      const customer = await findCustomerByIdentifier(credentials.identifier);
+      if (!customer) return invalid;
 
-    // If matching by 6-digit code and identifier was provided, filter by that customer
-    if (resets.length > 1 && identifier) {
-      const customer = await findCustomerByIdentifier(identifier);
-      if (customer) {
-        resets = resets.filter((r) => r.customerId === customer.id);
+      reset = (
+        await db
+          .select()
+          .from(customerPasswordResets)
+          .where(
+            and(
+              eq(customerPasswordResets.customerId, customer.id),
+              eq(customerPasswordResets.used, false),
+              gt(customerPasswordResets.expiresAt, new Date())
+            )
+          )
+          .orderBy(desc(customerPasswordResets.createdAt))
+          .limit(1)
+      )[0];
+      if (!reset) return invalid;
+
+      if (!secretsMatch(hashSecret(credentials.code.trim()), reset.code)) {
+        const attempts = reset.attempts + 1;
+        await db
+          .update(customerPasswordResets)
+          .set({ attempts, used: attempts >= MAX_RESET_CODE_ATTEMPTS })
+          .where(eq(customerPasswordResets.id, reset.id));
+        return invalid;
       }
+    } else {
+      return { success: false, error: "Please provide the reset link, or your email/phone and the 6-digit code." };
     }
 
-    if (resets.length === 0) {
-      return {
-        success: false,
-        error: "Invalid or expired reset code / token. Please request a new one.",
-      };
-    }
+    // Mark used first so the same code/link can't be replayed concurrently
+    const claimed = await db
+      .update(customerPasswordResets)
+      .set({ used: true })
+      .where(and(eq(customerPasswordResets.id, reset.id), eq(customerPasswordResets.used, false)))
+      .returning({ id: customerPasswordResets.id });
+    if (claimed.length === 0) return invalid;
 
-    const resetRecord = resets[0];
-
-    // Hash new password
     const passwordHash = await bcrypt.hash(newPassword, 10);
 
-    // Update customer password
     await db
       .update(customers)
       .set({
         passwordHash,
         updatedAt: new Date(),
       })
-      .where(eq(customers.id, resetRecord.customerId));
+      .where(eq(customers.id, reset.customerId));
 
-    // Mark reset token as used
-    await db
-      .update(customerPasswordResets)
-      .set({ used: true })
-      .where(eq(customerPasswordResets.id, resetRecord.resetId));
-
-    // Auto log-in customer with new session
-    const sessionToken = crypto.randomUUID();
-    const sessionExpiresAt = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000);
-
-    await db.insert(customerSessions).values({
-      id: crypto.randomUUID(),
-      customerId: resetRecord.customerId,
-      token: sessionToken,
-      expiresAt: sessionExpiresAt,
-    });
-
-    try {
-      const cookieStore = await cookies();
-      cookieStore.set(CUSTOMER_COOKIE_NAME, sessionToken, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-        expires: sessionExpiresAt,
-        path: "/",
-      });
-    } catch (cookieErr) {
-      console.warn("Could not set cookie (outside request context):", cookieErr);
-    }
+    // Sign out every existing session, then log the customer in fresh
+    await db.delete(customerSessions).where(eq(customerSessions.customerId, reset.customerId));
+    await createCustomerSession(reset.customerId);
 
     return { success: true };
   } catch (err) {

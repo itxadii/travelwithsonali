@@ -13,21 +13,22 @@ export async function POST(req: Request) {
       );
     }
 
-    const result = await requestPasswordReset(identifier);
+    // SITE_URL keeps reset links pointing at the real site regardless of the request's Host header
+    const siteUrl = (process.env.SITE_URL || new URL(req.url).origin).replace(/\/$/, "");
+    const result = await requestPasswordReset(identifier, siteUrl);
 
     if (!result.success) {
       return NextResponse.json(
-        { error: result.error || "Unable to find account." },
-        { status: 404 }
+        { error: result.error || "Unable to send reset email." },
+        { status: 500 }
       );
     }
 
+    // Same response whether or not an account exists, so this can't be used to look up customers
     return NextResponse.json({
       success: true,
-      message: "Reset code generated successfully.",
-      code: result.code,
-      token: result.token,
-      directLink: `/portal/reset-password?token=${result.token}`,
+      message:
+        "If an account with an email address matches what you entered, we've emailed it a 6-digit reset code and link.",
     });
   } catch (err) {
     console.error("POST /api/portal/auth/forgot-password error:", err);

@@ -185,7 +185,6 @@ c:\Projects\clientprojects\travelwithsonali
 │   └── api/                           # Backend API handlers
 │       ├── admin/                     # Admin endpoints (auth, bookings, leads, payments, etc.)
 │       ├── portal/                    # Customer portal endpoints (auth, trips, documents, etc.)
-│       └── seed-sanity/               # Data synchronization helper endpoint
 ├── components/
 │   └── ui/                            # Custom UI physics & visual effect components
 │       ├── draggable-card.tsx         # Framer Motion 3D tilt & fling card
@@ -414,7 +413,9 @@ The Customer Portal provides travelers with self-service tools for their booked 
 ### 8.1 Authentication & Security
 - **Endpoints:** `/api/portal/auth/login`, `/signup`, `/logout`, `/forgot-password`, `/reset-password`.
 - **Session Cookie:** `customer_session` (HTTP-only, Secure in production, SameSite=Lax).
-- **Phone-Based Identity Linking:** During signup, the system checks if an existing customer profile exists with that phone number (e.g., created by admin during offline booking). If matched, it claims the profile by attaching the password hash, immediately exposing all previously booked trips!
+- **Claiming Admin-Created Profiles:** Customers created by admin (e.g. offline bookings) have no password. Signup refuses to take over an existing phone/email; instead the customer uses **Forgot Password**, which emails a reset link and 6-digit code to the email on their profile. This proves they own the account before their trips become visible. Customers without an email on file must have one added by admin first.
+- **Password Reset:** Reset links/codes expire after 1 hour, only the latest one is valid, codes lock after 5 wrong attempts, and they are stored hashed. A successful reset signs out all other sessions.
+- **Email (Gmail SMTP):** Requires environment variables `SMTP_USER` (the sending Gmail address, `travelwithsonaliinfo@gmail.com`) and `SMTP_PASS` (a Google **App Password** for that account; Gmail rejects the normal login password over SMTP). Set `SITE_URL` (e.g. `https://travelwithsonali.com`) so reset links point at the live site.
 
 ### 8.2 Portal Sub-Modules
 1. **Dashboard Overview (`/portal`):**
@@ -602,10 +603,10 @@ Implemented in `lib/sanity/queries.ts`. If Sanity API credentials are not provid
 
 ### Portal APIs (`/api/portal/`)
 - `POST /api/portal/auth/login`: Customer authentication via phone/email and password.
-- `POST /api/portal/auth/signup`: Registers a customer; auto-links existing bookings by phone.
+- `POST /api/portal/auth/signup`: Registers a new customer. Existing records (e.g. created by admin) must set a password via Forgot Password instead.
 - `POST /api/portal/auth/logout`: Clears customer session.
-- `POST /api/portal/auth/forgot-password`: Generates reset token and code.
-- `POST /api/portal/auth/reset-password`: Validates code and updates password hash.
+- `POST /api/portal/auth/forgot-password`: Emails a reset link and 6-digit code (via Gmail SMTP) to the customer's email on file.
+- `POST /api/portal/auth/reset-password`: Validates the link token, or email/phone + code (max 5 attempts), and updates the password hash.
 - `GET /api/portal/dashboard`: Retrieves traveler's upcoming trips, alerts, and summary.
 - `GET /api/portal/trips`: Returns all bookings linked to the logged-in customer ID.
 - `GET /api/portal/notifications`: Returns unread notifications for the traveler.
@@ -618,7 +619,7 @@ Implemented in `lib/sanity/queries.ts`. If Sanity API credentials are not provid
 
 Located in the [`scripts/`](file:///c:/Projects/clientprojects/travelwithsonali/scripts) directory, executable via `npx tsx scripts/<script_name>.ts`:
 
-1. `initTables.ts`: Idempotent SQL script initializing all PostgreSQL tables, indices, and enums on Neon DB.
+1. `initTables.ts`: Idempotent SQL script initializing all PostgreSQL tables, indices, and enums on Neon DB. Run it with `npm run db:migrate` (`scripts/migrate.ts`) after pulling schema changes.
 2. `seedAdmin.ts`: Creates the primary `SUPER_ADMIN` user with secure bcrypt hashing.
 3. `seedSanity.ts`: Takes static tours from `toursData.ts` and uploads them to the Sanity `production` dataset.
 4. `syncSanitySections.ts`: Synchronizes the 4 demo stories and the 7 Instagram carousel moments to Sanity.

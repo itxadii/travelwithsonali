@@ -131,6 +131,7 @@ export const customerPasswordResets = pgTable("customer_password_resets", {
   customerId: text("customer_id").notNull().references(() => customers.id, { onDelete: "cascade" }),
   token: text("token").notNull().unique(),
   code: text("code").notNull(),
+  attempts: integer("attempts").notNull().default(0),
   expiresAt: timestamp("expires_at").notNull(),
   used: boolean("used").notNull().default(false),
   createdAt: timestamp("created_at").defaultNow().notNull(),

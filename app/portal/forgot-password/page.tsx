@@ -10,12 +10,7 @@ export default function ForgotPasswordPage() {
   const [identifier, setIdentifier] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [resetData, setResetData] = useState<{
-    code?: string;
-    token?: string;
-    directLink?: string;
-    message?: string;
-  } | null>(null);
+  const [sentMessage, setSentMessage] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,12 +27,12 @@ export default function ForgotPasswordPage() {
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.error || "Unable to find your account.");
+        setError(data.error || "Unable to send the reset email. Please try again.");
         setLoading(false);
         return;
       }
 
-      setResetData(data);
+      setSentMessage(data.message);
     } catch {
       setError("Unable to connect to authentication server. Please try again.");
     } finally {
@@ -71,7 +66,7 @@ export default function ForgotPasswordPage() {
             Forgot Password?
           </h1>
           <p className="text-xs text-[#997C70] max-w-xs">
-            Enter your registered email or mobile number to receive a verification reset code.
+            Enter your registered email or mobile number and we&apos;ll email you a reset code.
           </p>
         </div>
 
@@ -81,7 +76,7 @@ export default function ForgotPasswordPage() {
           </div>
         )}
 
-        {!resetData ? (
+        {!sentMessage ? (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-1.5">
               <label className="text-xs font-semibold text-[#997C70]">
@@ -99,7 +94,7 @@ export default function ForgotPasswordPage() {
                 />
               </div>
               <p className="text-[11px] text-[#997C70]">
-                We will generate an instant verification reset code for this account.
+                The code is sent to the email address on your account.
               </p>
             </div>
 
@@ -108,7 +103,7 @@ export default function ForgotPasswordPage() {
               disabled={loading}
               className="w-full py-3.5 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white text-xs font-bold tracking-wider uppercase shadow-lg shadow-[#8EB486]/30 transition-all active:scale-[0.98] disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2 group"
             >
-              <span>{loading ? "Verifying..." : "Send Reset Code"}</span>
+              <span>{loading ? "Sending..." : "Send Reset Code"}</span>
               {!loading && (
                 <ChevronRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
               )}
@@ -119,31 +114,27 @@ export default function ForgotPasswordPage() {
             <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 space-y-2 text-xs">
               <div className="flex items-center gap-2 font-bold text-sm text-emerald-900">
                 <CheckCircle2 className="w-5 h-5 text-emerald-600" />
-                <span>Verification Code Generated!</span>
+                <span>Check Your Email</span>
               </div>
-              <p className="text-emerald-700 leading-relaxed">
-                Your 6-digit password recovery code has been generated:
-              </p>
-              <div className="py-2.5 px-4 rounded-xl bg-white border border-emerald-300 text-center font-mono text-xl font-bold tracking-widest text-emerald-900 select-all">
-                {resetData.code}
-              </div>
+              <p className="text-emerald-700 leading-relaxed">{sentMessage}</p>
               <p className="text-[11px] text-emerald-600">
-                Enter this code on the next screen to set your new password.
+                The code expires in 1 hour. Check your spam folder if you don&apos;t see it.
+                No email on your account? Contact us on WhatsApp for help.
               </p>
             </div>
 
             <div className="space-y-2">
               <Link
-                href={`/portal/reset-password?token=${resetData.token}&identifier=${encodeURIComponent(identifier)}`}
+                href={`/portal/reset-password?identifier=${encodeURIComponent(identifier)}`}
                 className="w-full py-3.5 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white text-xs font-bold tracking-wider uppercase shadow-lg shadow-[#8EB486]/30 transition-all flex items-center justify-center gap-2 group"
               >
-                <span>Proceed to Set New Password</span>
+                <span>Enter Reset Code</span>
                 <ChevronRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
               </Link>
 
               <button
                 type="button"
-                onClick={() => setResetData(null)}
+                onClick={() => setSentMessage(null)}
                 className="w-full py-2.5 rounded-full text-xs font-semibold text-[#997C70] hover:text-[#685752] transition-colors"
               >
                 Enter a different number or email

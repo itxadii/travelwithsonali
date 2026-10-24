@@ -152,7 +152,8 @@ export default function CustomerLoginPage() {
           </button>
         </form>
 
-        {/* Demo Customer Access Helper */}
+        {/* Demo Customer Access Helper (local development only) */}
+        {process.env.NODE_ENV !== "production" && (
         <div className="p-3.5 rounded-2xl bg-[#8EB486]/10 border border-[#8EB486]/25 flex items-center justify-between text-xs">
           <div className="space-y-0.5">
             <span className="text-[10px] font-bold uppercase tracking-wider text-[#8EB486] block">
@@ -174,6 +175,7 @@ export default function CustomerLoginPage() {
             Autofill
           </button>
         </div>
+        )}
 
         <div className="space-y-2 text-center pt-2 border-t border-[#E8DCD5] text-[11px] text-[#997C70]">
           <div className="flex items-center justify-center gap-1">
