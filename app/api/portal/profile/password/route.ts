@@ -4,6 +4,7 @@ import { db } from "@/db";
 import { customers } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import bcrypt from "bcryptjs";
+import { checkRateLimits, tooManyRequests } from "@/lib/rateLimit";
 
 export async function POST(req: Request) {
   try {
@@ -22,6 +23,11 @@ export async function POST(req: Request) {
     if (newPassword.length < 6) {
       return NextResponse.json({ error: "New password must be at least 6 characters long." }, { status: 400 });
     }
+
+    const rate = await checkRateLimits([
+      { key: ["portal-change-password", customerSession.id], limit: 5, windowSeconds: 15 * 60 },
+    ]);
+    if (!rate.allowed) return tooManyRequests(rate.retryAfterSeconds);
 
     const currentCustomerRecord = (
       await db.select().from(customers).where(eq(customers.id, customerSession.id))

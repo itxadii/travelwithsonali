@@ -9,7 +9,8 @@
     "lint": "eslint",
     "seed:sanity": "npx tsx scripts/seedSanity.ts",
     "seed:admin": "npx tsx scripts/seedAdmin.ts",
-    "db:migrate": "npx tsx scripts/migrate.ts"
+    "db:migrate": "npx tsx scripts/migrate.ts",
+    "security:clear-default-passwords": "npx tsx scripts/clearDefaultPasswords.ts"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",

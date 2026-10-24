@@ -20,11 +20,13 @@ async function seedAdmin() {
   // 1. DDL creation
   await createTablesIfNotExist();
 
-  const email = process.env.ADMIN_EMAIL || "admin@travelwithsonali.com";
-  const password = process.env.ADMIN_PASSWORD || "SonaliAdmin2026!";
+  const email = process.env.ADMIN_EMAIL;
+  const password = process.env.ADMIN_PASSWORD;
+  if (!email || !password || password.length < 12) {
+    throw new Error("Set ADMIN_EMAIL and ADMIN_PASSWORD (at least 12 characters) before running this script.");
+  }
 
   const passwordHash = await bcrypt.hash(password, 10);
-  const customerPasswordHash = await bcrypt.hash("Customer123!", 10);
 
   // Check existing admin
   const existingAdmin = await db.select().from(adminUsers).where(eq(adminUsers.email, email));
@@ -72,7 +74,7 @@ async function seedAdmin() {
       name: "Rahul Verma",
       phone: "+91 98765 43210",
       email: "rahul.verma@example.com",
-      passwordHash: customerPasswordHash,
+      // No password: sample customer can't log in
       status: "Active",
       notes: "Frequent mountain traveler.",
     });
@@ -175,14 +177,6 @@ async function seedAdmin() {
     });
 
     console.log("✅ Initial operational database populated successfully!");
-  } else {
-    // Update existing customer password hash if empty
-    const custs = await db.select().from(customers);
-    for (const c of custs) {
-      if (!c.passwordHash) {
-        await db.update(customers).set({ passwordHash: customerPasswordHash }).where(eq(customers.id, c.id));
-      }
-    }
   }
 
   console.log("\n🎉 Database setup complete!");

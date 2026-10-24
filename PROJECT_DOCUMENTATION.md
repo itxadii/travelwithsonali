@@ -415,6 +415,7 @@ The Customer Portal provides travelers with self-service tools for their booked 
 - **Session Cookie:** `customer_session` (HTTP-only, Secure in production, SameSite=Lax).
 - **Claiming Admin-Created Profiles:** Customers created by admin (e.g. offline bookings) have no password. Signup refuses to take over an existing phone/email; instead the customer uses **Forgot Password**, which emails a reset link and 6-digit code to the email on their profile. This proves they own the account before their trips become visible. Customers without an email on file must have one added by admin first.
 - **Password Reset:** Reset links/codes expire after 1 hour, only the latest one is valid, codes lock after 5 wrong attempts, and they are stored hashed. A successful reset signs out all other sessions.
+- **Rate Limiting (`lib/rateLimit.ts`):** Login, signup, forgot-password, reset-password and change-password endpoints are limited per IP and per account (e.g. customer login: 10 tries per account / 20 per IP every 15 minutes; forgot-password: 3 emails per account per hour). Counters live in the `rate_limits` table so limits hold across serverless instances. Blocked requests get HTTP 429 with `Retry-After`. If the table is missing or the check errors, requests are allowed (fail open) and the error is logged.
 - **Email (Gmail SMTP):** Requires environment variables `SMTP_USER` (the sending Gmail address, `travelwithsonaliinfo@gmail.com`) and `SMTP_PASS` (a Google **App Password** for that account; Gmail rejects the normal login password over SMTP). Set `SITE_URL` (e.g. `https://travelwithsonali.com`) so reset links point at the live site.
 
 ### 8.2 Portal Sub-Modules
@@ -620,11 +621,12 @@ Implemented in `lib/sanity/queries.ts`. If Sanity API credentials are not provid
 Located in the [`scripts/`](file:///c:/Projects/clientprojects/travelwithsonali/scripts) directory, executable via `npx tsx scripts/<script_name>.ts`:
 
 1. `initTables.ts`: Idempotent SQL script initializing all PostgreSQL tables, indices, and enums on Neon DB. Run it with `npm run db:migrate` (`scripts/migrate.ts`) after pulling schema changes.
-2. `seedAdmin.ts`: Creates the primary `SUPER_ADMIN` user with secure bcrypt hashing.
+2. `seedAdmin.ts`: Creates the primary `SUPER_ADMIN` user with secure bcrypt hashing. Requires `ADMIN_EMAIL` and `ADMIN_PASSWORD` (12+ characters). The sample customer it creates has no password and cannot log in.
 3. `seedSanity.ts`: Takes static tours from `toursData.ts` and uploads them to the Sanity `production` dataset.
 4. `syncSanitySections.ts`: Synchronizes the 4 demo stories and the 7 Instagram carousel moments to Sanity.
 5. `mergeDuplicateCustomers.ts`: Detects duplicate customer accounts sharing the same phone number, merges their booking histories, and removes orphaned customer rows.
 6. `debugCustomerBooking.ts`: Validates booking linkages between customer records and booking codes in the database.
+7. `clearDefaultPasswords.ts` (`npm run security:clear-default-passwords`): Removes the old `Customer123!` default password from any customer still using it and warns if an admin still uses the old seeded password.
 
 ---
 
