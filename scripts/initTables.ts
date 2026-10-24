@@ -95,10 +95,15 @@ export async function createTablesIfNotExist() {
       customer_id TEXT NOT NULL REFERENCES customers(id) ON DELETE CASCADE,
       token TEXT NOT NULL UNIQUE,
       code TEXT NOT NULL,
+      attempts INTEGER NOT NULL DEFAULT 0,
       expires_at TIMESTAMP NOT NULL,
       used BOOLEAN NOT NULL DEFAULT FALSE,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
     );
+  `;
+
+  await sql`
+    ALTER TABLE customer_password_resets ADD COLUMN IF NOT EXISTS attempts INTEGER NOT NULL DEFAULT 0;
   `;
 
   await sql`

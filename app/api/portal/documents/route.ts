@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getCurrentCustomer } from "@/lib/portal/auth";
 import { db } from "@/db";
 import { bookings, documents, travellers } from "@/db/schema";
-import { eq, inArray, and } from "drizzle-orm";
+import { eq, inArray, and, or } from "drizzle-orm";
 
 export const dynamic = "force-dynamic";
 
@@ -82,16 +82,39 @@ export async function POST(req: Request) {
     }
 
     if (documentId) {
-      // Update existing document status to Under Review
-      await db
+      // Update existing document status to Under Review (only the customer's own document)
+      const updated = await db
         .update(documents)
         .set({
           status: "Under Review",
           updatedAt: new Date(),
         })
-        .where(eq(documents.id, documentId));
+        .where(and(eq(documents.id, documentId), eq(documents.customerId, customer.id)))
+        .returning({ id: documents.id });
+
+      if (updated.length === 0) {
+        return NextResponse.json({ error: "Document not found." }, { status: 404 });
+      }
 
       return NextResponse.json({ success: true, message: "Document uploaded and submitted for verification!" });
+    }
+
+    // Verify traveller belongs to customer (directly or via one of their bookings)
+    if (travellerId) {
+      const ownedTravellers = await db
+        .select({ id: travellers.id })
+        .from(travellers)
+        .leftJoin(bookings, eq(travellers.bookingId, bookings.id))
+        .where(
+          and(
+            eq(travellers.id, travellerId),
+            or(eq(travellers.customerId, customer.id), eq(bookings.customerId, customer.id))
+          )
+        );
+
+      if (ownedTravellers.length === 0) {
+        return NextResponse.json({ error: "Unauthorized traveller resource." }, { status: 403 });
+      }
     }
 
     // Create new document record

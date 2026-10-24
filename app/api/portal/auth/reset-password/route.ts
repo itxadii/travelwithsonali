@@ -6,11 +6,9 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { token, code, newPassword, identifier } = body;
 
-    const tokenOrCode = token || code;
-
-    if (!tokenOrCode) {
+    if (!token && !(code && identifier)) {
       return NextResponse.json(
-        { error: "Reset token or 6-digit verification code is required." },
+        { error: "Please provide the reset link, or your email/phone and the 6-digit code." },
         { status: 400 }
       );
     }
@@ -22,7 +20,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const result = await resetCustomerPassword(tokenOrCode, newPassword, identifier);
+    const result = await resetCustomerPassword({ token, code, identifier }, newPassword);
 
     if (!result.success) {
       return NextResponse.json(
