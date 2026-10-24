@@ -621,11 +621,12 @@ Implemented in `lib/sanity/queries.ts`. If Sanity API credentials are not provid
 Located in the [`scripts/`](file:///c:/Projects/clientprojects/travelwithsonali/scripts) directory, executable via `npx tsx scripts/<script_name>.ts`:
 
 1. `initTables.ts`: Idempotent SQL script initializing all PostgreSQL tables, indices, and enums on Neon DB. Run it with `npm run db:migrate` (`scripts/migrate.ts`) after pulling schema changes.
-2. `seedAdmin.ts`: Creates the primary `SUPER_ADMIN` user with secure bcrypt hashing.
+2. `seedAdmin.ts`: Creates the primary `SUPER_ADMIN` user with secure bcrypt hashing. Requires `ADMIN_EMAIL` and `ADMIN_PASSWORD` (12+ characters). The sample customer it creates has no password and cannot log in.
 3. `seedSanity.ts`: Takes static tours from `toursData.ts` and uploads them to the Sanity `production` dataset.
 4. `syncSanitySections.ts`: Synchronizes the 4 demo stories and the 7 Instagram carousel moments to Sanity.
 5. `mergeDuplicateCustomers.ts`: Detects duplicate customer accounts sharing the same phone number, merges their booking histories, and removes orphaned customer rows.
 6. `debugCustomerBooking.ts`: Validates booking linkages between customer records and booking codes in the database.
+7. `clearDefaultPasswords.ts` (`npm run security:clear-default-passwords`): Removes the old `Customer123!` default password from any customer still using it and warns if an admin still uses the old seeded password.
 
 ---
 

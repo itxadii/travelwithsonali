@@ -152,31 +152,6 @@ export default function CustomerLoginPage() {
           </button>
         </form>
 
-        {/* Demo Customer Access Helper (local development only) */}
-        {process.env.NODE_ENV !== "production" && (
-        <div className="p-3.5 rounded-2xl bg-[#8EB486]/10 border border-[#8EB486]/25 flex items-center justify-between text-xs">
-          <div className="space-y-0.5">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-[#8EB486] block">
-              Demo Portal Customer
-            </span>
-            <p className="text-[11px] text-[#685752] font-medium">
-              rahul.verma@example.com
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={() => {
-              setLoginIdentifier("rahul.verma@example.com");
-              setPassword("Customer123!");
-              setError("");
-            }}
-            className="px-3 py-1.5 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white text-[11px] font-semibold transition-colors shadow-xs cursor-pointer"
-          >
-            Autofill
-          </button>
-        </div>
-        )}
-
         <div className="space-y-2 text-center pt-2 border-t border-[#E8DCD5] text-[11px] text-[#997C70]">
           <div className="flex items-center justify-center gap-1">
             <span>Don&apos;t have an account?</span>
