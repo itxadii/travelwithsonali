@@ -4,6 +4,7 @@ import { db } from "@/db";
 import { adminUsers, activityLogs } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import bcrypt from "bcryptjs";
+import { checkRateLimits, tooManyRequests } from "@/lib/rateLimit";
 
 export async function POST(request: Request) {
   const admin = await getCurrentAdmin();
@@ -22,6 +23,11 @@ export async function POST(request: Request) {
     if (newPassword.length < 8) {
       return NextResponse.json({ error: "New password must be at least 8 characters long." }, { status: 400 });
     }
+
+    const rate = await checkRateLimits([
+      { key: ["admin-change-password", admin.id], limit: 5, windowSeconds: 15 * 60 },
+    ]);
+    if (!rate.allowed) return tooManyRequests(rate.retryAfterSeconds);
 
     const users = await db.select().from(adminUsers).where(eq(adminUsers.id, admin.id));
     if (users.length === 0) {

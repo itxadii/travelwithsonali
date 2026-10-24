@@ -107,6 +107,14 @@ export async function createTablesIfNotExist() {
   `;
 
   await sql`
+    CREATE TABLE IF NOT EXISTS rate_limits (
+      key TEXT PRIMARY KEY,
+      count INTEGER NOT NULL DEFAULT 0,
+      window_start TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+    );
+  `;
+
+  await sql`
     CREATE TABLE IF NOT EXISTS bookings (
       id TEXT PRIMARY KEY,
       booking_code TEXT NOT NULL UNIQUE,

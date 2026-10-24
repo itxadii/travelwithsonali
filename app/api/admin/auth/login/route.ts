@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { loginAdmin } from "@/lib/admin/auth";
+import { checkRateLimits, getClientIp, tooManyRequests } from "@/lib/rateLimit";
 
 export async function POST(request: Request) {
   try {
@@ -12,6 +13,12 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
+
+    const rate = await checkRateLimits([
+      { key: ["admin-login:ip", getClientIp(request)], limit: 10, windowSeconds: 15 * 60 },
+      { key: ["admin-login:email", String(email).trim().toLowerCase()], limit: 10, windowSeconds: 15 * 60 },
+    ]);
+    if (!rate.allowed) return tooManyRequests(rate.retryAfterSeconds);
 
     const result = await loginAdmin(email, password);
 

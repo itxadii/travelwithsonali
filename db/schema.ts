@@ -245,3 +245,9 @@ export const reviews = pgTable("reviews", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
+// Login / password-reset rate limiting (see lib/rateLimit.ts). Keys are SHA-256 hashes.
+export const rateLimits = pgTable("rate_limits", {
+  key: text("key").primaryKey(),
+  count: integer("count").notNull().default(0),
+  windowStart: timestamp("window_start").defaultNow().notNull(),
+});

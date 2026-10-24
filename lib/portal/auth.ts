@@ -36,6 +36,14 @@ export function normalizePhoneNumber(input: string): string {
 }
 
 /**
+ * Canonical form of a login identifier (lowercased email, or 10-digit phone) for rate-limit keys.
+ */
+export function normalizeIdentifier(identifier: string): string {
+  const clean = identifier.trim().toLowerCase();
+  return clean.includes("@") ? clean : normalizePhoneNumber(clean);
+}
+
+/**
  * Find customer by email or phone number with resilient normalization.
  */
 export async function findCustomerByIdentifier(identifier: string) {

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { loginCustomer } from "@/lib/portal/auth";
+import { loginCustomer, normalizeIdentifier } from "@/lib/portal/auth";
+import { checkRateLimits, getClientIp, tooManyRequests } from "@/lib/rateLimit";
 
 export async function POST(req: Request) {
   try {
@@ -9,6 +10,12 @@ export async function POST(req: Request) {
     if (!loginIdentifier || !password) {
       return NextResponse.json({ error: "Email or Phone and password are required." }, { status: 400 });
     }
+
+    const rate = await checkRateLimits([
+      { key: ["portal-login:ip", getClientIp(req)], limit: 20, windowSeconds: 15 * 60 },
+      { key: ["portal-login:id", normalizeIdentifier(String(loginIdentifier))], limit: 10, windowSeconds: 15 * 60 },
+    ]);
+    if (!rate.allowed) return tooManyRequests(rate.retryAfterSeconds);
 
     const result = await loginCustomer(loginIdentifier, password);
 

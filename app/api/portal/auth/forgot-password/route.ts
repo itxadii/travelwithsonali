@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { requestPasswordReset } from "@/lib/portal/auth";
+import { normalizeIdentifier, requestPasswordReset } from "@/lib/portal/auth";
+import { checkRateLimits, getClientIp, tooManyRequests } from "@/lib/rateLimit";
 
 export async function POST(req: Request) {
   try {
@@ -12,6 +13,13 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
+
+    // Also stops the endpoint being used to flood a customer's inbox
+    const rate = await checkRateLimits([
+      { key: ["forgot-password:ip", getClientIp(req)], limit: 10, windowSeconds: 60 * 60 },
+      { key: ["forgot-password:id", normalizeIdentifier(String(identifier))], limit: 3, windowSeconds: 60 * 60 },
+    ]);
+    if (!rate.allowed) return tooManyRequests(rate.retryAfterSeconds);
 
     // SITE_URL keeps reset links pointing at the real site regardless of the request's Host header
     const siteUrl = (process.env.SITE_URL || new URL(req.url).origin).replace(/\/$/, "");

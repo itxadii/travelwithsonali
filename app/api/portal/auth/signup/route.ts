@@ -4,6 +4,7 @@ import { customers, customerSessions } from "@/db/schema";
 import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
 import { findCustomerByIdentifier } from "@/lib/portal/auth";
+import { checkRateLimits, getClientIp, tooManyRequests } from "@/lib/rateLimit";
 
 const CUSTOMER_COOKIE_NAME = "customer_session";
 
@@ -19,6 +20,11 @@ export async function POST(req: Request) {
     if (password.length < 6) {
       return NextResponse.json({ error: "Password must be at least 6 characters long." }, { status: 400 });
     }
+
+    const rate = await checkRateLimits([
+      { key: ["signup:ip", getClientIp(req)], limit: 10, windowSeconds: 60 * 60 },
+    ]);
+    if (!rate.allowed) return tooManyRequests(rate.retryAfterSeconds);
 
     const cleanPhone = phone.trim();
     const cleanEmail = email ? email.trim().toLowerCase() : null;
