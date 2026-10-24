@@ -55,7 +55,8 @@ export async function findCustomerByIdentifier(identifier: string) {
     const list = await db
       .select()
       .from(customers)
-      .where(eq(customers.email, clean));
+      // Admin-entered emails may have been saved with capitals or spaces
+      .where(sql`lower(trim(${customers.email})) = ${clean}`);
     return list[0] || null;
   }
 
@@ -159,6 +160,9 @@ export async function requestPasswordReset(
     const customer = await findCustomerByIdentifier(identifier);
 
     if (!customer || !customer.email) {
+      console.info(
+        `Password reset not sent: ${customer ? "customer has no email on file" : "no matching customer"}`
+      );
       return { success: true };
     }
 
