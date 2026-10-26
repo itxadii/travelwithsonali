@@ -5,6 +5,16 @@ import DestinationDetailClientView from "./DestinationDetailClientView";
 import JsonLd from "@/app/components/JsonLd";
 import { SITE_URL, absoluteUrl, clampDescription, pageMetadata } from "@/lib/seo";
 import { getDestinationBySlug, getToursByDestination, getDestinations } from "@/lib/sanity/queries";
+import { DESTINATIONS_DATA } from "@/app/data/destinationsData";
+
+// Pre-render every destination at build time and refresh from Sanity at most once a minute
+export const revalidate = 60;
+
+export async function generateStaticParams() {
+  const destinations = await getDestinations();
+  const slugs = new Set([...destinations.map((d) => d.slug), ...DESTINATIONS_DATA.map((d) => d.slug)]);
+  return Array.from(slugs, (slug) => ({ slug }));
+}
 
 export async function generateMetadata({
   params,

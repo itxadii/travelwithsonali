@@ -41,7 +41,6 @@ export const REAL_DESTINATION_IMAGES = [
 ];
 
 import { Tour } from "./data/toursData";
-import { Destination } from "./data/destinationsData";
 import { InstagramSectionData } from "@/lib/sanity/types";
 import { STORIES_DATA } from "./data/storiesData";
 import { TESTIMONIALS_DATA } from "./data/testimonialsData";
@@ -83,7 +82,6 @@ const TRIP_PILLARS = [
 
 interface HomeClientViewProps {
   tours: Tour[];
-  destinations: Destination[];
   instagramData?: InstagramSectionData;
 }
 

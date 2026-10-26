@@ -10,9 +10,14 @@ import { SITE_URL, absoluteUrl, pageMetadata } from "@/lib/seo";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import AmbientCircles from "../../components/AmbientCircles";
-import { getStoryBySlug } from "@/lib/sanity/queries";
+import { getStories, getStoryBySlug } from "@/lib/sanity/queries";
 
 export const revalidate = 60;
+
+export async function generateStaticParams() {
+  const stories = await getStories();
+  return stories.map((story) => ({ slug: story.slug }));
+}
 
 export async function generateMetadata({
   params,

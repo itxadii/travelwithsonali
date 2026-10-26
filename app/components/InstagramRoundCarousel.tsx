@@ -70,7 +70,10 @@ interface InstagramRoundCarouselProps {
 
 export default function InstagramRoundCarousel({ data }: InstagramRoundCarouselProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const scrollerRef = useRef<HTMLDivElement>(null);
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  // Set while a sideways swipe is in progress, so lifting the finger doesn't open a card
+  const draggedRef = useRef(false);
 
   const badge = data?.badge || "Social Community";
   const heading = data?.heading || "Follow Our Moments on Instagram";
@@ -88,46 +91,54 @@ export default function InstagramRoundCarousel({ data }: InstagramRoundCarouselP
     return url;
   };
 
-  // The card strip is a native horizontal scroller, so finger swipes and trackpad
-  // swipes get the browser's own momentum. Vertical page scroll through the pinned
-  // section is added on top as a relative offset, so the two inputs never fight.
+  // The card strip is moved with a GPU transform, not as a scroll container. That way a
+  // vertical finger scroll that starts on a card is ordinary page scrolling (touch-action:
+  // pan-y), while sideways swipes are handled here with momentum. Vertical page scroll
+  // through the pinned section is added on top as a relative offset, so the inputs never fight.
   useEffect(() => {
     const section = sectionRef.current;
-    const scroller = scrollerRef.current;
-    if (!section || !scroller) return;
+    const viewport = viewportRef.current;
+    const track = trackRef.current;
+    if (!section || !viewport || !track) return;
 
     let ticking = false;
-    // Direction of the current finger gesture on the strip, decided after a few pixels of movement
+    let position = 0;
+    let inertiaFrame = 0;
+    // Direction of the current finger gesture, decided after a few pixels of movement
     let gesture: "horizontal" | "vertical" | null = null;
-    let touchStartX = 0;
-    let touchStartY = 0;
+    let startX = 0;
+    let startY = 0;
+    let lastX = 0;
+    let lastTime = 0;
+    let velocity = 0; // px per ms, positive = finger moving left
 
     const getProgress = () => {
       const totalScrollable = section.offsetHeight - window.innerHeight;
       if (totalScrollable <= 0) return 0;
       return Math.max(0, Math.min(1, -section.getBoundingClientRect().top / totalScrollable));
     };
-    const getMaxScroll = () => Math.max(0, scroller.scrollWidth - scroller.clientWidth);
+    const getMax = () => Math.max(0, track.scrollWidth - viewport.clientWidth);
+    const moveTo = (next: number) => {
+      position = Math.max(0, Math.min(getMax(), next));
+      track.style.transform = `translate3d(${-position}px, 0, 0)`;
+    };
+    const stopInertia = () => {
+      if (inertiaFrame) cancelAnimationFrame(inertiaFrame);
+      inertiaFrame = 0;
+    };
 
     let lastProgress = getProgress();
-    // Kept as a float: scrollLeft rounds to whole pixels, which would swallow slow scrolls
-    let position = lastProgress * getMaxScroll();
-    scroller.scrollLeft = position;
+    moveTo(lastProgress * getMax());
 
     const updateFromPageScroll = () => {
       ticking = false;
       const progress = getProgress();
       const delta = progress - lastProgress;
       lastProgress = progress;
-      // Don't fight a finger that is swiping the strip sideways. A vertical scroll that
-      // starts on a card is still page scrolling, so it keeps driving the strip.
       if (delta === 0 || gesture === "horizontal") return;
-
-      const maxScroll = getMaxScroll();
-      position = Math.max(0, Math.min(maxScroll, position + delta * maxScroll));
-      scroller.scrollLeft = position;
+      stopInertia();
+      moveTo(position + delta * getMax());
     };
-
     const onPageScroll = () => {
       if (!ticking) {
         ticking = true;
@@ -135,39 +146,83 @@ export default function InstagramRoundCarousel({ data }: InstagramRoundCarouselP
       }
     };
 
-    // Adopt the position when the user swipes the strip directly
-    const onScrollerScroll = () => {
-      if (Math.abs(scroller.scrollLeft - position) > 1) position = scroller.scrollLeft;
-    };
     const onTouchStart = (e: TouchEvent) => {
+      stopInertia();
       gesture = null;
-      touchStartX = e.touches[0].clientX;
-      touchStartY = e.touches[0].clientY;
+      startX = lastX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+      lastTime = performance.now();
+      velocity = 0;
     };
     const onTouchMove = (e: TouchEvent) => {
-      if (gesture) return;
-      const dx = Math.abs(e.touches[0].clientX - touchStartX);
-      const dy = Math.abs(e.touches[0].clientY - touchStartY);
-      if (dx > 6 || dy > 6) gesture = dx > dy ? "horizontal" : "vertical";
+      const x = e.touches[0].clientX;
+      if (!gesture) {
+        const dx = Math.abs(x - startX);
+        const dy = Math.abs(e.touches[0].clientY - startY);
+        if (dx < 6 && dy < 6) return;
+        gesture = dx > dy ? "horizontal" : "vertical";
+        lastX = x;
+      }
+      if (gesture !== "horizontal") return;
+      const now = performance.now();
+      const step = lastX - x;
+      velocity = 0.8 * (step / Math.max(1, now - lastTime)) + 0.2 * velocity;
+      lastX = x;
+      lastTime = now;
+      draggedRef.current = true;
+      moveTo(position + step);
     };
-    const onTouchEnd = () => { gesture = null; };
+    const onTouchEnd = () => {
+      if (gesture === "horizontal" && Math.abs(velocity) > 0.05) {
+        // Momentum: keep gliding and slow down, like a native scroller
+        let speed = velocity * 16;
+        const glide = () => {
+          speed *= 0.94;
+          const before = position;
+          moveTo(position + speed);
+          inertiaFrame = Math.abs(speed) > 0.5 && position !== before ? requestAnimationFrame(glide) : 0;
+        };
+        inertiaFrame = requestAnimationFrame(glide);
+      }
+      gesture = null;
+    };
+
+    // Trackpad / shift+wheel sideways scrolling on desktop
+    const onWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+      e.preventDefault();
+      stopInertia();
+      moveTo(position + e.deltaX);
+    };
+
+    // Keyboard users: bring a focused card into view
+    const onFocusIn = (e: FocusEvent) => {
+      const card = (e.target as HTMLElement).closest("a");
+      if (!card) return;
+      viewport.scrollLeft = 0; // focus can scroll overflow:hidden boxes; we position via transform
+      const left = card.offsetLeft;
+      if (left < position || left + card.offsetWidth > position + viewport.clientWidth) moveTo(left - 16);
+    };
 
     window.addEventListener("scroll", onPageScroll, { passive: true });
     window.addEventListener("resize", onPageScroll, { passive: true });
-    scroller.addEventListener("scroll", onScrollerScroll, { passive: true });
-    scroller.addEventListener("touchstart", onTouchStart, { passive: true });
-    scroller.addEventListener("touchmove", onTouchMove, { passive: true });
-    scroller.addEventListener("touchend", onTouchEnd, { passive: true });
-    scroller.addEventListener("touchcancel", onTouchEnd, { passive: true });
+    viewport.addEventListener("touchstart", onTouchStart, { passive: true });
+    viewport.addEventListener("touchmove", onTouchMove, { passive: true });
+    viewport.addEventListener("touchend", onTouchEnd, { passive: true });
+    viewport.addEventListener("touchcancel", onTouchEnd, { passive: true });
+    viewport.addEventListener("wheel", onWheel, { passive: false });
+    viewport.addEventListener("focusin", onFocusIn);
 
     return () => {
+      stopInertia();
       window.removeEventListener("scroll", onPageScroll);
       window.removeEventListener("resize", onPageScroll);
-      scroller.removeEventListener("scroll", onScrollerScroll);
-      scroller.removeEventListener("touchstart", onTouchStart);
-      scroller.removeEventListener("touchmove", onTouchMove);
-      scroller.removeEventListener("touchend", onTouchEnd);
-      scroller.removeEventListener("touchcancel", onTouchEnd);
+      viewport.removeEventListener("touchstart", onTouchStart);
+      viewport.removeEventListener("touchmove", onTouchMove);
+      viewport.removeEventListener("touchend", onTouchEnd);
+      viewport.removeEventListener("touchcancel", onTouchEnd);
+      viewport.removeEventListener("wheel", onWheel);
+      viewport.removeEventListener("focusin", onFocusIn);
     };
   }, []);
 
@@ -210,11 +265,20 @@ export default function InstagramRoundCarousel({ data }: InstagramRoundCarouselP
 
         {/* Horizontal Carousel Track with Bigger Cards & Low Margins */}
         <div
-          ref={scrollerRef}
+          ref={viewportRef}
           data-lenis-prevent-horizontal
-          className="w-full overflow-x-auto overflow-y-hidden overscroll-x-contain my-auto py-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="w-full overflow-hidden my-auto py-2 touch-pan-y"
+          onClickCapture={(e) => {
+            if (draggedRef.current) {
+              e.preventDefault();
+              e.stopPropagation();
+            }
+          }}
+          onPointerDown={() => {
+            draggedRef.current = false;
+          }}
         >
-          <div className="flex w-max items-center gap-4 sm:gap-6 px-4 sm:px-8">
+          <div ref={trackRef} className="flex w-max items-center gap-4 sm:gap-6 px-4 sm:px-8 will-change-transform">
             {moments.map((moment, idx) => (
               <a
                 key={moment.id || idx}

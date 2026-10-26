@@ -3,8 +3,17 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import TourDetailClientView from "./TourDetailClientView";
 import JsonLd from "@/app/components/JsonLd";
-import { getTourBySlug } from "@/lib/sanity/queries";
+import { getActiveTours, getTourBySlug } from "@/lib/sanity/queries";
 import { SITE_URL, absoluteUrl, clampDescription, pageMetadata } from "@/lib/seo";
+
+// Pre-render every tour at build time and refresh from Sanity at most once a minute,
+// so clicking a tour is served from the cache instead of waiting on a fresh render.
+export const revalidate = 60;
+
+export async function generateStaticParams() {
+  const tours = await getActiveTours();
+  return tours.map((tour) => ({ slug: tour.slug }));
+}
 
 export async function generateMetadata({
   params,

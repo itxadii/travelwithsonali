@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useId } from "react";
-import { motion, useTime, useTransform } from "motion/react";
+import React, { useEffect, useId, useRef } from "react";
+import { motion, useInView, useMotionValue, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
 
 export interface SquigglyTextProps {
@@ -71,11 +71,22 @@ export function SquigglyText({
     [steps, safeId],
   );
 
-  const time = useTime();
-  const filter = useTransform(
-    time,
-    (t) => filters[Math.floor(t / stepDuration) % filters.length],
-  );
+  // Only animate while on screen: each swap re-rasterises the text through an SVG
+  // turbulence filter, which is expensive on phones when many headings run at once.
+  const ref = useRef<HTMLElement>(null);
+  const inView = useInView(ref, { margin: "100px" });
+  const reduceMotion = useReducedMotion();
+  const filter = useMotionValue(filters[0]);
+
+  useEffect(() => {
+    if (!inView || reduceMotion) return;
+    let step = 0;
+    const id = window.setInterval(() => {
+      step = (step + 1) % filters.length;
+      filter.set(filters[step]);
+    }, stepDuration);
+    return () => window.clearInterval(id);
+  }, [inView, reduceMotion, filters, stepDuration, filter]);
 
   const scaleAt = (i: number) =>
     Array.isArray(scale) ? scale[i % scale.length] : scale;
@@ -84,6 +95,8 @@ export function SquigglyText({
 
   return (
     <Wrapper
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ref={ref as any}
       style={{ filter, ...style }}
       className={cn("inline-block", className)}
     >

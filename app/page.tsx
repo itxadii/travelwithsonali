@@ -2,7 +2,7 @@ import React, { use } from "react";
 import type { Metadata } from "next";
 import HomeClientView from "./HomeClientView";
 import { DEFAULT_DESCRIPTION, DEFAULT_OG_IMAGE, SITE_NAME } from "@/lib/seo";
-import { getFeaturedTours, getDestinations, getInstagramSection } from "@/lib/sanity/queries";
+import { getFeaturedTours, getInstagramSection } from "@/lib/sanity/queries";
 
 const homeTitle = `${SITE_NAME} | Group Tours, Himalayan Treks & Yatras`;
 
@@ -21,8 +21,7 @@ export const metadata: Metadata = {
 
 export default function Home() {
   const tours = use(getFeaturedTours());
-  const destinations = use(getDestinations());
   const instagramData = use(getInstagramSection());
 
-  return <HomeClientView tours={tours} destinations={destinations} instagramData={instagramData} />;
+  return <HomeClientView tours={tours} instagramData={instagramData} />;
 }

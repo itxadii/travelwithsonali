@@ -15,86 +15,77 @@ export default function StackedTourCards({
   tours,
   onEnquire,
 }: StackedTourCardsProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const dimRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     let ticking = false;
+    let visible = false;
 
+    // Reads every card position first, then writes, so each frame triggers one layout pass.
+    // Only transform and opacity change, which the GPU composites without repainting.
     const updateCardScales = () => {
+      ticking = false;
+      if (!visible) return;
+
       const windowH = window.innerHeight;
+      const isMobile = window.innerWidth < 640;
+      const baseTop = isMobile ? 60 : 76;
+      const stepTop = isMobile ? 6 : 14;
       const cards = cardRefs.current;
-      const totalCards = cards.length;
+      const tops = cards.map((card) => card?.getBoundingClientRect().top ?? 0);
 
       cards.forEach((card, i) => {
         if (!card) return;
-        const rect = card.getBoundingClientRect();
-        const isMobile = window.innerWidth < 640;
-        const baseTop = isMobile ? 60 : 76;
-        const stepTop = isMobile ? 6 : 14;
         const stickyTop = baseTop + i * stepTop;
-
         let scale = 1;
-        let brightness = 1;
-        let opacity = 1;
+        let dim = 0;
 
-        // 1. Check subsequent cards scrolling on top of this card (deck stacking & scaling down)
-        for (let j = i + 1; j < totalCards; j++) {
-          const nextCard = cards[j];
-          if (!nextCard) continue;
-          const nextRect = nextCard.getBoundingClientRect();
-          const nextStickyTop = baseTop + j * stepTop;
-
-          // As the next card moves from bottom of the screen to its sticky position
-          const totalDist = windowH - nextStickyTop;
-          if (totalDist > 0) {
-            const currentDist = windowH - nextRect.top;
-            const progress = Math.max(0, Math.min(1, currentDist / totalDist));
-
-            // Scaled down progressively
-            const scaleStep = isMobile ? 0.03 : 0.05;
-            scale -= progress * scaleStep;
-            brightness -= progress * 0.03;
-            opacity -= progress * 0.015;
-          }
+        // Later cards sliding over this one shrink and darken it slightly
+        for (let j = i + 1; j < cards.length; j++) {
+          const totalDist = windowH - (baseTop + j * stepTop);
+          if (totalDist <= 0) continue;
+          const progress = Math.max(0, Math.min(1, (windowH - tops[j]) / totalDist));
+          scale -= progress * (isMobile ? 0.03 : 0.05);
+          dim += progress * 0.05;
         }
 
-        // 2. Entrance scaling: As this card enters from the bottom of the viewport towards sticky top
-        if (rect.top > stickyTop) {
+        // Entrance: grow to full size while approaching the sticky position
+        if (tops[i] > stickyTop) {
           const enterTotalDist = windowH - stickyTop;
           if (enterTotalDist > 0) {
-            const enterProgress = Math.max(0, Math.min(1, (windowH - rect.top) / enterTotalDist));
-            const enterScale = (isMobile ? 0.95 : 0.92) + enterProgress * (isMobile ? 0.05 : 0.08);
-            scale = Math.min(scale, enterScale);
+            const enterProgress = Math.max(0, Math.min(1, (windowH - tops[i]) / enterTotalDist));
+            scale = Math.min(scale, (isMobile ? 0.95 : 0.92) + enterProgress * (isMobile ? 0.05 : 0.08));
           }
         }
 
-        // Boundaries to keep cards clean and visible
         scale = isMobile ? Math.max(0.88, Math.min(1.01, scale)) : Math.max(0.78, Math.min(1.02, scale));
-        brightness = Math.max(0.75, Math.min(1, brightness));
-        opacity = Math.max(0.85, Math.min(1, opacity));
-
-        // Apply scale, brightness, and smooth top-centered perspective directly without transition lag
         card.style.transform = `scale(${scale})`;
-        card.style.filter = `brightness(${brightness})`;
-        card.style.opacity = `${opacity}`;
-        card.style.transformOrigin = "center top";
+        const dimLayer = dimRefs.current[i];
+        if (dimLayer) dimLayer.style.opacity = `${Math.min(0.25, dim)}`;
       });
-
-      ticking = false;
     };
 
     const onScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(updateCardScales);
+      if (!ticking && visible) {
         ticking = true;
+        window.requestAnimationFrame(updateCardScales);
       }
     };
 
-    updateCardScales();
+    // Skip all scroll work while the section is off screen
+    const observer = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      if (visible) onScroll();
+    });
+    if (containerRef.current) observer.observe(containerRef.current);
+
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll, { passive: true });
 
     return () => {
+      observer.disconnect();
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
@@ -111,7 +102,7 @@ export default function StackedTourCards({
   ];
 
   return (
-    <div className="relative space-y-8 sm:space-y-12 lg:space-y-16 pb-16 sm:pb-32">
+    <div ref={containerRef} className="relative space-y-8 sm:space-y-12 lg:space-y-16 pb-16 sm:pb-32">
       {tours.map((tour, index) => {
         const cardIndexDisplay = String(index + 1).padStart(2, "0");
         const totalDisplay = String(tours.length).padStart(2, "0");
@@ -130,8 +121,16 @@ export default function StackedTourCards({
                 zIndex: 10 + index,
               } as React.CSSProperties
             }
-            className={`sticky top-[var(--mobile-top)] sm:top-[var(--desktop-top)] w-full ${bgClass} rounded-2xl sm:rounded-3xl lg:rounded-[36px] overflow-hidden border border-[#E8DCD5] shadow-[0_15px_40px_rgba(104,87,82,0.10)] sm:shadow-[0_20px_50px_rgba(104,87,82,0.12)] hover:shadow-[0_25px_60px_rgba(104,87,82,0.16)] transition-shadow duration-300 will-change-transform`}
+            className={`sticky top-[var(--mobile-top)] sm:top-[var(--desktop-top)] w-full ${bgClass} rounded-2xl sm:rounded-3xl lg:rounded-[36px] overflow-hidden border border-[#E8DCD5] shadow-[0_15px_40px_rgba(104,87,82,0.10)] sm:shadow-[0_20px_50px_rgba(104,87,82,0.12)] hover:shadow-[0_25px_60px_rgba(104,87,82,0.16)] transition-shadow duration-300 will-change-transform origin-top`}
           >
+            {/* Darkens as later cards stack on top (opacity is cheap to animate, unlike filter) */}
+            <div
+              ref={(el) => {
+                dimRefs.current[index] = el;
+              }}
+              className="absolute inset-0 z-20 bg-black opacity-0 pointer-events-none"
+              aria-hidden="true"
+            />
             <div className="grid grid-cols-1 lg:grid-cols-12 min-h-0 lg:min-h-[580px] items-stretch">
               
               {/* Left Column: Full-Bleed Hero Image with Badges */}
@@ -141,6 +140,7 @@ export default function StackedTourCards({
                   alt={tour.title}
                   fill
                   priority={index < 2}
+                  sizes="(max-width: 1024px) 100vw, 58vw"
                   className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                 />
                 {/* Ambient Image Gradient Overlays */}
@@ -149,29 +149,29 @@ export default function StackedTourCards({
 
                 {/* Top Floating Badges */}
                 <div className="absolute top-3 left-3 sm:top-6 sm:left-6 flex items-center gap-2 z-10">
-                  <span className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-black/60 backdrop-blur-md text-white text-xs sm:text-sm font-semibold tracking-wide border border-white/20">
+                  <span className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-black/60 sm:backdrop-blur-md text-white text-xs sm:text-sm font-semibold tracking-wide border border-white/20">
                     <MapPin className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#8EB486]" />
                     {tour.destination}
                   </span>
                 </div>
 
                 <div className="absolute top-3 right-3 sm:top-6 sm:right-6 z-10">
-                  <span className="inline-flex items-center px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-white/90 backdrop-blur-md text-[#685752] text-xs sm:text-sm font-bold font-mono tracking-wider shadow-md">
+                  <span className="inline-flex items-center px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-white/90 sm:backdrop-blur-md text-[#685752] text-xs sm:text-sm font-bold font-mono tracking-wider shadow-md">
                     {cardIndexDisplay} / {totalDisplay}
                   </span>
                 </div>
 
                 {/* Bottom Floating Info Pill Badges over Image */}
                 <div className="absolute bottom-2.5 left-2.5 right-2.5 sm:bottom-6 sm:left-6 sm:right-6 flex flex-wrap items-center gap-1.5 sm:gap-2 z-10">
-                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 sm:px-3.5 sm:py-1.5 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white text-xs font-semibold">
+                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 sm:px-3.5 sm:py-1.5 rounded-full bg-black/40 sm:bg-white/20 sm:backdrop-blur-md border border-white/30 text-white text-xs font-semibold">
                     <Calendar className="w-3 h-3 text-[#8EB486]" />
                     {tour.departureDate}
                   </span>
-                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 sm:px-3.5 sm:py-1.5 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white text-xs font-semibold">
+                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 sm:px-3.5 sm:py-1.5 rounded-full bg-black/40 sm:bg-white/20 sm:backdrop-blur-md border border-white/30 text-white text-xs font-semibold">
                     <Clock className="w-3 h-3 text-[#8EB486]" />
                     {tour.duration}
                   </span>
-                  <span className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white text-xs font-semibold">
+                  <span className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-black/40 sm:bg-white/20 sm:backdrop-blur-md border border-white/30 text-white text-xs font-semibold">
                     <Users className="w-3.5 h-3.5 text-[#8EB486]" />
                     {tour.groupSize}
                   </span>
