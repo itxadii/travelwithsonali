@@ -97,7 +97,10 @@ export default function InstagramRoundCarousel({ data }: InstagramRoundCarouselP
     if (!section || !scroller) return;
 
     let ticking = false;
-    let isTouching = false;
+    // Direction of the current finger gesture on the strip, decided after a few pixels of movement
+    let gesture: "horizontal" | "vertical" | null = null;
+    let touchStartX = 0;
+    let touchStartY = 0;
 
     const getProgress = () => {
       const totalScrollable = section.offsetHeight - window.innerHeight;
@@ -116,8 +119,9 @@ export default function InstagramRoundCarousel({ data }: InstagramRoundCarouselP
       const progress = getProgress();
       const delta = progress - lastProgress;
       lastProgress = progress;
-      // Don't move the strip under a finger that is holding or swiping it
-      if (delta === 0 || isTouching) return;
+      // Don't fight a finger that is swiping the strip sideways. A vertical scroll that
+      // starts on a card is still page scrolling, so it keeps driving the strip.
+      if (delta === 0 || gesture === "horizontal") return;
 
       const maxScroll = getMaxScroll();
       position = Math.max(0, Math.min(maxScroll, position + delta * maxScroll));
@@ -135,13 +139,24 @@ export default function InstagramRoundCarousel({ data }: InstagramRoundCarouselP
     const onScrollerScroll = () => {
       if (Math.abs(scroller.scrollLeft - position) > 1) position = scroller.scrollLeft;
     };
-    const onTouchStart = () => { isTouching = true; };
-    const onTouchEnd = () => { isTouching = false; };
+    const onTouchStart = (e: TouchEvent) => {
+      gesture = null;
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+    };
+    const onTouchMove = (e: TouchEvent) => {
+      if (gesture) return;
+      const dx = Math.abs(e.touches[0].clientX - touchStartX);
+      const dy = Math.abs(e.touches[0].clientY - touchStartY);
+      if (dx > 6 || dy > 6) gesture = dx > dy ? "horizontal" : "vertical";
+    };
+    const onTouchEnd = () => { gesture = null; };
 
     window.addEventListener("scroll", onPageScroll, { passive: true });
     window.addEventListener("resize", onPageScroll, { passive: true });
     scroller.addEventListener("scroll", onScrollerScroll, { passive: true });
     scroller.addEventListener("touchstart", onTouchStart, { passive: true });
+    scroller.addEventListener("touchmove", onTouchMove, { passive: true });
     scroller.addEventListener("touchend", onTouchEnd, { passive: true });
     scroller.addEventListener("touchcancel", onTouchEnd, { passive: true });
 
@@ -150,6 +165,7 @@ export default function InstagramRoundCarousel({ data }: InstagramRoundCarouselP
       window.removeEventListener("resize", onPageScroll);
       scroller.removeEventListener("scroll", onScrollerScroll);
       scroller.removeEventListener("touchstart", onTouchStart);
+      scroller.removeEventListener("touchmove", onTouchMove);
       scroller.removeEventListener("touchend", onTouchEnd);
       scroller.removeEventListener("touchcancel", onTouchEnd);
     };
