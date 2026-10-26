@@ -3,11 +3,13 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import AmbientCircles from "../components/AmbientCircles";
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Terms & Conditions | Travel With Sonali",
+export const metadata: Metadata = pageMetadata({
+  title: "Terms & Conditions",
   description: "The terms and conditions that apply to bookings and travel with Travel With Sonali.",
-};
+  path: "/terms-and-conditions",
+});
 
 export default function TermsPage() {
   return (

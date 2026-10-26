@@ -240,5 +240,43 @@ export async function createTablesIfNotExist() {
     );
   `;
 
+  await sql`
+    CREATE TABLE IF NOT EXISTS consent_records (
+      id TEXT PRIMARY KEY,
+      consent_id TEXT NOT NULL,
+      customer_id TEXT,
+      notice_version TEXT NOT NULL,
+      language TEXT NOT NULL,
+      action TEXT NOT NULL,
+      analytics BOOLEAN NOT NULL,
+      marketing BOOLEAN NOT NULL,
+      ip_hash TEXT,
+      user_agent TEXT,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+    );
+  `;
+  await sql`CREATE INDEX IF NOT EXISTS consent_records_consent_id_idx ON consent_records (consent_id)`;
+  await sql`CREATE INDEX IF NOT EXISTS consent_records_created_at_idx ON consent_records (created_at)`;
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS analytics_events (
+      id TEXT PRIMARY KEY,
+      visitor_id TEXT NOT NULL,
+      session_id TEXT NOT NULL,
+      path TEXT NOT NULL,
+      referrer_host TEXT,
+      utm_source TEXT,
+      utm_medium TEXT,
+      utm_campaign TEXT,
+      device_type TEXT,
+      browser TEXT,
+      os TEXT,
+      country TEXT,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+    );
+  `;
+  await sql`CREATE INDEX IF NOT EXISTS analytics_events_visitor_id_idx ON analytics_events (visitor_id)`;
+  await sql`CREATE INDEX IF NOT EXISTS analytics_events_created_at_idx ON analytics_events (created_at)`;
+
   console.log("✅ Neon PostgreSQL DDL migration complete!");
 }

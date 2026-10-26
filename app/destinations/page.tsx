@@ -5,11 +5,13 @@ import DestinationsClientView from "./DestinationsClientView";
 import AmbientCircles from "../components/AmbientCircles";
 import { getDestinations } from "@/lib/sanity/queries";
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Destinations | Travel With Sonali",
-  description: "Explore the destinations we travel to, from Kedarnath and Spiti to Meghalaya, Nepal and beyond.",
-};
+export const metadata: Metadata = pageMetadata({
+  title: "Destinations",
+  description: "Explore where we travel: Kedarnath, Spiti Valley, Manali & Kasol, Meghalaya, Nepal & Muktinath, Tirupati and more, with seasons, tips and upcoming group tours.",
+  path: "/destinations",
+});
 
 export default function DestinationsPage() {
   const destinations = use(getDestinations());

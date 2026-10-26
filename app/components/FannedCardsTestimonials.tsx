@@ -157,7 +157,7 @@ function FannedCardsTestimonialsComponent({ testimonials }: FannedCardsTestimoni
 
           {/* Interactive Deck Area */}
           <motion.div
-            className="relative w-full h-[450px] sm:h-[480px] md:h-[510px] flex items-center justify-center select-none"
+            className="relative w-full h-[380px] sm:h-[420px] md:h-[440px] flex items-center justify-center select-none"
             onMouseLeave={handleDeckLeave}
             onViewportEnter={() => setHasEnteredView(true)}
             viewport={{ once: true, amount: 0.25 }}
@@ -168,12 +168,12 @@ function FannedCardsTestimonialsComponent({ testimonials }: FannedCardsTestimoni
 
               // Precomputed geometry
               const baseRotate = isMobile ? offset * 7 : offset * 12;
-              const baseX = isMobile ? offset * 34 : offset * 115;
-              const baseY = Math.abs(offset) * (isMobile ? 8 : 14);
+              const baseX = isMobile ? offset * 30 : offset * 100;
+              const baseY = Math.abs(offset) * (isMobile ? 7 : 12);
 
               const rotate = isSelected ? 0 : baseRotate;
               const x = isMobile && isSelected ? 0 : baseX;
-              const y = isSelected ? (isMobile ? -22 : -36) : baseY;
+              const y = isSelected ? (isMobile ? -18 : -30) : baseY;
               const scale = isSelected ? (isMobile ? 1.05 : 1.08) : isMobile ? 0.94 : 1;
               const zIndex = isSelected ? 40 : 20 - Math.abs(offset);
 
@@ -220,7 +220,7 @@ function FannedCardsTestimonialsComponent({ testimonials }: FannedCardsTestimoni
                 >
                   {/* Card Container: Solid Cream/White surfaces (0 backdrop-blur penalty) */}
                   <div
-                    className={`relative w-[245px] sm:w-[285px] md:w-[315px] h-[350px] sm:h-[380px] md:h-[400px] rounded-[28px] sm:rounded-[32px] p-5 sm:p-6 flex flex-col justify-between overflow-hidden transition-all duration-200 ${
+                    className={`relative w-[210px] sm:w-[245px] md:w-[270px] h-[295px] sm:h-[325px] md:h-[345px] rounded-[24px] sm:rounded-[28px] p-4 sm:p-5 flex flex-col justify-between overflow-hidden transition-all duration-200 ${
                       isSelected
                         ? "bg-white border-2 border-[#8EB486] ring-4 ring-[#8EB486]/20 shadow-[0_24px_50px_-10px_rgba(0,0,0,0.45)]"
                         : "bg-[#FDF7F4] border border-[#E8DCD5] shadow-[0_12px_30px_-8px_rgba(0,0,0,0.25)] hover:border-[#8EB486]/60"
@@ -238,7 +238,7 @@ function FannedCardsTestimonialsComponent({ testimonials }: FannedCardsTestimoni
                           </div>
 
                           {/* Trip Tag Badge */}
-                          <span className="text-xs font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#8EB486]/15 text-[#4A7244] border border-[#8EB486]/30 truncate max-w-[120px]">
+                          <span className="text-xs font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#8EB486]/15 text-[#4A7244] border border-[#8EB486]/30 truncate max-w-[100px] sm:max-w-[120px]">
                             {item.trip}
                           </span>
                         </div>
@@ -257,17 +257,17 @@ function FannedCardsTestimonialsComponent({ testimonials }: FannedCardsTestimoni
 
                     {/* Card Body: Trip Title (font-serif-italic) & Review Quote */}
                     <div className="relative z-10 my-auto py-2">
-                      <h3 className="text-lg sm:text-xl font-bold font-serif-italic text-[#685752] tracking-tight mb-2 line-clamp-1">
+                      <h3 className="text-base sm:text-lg font-bold font-serif-italic text-[#685752] tracking-tight mb-1.5 line-clamp-1">
                         {item.trip}
                       </h3>
-                      <p className="text-xs sm:text-sm font-normal text-[#7A6862] leading-relaxed line-clamp-4 sm:line-clamp-5 italic">
+                      <p className="text-xs sm:text-sm font-normal text-[#7A6862] leading-relaxed line-clamp-3 sm:line-clamp-4 italic">
                         &ldquo;{item.quote}&rdquo;
                       </p>
                     </div>
 
                     {/* Card Footer: Traveller Avatar & Info */}
                     <div className="relative z-10 pt-3 border-t border-[#E8DCD5] flex items-center gap-3">
-                      <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden border-2 border-[#8EB486]/40 shrink-0 shadow-xs">
+                      <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden border-2 border-[#8EB486]/40 shrink-0 shadow-xs">
                         <Image
                           src={item.avatar}
                           alt={item.name}

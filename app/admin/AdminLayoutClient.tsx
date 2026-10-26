@@ -13,6 +13,7 @@ import {
   FileCheck,
   Bell,
   BarChart3,
+  Activity,
   Settings,
   Star,
   Edit3,
@@ -68,6 +69,7 @@ export default function AdminLayoutClient({ admin, children }: AdminLayoutClient
     { label: "Reviews", href: "/admin/reviews", icon: Star },
     { label: "Notifications", href: "/admin/notifications", icon: Bell },
     { label: "Reports", href: "/admin/reports", icon: BarChart3 },
+    { label: "Analytics", href: "/admin/analytics", icon: Activity },
     { label: "Settings", href: "/admin/settings", icon: Settings },
   ];
 

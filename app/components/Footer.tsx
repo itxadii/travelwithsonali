@@ -3,6 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useConsent } from "@/app/context/ConsentContext";
 import {
   Compass,
   Heart,
@@ -19,6 +20,7 @@ interface FooterProps {
 }
 
 export default function Footer({ onEnquireClick }: FooterProps) {
+  const { openPreferences } = useConsent();
 
   return (
     <footer className="w-full bg-[#140F0E] relative overflow-hidden">
@@ -190,15 +192,6 @@ export default function Footer({ onEnquireClick }: FooterProps) {
                     travelwithsonaliinfo@gmail.com
                   </a>
                 </li>
-                <li className="pt-2">
-                  <Link
-                    href="/contact"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#4A7244] text-white text-xs font-bold uppercase tracking-wider hover:bg-[#3F6339] transition-all shadow-sm active:scale-95"
-                  >
-                    <Send className="w-3.5 h-3.5" />
-                    <span>Send Message</span>
-                  </Link>
-                </li>
               </ul>
             </div>
 
@@ -220,6 +213,13 @@ export default function Footer({ onEnquireClick }: FooterProps) {
               <Link href="/cancellation-policy" className="hover:text-[#685752] transition-colors">
                 Cancellation Policy
               </Link>
+              <button
+                type="button"
+                onClick={openPreferences}
+                className="hover:text-[#685752] transition-colors cursor-pointer"
+              >
+                Cookie Settings
+              </button>
             </div>
           </div>
         </div>

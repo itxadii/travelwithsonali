@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Lock, Mail, ShieldCheck, Eye, EyeOff, Sparkles } from "lucide-react";
+import { Lock, Mail, ShieldCheck, Eye, EyeOff } from "lucide-react";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -59,7 +59,6 @@ export default function AdminLoginPage() {
           </div>
 
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#8EB486]/10 text-[#4A7244] text-xs font-semibold tracking-wider uppercase">
-            <Sparkles className="w-3.5 h-3.5" />
             Travel Operations Control
           </div>
 

@@ -143,7 +143,7 @@ export default function ContactPage() {
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
                   <h3 className="text-2xl font-serif-italic font-bold text-[#685752]">
-                    Send An Enquiry
+                    Start Your Journey
                   </h3>
                   <p className="text-xs text-[#7A6862] mt-1">
                     Fill out the form below to receive itinerary details and seat confirmation.
@@ -253,7 +253,7 @@ export default function ContactPage() {
                   className="w-full py-4 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white font-semibold text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
                 >
                   <Send className="w-4 h-4" />
-                  {sending ? "Sending..." : "Send Website Enquiry"}
+                  {sending ? "Sending..." : "Send Enquiry"}
                 </button>
               </form>
             )}

@@ -6,11 +6,13 @@ import AmbientCircles from "../components/AmbientCircles";
 import WhatsAppFloatingButton from "../components/WhatsAppFloatingButton";
 import { getActiveTours } from "@/lib/sanity/queries";
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Group Tours & Yatras | Travel With Sonali",
-  description: "Browse upcoming group tours, Himalayan treks and spiritual yatras with fixed departures, curated stays and expert trip leaders.",
-};
+export const metadata: Metadata = pageMetadata({
+  title: "Group Tours & Yatras",
+  description: "Browse upcoming small-group tours, Himalayan treks and spiritual yatras with fixed departures, curated stays and experienced trip leaders.",
+  path: "/tours",
+});
 
 export default function ToursPage() {
   const tours = use(getActiveTours());

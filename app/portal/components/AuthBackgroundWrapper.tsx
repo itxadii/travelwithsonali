@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, Compass, Sparkles, MapPin, ShieldCheck } from "lucide-react";
+import { ArrowLeft, Compass, MapPin, ShieldCheck } from "lucide-react";
 
 interface AuthBackgroundWrapperProps {
   children: React.ReactNode;
@@ -50,7 +50,6 @@ export default function AuthBackgroundWrapper({ children }: AuthBackgroundWrappe
           {/* Left Hero Story Panel (Visible on Desktop) */}
           <div className="hidden lg:flex lg:col-span-6 flex-col justify-center space-y-6 text-white pr-6">
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-[#8EB486] text-xs font-semibold tracking-wider uppercase w-fit">
-              <Sparkles className="w-3.5 h-3.5" />
               <span>Handcrafted Expeditions</span>
             </div>
 

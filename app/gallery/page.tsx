@@ -1,15 +1,17 @@
 import React, { use } from "react";
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import GalleryClientView from "./GalleryClientView";
 import AmbientCircles from "../components/AmbientCircles";
 import { getGalleryItems } from "@/lib/sanity/queries";
 
-export const metadata: Metadata = {
-  title: "Photo Gallery - Real Moments & Journeys | Travel With Sonali",
-  description: "Browse high-resolution photographs and real moments from our curated group trips across the Himalayas, Northeast, Rajasthan, and beyond.",
-};
+export const metadata: Metadata = pageMetadata({
+  title: "Photo Gallery",
+  description: "Real photos from our group trips across the Himalayas, Northeast India, Rajasthan and Nepal.",
+  path: "/gallery",
+});
 
 export default function GalleryPage() {
   const items = use(getGalleryItems());

@@ -3,11 +3,13 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import AmbientCircles from "../components/AmbientCircles";
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Cancellation & Refund Policy | Travel With Sonali",
-  description: "Cancellation charges, refund timelines and rescheduling rules for Travel With Sonali trips.",
-};
+export const metadata: Metadata = pageMetadata({
+  title: "Cancellation & Refund Policy",
+  description: "Cancellation charges, refund timelines and rescheduling rules for Travel With Sonali group tours and yatras.",
+  path: "/cancellation-policy",
+});
 
 export default function CancellationPolicyPage() {
   return (

@@ -52,7 +52,7 @@ export default function EnquireModal({ isOpen, onClose, defaultTourName = "" }: 
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
-        aria-label="Website enquiry form"
+        aria-label="Start your journey"
       >
         {/* Close button */}
         <button
@@ -73,7 +73,7 @@ export default function EnquireModal({ isOpen, onClose, defaultTourName = "" }: 
               Enquiry Received!
             </h3>
             <p className="text-sm text-[#7A6862] max-w-xs mx-auto leading-relaxed">
-              Thank you {formData.name || 'friend'}! Sonali and our team have received your website enquiry and will get in touch with you shortly.
+              Thank you {formData.name || 'friend'}! Sonali and our team have received your enquiry and will get in touch with you shortly.
             </p>
             <div className="pt-4 flex justify-center">
               <button
@@ -89,15 +89,12 @@ export default function EnquireModal({ isOpen, onClose, defaultTourName = "" }: 
           </div>
         ) : (
           <div>
-            <div className="mb-6">
-              <span className="text-xs uppercase tracking-widest text-[#4A7244] font-bold">
+            <div className="mb-6 pr-10">
+              <h3 className="text-2xl sm:text-3xl font-serif-italic font-bold text-[#685752]">
                 Start Your Journey
-              </span>
-              <h3 className="text-2xl sm:text-3xl font-serif-italic font-bold text-[#685752] mt-1">
-                Website Enquiry Form
               </h3>
               <p className="text-xs sm:text-sm text-[#7A6862] mt-1">
-                Fill this short enquiry form and our team will connect with you directly.
+                Share a few details and our team will connect with you directly.
               </p>
             </div>
 
@@ -206,7 +203,7 @@ export default function EnquireModal({ isOpen, onClose, defaultTourName = "" }: 
                   className="w-full py-3.5 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white font-semibold text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
                 >
                   <Send className="w-4 h-4" />
-                  {sending ? "Sending..." : "Submit Website Enquiry"}
+                  {sending ? "Sending..." : "Send Enquiry"}
                 </button>
               </div>
             </form>

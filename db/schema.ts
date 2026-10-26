@@ -263,3 +263,35 @@ export const rateLimits = pgTable("rate_limits", {
   count: integer("count").notNull().default(0),
   windowStart: timestamp("window_start").defaultNow().notNull(),
 });
+
+// 14. Cookie consent log (DPDP proof of consent). Append-only: every choice is a new row.
+export const consentRecords = pgTable("consent_records", {
+  id: text("id").primaryKey(),
+  consentId: text("consent_id").notNull(), // random ID kept in the visitor's consent cookie
+  customerId: text("customer_id"), // set when the visitor was signed in to the portal
+  noticeVersion: text("notice_version").notNull(),
+  language: text("language").notNull(),
+  action: text("action").notNull(), // accept_all, reject_all, custom
+  analytics: boolean("analytics").notNull(),
+  marketing: boolean("marketing").notNull(),
+  ipHash: text("ip_hash"),
+  userAgent: text("user_agent"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+// 15. First-party analytics page views. Only recorded with analytics consent; erased on withdrawal.
+export const analyticsEvents = pgTable("analytics_events", {
+  id: text("id").primaryKey(),
+  visitorId: text("visitor_id").notNull(),
+  sessionId: text("session_id").notNull(),
+  path: text("path").notNull(),
+  referrerHost: text("referrer_host"),
+  utmSource: text("utm_source"),
+  utmMedium: text("utm_medium"),
+  utmCampaign: text("utm_campaign"),
+  deviceType: text("device_type"),
+  browser: text("browser"),
+  os: text("os"),
+  country: text("country"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});

@@ -409,41 +409,54 @@ export default function Navbar({ logoName = "Travel With Sonali" }: NavbarProps)
 
         {/* Drawer Body: Navigation Links */}
         <div className="flex-1 overflow-y-auto px-5 py-6">
-          <div className="space-y-1">
-            <span className="text-xs uppercase tracking-widest text-[#7A6862] font-bold px-3 block mb-2">
+          <div>
+            <span className="text-xs uppercase tracking-widest text-[#4A7244] font-bold px-1 block mb-3">
               Menu Navigation
             </span>
-            {navLinks.map((link, idx) => {
-              const isActive = pathname === link.href;
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center justify-between px-4 py-3 rounded-2xl text-base font-semibold transition-all ${isActive
-                      ? "bg-[#4A7244] text-white shadow-md shadow-[#8EB486]/20 font-bold"
-                      : "text-[#685752] hover:bg-[#F7EFEA] active:bg-[#F4ECE7]"
-                    }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <span className={`text-xs font-mono ${isActive ? "text-white/80" : "text-[#7A6862]"}`}>
-                      {String(idx + 1).padStart(2, "0")}
-                    </span>
-                    <span>{link.label}</span>
-                  </div>
-                  <ChevronRight className={`w-4 h-4 ${isActive ? "text-white" : "text-[#7A6862]"}`} />
-                </Link>
-              );
-            })}
+            <ul className="divide-y divide-[#E8DCD5]">
+              {navLinks.map((link, idx) => {
+                const isActive = pathname === link.href;
+                return (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      aria-current={isActive ? "page" : undefined}
+                      className="group flex items-center justify-between gap-4 px-1 py-4 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4A7244]/60"
+                    >
+                      <div className="flex items-baseline gap-4 min-w-0">
+                        <span className={`text-sm font-serif-italic font-bold w-6 shrink-0 ${isActive ? "text-[#4A7244]" : "text-[#8EB486]"}`}>
+                          {String(idx + 1).padStart(2, "0")}
+                        </span>
+                        <span
+                          className={`font-serif-italic text-3xl sm:text-[2rem] font-bold tracking-tight leading-none truncate transition-all duration-300 group-hover:translate-x-1 group-active:translate-x-1 ${isActive ? "text-[#4A7244]" : "text-[#685752] group-hover:text-[#4A7244]"}`}
+                        >
+                          {link.label}
+                        </span>
+                      </div>
+                      <span
+                        className={`flex items-center justify-center w-9 h-9 rounded-full border shrink-0 transition-all duration-300 ${isActive
+                            ? "bg-[#4A7244] border-[#4A7244] text-white"
+                            : "border-[#E8DCD5] text-[#7A6862] group-hover:bg-[#4A7244] group-hover:border-[#4A7244] group-hover:text-white group-hover:-rotate-45"
+                          }`}
+                        aria-hidden="true"
+                      >
+                        <ChevronRight className="w-4 h-4" />
+                      </span>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
           </div>
         </div>
 
         {/* Drawer Bottom Actions */}
-        <div className="p-5 border-t border-[#E8DCD5] space-y-2.5 shrink-0 bg-[#FFFDF9]">
+        <div className="p-5 border-t border-[#E8DCD5] space-y-3 shrink-0 bg-[#FFFDF9]">
           <Link
             href="/portal/login"
             onClick={() => setMobileMenuOpen(false)}
-            className="flex items-center justify-center gap-2 w-full text-center px-5 py-3 rounded-full font-bold text-xs tracking-wider uppercase bg-white border border-[#E8DCD5] text-[#685752] hover:bg-[#F7EFEA] transition-colors shadow-xs"
+            className="flex items-center justify-center gap-2 w-full min-h-13 text-center px-5 py-4 rounded-full font-bold text-sm tracking-wider uppercase bg-white border border-[#E8DCD5] text-[#685752] hover:bg-[#F7EFEA] transition-colors shadow-xs"
           >
             <User className="w-4 h-4" />
             <span>CUSTOMER LOGIN / MY PORTAL</span>
@@ -453,7 +466,7 @@ export default function Navbar({ logoName = "Travel With Sonali" }: NavbarProps)
               setMobileMenuOpen(false);
               setEnquireOpen(true);
             }}
-            className="flex items-center justify-center gap-2 w-full text-center px-5 py-3 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white font-bold text-xs tracking-wider uppercase shadow-md active:scale-95 transition-all cursor-pointer"
+            className="flex items-center justify-center gap-2 w-full min-h-13 text-center px-5 py-4 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white font-bold text-sm tracking-wider uppercase shadow-md active:scale-95 transition-all cursor-pointer"
           >
             <span>EXPLORE TOURS</span>
             <ChevronRight className="w-4 h-4" />

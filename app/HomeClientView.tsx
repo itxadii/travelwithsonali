@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -22,7 +22,6 @@ import StackedTourCards from "./components/StackedTourCards";
 import InstagramRoundCarousel from "./components/InstagramRoundCarousel";
 import AmbientCircles from "./components/AmbientCircles";
 import FannedCardsTestimonials from "./components/FannedCardsTestimonials";
-import { ParallaxHeroImages } from "@/components/ui/parallax-hero-images";
 import { SquigglyText } from "@/components/ui/squiggly-text";
 import {
   DraggableCardBody,
@@ -88,21 +87,10 @@ interface HomeClientViewProps {
   instagramData?: InstagramSectionData;
 }
 
-export default function HomeClientView({ tours, destinations, instagramData }: HomeClientViewProps) {
+export default function HomeClientView({ tours, instagramData }: HomeClientViewProps) {
   const [enquireOpen, setEnquireOpen] = useState(false);
   const [selectedTourName, setSelectedTourName] = useState("");
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
-
-  const destinationImages = React.useMemo(() => {
-    if (destinations && destinations.length > 0) {
-      const dynamicList = destinations
-        .map((d) => d.image)
-        .filter((img): img is string => Boolean(img));
-      const combined = [...dynamicList, ...REAL_DESTINATION_IMAGES];
-      return Array.from(new Set(combined)).slice(0, 8);
-    }
-    return REAL_DESTINATION_IMAGES;
-  }, [destinations]);
 
   const handleEnquireClick = (tourName?: string) => {
     if (tourName) setSelectedTourName(tourName);
@@ -285,8 +273,8 @@ export default function HomeClientView({ tours, destinations, instagramData }: H
                 </div>
               </div>
 
-              {/* Circular QR Badge: Centered in the middle on mobile mode, increased 3x size and without white borders */}
-              <div className="pt-6 lg:pt-8 border-t border-white/15 flex flex-col items-center justify-center w-full text-center">
+              {/* Circular QR Badge: hidden on phones, where you can't scan a code on your own screen */}
+              <div className="pt-6 lg:pt-8 border-t border-white/15 hidden md:flex flex-col items-center justify-center w-full text-center">
                 <QRCodeBadge
                   label="SCAN TO FOLLOW"
                   qrImageSrc="/qrimage.png"
@@ -348,8 +336,6 @@ export default function HomeClientView({ tours, destinations, instagramData }: H
 
       {/* ================= SECTION 3: MEET SONALI & WHY TRAVEL WITH US ================= */}
       <section className="relative w-full py-24 bg-[#FDF7F4] border-t border-[#E8DCD5] overflow-hidden">
-        {/* Parallax Hero Images floating in foreground with mouse move */}
-        <ParallaxHeroImages images={destinationImages} className="z-20" />
         <AmbientCircles variant="2" />
         {/* Section Heading Container */}
         <div className="relative z-30 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -442,22 +428,22 @@ export default function HomeClientView({ tours, destinations, instagramData }: H
             <div className="pointer-events-auto flex flex-wrap items-center justify-center gap-3 pt-2">
               <Link
                 href="/destinations"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white text-xs font-bold tracking-wider uppercase shadow-md hover:shadow-lg transition-all active:scale-95 cursor-pointer"
+                className="inline-flex items-center gap-1.5 min-h-13 px-5 py-4 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white text-sm font-bold tracking-wider uppercase shadow-md hover:shadow-lg transition-all active:scale-95 cursor-pointer"
               >
-                <span>View All Destinations</span>
+                <span>Destinations</span>
                 <ChevronRight className="w-3.5 h-3.5" />
               </Link>
               <Link
                 href="/tours"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white hover:bg-[#FDF7F4] text-[#685752] border border-[#E8DCD5] text-xs font-bold tracking-wider uppercase shadow-xs hover:shadow-sm transition-all active:scale-95 cursor-pointer"
+                className="inline-flex items-center gap-1.5 min-h-13 px-5 py-4 rounded-full bg-white hover:bg-[#FDF7F4] text-[#685752] border border-[#E8DCD5] text-sm font-bold tracking-wider uppercase shadow-xs hover:shadow-sm transition-all active:scale-95 cursor-pointer"
               >
-                <span>Explore Tours</span>
+                <span>Tours</span>
                 <ChevronRight className="w-3.5 h-3.5 text-[#4A7244]" />
               </Link>
             </div>
 
             <div className="inline-flex items-center gap-2 pt-1 text-xs font-semibold text-[#997C70]/70 tracking-widest uppercase">
-              <span>✦ Drag any card</span>
+              <span>Drag any card</span>
               <span>•</span>
               <span>Fling to toss</span>
             </div>
@@ -532,34 +518,34 @@ export default function HomeClientView({ tours, destinations, instagramData }: H
             <DraggableCardBody
               key={item.title}
               className={cn(
-                "w-72 sm:w-80 min-h-0 p-3.5 sm:p-4 rounded-3xl bg-[#FDF7F4] border border-[#E8DCD5] shadow-[0_20px_45px_-10px_rgba(104,87,82,0.2)] hover:shadow-[0_25px_55px_-8px_rgba(104,87,82,0.28)] z-10 select-none",
+                "w-44 sm:w-80 min-h-0 p-2.5 sm:p-4 rounded-2xl sm:rounded-3xl bg-[#FDF7F4] border border-[#E8DCD5] shadow-[0_20px_45px_-10px_rgba(104,87,82,0.2)] hover:shadow-[0_25px_55px_-8px_rgba(104,87,82,0.28)] z-10 select-none",
                 item.className
               )}
             >
-              <div className="relative h-56 sm:h-64 w-full overflow-hidden rounded-2xl bg-stone-200">
+              <div className="relative h-32 sm:h-64 w-full overflow-hidden rounded-xl sm:rounded-2xl bg-stone-200">
                 <Image
                   src={item.image}
                   alt={item.title}
                   fill
-                  sizes="(max-width: 640px) 288px, 320px"
+                  sizes="(max-width: 640px) 176px, 320px"
                   className="pointer-events-none h-full w-full object-cover select-none"
                 />
-                <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-xs font-semibold border border-white/20">
+                <div className="absolute top-2 left-2 sm:top-3 sm:left-3 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-xs font-semibold border border-white/20">
                   {item.tag}
                 </div>
-                <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-[#4A7244] text-white text-xs font-bold shadow-xs">
+                <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-[#4A7244] text-white text-xs font-bold shadow-xs hidden sm:block">
                   {item.badge}
                 </div>
               </div>
 
-              <div className="mt-3.5 space-y-1">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-xl font-bold font-serif-italic text-[#685752]">
+              <div className="mt-2 sm:mt-3.5 space-y-0.5 sm:space-y-1">
+                <div className="flex items-center justify-between gap-1">
+                  <h3 className="text-sm sm:text-xl font-bold font-serif-italic text-[#685752] truncate">
                     {item.title}
                   </h3>
                   <Link
                     href={`/destinations/${item.slug}`}
-                    className="text-xs font-semibold text-[#4A7244] hover:text-[#3F6339] flex items-center gap-0.5"
+                    className="text-xs font-semibold text-[#4A7244] hover:text-[#3F6339] flex items-center gap-0.5 shrink-0"
                     onClick={(e) => e.stopPropagation()}
                   >
                     <span>Explore</span>
@@ -579,7 +565,7 @@ export default function HomeClientView({ tours, destinations, instagramData }: H
       <section className="relative w-full py-24 bg-[#FDF7F4] border-t border-[#E8DCD5] overflow-hidden">
         <AmbientCircles variant="5" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-16">
+          <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-16">
             <span className="text-xs uppercase tracking-widest text-[#4A7244] font-bold">
               Simple 4-Step Process
             </span>
@@ -595,19 +581,19 @@ export default function HomeClientView({ tours, destinations, instagramData }: H
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 md:gap-8">
             {[
               { num: "01", title: "Choose Your Trip", desc: "Find a destination that excites your soul." },
               { num: "02", title: "Get in Touch", desc: "Connect with us through our website enquiry form." },
               { num: "03", title: "Get Ready", desc: "Receive your trip details, packing list & prep guide." },
               { num: "04", title: "Travel With Us", desc: "Meet the group and enjoy an unforgettable experience." },
             ].map((step, idx) => (
-              <div key={idx} className="relative p-6 rounded-3xl bg-[#F7EFEA] border border-[#E8DCD5]">
-                <span className="text-5xl font-serif-italic font-bold text-[#8EB486]/35 block mb-4">
+              <div key={idx} className="relative p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-[#F7EFEA] border border-[#E8DCD5]">
+                <span className="text-3xl sm:text-5xl font-serif-italic font-bold text-[#8EB486]/35 block mb-2 sm:mb-4">
                   {step.num}
                 </span>
-                <h3 className="text-xl font-bold text-[#685752] mb-2">{step.title}</h3>
-                <p className="text-sm text-[#7A6862]">{step.desc}</p>
+                <h3 className="text-base sm:text-xl font-bold text-[#685752] mb-1 sm:mb-2">{step.title}</h3>
+                <p className="text-xs sm:text-sm text-[#7A6862] leading-relaxed">{step.desc}</p>
               </div>
             ))}
           </div>

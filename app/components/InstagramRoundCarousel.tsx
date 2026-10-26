@@ -70,21 +70,7 @@ interface InstagramRoundCarouselProps {
 
 export default function InstagramRoundCarousel({ data }: InstagramRoundCarouselProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
-
-  // Gesture tracking refs
-  const touchStartXRef = useRef<number>(0);
-  const touchStartYRef = useRef<number>(0);
-  const lastTouchXRef = useRef<number>(0);
-  const lastTouchYRef = useRef<number>(0);
-  const touchStartTimeRef = useRef<number>(0);
-  const directionLockedRef = useRef<"horizontal" | "vertical" | null>(null);
-  const isDraggingRef = useRef<boolean>(false);
-  const hasMovedRef = useRef<boolean>(false);
-  const suppressClickRef = useRef<boolean>(false);
-  const momentumTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const wheelTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const scrollerRef = useRef<HTMLDivElement>(null);
 
   const badge = data?.badge || "Social Community";
   const heading = data?.heading || "Follow Our Moments on Instagram";
@@ -102,238 +88,70 @@ export default function InstagramRoundCarousel({ data }: InstagramRoundCarouselP
     return url;
   };
 
+  // The card strip is a native horizontal scroller, so finger swipes and trackpad
+  // swipes get the browser's own momentum. Vertical page scroll through the pinned
+  // section is added on top as a relative offset, so the two inputs never fight.
   useEffect(() => {
+    const section = sectionRef.current;
+    const scroller = scrollerRef.current;
+    if (!section || !scroller) return;
+
     let ticking = false;
+    let isTouching = false;
 
-    const updateScroll = () => {
-      if (isDraggingRef.current) return;
-      if (!sectionRef.current || !trackRef.current) return;
-      const section = sectionRef.current;
-      const track = trackRef.current;
+    const getProgress = () => {
+      const totalScrollable = section.offsetHeight - window.innerHeight;
+      if (totalScrollable <= 0) return 0;
+      return Math.max(0, Math.min(1, -section.getBoundingClientRect().top / totalScrollable));
+    };
+    const getMaxScroll = () => Math.max(0, scroller.scrollWidth - scroller.clientWidth);
 
-      const rect = section.getBoundingClientRect();
-      const windowH = window.innerHeight;
-      const totalScrollable = section.offsetHeight - windowH;
+    let lastProgress = getProgress();
+    // Kept as a float: scrollLeft rounds to whole pixels, which would swallow slow scrolls
+    let position = lastProgress * getMaxScroll();
+    scroller.scrollLeft = position;
 
-      if (totalScrollable <= 0) return;
-
-      // Calculate progress between 0 and 1 while section is pinned
-      const currentScrolled = -rect.top;
-      const progress = Math.max(0, Math.min(1, currentScrolled / totalScrollable));
-
-      // Max horizontal translation distance
-      const maxTranslate = track.scrollWidth - window.innerWidth + 80;
-      if (maxTranslate > 0) {
-        const translateX = progress * -maxTranslate;
-        track.style.transform = `translate3d(${translateX}px, 0, 0)`;
-      }
-
+    const updateFromPageScroll = () => {
       ticking = false;
+      const progress = getProgress();
+      const delta = progress - lastProgress;
+      lastProgress = progress;
+      // Don't move the strip under a finger that is holding or swiping it
+      if (delta === 0 || isTouching) return;
+
+      const maxScroll = getMaxScroll();
+      position = Math.max(0, Math.min(maxScroll, position + delta * maxScroll));
+      scroller.scrollLeft = position;
     };
 
-    const onScroll = () => {
+    const onPageScroll = () => {
       if (!ticking) {
-        window.requestAnimationFrame(updateScroll);
         ticking = true;
+        window.requestAnimationFrame(updateFromPageScroll);
       }
     };
 
-    const applyHorizontalDelta = (deltaX: number) => {
-      if (!sectionRef.current || !trackRef.current) return;
-      const section = sectionRef.current;
-      const track = trackRef.current;
-
-      const rect = section.getBoundingClientRect();
-      const windowH = window.innerHeight;
-      const totalScrollable = section.offsetHeight - windowH;
-      if (totalScrollable <= 0) return;
-
-      const maxTranslate = track.scrollWidth - window.innerWidth + 80;
-      if (maxTranslate <= 0) return;
-
-      const sectionDocTop = window.scrollY + rect.top;
-      const currentScrolled = Math.max(0, Math.min(totalScrollable, -rect.top));
-
-      // Convert horizontal delta into vertical scroll delta
-      const scrollDelta = deltaX * (totalScrollable / maxTranslate);
-      const newScrolled = Math.max(0, Math.min(totalScrollable, currentScrolled + scrollDelta));
-
-      const newProgress = newScrolled / totalScrollable;
-      const newTranslateX = newProgress * -maxTranslate;
-
-      track.style.transform = `translate3d(${newTranslateX}px, 0, 0)`;
-
-      const targetScrollY = Math.round(sectionDocTop + newScrolled);
-      if (Math.abs(window.scrollY - targetScrollY) >= 1) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const lenis = (window as any).__lenis;
-        if (lenis && typeof lenis.scrollTo === "function") {
-          lenis.scrollTo(targetScrollY, { immediate: true });
-        } else {
-          window.scrollTo({
-            top: targetScrollY,
-            behavior: "instant" as ScrollBehavior,
-          });
-        }
-      }
+    // Adopt the position when the user swipes the strip directly
+    const onScrollerScroll = () => {
+      if (Math.abs(scroller.scrollLeft - position) > 1) position = scroller.scrollLeft;
     };
+    const onTouchStart = () => { isTouching = true; };
+    const onTouchEnd = () => { isTouching = false; };
 
-    // Desktop trackpad horizontal wheel handler
-    const onWheel = (e: WheelEvent) => {
-      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
-        const section = sectionRef.current;
-        if (!section) return;
-
-        const rect = section.getBoundingClientRect();
-        const windowH = window.innerHeight;
-        const totalScrollable = section.offsetHeight - windowH;
-
-        if (rect.top <= 10 && rect.top >= -totalScrollable - 10) {
-          if (e.cancelable) {
-            e.preventDefault();
-          }
-          if (trackRef.current) {
-            trackRef.current.style.transition = "none";
-          }
-          applyHorizontalDelta(e.deltaX);
-
-          if (wheelTimeoutRef.current) {
-            clearTimeout(wheelTimeoutRef.current);
-          }
-          wheelTimeoutRef.current = setTimeout(() => {
-            if (trackRef.current && !isDraggingRef.current) {
-              trackRef.current.style.transition = "transform 0.1s linear";
-            }
-          }, 100);
-        }
-      }
-    };
-
-    // Mobile touch swipe handlers
-    const onTouchStart = (e: TouchEvent) => {
-      if (e.touches.length !== 1) return;
-      if (momentumTimeoutRef.current) {
-        clearTimeout(momentumTimeoutRef.current);
-        momentumTimeoutRef.current = null;
-      }
-
-      const touch = e.touches[0];
-      touchStartXRef.current = touch.clientX;
-      touchStartYRef.current = touch.clientY;
-      lastTouchXRef.current = touch.clientX;
-      lastTouchYRef.current = touch.clientY;
-      touchStartTimeRef.current = performance.now();
-      directionLockedRef.current = null;
-      hasMovedRef.current = false;
-    };
-
-    const onTouchMove = (e: TouchEvent) => {
-      if (e.touches.length !== 1) return;
-      const touch = e.touches[0];
-      const diffX = touch.clientX - touchStartXRef.current;
-      const diffY = touch.clientY - touchStartYRef.current;
-
-      // Determine gesture intent once movement surpasses threshold
-      if (!directionLockedRef.current) {
-        if (Math.abs(diffX) < 8 && Math.abs(diffY) < 8) {
-          return;
-        }
-
-        if (Math.abs(diffY) >= Math.abs(diffX)) {
-          // Vertical movement: preserve normal page scroll
-          directionLockedRef.current = "vertical";
-          return;
-        } else {
-          // Horizontal movement: lock direction and disable transition for instant 1:1 finger tracking
-          directionLockedRef.current = "horizontal";
-          isDraggingRef.current = true;
-          if (trackRef.current) {
-            trackRef.current.style.transition = "none";
-          }
-          lastTouchXRef.current = touch.clientX;
-          lastTouchYRef.current = touch.clientY;
-        }
-      }
-
-      if (directionLockedRef.current === "horizontal") {
-        if (e.cancelable) {
-          e.preventDefault();
-        }
-        hasMovedRef.current = true;
-
-        const stepDeltaX = -(touch.clientX - lastTouchXRef.current);
-        lastTouchXRef.current = touch.clientX;
-        lastTouchYRef.current = touch.clientY;
-
-        applyHorizontalDelta(stepDeltaX);
-      }
-    };
-
-    const onTouchEnd = () => {
-      if (directionLockedRef.current === "horizontal") {
-        isDraggingRef.current = false;
-        directionLockedRef.current = null;
-
-        const elapsed = Math.max(1, performance.now() - touchStartTimeRef.current);
-        const totalDiffX = lastTouchXRef.current - touchStartXRef.current;
-        const velocityX = totalDiffX / elapsed;
-
-        if (Math.abs(velocityX) > 0.3) {
-          const momentumDeltaX = -velocityX * 220;
-          if (trackRef.current) {
-            trackRef.current.style.transition = "transform 0.35s cubic-bezier(0.22, 1, 0.36, 1)";
-          }
-          applyHorizontalDelta(momentumDeltaX);
-
-          momentumTimeoutRef.current = setTimeout(() => {
-            if (trackRef.current && !isDraggingRef.current) {
-              trackRef.current.style.transition = "transform 0.1s linear";
-            }
-          }, 350);
-        } else {
-          if (trackRef.current) {
-            trackRef.current.style.transition = "transform 0.1s linear";
-          }
-        }
-
-        if (hasMovedRef.current) {
-          suppressClickRef.current = true;
-          setTimeout(() => {
-            suppressClickRef.current = false;
-          }, 300);
-        }
-      }
-    };
-
-    const container = containerRef.current;
-    if (container) {
-      container.addEventListener("wheel", onWheel, { passive: false });
-      container.addEventListener("touchstart", onTouchStart, { passive: true });
-      container.addEventListener("touchmove", onTouchMove, { passive: false });
-      container.addEventListener("touchend", onTouchEnd, { passive: true });
-      container.addEventListener("touchcancel", onTouchEnd, { passive: true });
-    }
-
-    updateScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll, { passive: true });
+    window.addEventListener("scroll", onPageScroll, { passive: true });
+    window.addEventListener("resize", onPageScroll, { passive: true });
+    scroller.addEventListener("scroll", onScrollerScroll, { passive: true });
+    scroller.addEventListener("touchstart", onTouchStart, { passive: true });
+    scroller.addEventListener("touchend", onTouchEnd, { passive: true });
+    scroller.addEventListener("touchcancel", onTouchEnd, { passive: true });
 
     return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      if (container) {
-        container.removeEventListener("wheel", onWheel);
-        container.removeEventListener("touchstart", onTouchStart);
-        container.removeEventListener("touchmove", onTouchMove);
-        container.removeEventListener("touchend", onTouchEnd);
-        container.removeEventListener("touchcancel", onTouchEnd);
-      }
-      if (momentumTimeoutRef.current) {
-        clearTimeout(momentumTimeoutRef.current);
-      }
-      if (wheelTimeoutRef.current) {
-        clearTimeout(wheelTimeoutRef.current);
-      }
+      window.removeEventListener("scroll", onPageScroll);
+      window.removeEventListener("resize", onPageScroll);
+      scroller.removeEventListener("scroll", onScrollerScroll);
+      scroller.removeEventListener("touchstart", onTouchStart);
+      scroller.removeEventListener("touchend", onTouchEnd);
+      scroller.removeEventListener("touchcancel", onTouchEnd);
     };
   }, []);
 
@@ -343,12 +161,7 @@ export default function InstagramRoundCarousel({ data }: InstagramRoundCarouselP
       className="relative w-full h-[220vh] sm:h-[260vh] bg-[#FDF7F4] border-t border-[#E8DCD5]"
     >
       {/* Sticky Fullscreen Container with Low Margins */}
-      <div
-        ref={containerRef}
-        data-lenis-prevent-horizontal
-        style={{ touchAction: "pan-y" }}
-        className="sticky top-0 h-screen w-full flex flex-col justify-between py-3 sm:py-5 lg:py-6 overflow-hidden touch-pan-y"
-      >
+      <div className="sticky top-0 h-screen w-full flex flex-col justify-between py-3 sm:py-5 lg:py-6 overflow-hidden">
         
         {/* Section Header with Low Margin */}
         <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 text-center space-y-1 sm:space-y-1.5 shrink-0">
@@ -380,26 +193,19 @@ export default function InstagramRoundCarousel({ data }: InstagramRoundCarouselP
         </div>
 
         {/* Horizontal Carousel Track with Bigger Cards & Low Margins */}
-        <div className="w-full overflow-hidden my-auto py-2">
-          <div
-            ref={trackRef}
-            className="flex items-center gap-4 sm:gap-6 px-4 sm:px-8 will-change-transform"
-            style={{
-              transition: "transform 0.1s linear",
-            }}
-          >
+        <div
+          ref={scrollerRef}
+          data-lenis-prevent-horizontal
+          className="w-full overflow-x-auto overflow-y-hidden overscroll-x-contain my-auto py-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        >
+          <div className="flex w-max items-center gap-4 sm:gap-6 px-4 sm:px-8">
             {moments.map((moment, idx) => (
               <a
                 key={moment.id || idx}
                 href={cleanUrl(moment.postUrl) || cleanUrl(instagramUrl)}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={(e) => {
-                  if (suppressClickRef.current) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                  }
-                }}
+                draggable={false}
                 className="group w-[320px] sm:w-[420px] md:w-[470px] lg:w-[510px] xl:w-[540px] h-[430px] sm:h-[510px] lg:h-[560px] rounded-[28px] sm:rounded-[36px] bg-[#F7EFEA] border border-[#E8DCD5] flex flex-col justify-between p-3.5 sm:p-5 shrink-0 shadow-sm hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer select-none"
               >
                 {/* Expansive Center Image with Soft 3D Shadow */}

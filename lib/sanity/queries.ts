@@ -149,6 +149,7 @@ export const toursByDestinationQuery = `
     shortDescription,
     heroImage,
     duration,
+    startingLocation,
     price,
     priceLabel,
     status,
@@ -256,9 +257,12 @@ export function mapSanityTourToAppTour(raw: Record<string, unknown>): Tour {
 }
 
 export function mapSanityStoryToAppStory(raw: SanityStory): Story {
+  // The story queries project "slug": slug.current, so slug arrives as a plain string
+  const rawSlug = raw.slug as unknown;
+  const slug = typeof rawSlug === "string" ? rawSlug : (rawSlug as { current?: string })?.current || raw._id;
   return {
-    id: raw._id || raw.slug.current,
-    slug: raw.slug.current,
+    id: raw._id || slug,
+    slug,
     title: raw.title,
     category: raw.category || "Trip Stories",
     excerpt: raw.excerpt || "",

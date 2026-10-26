@@ -14,7 +14,7 @@ import {
   ChevronRight,
   Phone,
   MessageCircle,
-  Sparkles,
+  Compass,
 } from "lucide-react";
 
 interface DashboardData {
@@ -221,7 +221,7 @@ export default function CustomerDashboardPage() {
         /* NO UPCOMING TRIP STATE */
         <div className="p-8 sm:p-12 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs text-center space-y-4">
           <div className="w-16 h-16 rounded-full bg-[#8EB486]/10 text-[#4A7244] flex items-center justify-center mx-auto">
-            <Sparkles className="w-8 h-8" />
+            <Compass className="w-8 h-8" />
           </div>
           <h2 className="text-2xl sm:text-3xl font-bold text-[#685752] font-serif-italic">
             Ready for Your Next Adventure?

@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Clock, Users, ChevronRight, Sparkles, MapPin, Calendar, CheckCircle2 } from "lucide-react";
+import { Clock, Users, ChevronRight, MapPin, Calendar, CheckCircle2 } from "lucide-react";
 import { Tour } from "../data/toursData";
 
 interface StackedTourCardsProps {
@@ -185,7 +185,6 @@ export default function StackedTourCards({
                   {/* Category Tag & Host Pill */}
                   <div className="flex items-center justify-between">
                     <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold flex items-center gap-1 sm:gap-1.5">
-                      <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                       {tour.category || "Curated Journey"}
                     </span>
 

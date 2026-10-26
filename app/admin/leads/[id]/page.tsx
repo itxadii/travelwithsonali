@@ -199,7 +199,7 @@ export default function LeadDetailPage({ params }: { params: Promise<{ id: strin
                 </select>
                 {status === "Converted" && (
                   <p className="text-xs text-emerald-700 font-semibold pt-1">
-                    ✨ Setting status to &quot;Converted&quot; will automatically add this customer into your Customers directory!
+                    Setting status to &quot;Converted&quot; will automatically add this customer into your Customers directory!
                   </p>
                 )}
               </div>

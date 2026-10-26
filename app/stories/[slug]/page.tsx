@@ -3,6 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import JsonLd from "../../components/JsonLd";
+import { SITE_URL, absoluteUrl, pageMetadata } from "@/lib/seo";
 
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
@@ -20,18 +23,17 @@ export async function generateMetadata({
   const story = await getStoryBySlug(slug);
 
   if (!story) {
-    return { title: "Story Not Found | Travel With Sonali" };
+    return { title: "Story Not Found", robots: { index: false } };
   }
 
-  return {
-    title: `${story.title} | Travel With Sonali`,
-    description: story.excerpt?.slice(0, 160),
-    openGraph: {
-      title: story.title,
-      description: story.excerpt?.slice(0, 160),
-      images: story.image ? [{ url: story.image, width: 1200, height: 630, alt: story.title }] : undefined,
-    },
-  };
+  return pageMetadata({
+    title: story.title,
+    description: story.excerpt || story.title,
+    path: `/stories/${story.slug}`,
+    image: story.image,
+    imageAlt: story.title,
+    type: "article",
+  });
 }
 
 export default async function StoryDetailPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -39,22 +41,36 @@ export default async function StoryDetailPage({ params }: { params: Promise<{ sl
   const story = await getStoryBySlug(slug);
 
   if (!story) {
-    return (
-      <div className="min-h-screen bg-[#FDF7F4] flex flex-col justify-between">
-        <Navbar logoName="Travel With Sonali" />
-        <div className="max-w-xl mx-auto px-4 py-24 text-center space-y-4">
-          <h1 className="text-3xl font-bold text-[#685752]">Story Not Found</h1>
-          <Link href="/stories" className="inline-block px-6 py-3 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white text-sm font-semibold transition-colors">
-            View All Stories
-          </Link>
-        </div>
-        <Footer />
-      </div>
-    );
+    notFound();
   }
+
+  const url = absoluteUrl(`/stories/${story.slug}`);
+  const structuredData = [
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      headline: story.title,
+      description: story.excerpt,
+      image: absoluteUrl(story.image),
+      url,
+      mainEntityOfPage: url,
+      author: { "@type": "Person", name: story.author },
+      publisher: { "@id": `${SITE_URL}/#organization` },
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+        { "@type": "ListItem", position: 2, name: "Stories", item: absoluteUrl("/stories") },
+        { "@type": "ListItem", position: 3, name: story.title, item: url },
+      ],
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-[#FDF7F4] text-[#685752] flex flex-col font-sans">
+      <JsonLd data={structuredData} />
       <Navbar logoName="Travel With Sonali" />
 
       {/* Breadcrumb */}

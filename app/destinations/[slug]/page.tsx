@@ -1,7 +1,9 @@
-import React, { use } from "react";
+import { use } from "react";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import DestinationDetailClientView from "./DestinationDetailClientView";
+import JsonLd from "@/app/components/JsonLd";
+import { SITE_URL, absoluteUrl, clampDescription, pageMetadata } from "@/lib/seo";
 import { getDestinationBySlug, getToursByDestination, getDestinations } from "@/lib/sanity/queries";
 
 export async function generateMetadata({
@@ -13,28 +15,16 @@ export async function generateMetadata({
   const destination = await getDestinationBySlug(slug);
 
   if (!destination) {
-    return {
-      title: "Destination Not Found | Travel With Sonali",
-      description: "The requested destination could not be found.",
-    };
+    return { title: "Destination Not Found", robots: { index: false } };
   }
 
-  return {
-    title: `${destination.name} - Travel Guide & Tours | Travel With Sonali`,
-    description: destination.tagline || destination.description.slice(0, 160),
-    openGraph: {
-      title: `${destination.name} - Travel With Sonali`,
-      description: destination.tagline || destination.description.slice(0, 160),
-      images: [
-        {
-          url: destination.image,
-          width: 1200,
-          height: 630,
-          alt: destination.name,
-        },
-      ],
-    },
-  };
+  return pageMetadata({
+    title: `${destination.name} Travel Guide & Group Tours`,
+    description: `${destination.tagline.replace(/[.!?]+$/, "")}. Best time to visit, highlights, travel tips and upcoming group tours to ${destination.name}.`,
+    path: `/destinations/${destination.slug}`,
+    image: destination.image,
+    imageAlt: destination.name,
+  });
 }
 
 export default function DestinationDetailPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -51,11 +41,51 @@ export default function DestinationDetailPage({ params }: { params: Promise<{ sl
 
   const relatedDestinations = allDestinations.filter((d) => d.slug !== slug).slice(0, 3);
 
+  const url = absoluteUrl(`/destinations/${destination.slug}`);
+  const structuredData = [
+    {
+      "@context": "https://schema.org",
+      "@type": "TouristDestination",
+      name: destination.name,
+      description: clampDescription(destination.description, 300),
+      url,
+      image: absoluteUrl(destination.image),
+      ...(destination.highlights.length > 0 && {
+        includesAttraction: destination.highlights.map((h) => ({ "@type": "TouristAttraction", name: h })),
+      }),
+    },
+    ...(destination.faqs && destination.faqs.length > 0
+      ? [
+          {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: destination.faqs.map((faq) => ({
+              "@type": "Question",
+              name: faq.question,
+              acceptedAnswer: { "@type": "Answer", text: faq.answer },
+            })),
+          },
+        ]
+      : []),
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+        { "@type": "ListItem", position: 2, name: "Destinations", item: absoluteUrl("/destinations") },
+        { "@type": "ListItem", position: 3, name: destination.name, item: url },
+      ],
+    },
+  ];
+
   return (
-    <DestinationDetailClientView
-      destination={destination}
-      tours={tours}
-      relatedDestinations={relatedDestinations}
-    />
+    <>
+      <JsonLd data={structuredData} />
+      <DestinationDetailClientView
+        destination={destination}
+        tours={tours}
+        relatedDestinations={relatedDestinations}
+      />
+    </>
   );
 }
