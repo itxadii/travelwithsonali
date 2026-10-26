@@ -12,6 +12,7 @@ import {
   CONSENT_VERSION,
   MARKETING_ENABLED,
   VISITOR_COOKIE,
+  decodeCookieJson,
   parseConsent,
   serializeConsent,
   type ConsentAction,
@@ -38,12 +39,7 @@ export async function POST(req: Request) {
     const cookieStore = await cookies();
     // Reuse the consent ID even across notice versions, so one browser's history stays linked
     const previousRaw = cookieStore.get(CONSENT_COOKIE)?.value;
-    let previousConsentId: string | undefined;
-    try {
-      previousConsentId = previousRaw ? JSON.parse(decodeURIComponent(previousRaw))?.consentId : undefined;
-    } catch {
-      previousConsentId = undefined;
-    }
+    const previousConsentId = decodeCookieJson(previousRaw)?.consentId;
     const previous = parseConsent(previousRaw);
 
     const state: ConsentState = {

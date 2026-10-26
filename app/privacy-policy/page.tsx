@@ -68,6 +68,12 @@ export default function PrivacyPolicyPage() {
                   <td className="p-3">Analytics (consent)</td>
                   <td className="p-3">12 months</td>
                 </tr>
+                <tr>
+                  <td className="p-3 font-mono text-xs">_ga, _ga_*</td>
+                  <td className="p-3">Google Analytics: distinguishes visitors and sessions to measure how the site is used.</td>
+                  <td className="p-3">Analytics (consent)</td>
+                  <td className="p-3">Up to 2 years</td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -75,6 +81,11 @@ export default function PrivacyPolicyPage() {
             With analytics consent we record the pages you visit, the website or campaign link that brought you here, your device type,
             browser and operating system, and your approximate country. This is stored on our own database, kept for 12 months, and deleted
             immediately if you withdraw consent. We do not store your IP address in our analytics.
+          </p>
+          <p>
+            With the same consent we also use Google Analytics, provided by Google LLC, which receives similar usage data and may process it
+            outside India. Google Analytics does not log or store IP addresses. If you withdraw consent, Google Analytics stops loading and its
+            cookies are removed from your browser.
           </p>
           <p>
             You can change or withdraw your consent at any time, as easily as you gave it:{" "}

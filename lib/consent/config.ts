@@ -5,7 +5,7 @@
  * them change: every visitor is then asked again, so consent always matches the
  * notice they actually saw (DPDP Act s.5/s.6, MeitY CMS guidance on renewal).
  */
-export const CONSENT_VERSION = "2026-10-26";
+export const CONSENT_VERSION = "2026-10-26.2"; // .2: Google Analytics added to the analytics purpose
 
 /** Stores the visitor's choice. Essential: without it we can't honour a "reject". */
 export const CONSENT_COOKIE = "tws_consent";
@@ -21,7 +21,8 @@ export const GRIEVANCE_EMAIL = "travelwithsonaliinfo@gmail.com";
 /** Data Protection Board of India complaint link. Set NEXT_PUBLIC_DPB_COMPLAINT_URL once the Board's portal URL is confirmed. */
 export const DPB_COMPLAINT_URL = process.env.NEXT_PUBLIC_DPB_COMPLAINT_URL || "https://www.meity.gov.in";
 
-export const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_ID || "";
+/** Google Analytics 4 measurement ID (public by design). Loaded only for visitors who accept analytics. */
+export const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_ID || "G-6E6T7CECYM";
 export const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID || "";
 
 /** The marketing category is only offered when a marketing tool is actually configured. */
@@ -41,15 +42,39 @@ export interface ConsentState {
   updatedAt: number;
 }
 
+/** Plain JSON: Next.js URL-encodes cookie values itself when setting them. */
 export function serializeConsent(state: ConsentState): string {
-  return encodeURIComponent(JSON.stringify(state));
+  return JSON.stringify(state);
+}
+
+/**
+ * Decodes a cookie value to its JSON object. The value may arrive raw (server, already
+ * decoded), encoded once (document.cookie), or encoded twice (cookies saved by an
+ * earlier version), so decode until it looks like JSON.
+ */
+export function decodeCookieJson(raw: string | undefined | null): Record<string, unknown> | null {
+  if (!raw) return null;
+  let value = raw;
+  for (let i = 0; i < 3 && !value.startsWith("{"); i++) {
+    try {
+      value = decodeURIComponent(value);
+    } catch {
+      return null;
+    }
+  }
+  try {
+    const parsed = JSON.parse(value);
+    return parsed && typeof parsed === "object" ? parsed : null;
+  } catch {
+    return null;
+  }
 }
 
 /** Returns null for a missing, malformed, or outdated-version cookie (the visitor must be asked again). */
 export function parseConsent(raw: string | undefined | null): ConsentState | null {
   if (!raw) return null;
   try {
-    const value = JSON.parse(decodeURIComponent(raw));
+    const value = decodeCookieJson(raw);
     if (
       value &&
       value.version === CONSENT_VERSION &&
@@ -58,7 +83,7 @@ export function parseConsent(raw: string | undefined | null): ConsentState | nul
       typeof value.consentId === "string" &&
       typeof value.updatedAt === "number"
     ) {
-      return value as ConsentState;
+      return value as unknown as ConsentState;
     }
   } catch {
     // fall through

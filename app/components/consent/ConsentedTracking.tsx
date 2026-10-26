@@ -71,8 +71,8 @@ export default function ConsentedTracking() {
         utmCampaign: params.get("utm_campaign"),
       }),
     }).catch(() => {});
-
-    window.gtag?.("event", "page_view", { page_path: pathname });
+    // Google Analytics records its own page views: the first via `config`, later client-side
+    // navigations via GA4 enhanced measurement ("page changes based on browser history events").
   }, [analytics, isAdmin, pathname]);
 
   useEffect(() => {
@@ -90,7 +90,7 @@ export default function ConsentedTracking() {
             {`window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
-gtag('config', '${GA_MEASUREMENT_ID}', { send_page_view: false });`}
+gtag('config', '${GA_MEASUREMENT_ID}');`}
           </Script>
         </>
       )}
