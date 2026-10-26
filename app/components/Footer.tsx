@@ -28,13 +28,13 @@ export default function Footer({ onEnquireClick }: FooterProps) {
           1. THE UPPER LIGHT SHEET (Rounded Bottom Curtain)
           Scrolls naturally over the fixed reveal section beneath
          ======================================================== */}
-      <div className="relative z-10 bg-[#FDF7F4] text-[#685752] pt-20 pb-16 px-4 sm:px-6 lg:px-8 rounded-b-[40px] sm:rounded-b-[56px] lg:rounded-b-[64px] shadow-[0_30px_70px_-15px_rgba(0,0,0,0.4)] border-b border-[#E8DCD5]/80">
+      <div className="relative z-10 bg-[#FDF7F4] text-[#685752] pt-12 pb-8 sm:pt-20 sm:pb-16 px-4 sm:px-6 lg:px-8 rounded-b-[40px] sm:rounded-b-[56px] lg:rounded-b-[64px] shadow-[0_30px_70px_-15px_rgba(0,0,0,0.4)] border-b border-[#E8DCD5]/80">
         <div className="max-w-7xl mx-auto">
           {/* Main 4-Column Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-12 pb-14 border-b border-[#E8DCD5]">
+          <div className="grid grid-cols-2 lg:grid-cols-5 gap-x-6 gap-y-8 sm:gap-10 lg:gap-12 pb-8 sm:pb-14 border-b border-[#E8DCD5]">
             
             {/* Col 1: Brand Info */}
-            <div className="lg:col-span-2 space-y-5">
+            <div className="col-span-2 space-y-4 sm:space-y-5">
               <Link href="/" className="inline-flex items-center gap-3.5 group">
                 <div className="relative flex items-center justify-center w-11 h-11 rounded-full overflow-hidden border border-[#E8DCD5] shadow-sm group-hover:scale-105 transition-all bg-white">
                   <Image
@@ -99,10 +99,10 @@ export default function Footer({ onEnquireClick }: FooterProps) {
 
             {/* Col 2: Navigation Links */}
             <div>
-              <h4 className="text-[#685752] text-xs font-bold tracking-widest uppercase mb-4">
+              <h4 className="text-[#685752] text-xs font-bold tracking-widest uppercase mb-3 sm:mb-4">
                 Explore
               </h4>
-              <ul className="space-y-3 text-sm text-[#7A6862]">
+              <ul className="space-y-2.5 sm:space-y-3 text-sm text-[#7A6862]">
                 <li>
                   <Link href="/tours" className="hover:text-[#4A7244] transition-colors flex items-center gap-1">
                     <span>Upcoming Tours</span>
@@ -133,10 +133,10 @@ export default function Footer({ onEnquireClick }: FooterProps) {
 
             {/* Col 3: Top Destinations */}
             <div>
-              <h4 className="text-[#685752] text-xs font-bold tracking-widest uppercase mb-4">
+              <h4 className="text-[#685752] text-xs font-bold tracking-widest uppercase mb-3 sm:mb-4">
                 Destinations
               </h4>
-              <ul className="space-y-3 text-sm text-[#7A6862]">
+              <ul className="space-y-2.5 sm:space-y-3 text-sm text-[#7A6862]">
                 <li>
                   <Link href="/destinations/manali" className="hover:text-[#4A7244] transition-colors">
                     Manali & Kasol
@@ -171,8 +171,8 @@ export default function Footer({ onEnquireClick }: FooterProps) {
             </div>
 
             {/* Col 4: Contact Info */}
-            <div>
-              <h4 className="text-[#685752] text-xs font-bold tracking-widest uppercase mb-4">
+            <div className="col-span-2 md:col-span-1">
+              <h4 className="text-[#685752] text-xs font-bold tracking-widest uppercase mb-3 sm:mb-4">
                 Get In Touch
               </h4>
               <ul className="space-y-3.5 text-sm text-[#7A6862]">
@@ -198,25 +198,27 @@ export default function Footer({ onEnquireClick }: FooterProps) {
           </div>
 
           {/* Bottom Copyright & Legal Links */}
-          <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-[#7A6862]">
+          <div className="pt-5 sm:pt-8 flex flex-col-reverse md:flex-row items-center justify-between gap-2.5 sm:gap-4 text-xs text-[#7A6862]">
             <p className="flex items-center gap-1 text-center md:text-left">
-              © {new Date().getFullYear()} Travel With Sonali. Designed with{" "}
-              <Heart className="w-3.5 h-3.5 text-[#4A7244] fill-current inline" /> for curious travellers.
+              © {new Date().getFullYear()} Travel With Sonali
+              <span className="hidden sm:inline-flex items-center gap-1">
+                . Designed with <Heart className="w-3.5 h-3.5 text-[#4A7244] fill-current inline" /> for curious travellers.
+              </span>
             </p>
-            <div className="flex flex-wrap items-center justify-center gap-6">
-              <Link href="/privacy-policy" className="hover:text-[#685752] transition-colors">
-                Privacy Policy
+            <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 sm:gap-x-6">
+              <Link href="/privacy-policy" className="hover:text-[#685752] transition-colors py-1">
+                Privacy
               </Link>
-              <Link href="/terms-and-conditions" className="hover:text-[#685752] transition-colors">
-                Terms & Conditions
+              <Link href="/terms-and-conditions" className="hover:text-[#685752] transition-colors py-1">
+                Terms
               </Link>
-              <Link href="/cancellation-policy" className="hover:text-[#685752] transition-colors">
-                Cancellation Policy
+              <Link href="/cancellation-policy" className="hover:text-[#685752] transition-colors py-1">
+                Cancellation
               </Link>
               <button
                 type="button"
                 onClick={openPreferences}
-                className="hover:text-[#685752] transition-colors cursor-pointer"
+                className="hover:text-[#685752] transition-colors cursor-pointer py-1"
               >
                 Cookie Settings
               </button>
