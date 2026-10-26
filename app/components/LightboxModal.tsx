@@ -3,6 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { X, MapPin } from "lucide-react";
+import { useEscapeKey } from "@/lib/useEscapeKey";
 
 interface LightboxModalProps {
   isOpen: boolean;
@@ -19,12 +20,17 @@ export default function LightboxModal({
   title,
   location,
 }: LightboxModalProps) {
+  useEscapeKey(isOpen, onClose);
+
   if (!isOpen || !imageSrc) return null;
 
   return (
     <div 
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-fade-in"
       onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label={title || "Photo viewer"}
     >
       <button
         onClick={onClose}

@@ -133,7 +133,7 @@ export default function CustomerDashboardPage() {
           <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-[#685752] font-serif-italic">
             Hello, {customer.name.split(" ")[0]} 👋
           </h1>
-          <p className="text-xs text-[#997C70] mt-1">
+          <p className="text-xs text-[#7A6862] mt-1">
             Your travel family is excited to explore with you. Here is your trip summary.
           </p>
         </div>
@@ -164,7 +164,7 @@ export default function CustomerDashboardPage() {
           <div className="relative p-6 sm:p-10 space-y-6">
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div className="space-y-1">
-                <span className="px-3.5 py-1 rounded-full bg-[#8EB486] text-white text-[11px] font-bold uppercase tracking-wider">
+                <span className="px-3.5 py-1 rounded-full bg-[#4A7244] text-white text-xs font-bold uppercase tracking-wider">
                   Your Next Adventure
                 </span>
                 <h2 className="text-2xl sm:text-4xl font-serif-italic font-bold tracking-tight text-white mt-2">
@@ -186,30 +186,30 @@ export default function CustomerDashboardPage() {
             {/* LIVE COUNTDOWN DISPLAY */}
             <div className="pt-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-6">
               <div>
-                <span className="text-[10px] uppercase font-bold text-stone-400 tracking-widest block mb-2">
+                <span className="text-xs uppercase font-bold text-stone-400 tracking-widest block mb-2">
                   TRIP COUNTDOWN
                 </span>
                 <div className="flex items-center gap-3 text-center font-mono">
                   <div className="bg-black/50 backdrop-blur-md border border-white/10 rounded-2xl px-3 py-2 min-w-[60px]">
                     <span className="text-2xl font-bold text-white block">{countdown.days}</span>
-                    <span className="text-[9px] uppercase text-stone-400 font-sans">Days</span>
+                    <span className="text-xs uppercase text-stone-400 font-sans">Days</span>
                   </div>
                   <span className="text-stone-500 font-bold">:</span>
                   <div className="bg-black/50 backdrop-blur-md border border-white/10 rounded-2xl px-3 py-2 min-w-[60px]">
                     <span className="text-2xl font-bold text-white block">{String(countdown.hours).padStart(2, '0')}</span>
-                    <span className="text-[9px] uppercase text-stone-400 font-sans">Hours</span>
+                    <span className="text-xs uppercase text-stone-400 font-sans">Hours</span>
                   </div>
                   <span className="text-stone-500 font-bold">:</span>
                   <div className="bg-black/50 backdrop-blur-md border border-white/10 rounded-2xl px-3 py-2 min-w-[60px]">
                     <span className="text-2xl font-bold text-[#8EB486] block">{String(countdown.minutes).padStart(2, '0')}</span>
-                    <span className="text-[9px] uppercase text-stone-400 font-sans">Mins</span>
+                    <span className="text-xs uppercase text-stone-400 font-sans">Mins</span>
                   </div>
                 </div>
               </div>
 
               <Link
                 href={`/portal/trips/${nextTrip.booking.id}`}
-                className="px-6 py-3 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white text-xs font-bold tracking-wider uppercase shadow-lg transition-all flex items-center gap-2 cursor-pointer"
+                className="px-6 py-3 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white text-xs font-bold tracking-wider uppercase shadow-lg transition-all flex items-center gap-2 cursor-pointer"
               >
                 <span>View My Trip</span>
                 <ChevronRight className="w-4 h-4" />
@@ -220,19 +220,19 @@ export default function CustomerDashboardPage() {
       ) : (
         /* NO UPCOMING TRIP STATE */
         <div className="p-8 sm:p-12 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs text-center space-y-4">
-          <div className="w-16 h-16 rounded-full bg-[#8EB486]/10 text-[#8EB486] flex items-center justify-center mx-auto">
+          <div className="w-16 h-16 rounded-full bg-[#8EB486]/10 text-[#4A7244] flex items-center justify-center mx-auto">
             <Sparkles className="w-8 h-8" />
           </div>
           <h2 className="text-2xl sm:text-3xl font-bold text-[#685752] font-serif-italic">
             Ready for Your Next Adventure?
           </h2>
-          <p className="text-xs sm:text-sm text-[#997C70] max-w-md mx-auto">
+          <p className="text-xs sm:text-sm text-[#7A6862] max-w-md mx-auto">
             You don&apos;t have an upcoming group trip booked right now. Explore our upcoming departures and join our next travel family!
           </p>
           <div className="pt-2">
             <Link
               href="/tours"
-              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white text-xs font-bold uppercase tracking-wider shadow-md"
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white text-xs font-bold uppercase tracking-wider shadow-md"
             >
               <span>Explore Tours</span>
               <ChevronRight className="w-4 h-4" />
@@ -245,20 +245,20 @@ export default function CustomerDashboardPage() {
       {nextTrip && (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           <div className="p-4 rounded-2xl bg-white border border-[#E8DCD5] shadow-2xs space-y-1">
-            <span className="text-[10px] text-[#997C70] uppercase font-bold tracking-wider block">Departure</span>
+            <span className="text-xs text-[#7A6862] uppercase font-bold tracking-wider block">Departure</span>
             <p className="text-xs font-bold text-[#685752] truncate">{nextTrip.booking.departureDate}</p>
           </div>
           <div className="p-4 rounded-2xl bg-white border border-[#E8DCD5] shadow-2xs space-y-1">
-            <span className="text-[10px] text-[#997C70] uppercase font-bold tracking-wider block">Duration</span>
+            <span className="text-xs text-[#7A6862] uppercase font-bold tracking-wider block">Duration</span>
             <p className="text-xs font-bold text-[#685752] truncate">{nextTrip.sanityTour?.duration || "Multiple Days"}</p>
           </div>
           <div className="p-4 rounded-2xl bg-white border border-[#E8DCD5] shadow-2xs space-y-1">
-            <span className="text-[10px] text-[#997C70] uppercase font-bold tracking-wider block">Travellers</span>
+            <span className="text-xs text-[#7A6862] uppercase font-bold tracking-wider block">Travellers</span>
             <p className="text-xs font-bold text-[#685752] truncate">{nextTrip.booking.travellersCount} Person(s)</p>
           </div>
           <div className="p-4 rounded-2xl bg-white border border-[#E8DCD5] shadow-2xs space-y-1">
-            <span className="text-[10px] text-[#997C70] uppercase font-bold tracking-wider block">Booking ID</span>
-            <p className="text-xs font-bold text-[#8EB486] truncate">{nextTrip.booking.bookingCode}</p>
+            <span className="text-xs text-[#7A6862] uppercase font-bold tracking-wider block">Booking ID</span>
+            <p className="text-xs font-bold text-[#4A7244] truncate">{nextTrip.booking.bookingCode}</p>
           </div>
         </div>
       )}
@@ -273,11 +273,11 @@ export default function CustomerDashboardPage() {
               <div className="flex items-center justify-between border-b border-[#E8DCD5] pb-3">
                 <div>
                   <h3 className="text-base font-bold text-[#685752]">You&apos;re Almost Ready</h3>
-                  <p className="text-xs text-[#997C70]">Complete required traveller details before departure.</p>
+                  <p className="text-xs text-[#7A6862]">Complete required traveller details before departure.</p>
                 </div>
                 <div className="text-right">
-                  <span className="text-2xl font-bold text-[#8EB486]">{nextTrip.readinessPercentage}%</span>
-                  <span className="text-[10px] text-[#997C70] block font-semibold">Ready</span>
+                  <span className="text-2xl font-bold text-[#4A7244]">{nextTrip.readinessPercentage}%</span>
+                  <span className="text-xs text-[#7A6862] block font-semibold">Ready</span>
                 </div>
               </div>
 
@@ -312,7 +312,7 @@ export default function CustomerDashboardPage() {
               <div className="pt-2 flex justify-end">
                 <Link
                   href="/portal/documents"
-                  className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white text-xs font-semibold shadow-xs hover:shadow-md transition-all active:scale-95 group"
+                  className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white text-xs font-semibold shadow-xs hover:shadow-md transition-all active:scale-95 group"
                 >
                   <span>Complete My Details</span>
                   <ChevronRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" />
@@ -326,7 +326,7 @@ export default function CustomerDashboardPage() {
                 href={`/portal/trips/${nextTrip.booking.id}`}
                 className="p-4 rounded-2xl bg-white border border-[#E8DCD5] hover:border-[#8EB486] hover:shadow-md transition-all text-center space-y-2 group"
               >
-                <div className="w-10 h-10 rounded-full bg-[#FDF7F4] text-[#8EB486] flex items-center justify-center mx-auto group-hover:bg-[#8EB486] group-hover:text-white transition-colors">
+                <div className="w-10 h-10 rounded-full bg-[#FDF7F4] text-[#4A7244] flex items-center justify-center mx-auto group-hover:bg-[#4A7244] group-hover:text-white transition-colors">
                   <Calendar className="w-5 h-5" />
                 </div>
                 <span className="text-xs font-bold text-[#685752] block">View Itinerary</span>
@@ -335,7 +335,7 @@ export default function CustomerDashboardPage() {
                 href="/portal/travellers"
                 className="p-4 rounded-2xl bg-white border border-[#E8DCD5] hover:border-[#8EB486] hover:shadow-md transition-all text-center space-y-2 group"
               >
-                <div className="w-10 h-10 rounded-full bg-[#FDF7F4] text-[#8EB486] flex items-center justify-center mx-auto group-hover:bg-[#8EB486] group-hover:text-white transition-colors">
+                <div className="w-10 h-10 rounded-full bg-[#FDF7F4] text-[#4A7244] flex items-center justify-center mx-auto group-hover:bg-[#4A7244] group-hover:text-white transition-colors">
                   <Users className="w-5 h-5" />
                 </div>
                 <span className="text-xs font-bold text-[#685752] block">Manage Travellers</span>
@@ -344,7 +344,7 @@ export default function CustomerDashboardPage() {
                 href="/portal/documents"
                 className="p-4 rounded-2xl bg-white border border-[#E8DCD5] hover:border-[#8EB486] hover:shadow-md transition-all text-center space-y-2 group"
               >
-                <div className="w-10 h-10 rounded-full bg-[#FDF7F4] text-[#8EB486] flex items-center justify-center mx-auto group-hover:bg-[#8EB486] group-hover:text-white transition-colors">
+                <div className="w-10 h-10 rounded-full bg-[#FDF7F4] text-[#4A7244] flex items-center justify-center mx-auto group-hover:bg-[#4A7244] group-hover:text-white transition-colors">
                   <FileCheck className="w-5 h-5" />
                 </div>
                 <span className="text-xs font-bold text-[#685752] block">Documents</span>
@@ -353,7 +353,7 @@ export default function CustomerDashboardPage() {
                 href="/portal/payments"
                 className="p-4 rounded-2xl bg-white border border-[#E8DCD5] hover:border-[#8EB486] hover:shadow-md transition-all text-center space-y-2 group"
               >
-                <div className="w-10 h-10 rounded-full bg-[#FDF7F4] text-[#8EB486] flex items-center justify-center mx-auto group-hover:bg-[#8EB486] group-hover:text-white transition-colors">
+                <div className="w-10 h-10 rounded-full bg-[#FDF7F4] text-[#4A7244] flex items-center justify-center mx-auto group-hover:bg-[#4A7244] group-hover:text-white transition-colors">
                   <CreditCard className="w-5 h-5" />
                 </div>
                 <span className="text-xs font-bold text-[#685752] block">Payments</span>
@@ -365,12 +365,12 @@ export default function CustomerDashboardPage() {
           <div className="lg:col-span-4 space-y-6">
             {/* Payment Summary */}
             <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-4">
-              <h3 className="text-xs uppercase font-bold text-[#997C70] border-b border-[#E8DCD5] pb-3">
+              <h3 className="text-xs uppercase font-bold text-[#7A6862] border-b border-[#E8DCD5] pb-3">
                 Payment Summary
               </h3>
 
               <div className="space-y-2 text-xs">
-                <div className="flex justify-between text-[#997C70]">
+                <div className="flex justify-between text-[#7A6862]">
                   <span>Total Trip Cost:</span>
                   <span className="text-[#685752] font-bold">₹{nextTrip.booking.totalAmount.toLocaleString("en-IN")}</span>
                 </div>
@@ -385,12 +385,12 @@ export default function CustomerDashboardPage() {
               </div>
 
               <div className="pt-2 border-t border-[#E8DCD5] space-y-2">
-                <p className="text-[10px] text-[#997C70] italic">
+                <p className="text-xs text-[#7A6862] italic">
                   Payment updates are recorded by our team upon receiving manual UPI, Cash, or Bank transfers.
                 </p>
                 <Link
                   href="/portal/payments"
-                  className="block text-center w-full py-2.5 rounded-full bg-[#FDF7F4] border border-[#E8DCD5] hover:bg-[#8EB486] hover:text-white text-[#685752] text-xs font-semibold transition-colors"
+                  className="block text-center w-full py-2.5 rounded-full bg-[#FDF7F4] border border-[#E8DCD5] hover:bg-[#4A7244] hover:text-white text-[#685752] text-xs font-semibold transition-colors"
                 >
                   View Payment History
                 </Link>
@@ -399,14 +399,14 @@ export default function CustomerDashboardPage() {
 
             {/* Trip Coordinator Support Card */}
             <div className="p-6 rounded-3xl bg-[#FFFDF9] border border-[#E8DCD5] shadow-xs space-y-4">
-              <span className="text-[10px] uppercase font-bold text-[#8EB486] tracking-widest block">
+              <span className="text-xs uppercase font-bold text-[#4A7244] tracking-widest block">
                 YOUR TRIP COORDINATOR
               </span>
 
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-full overflow-hidden border border-[#E8DCD5] shrink-0">
                   <Image
-                    src="/images/sonali.png"
+                    src="/images/sonali.jpg"
                     alt="Sonali Palekar"
                     width={48}
                     height={48}
@@ -415,7 +415,7 @@ export default function CustomerDashboardPage() {
                 </div>
                 <div>
                   <h4 className="font-bold text-[#685752] text-sm">Sonali Palekar</h4>
-                  <p className="text-[11px] text-[#997C70]">Lead Group Explorer</p>
+                  <p className="text-xs text-[#7A6862]">Lead Group Explorer</p>
                 </div>
               </div>
 
@@ -453,10 +453,10 @@ export default function CustomerDashboardPage() {
                   <Image src={tour.image} alt={tour.title} fill className="object-cover" />
                 </div>
                 <h4 className="font-bold text-[#685752] text-sm">{tour.title}</h4>
-                <p className="text-xs text-[#997C70]">{tour.duration} • {tour.price}</p>
+                <p className="text-xs text-[#7A6862]">{tour.duration} • {tour.price}</p>
                 <Link
                   href={`/tours/${tour.slug}`}
-                  className="block text-center py-2 rounded-full bg-[#8EB486] text-white text-xs font-semibold"
+                  className="block text-center py-2 rounded-full bg-[#4A7244] text-white text-xs font-semibold"
                 >
                   View Package Details
                 </Link>

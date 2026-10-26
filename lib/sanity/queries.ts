@@ -264,7 +264,7 @@ export function mapSanityStoryToAppStory(raw: SanityStory): Story {
     excerpt: raw.excerpt || "",
     author: raw.author || "Sonali Palekar",
     authorRole: raw.authorRole || "Founder & Lead Explorer",
-    authorAvatar: resolveImageUrl(raw.authorAvatar, "/images/sonali.png"),
+    authorAvatar: resolveImageUrl(raw.authorAvatar, "/images/sonali.jpg"),
     date: raw.date || "2026",
     readTime: raw.readTime || "5 min read",
     image: resolveImageUrl(raw.coverImage, DEFAULT_IMAGE),

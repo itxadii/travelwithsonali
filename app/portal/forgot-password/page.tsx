@@ -57,7 +57,7 @@ export default function ForgotPasswordPage() {
             />
           </div>
 
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#8EB486]/10 text-[#8EB486] text-xs font-semibold tracking-wider uppercase">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#8EB486]/10 text-[#4A7244] text-xs font-semibold tracking-wider uppercase">
             <Compass className="w-3.5 h-3.5" />
             <span>Account Recovery</span>
           </div>
@@ -65,7 +65,7 @@ export default function ForgotPasswordPage() {
           <h1 className="text-3xl font-bold tracking-tight text-[#685752] font-serif-italic">
             Forgot Password?
           </h1>
-          <p className="text-xs text-[#997C70] max-w-xs">
+          <p className="text-xs text-[#7A6862] max-w-xs">
             Enter your registered email or mobile number and we&apos;ll email you a reset code.
           </p>
         </div>
@@ -79,7 +79,7 @@ export default function ForgotPasswordPage() {
         {!sentMessage ? (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold text-[#997C70]">
+              <label className="text-xs font-semibold text-[#7A6862]">
                 Email or Mobile Number
               </label>
               <div className="relative">
@@ -93,7 +93,7 @@ export default function ForgotPasswordPage() {
                   className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#FDF7F4] border border-[#E8DCD5] text-xs text-[#685752] placeholder-[#9A938C] focus:outline-none focus:border-[#8EB486]"
                 />
               </div>
-              <p className="text-[11px] text-[#997C70]">
+              <p className="text-xs text-[#7A6862]">
                 The code is sent to the email address on your account.
               </p>
             </div>
@@ -101,7 +101,7 @@ export default function ForgotPasswordPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white text-xs font-bold tracking-wider uppercase shadow-lg shadow-[#8EB486]/30 transition-all active:scale-[0.98] disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2 group"
+              className="w-full py-3.5 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white text-xs font-bold tracking-wider uppercase shadow-lg shadow-[#8EB486]/30 transition-all active:scale-[0.98] disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2 group"
             >
               <span>{loading ? "Sending..." : "Send Reset Code"}</span>
               {!loading && (
@@ -117,7 +117,7 @@ export default function ForgotPasswordPage() {
                 <span>Check Your Email</span>
               </div>
               <p className="text-emerald-700 leading-relaxed">{sentMessage}</p>
-              <p className="text-[11px] text-emerald-600">
+              <p className="text-xs text-emerald-600">
                 The code expires in 1 hour. Check your spam folder if you don&apos;t see it.
                 No email on your account? Contact us on WhatsApp for help.
               </p>
@@ -126,7 +126,7 @@ export default function ForgotPasswordPage() {
             <div className="space-y-2">
               <Link
                 href={`/portal/reset-password?identifier=${encodeURIComponent(identifier)}`}
-                className="w-full py-3.5 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white text-xs font-bold tracking-wider uppercase shadow-lg shadow-[#8EB486]/30 transition-all flex items-center justify-center gap-2 group"
+                className="w-full py-3.5 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white text-xs font-bold tracking-wider uppercase shadow-lg shadow-[#8EB486]/30 transition-all flex items-center justify-center gap-2 group"
               >
                 <span>Enter Reset Code</span>
                 <ChevronRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
@@ -135,7 +135,7 @@ export default function ForgotPasswordPage() {
               <button
                 type="button"
                 onClick={() => setSentMessage(null)}
-                className="w-full py-2.5 rounded-full text-xs font-semibold text-[#997C70] hover:text-[#685752] transition-colors"
+                className="w-full py-2.5 rounded-full text-xs font-semibold text-[#7A6862] hover:text-[#685752] transition-colors"
               >
                 Enter a different number or email
               </button>
@@ -143,10 +143,10 @@ export default function ForgotPasswordPage() {
           </div>
         )}
 
-        <div className="text-center pt-2 border-t border-[#E8DCD5] text-xs text-[#997C70]">
+        <div className="text-center pt-2 border-t border-[#E8DCD5] text-xs text-[#7A6862]">
           <Link
             href="/portal/login"
-            className="inline-flex items-center gap-1.5 text-[#8EB486] font-bold hover:underline"
+            className="inline-flex items-center gap-1.5 text-[#4A7244] font-bold hover:underline"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Back to Sign In</span>

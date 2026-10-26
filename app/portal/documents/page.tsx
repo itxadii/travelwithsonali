@@ -1,13 +1,15 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Upload, ShieldCheck, Plus } from "lucide-react";
+import { Upload, ShieldCheck, Plus, FileText } from "lucide-react";
+import { useEscapeKey } from "@/lib/useEscapeKey";
 
 interface DocItem {
   id: string;
   documentType: string;
   documentName: string;
   travellerName: string;
+  filePath?: string | null;
   status: string;
   notes?: string;
 }
@@ -26,7 +28,8 @@ export default function CustomerDocumentsPage() {
 
   // Form State
   const [documentType, setDocumentType] = useState("Aadhaar");
-  const [fileName, setFileName] = useState("");
+  const [file, setFile] = useState<File | null>(null);
+  const [uploadError, setUploadError] = useState("");
   const [uploading, setUploading] = useState(false);
 
   const fetchDocs = async () => {
@@ -65,31 +68,47 @@ export default function CustomerDocumentsPage() {
 
   const handleUploadSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!fileName) return;
+    if (!file) {
+      setUploadError("Please choose a file to upload.");
+      return;
+    }
+    if (file.size > 4 * 1024 * 1024) {
+      setUploadError("File is too large. The maximum size is 4 MB.");
+      return;
+    }
 
     setUploading(true);
+    setUploadError("");
 
     try {
-      const res = await fetch("/api/portal/documents", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          documentType,
-          documentName: fileName,
-        }),
-      });
+      const body = new FormData();
+      body.append("documentType", documentType);
+      body.append("file", file);
+
+      const res = await fetch("/api/portal/documents", { method: "POST", body });
 
       if (res.ok) {
-        setUploadModalOpen(false);
-        setFileName("");
+        closeUploadModal();
         fetchDocs();
+      } else {
+        const json = await res.json().catch(() => null);
+        setUploadError(json?.error || "Upload failed. Please try again.");
       }
     } catch (err) {
       console.error(err);
+      setUploadError("Upload failed. Please check your connection and try again.");
     } finally {
       setUploading(false);
     }
   };
+
+  const closeUploadModal = () => {
+    setUploadModalOpen(false);
+    setFile(null);
+    setUploadError("");
+  };
+
+  useEscapeKey(uploadModalOpen, closeUploadModal);
 
   const progressPercent = summary.total > 0 ? Math.round((summary.completed / summary.total) * 100) : 100;
 
@@ -100,14 +119,14 @@ export default function CustomerDocumentsPage() {
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#685752] font-serif-italic">
             Identity & Trip Documents
           </h1>
-          <p className="text-xs text-[#997C70] mt-1">
+          <p className="text-xs text-[#7A6862] mt-1">
             Complete required traveller identity verification before departure.
           </p>
         </div>
 
         <button
           onClick={() => setUploadModalOpen(true)}
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white text-xs font-semibold shadow-md transition-all cursor-pointer"
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white text-xs font-semibold shadow-md transition-all cursor-pointer"
         >
           <Plus className="w-4 h-4" />
           <span>Upload Document</span>
@@ -119,9 +138,9 @@ export default function CustomerDocumentsPage() {
         <div className="flex items-center justify-between">
           <div>
             <h3 className="text-base font-bold text-[#685752]">Trip Document Status</h3>
-            <p className="text-xs text-[#997C70]">{summary.completed} of {summary.total} Documents Uploaded & Verified</p>
+            <p className="text-xs text-[#7A6862]">{summary.completed} of {summary.total} Documents Uploaded & Verified</p>
           </div>
-          <span className="text-2xl font-bold text-[#8EB486]">{progressPercent}%</span>
+          <span className="text-2xl font-bold text-[#4A7244]">{progressPercent}%</span>
         </div>
 
         <div className="w-full h-2.5 rounded-full bg-[#FDF7F4] overflow-hidden border border-[#E8DCD5]">
@@ -135,26 +154,37 @@ export default function CustomerDocumentsPage() {
       {/* Document List */}
       <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-4">
         {loading ? (
-          <div className="py-12 text-center text-xs text-[#997C70]">Loading documents...</div>
+          <div className="py-12 text-center text-xs text-[#7A6862]">Loading documents...</div>
         ) : docs.length === 0 ? (
-          <div className="py-16 text-center text-sm text-[#997C70]">No documents uploaded yet.</div>
+          <div className="py-16 text-center text-sm text-[#7A6862]">No documents uploaded yet.</div>
         ) : (
           <div className="space-y-3 text-xs">
             {docs.map((d) => (
               <div key={d.id} className="p-4 rounded-2xl bg-[#FDF7F4] border border-[#E8DCD5] flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-white border border-[#E8DCD5] text-[#8EB486] flex items-center justify-center shrink-0">
+                  <div className="w-10 h-10 rounded-full bg-white border border-[#E8DCD5] text-[#4A7244] flex items-center justify-center shrink-0">
                     <ShieldCheck className="w-5 h-5" />
                   </div>
                   <div>
                     <h4 className="font-bold text-[#685752] text-sm">{d.documentName}</h4>
-                    <p className="text-[#997C70]">Type: {d.documentType} • Traveller: {d.travellerName}</p>
+                    <p className="text-[#7A6862]">Type: {d.documentType} • Traveller: {d.travellerName}</p>
                     {d.notes && <p className="text-rose-600 font-semibold mt-0.5">{d.notes}</p>}
+                    {d.filePath && (
+                      <a
+                        href={`/api/portal/documents/${d.id}/file`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 mt-1 font-semibold text-[#4F7A49] hover:underline"
+                      >
+                        <FileText className="w-3.5 h-3.5" />
+                        View uploaded file
+                      </a>
+                    )}
                   </div>
                 </div>
 
                 <span
-                  className={`px-3 py-1 rounded-full text-[10px] font-bold ${
+                  className={`px-3 py-1 rounded-full text-xs font-bold ${
                     d.status === "Verified"
                       ? "bg-emerald-100 text-emerald-800"
                       : d.status === "Rejected"
@@ -172,14 +202,24 @@ export default function CustomerDocumentsPage() {
 
       {/* Upload Modal */}
       {uploadModalOpen && (
-        <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4 backdrop-blur-xs">
-          <div className="w-full max-w-md bg-white rounded-3xl p-6 border border-[#E8DCD5] shadow-2xl space-y-6">
-            <h2 className="text-xl font-bold text-[#685752]">Upload Required Document</h2>
+        <div
+          className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4 backdrop-blur-xs"
+          onClick={closeUploadModal}
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="upload-doc-title"
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-md bg-white rounded-3xl p-6 border border-[#E8DCD5] shadow-2xl space-y-6"
+          >
+            <h2 id="upload-doc-title" className="text-xl font-bold text-[#685752]">Upload Required Document</h2>
 
             <form onSubmit={handleUploadSubmit} className="space-y-4 text-xs">
               <div className="space-y-1">
-                <label className="text-[#997C70] font-semibold">Document Type</label>
+                <label htmlFor="upload-doc-type" className="text-[#7A6862] font-semibold">Document Type</label>
                 <select
+                  id="upload-doc-type"
                   value={documentType}
                   onChange={(e) => setDocumentType(e.target.value)}
                   className="w-full p-2.5 rounded-xl bg-[#FDF7F4] border border-[#E8DCD5] text-[#685752] focus:outline-none focus:border-[#8EB486]"
@@ -192,28 +232,42 @@ export default function CustomerDocumentsPage() {
                 </select>
               </div>
 
-              <div className="space-y-1">
-                <label className="text-[#997C70] font-semibold">Document File Name / Reference</label>
+              <label
+                htmlFor="upload-doc-file"
+                className="block p-4 rounded-2xl bg-[#FDF7F4] border border-dashed border-[#C9B8AE] text-center space-y-1 text-xs cursor-pointer hover:border-[#8EB486] focus-within:border-[#8EB486] focus-within:ring-2 focus-within:ring-[#8EB486]/40"
+              >
+                <Upload className="w-6 h-6 text-[#4F7A49] mx-auto" />
+                <p className="font-semibold text-[#685752]">
+                  {file ? file.name : "Choose document file (PDF, JPG, PNG, WEBP)"}
+                </p>
+                <p className="text-xs text-[#7A6862]">
+                  {file
+                    ? `${(file.size / 1024 / 1024).toFixed(2)} MB`
+                    : "Maximum 4 MB. Only our team can view your document."}
+                </p>
                 <input
-                  type="text"
+                  id="upload-doc-file"
+                  type="file"
                   required
-                  value={fileName}
-                  onChange={(e) => setFileName(e.target.value)}
-                  placeholder="e.g. Aadhaar_Rahul_Verma.pdf"
-                  className="w-full p-2.5 rounded-xl bg-[#FDF7F4] border border-[#E8DCD5] text-[#685752] focus:outline-none focus:border-[#8EB486]"
+                  accept="application/pdf,image/jpeg,image/png,image/webp"
+                  onChange={(e) => {
+                    setFile(e.target.files?.[0] ?? null);
+                    setUploadError("");
+                  }}
+                  className="sr-only"
                 />
-              </div>
+              </label>
 
-              <div className="p-4 rounded-2xl bg-[#FDF7F4] border border-[#E8DCD5] text-center space-y-1 text-xs">
-                <Upload className="w-6 h-6 text-[#8EB486] mx-auto" />
-                <p className="font-semibold text-[#685752]">Select document file (PDF, JPG, PNG)</p>
-                <p className="text-[10px] text-[#997C70]">Your document will be encrypted and submitted for admin review.</p>
-              </div>
+              {uploadError && (
+                <p role="alert" className="text-xs font-semibold text-rose-700">
+                  {uploadError}
+                </p>
+              )}
 
               <div className="pt-2 flex items-center justify-end gap-3">
                 <button
                   type="button"
-                  onClick={() => setUploadModalOpen(false)}
+                  onClick={closeUploadModal}
                   className="px-4 py-2 rounded-full bg-[#FDF7F4] border border-[#E8DCD5] text-[#685752] font-medium cursor-pointer"
                 >
                   Cancel
@@ -221,7 +275,7 @@ export default function CustomerDocumentsPage() {
                 <button
                   type="submit"
                   disabled={uploading}
-                  className="px-6 py-2 rounded-full bg-[#8EB486] text-white font-semibold cursor-pointer shadow-sm disabled:opacity-50"
+                  className="px-6 py-2 rounded-full bg-[#4A7244] text-white font-semibold cursor-pointer shadow-sm disabled:opacity-50"
                 >
                   {uploading ? "Submitting..." : "Submit Document"}
                 </button>

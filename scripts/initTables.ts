@@ -188,6 +188,17 @@ export async function createTablesIfNotExist() {
   `;
 
   await sql`
+    CREATE TABLE IF NOT EXISTS document_files (
+      document_id TEXT PRIMARY KEY REFERENCES documents(id) ON DELETE CASCADE,
+      file_name TEXT NOT NULL,
+      mime_type TEXT NOT NULL,
+      size_bytes INTEGER NOT NULL,
+      data_base64 TEXT NOT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+    );
+  `;
+
+  await sql`
     CREATE TABLE IF NOT EXISTS notifications (
       id TEXT PRIMARY KEY,
       title TEXT NOT NULL,
@@ -223,7 +234,7 @@ export async function createTablesIfNotExist() {
       comment TEXT NOT NULL,
       location TEXT,
       trip_date TEXT,
-      is_approved BOOLEAN NOT NULL DEFAULT TRUE,
+      is_approved BOOLEAN NOT NULL DEFAULT FALSE,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
     );

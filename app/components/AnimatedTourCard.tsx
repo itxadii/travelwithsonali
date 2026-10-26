@@ -67,24 +67,24 @@ export default function AnimatedTourCard({
           <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-black/60 backdrop-blur-xs text-white text-xs font-medium">
             {tour.destination}
           </div>
-          <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-[#8EB486] text-white text-xs font-semibold">
+          <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-[#4A7244] text-white text-xs font-semibold">
             {tour.departureDate}
           </div>
         </div>
 
         <div className="p-6 space-y-4">
-          <div className="flex items-center justify-between text-xs text-[#997C70]">
+          <div className="flex items-center justify-between text-xs text-[#7A6862]">
             <span className="flex items-center gap-1 font-medium">
-              <Clock className="w-3.5 h-3.5 text-[#8EB486]" />
+              <Clock className="w-3.5 h-3.5 text-[#4A7244]" />
               {tour.duration}
             </span>
             <span className="flex items-center gap-1 font-medium">
-              <Users className="w-3.5 h-3.5 text-[#8EB486]" />
+              <Users className="w-3.5 h-3.5 text-[#4A7244]" />
               {tour.groupSize}
             </span>
           </div>
 
-          <h3 className="text-xl font-bold text-[#685752] group-hover:text-[#8EB486] transition-colors line-clamp-2">
+          <h3 className="text-xl font-bold text-[#685752] group-hover:text-[#4A7244] transition-colors line-clamp-2">
             {tour.title}
           </h3>
 
@@ -96,7 +96,7 @@ export default function AnimatedTourCard({
 
       <div className="px-6 pb-6 pt-4 border-t border-[#E8DCD5]/60 flex items-center justify-between">
         <div>
-          <span className="text-[11px] text-[#997C70] uppercase tracking-wider block">
+          <span className="text-xs text-[#7A6862] uppercase tracking-wider block">
             Starting From
           </span>
           <div className="flex items-baseline gap-2">
@@ -104,7 +104,7 @@ export default function AnimatedTourCard({
               {tour.price}
             </span>
             {tour.originalPrice && (
-              <span className="text-xs text-[#997C70] line-through">
+              <span className="text-xs text-[#7A6862] line-through">
                 {tour.originalPrice}
               </span>
             )}
@@ -114,13 +114,13 @@ export default function AnimatedTourCard({
         <div className="flex items-center gap-2">
           <button
             onClick={() => onEnquire(tour.title)}
-            className="px-3.5 py-2 rounded-full border border-[#8EB486] text-[#8EB486] hover:bg-[#8EB486] hover:text-white text-xs font-semibold transition-colors cursor-pointer"
+            className="px-3.5 py-2 rounded-full border border-[#4A7244] text-[#4A7244] hover:bg-[#4A7244] hover:text-white text-xs font-semibold transition-colors cursor-pointer"
           >
             Enquire
           </button>
           <Link
             href={`/tours/${tour.slug}`}
-            className="inline-flex items-center gap-1 px-4 py-2 rounded-full bg-[#685752] hover:bg-[#8EB486] text-white text-xs font-semibold transition-colors"
+            className="inline-flex items-center gap-1 px-4 py-2 rounded-full bg-[#685752] hover:bg-[#4A7244] text-white text-xs font-semibold transition-colors"
           >
             <span>Explore</span>
             <ChevronRight className="w-3.5 h-3.5" />

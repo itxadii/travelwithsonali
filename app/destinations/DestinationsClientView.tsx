@@ -31,7 +31,7 @@ export default function DestinationsClientView({ destinations }: { destinations:
   return (
     <>
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-10 pb-6 border-b border-[#E8DCD5]">
-        <span className="text-xs font-semibold text-[#997C70] uppercase tracking-wider">
+        <span className="text-xs font-semibold text-[#7A6862] uppercase tracking-wider">
           {filteredDestinations.length} Destinations Available
         </span>
         <div className="flex items-center justify-end w-full sm:w-auto">
@@ -68,18 +68,18 @@ export default function DestinationsClientView({ destinations }: { destinations:
                   <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-black/60 text-white text-xs font-medium backdrop-blur-xs">
                     {dest.toursCount} Active Batches
                   </div>
-                  <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-[#8EB486] text-white text-xs font-semibold">
+                  <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-[#4A7244] text-white text-xs font-semibold">
                     Best: {dest.bestTimeToVisit}
                   </div>
                 </Link>
 
                 <div className="p-6 space-y-3">
                   <Link href={`/destinations/${destSlug}`}>
-                    <h3 className="text-2xl font-serif-italic font-bold text-[#685752] group-hover:text-[#8EB486] transition-colors">
+                    <h3 className="text-2xl font-serif-italic font-bold text-[#685752] group-hover:text-[#4A7244] transition-colors">
                       {dest.name}
                     </h3>
                   </Link>
-                  <p className="text-xs text-[#8EB486] font-semibold italic">
+                  <p className="text-xs text-[#4A7244] font-semibold italic">
                     &ldquo;{dest.tagline}&rdquo;
                   </p>
                   <p className="text-xs sm:text-sm text-[#7A6862] leading-relaxed line-clamp-3">
@@ -89,7 +89,7 @@ export default function DestinationsClientView({ destinations }: { destinations:
                   {/* Highlights */}
                   <div className="pt-2 flex flex-wrap gap-1.5">
                     {dest.highlights.map((h, i) => (
-                      <span key={i} className="text-[10px] font-medium bg-white px-2.5 py-1 rounded-full border border-[#E8DCD5] text-[#7A6862]">
+                      <span key={i} className="text-xs font-medium bg-white px-2.5 py-1 rounded-full border border-[#E8DCD5] text-[#7A6862]">
                         {h}
                       </span>
                     ))}
@@ -100,13 +100,13 @@ export default function DestinationsClientView({ destinations }: { destinations:
               <div className="px-6 pb-6 pt-4 border-t border-[#E8DCD5]/60 flex items-center justify-between">
                 <button
                   onClick={() => handleEnquire(dest.name)}
-                  className="text-xs font-semibold text-[#7A6862] hover:text-[#8EB486] cursor-pointer"
+                  className="text-xs font-semibold text-[#7A6862] hover:text-[#4A7244] cursor-pointer"
                 >
                   Enquire Trip
                 </button>
                 <Link
                   href={`/destinations/${destSlug}`}
-                  className="inline-flex items-center gap-1 px-5 py-2.5 rounded-full bg-[#685752] hover:bg-[#8EB486] text-white text-xs font-semibold transition-colors"
+                  className="inline-flex items-center gap-1 px-5 py-2.5 rounded-full bg-[#685752] hover:bg-[#4A7244] text-white text-xs font-semibold transition-colors"
                 >
                   <span>Explore Destination</span>
                   <ChevronRight className="w-3.5 h-3.5" />

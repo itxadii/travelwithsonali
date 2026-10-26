@@ -1,6 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from "react";
+import { usePathname } from "next/navigation";
 
 interface AudioContextType {
   isPlaying: boolean;
@@ -16,82 +17,53 @@ const AudioContext = createContext<AudioContextType>({
   stopMusic: () => {},
 });
 
+// Ambient audio belongs to the public site only
+const SILENT_ROUTE_PREFIXES = ["/admin", "/portal", "/studio"];
+
 export function AudioProvider({ children }: { children: React.ReactNode }) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const manualPauseRef = useRef(false);
+  const pathname = usePathname();
+
+  // Music only ever starts from the play button; the file is fetched on first play
+  const getAudio = useCallback(() => {
+    if (!audioRef.current) {
+      const audio = new Audio("/audio/birdsaudio.mp3");
+      audio.loop = true;
+      audio.volume = 0.35;
+      audioRef.current = audio;
+    }
+    return audioRef.current;
+  }, []);
 
   useEffect(() => {
-    // Singleton audio instance in root layout
-    const audio = new Audio("/audio/birdsaudio.mp3");
-    audio.loop = true;
-    audio.volume = 0.35;
-    audio.preload = "auto";
-    audioRef.current = audio;
-
-    const savedPaused = localStorage.getItem("tws_audio_paused");
-
-    if (savedPaused === "true") {
-      manualPauseRef.current = true;
-    } else {
-      // Attempt autoplay
-      const playPromise = audio.play();
-      if (playPromise !== undefined) {
-        playPromise
-          .then(() => {
-            setIsPlaying(true);
-          })
-          .catch(() => {
-            // Autoplay blocked by browser policy; wait for first user gesture
-            setIsPlaying(false);
-
-            const handleFirstInteraction = () => {
-              if (!manualPauseRef.current && audioRef.current) {
-                audioRef.current
-                  .play()
-                  .then(() => {
-                    setIsPlaying(true);
-                  })
-                  .catch(() => {});
-              }
-              window.removeEventListener("click", handleFirstInteraction);
-              window.removeEventListener("keydown", handleFirstInteraction);
-              window.removeEventListener("touchstart", handleFirstInteraction);
-            };
-
-            window.addEventListener("click", handleFirstInteraction, { once: true });
-            window.addEventListener("keydown", handleFirstInteraction, { once: true });
-            window.addEventListener("touchstart", handleFirstInteraction, { once: true });
-          });
-      }
-    }
-
     return () => {
-      audio.pause();
-      audio.src = "";
-      audioRef.current = null;
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.src = "";
+        audioRef.current = null;
+      }
     };
   }, []);
 
   const playMusic = useCallback(() => {
-    if (!audioRef.current) return;
-    audioRef.current
+    getAudio()
       .play()
-      .then(() => {
-        setIsPlaying(true);
-        manualPauseRef.current = false;
-        localStorage.setItem("tws_audio_paused", "false");
-      })
+      .then(() => setIsPlaying(true))
       .catch(console.error);
-  }, []);
+  }, [getAudio]);
 
   const stopMusic = useCallback(() => {
-    if (!audioRef.current) return;
-    audioRef.current.pause();
+    audioRef.current?.pause();
     setIsPlaying(false);
-    manualPauseRef.current = true;
-    localStorage.setItem("tws_audio_paused", "true");
   }, []);
+
+  useEffect(() => {
+    if (pathname && SILENT_ROUTE_PREFIXES.some((p) => pathname.startsWith(p)) && audioRef.current && !audioRef.current.paused) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    }
+  }, [pathname]);
 
   const toggleMusic = useCallback(() => {
     if (isPlaying) {

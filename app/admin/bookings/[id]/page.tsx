@@ -4,6 +4,7 @@ import React, { useState, useEffect, use } from "react";
 import Link from "next/link";
 import { ChevronLeft, Plus, CreditCard, Users } from "lucide-react";
 
+import { useEscapeKey } from "@/lib/useEscapeKey";
 interface BookingDetailData {
   booking: {
     id: string;
@@ -59,6 +60,10 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
   const [loading, setLoading] = useState(true);
   const [paymentModalOpen, setPaymentModalOpen] = useState(false);
   const [travellerModalOpen, setTravellerModalOpen] = useState(false);
+  useEscapeKey(paymentModalOpen || travellerModalOpen, () => {
+    setPaymentModalOpen(false);
+    setTravellerModalOpen(false);
+  });
 
   // Payment Form
   const [payAmount, setPayAmount] = useState(5000);
@@ -176,7 +181,7 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
   };
 
   if (loading) {
-    return <div className="p-8 text-center text-xs text-[#997C70]">Loading booking details...</div>;
+    return <div className="p-8 text-center text-xs text-[#7A6862]">Loading booking details...</div>;
   }
 
   if (!data) {
@@ -192,18 +197,18 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
         <div className="flex items-center gap-3">
           <Link
             href="/admin/bookings"
-            className="p-2 rounded-xl bg-white border border-[#E8DCD5] text-[#997C70] hover:text-[#685752]"
+            className="p-2 rounded-xl bg-white border border-[#E8DCD5] text-[#7A6862] hover:text-[#685752]"
           >
             <ChevronLeft className="w-4 h-4" />
           </Link>
           <div>
             <div className="flex items-center gap-2">
               <h1 className="text-2xl font-bold text-[#685752] font-serif-italic">{booking.bookingCode}</h1>
-              <span className="px-2.5 py-0.5 rounded-full bg-[#8EB486]/10 text-[#8EB486] text-[10px] font-bold">
+              <span className="px-2.5 py-0.5 rounded-full bg-[#8EB486]/10 text-[#4A7244] text-xs font-bold">
                 {booking.bookingStatus}
               </span>
             </div>
-            <p className="text-xs text-[#997C70] mt-0.5">Tour: {booking.tourTitle}</p>
+            <p className="text-xs text-[#7A6862] mt-0.5">Tour: {booking.tourTitle}</p>
           </div>
         </div>
 
@@ -234,32 +239,32 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
         <div className="lg:col-span-4 space-y-6">
           {/* Price Snapshot Card */}
           <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-4">
-            <h3 className="text-xs uppercase font-bold text-[#997C70] border-b border-[#E8DCD5] pb-3">
+            <h3 className="text-xs uppercase font-bold text-[#7A6862] border-b border-[#E8DCD5] pb-3">
               Commercial Price Snapshot
             </h3>
 
             <div className="space-y-2 text-xs">
-              <div className="flex justify-between text-[#997C70]">
+              <div className="flex justify-between text-[#7A6862]">
                 <span>Customer:</span>
                 <span className="text-[#685752] font-bold">{booking.customerName}</span>
               </div>
-              <div className="flex justify-between text-[#997C70]">
+              <div className="flex justify-between text-[#7A6862]">
                 <span>Phone:</span>
                 <span className="text-[#685752] font-semibold">{booking.customerPhone}</span>
               </div>
-              <div className="flex justify-between text-[#997C70]">
+              <div className="flex justify-between text-[#7A6862]">
                 <span>Departure Date:</span>
                 <span className="text-[#685752] font-semibold">{booking.departureDate}</span>
               </div>
-              <div className="flex justify-between text-[#997C70]">
+              <div className="flex justify-between text-[#7A6862]">
                 <span>Travellers:</span>
                 <span className="text-[#685752] font-semibold">{booking.travellersCount} Person(s)</span>
               </div>
-              <div className="flex justify-between text-[#997C70]">
+              <div className="flex justify-between text-[#7A6862]">
                 <span>Agreed Rate / Person:</span>
                 <span className="text-[#685752] font-semibold">₹{booking.pricePerTraveller.toLocaleString("en-IN")}</span>
               </div>
-              <div className="flex justify-between text-[#997C70]">
+              <div className="flex justify-between text-[#7A6862]">
                 <span>Applied Discount:</span>
                 <span className="text-rose-600 font-semibold">- ₹{booking.discount.toLocaleString("en-IN")}</span>
               </div>
@@ -267,7 +272,7 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
               <div className="pt-3 border-t border-[#E8DCD5] space-y-1">
                 <div className="flex justify-between text-sm font-bold text-[#685752]">
                   <span>Total Booking Amount:</span>
-                  <span className="text-[#8EB486]">₹{booking.totalAmount.toLocaleString("en-IN")}</span>
+                  <span className="text-[#4A7244]">₹{booking.totalAmount.toLocaleString("en-IN")}</span>
                 </div>
                 <div className="flex justify-between text-xs text-emerald-700 font-semibold">
                   <span>Total Paid:</span>
@@ -282,7 +287,7 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
 
             <button
               onClick={() => setPaymentModalOpen(true)}
-              className="w-full py-3 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white font-semibold text-xs transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md"
+              className="w-full py-3 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white font-semibold text-xs transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md"
             >
               <Plus className="w-4 h-4" />
               <span>+ Record Manual Payment</span>
@@ -296,32 +301,32 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
           <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-base font-bold text-[#685752] flex items-center gap-2">
-                <CreditCard className="w-4 h-4 text-[#8EB486]" />
+                <CreditCard className="w-4 h-4 text-[#4A7244]" />
                 Payment Ledger History ({payments.length})
               </h3>
               <button
                 onClick={() => setPaymentModalOpen(true)}
-                className="text-xs text-[#8EB486] hover:underline font-semibold cursor-pointer"
+                className="text-xs text-[#4A7244] hover:underline font-semibold cursor-pointer"
               >
                 + Add Payment
               </button>
             </div>
 
             {payments.length === 0 ? (
-              <p className="text-xs text-[#997C70] py-4 text-center">No payment entries recorded yet.</p>
+              <p className="text-xs text-[#7A6862] py-4 text-center">No payment entries recorded yet.</p>
             ) : (
               <div className="space-y-3 text-xs">
                 {payments.map((p) => (
                   <div key={p.id} className="p-4 rounded-2xl bg-[#FDF7F4] border border-[#E8DCD5] flex items-center justify-between">
                     <div>
                       <span className="font-bold text-emerald-700 text-sm">₹{p.amount.toLocaleString("en-IN")}</span>
-                      <span className="ml-2 text-[10px] uppercase font-bold text-[#685752] bg-white px-2 py-0.5 rounded-md border border-[#E8DCD5]">
+                      <span className="ml-2 text-xs uppercase font-bold text-[#685752] bg-white px-2 py-0.5 rounded-md border border-[#E8DCD5]">
                         {p.paymentMethod}
                       </span>
-                      {p.referenceNumber && <p className="text-[11px] text-[#666059] mt-1">Ref: {p.referenceNumber}</p>}
-                      <p className="text-[10px] text-[#997C70]">Recorded by: {p.recordedBy}</p>
+                      {p.referenceNumber && <p className="text-xs text-[#666059] mt-1">Ref: {p.referenceNumber}</p>}
+                      <p className="text-xs text-[#7A6862]">Recorded by: {p.recordedBy}</p>
                     </div>
-                    <span className="text-[11px] text-[#997C70]">{p.paymentDate}</span>
+                    <span className="text-xs text-[#7A6862]">{p.paymentDate}</span>
                   </div>
                 ))}
               </div>
@@ -337,28 +342,28 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
               </h3>
               <button
                 onClick={() => setTravellerModalOpen(true)}
-                className="text-xs text-[#8EB486] hover:underline font-semibold cursor-pointer"
+                className="text-xs text-[#4A7244] hover:underline font-semibold cursor-pointer"
               >
                 + Add Traveller
               </button>
             </div>
 
             {travellers.length === 0 ? (
-              <p className="text-xs text-[#997C70] py-4 text-center">No travellers added to manifest yet.</p>
+              <p className="text-xs text-[#7A6862] py-4 text-center">No travellers added to manifest yet.</p>
             ) : (
               <div className="space-y-3 text-xs">
                 {travellers.map((t) => (
                   <div key={t.id} className="p-4 rounded-2xl bg-[#FDF7F4] border border-[#E8DCD5] flex items-center justify-between">
                     <div>
                       <p className="font-bold text-[#685752] text-sm">{t.fullName}</p>
-                      <p className="text-[11px] text-[#997C70]">Mobile: {t.mobile || "N/A"}</p>
+                      <p className="text-xs text-[#7A6862]">Mobile: {t.mobile || "N/A"}</p>
                       {t.idNumberMasked && (
-                        <p className="text-[10px] text-emerald-700 font-mono mt-0.5 font-bold">
+                        <p className="text-xs text-emerald-700 font-mono mt-0.5 font-bold">
                           ID: {t.idDocumentType} ({t.idNumberMasked})
                         </p>
                       )}
                     </div>
-                    <span className="px-2.5 py-1 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-800">
+                    <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
                       {t.idDocumentStatus}
                     </span>
                   </div>
@@ -377,7 +382,7 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
 
             <form onSubmit={handleAddPayment} className="space-y-4 text-xs">
               <div className="space-y-1">
-                <label className="text-[#997C70] font-semibold">Payment Amount (₹) *</label>
+                <label className="text-[#7A6862] font-semibold">Payment Amount (₹) *</label>
                 <input
                   type="number"
                   min="1"
@@ -389,7 +394,7 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
               </div>
 
               <div className="space-y-1">
-                <label className="text-[#997C70] font-semibold">Payment Method</label>
+                <label className="text-[#7A6862] font-semibold">Payment Method</label>
                 <select
                   value={payMethod}
                   onChange={(e) => setPayMethod(e.target.value)}
@@ -404,7 +409,7 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
               </div>
 
               <div className="space-y-1">
-                <label className="text-[#997C70] font-semibold">Reference Number / Transaction ID</label>
+                <label className="text-[#7A6862] font-semibold">Reference Number / Transaction ID</label>
                 <input
                   type="text"
                   value={payRef}
@@ -415,7 +420,7 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
               </div>
 
               <div className="space-y-1">
-                <label className="text-[#997C70] font-semibold">Notes</label>
+                <label className="text-[#7A6862] font-semibold">Notes</label>
                 <input
                   type="text"
                   value={payNotes}
@@ -435,7 +440,7 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-2 rounded-full bg-[#8EB486] text-white font-semibold cursor-pointer shadow-sm"
+                  className="px-6 py-2 rounded-full bg-[#4A7244] text-white font-semibold cursor-pointer shadow-sm"
                 >
                   Save Payment
                 </button>
@@ -453,7 +458,7 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
 
             <form onSubmit={handleAddTraveller} className="space-y-4 text-xs">
               <div className="space-y-1">
-                <label className="text-[#997C70] font-semibold">Full Name *</label>
+                <label className="text-[#7A6862] font-semibold">Full Name *</label>
                 <input
                   type="text"
                   required
@@ -465,7 +470,7 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
               </div>
 
               <div className="space-y-1">
-                <label className="text-[#997C70] font-semibold">Mobile Number</label>
+                <label className="text-[#7A6862] font-semibold">Mobile Number</label>
                 <input
                   type="text"
                   value={travMobile}
@@ -477,7 +482,7 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="text-[#997C70] font-semibold">ID Type</label>
+                  <label className="text-[#7A6862] font-semibold">ID Type</label>
                   <select
                     value={travIdType}
                     onChange={(e) => setTravIdType(e.target.value)}
@@ -492,7 +497,7 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[#997C70] font-semibold">ID Number</label>
+                  <label className="text-[#7A6862] font-semibold">ID Number</label>
                   <input
                     type="text"
                     value={travIdNumber}
@@ -513,7 +518,7 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-2 rounded-full bg-[#8EB486] text-white font-semibold cursor-pointer shadow-sm"
+                  className="px-6 py-2 rounded-full bg-[#4A7244] text-white font-semibold cursor-pointer shadow-sm"
                 >
                   Save Traveller
                 </button>

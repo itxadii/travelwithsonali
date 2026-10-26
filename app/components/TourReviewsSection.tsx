@@ -114,19 +114,6 @@ export default function TourReviewsSection({ tourSlug, tourTitle }: TourReviewsS
       }
 
       setSubmitSuccess(true);
-      if (result.review) {
-        setReviewsList((prev) => [result.review, ...prev]);
-        setStats((prev) => {
-          const newTotal = prev.totalReviews + 1;
-          const stars = result.review.rating || 5;
-          const newDist = { ...prev.ratingDistribution, [stars]: (prev.ratingDistribution[stars] || 0) + 1 };
-          return {
-            ...prev,
-            totalReviews: newTotal,
-            ratingDistribution: newDist,
-          };
-        });
-      }
 
       setTimeout(() => {
         setFormOpen(false);
@@ -159,7 +146,7 @@ export default function TourReviewsSection({ tourSlug, tourTitle }: TourReviewsS
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#E8DCD5] pb-6">
         <div>
           <div className="flex items-center gap-2">
-            <span className="px-3 py-1 rounded-full bg-[#8EB486]/20 text-[#8EB486] text-xs font-bold uppercase tracking-wider">
+            <span className="px-3 py-1 rounded-full bg-[#8EB486]/20 text-[#4A7244] text-xs font-bold uppercase tracking-wider">
               Traveller Feedback
             </span>
           </div>
@@ -174,7 +161,7 @@ export default function TourReviewsSection({ tourSlug, tourTitle }: TourReviewsS
         <button
           type="button"
           onClick={() => setFormOpen((prev) => !prev)}
-          className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-sm active:scale-95 cursor-pointer shrink-0 w-full sm:w-auto"
+          className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-sm active:scale-95 cursor-pointer shrink-0 w-full sm:w-auto"
         >
           {formOpen ? <X className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
           <span>{formOpen ? "Close Form" : "Write a Review"}</span>
@@ -191,17 +178,17 @@ export default function TourReviewsSection({ tourSlug, tourTitle }: TourReviewsS
               </div>
               <h3 className="text-xl font-bold text-[#685752]">Thank You for Your Review!</h3>
               <p className="text-sm text-[#7A6862] max-w-md mx-auto">
-                Your feedback has been successfully shared with fellow travellers. We truly appreciate you taking the time!
+                Your review has been received and will appear here once our team has approved it. We truly appreciate you taking the time!
               </p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="flex items-center justify-between border-b border-[#E8DCD5] pb-3">
                 <h3 className="text-lg font-bold text-[#685752] flex items-center gap-2">
-                  <MessageSquare className="w-5 h-5 text-[#8EB486]" />
+                  <MessageSquare className="w-5 h-5 text-[#4A7244]" />
                   <span>Share Your Experience on {tourTitle}</span>
                 </h3>
-                <span className="text-xs text-[#997C70] font-medium">* Required</span>
+                <span className="text-xs text-[#7A6862] font-medium">* Required</span>
               </div>
 
               {errorMessage && (
@@ -237,7 +224,7 @@ export default function TourReviewsSection({ tourSlug, tourTitle }: TourReviewsS
                       </button>
                     ))}
                   </div>
-                  <span className="text-xs font-bold text-[#8EB486] bg-white px-3 py-1 rounded-full border border-[#E8DCD5]">
+                  <span className="text-xs font-bold text-[#4A7244] bg-white px-3 py-1 rounded-full border border-[#E8DCD5]">
                     {ratingDescriptions[hoverRating || formData.rating]}
                   </span>
                 </div>
@@ -253,6 +240,7 @@ export default function TourReviewsSection({ tourSlug, tourTitle }: TourReviewsS
                     type="text"
                     required
                     value={formData.userName}
+                    maxLength={80}
                     onChange={(e) => setFormData({ ...formData, userName: e.target.value })}
                     placeholder="e.g. Pooja Sharma"
                     className="w-full px-4 py-2.5 rounded-xl bg-white border border-[#E8DCD5] text-sm text-[#685752] focus:border-[#8EB486] focus:outline-none"
@@ -265,6 +253,7 @@ export default function TourReviewsSection({ tourSlug, tourTitle }: TourReviewsS
                   <input
                     type="text"
                     value={formData.location}
+                    maxLength={80}
                     onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                     placeholder="e.g. Mumbai, India"
                     className="w-full px-4 py-2.5 rounded-xl bg-white border border-[#E8DCD5] text-sm text-[#685752] focus:border-[#8EB486] focus:outline-none"
@@ -281,6 +270,7 @@ export default function TourReviewsSection({ tourSlug, tourTitle }: TourReviewsS
                   <input
                     type="text"
                     value={formData.tripDate}
+                    maxLength={60}
                     onChange={(e) => setFormData({ ...formData, tripDate: e.target.value })}
                     placeholder="e.g. May 2026 Batch"
                     className="w-full px-4 py-2.5 rounded-xl bg-white border border-[#E8DCD5] text-sm text-[#685752] focus:border-[#8EB486] focus:outline-none"
@@ -288,11 +278,12 @@ export default function TourReviewsSection({ tourSlug, tourTitle }: TourReviewsS
                 </div>
                 <div>
                   <label className="text-xs font-bold uppercase tracking-wider text-[#685752] block mb-1">
-                    Email Address <span className="text-[10px] text-[#997C70] lowercase">(kept private)</span>
+                    Email Address <span className="text-xs text-[#7A6862] lowercase">(kept private)</span>
                   </label>
                   <input
                     type="email"
                     value={formData.userEmail}
+                    maxLength={200}
                     onChange={(e) => setFormData({ ...formData, userEmail: e.target.value })}
                     placeholder="e.g. pooja@example.com"
                     className="w-full px-4 py-2.5 rounded-xl bg-white border border-[#E8DCD5] text-sm text-[#685752] focus:border-[#8EB486] focus:outline-none"
@@ -308,6 +299,7 @@ export default function TourReviewsSection({ tourSlug, tourTitle }: TourReviewsS
                 <input
                   type="text"
                   value={formData.title}
+                  maxLength={150}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                   placeholder="e.g. The most memorable Himalayan pilgrimage!"
                   className="w-full px-4 py-2.5 rounded-xl bg-white border border-[#E8DCD5] text-sm text-[#685752] focus:border-[#8EB486] focus:outline-none"
@@ -323,6 +315,7 @@ export default function TourReviewsSection({ tourSlug, tourTitle }: TourReviewsS
                   required
                   rows={4}
                   value={formData.comment}
+                  maxLength={2000}
                   onChange={(e) => setFormData({ ...formData, comment: e.target.value })}
                   placeholder="Tell other travellers about the vehicle, stays, food, coordinator, and your favorite moments..."
                   className="w-full px-4 py-2.5 rounded-xl bg-white border border-[#E8DCD5] text-sm text-[#685752] focus:border-[#8EB486] focus:outline-none resize-y"
@@ -341,9 +334,9 @@ export default function TourReviewsSection({ tourSlug, tourTitle }: TourReviewsS
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="w-full sm:w-auto px-7 py-2.5 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-md active:scale-95 cursor-pointer disabled:opacity-50 text-center"
+                  className="w-full sm:w-auto px-7 py-2.5 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-md active:scale-95 cursor-pointer disabled:opacity-50 text-center"
                 >
-                  {submitting ? "Publishing Review..." : "Publish Review"}
+                  {submitting ? "Submitting Review..." : "Submit Review"}
                 </button>
               </div>
             </form>
@@ -368,7 +361,7 @@ export default function TourReviewsSection({ tourSlug, tourTitle }: TourReviewsS
               />
             ))}
           </div>
-          <p className="text-xs font-bold uppercase tracking-wider text-[#997C70]">
+          <p className="text-xs font-bold uppercase tracking-wider text-[#7A6862]">
             Based on {stats.totalReviews} verified traveller {stats.totalReviews === 1 ? "review" : "reviews"}
           </p>
         </div>
@@ -384,7 +377,7 @@ export default function TourReviewsSection({ tourSlug, tourTitle }: TourReviewsS
                   type="button"
                   onClick={() => setFilterRating(filterRating === stars ? "all" : stars)}
                   className={`flex items-center gap-1 w-12 sm:w-14 font-semibold text-left transition-colors cursor-pointer shrink-0 ${
-                    filterRating === stars ? "text-[#8EB486] font-bold" : "text-[#7A6862] hover:text-[#685752]"
+                    filterRating === stars ? "text-[#4A7244] font-bold" : "text-[#7A6862] hover:text-[#685752]"
                   }`}
                 >
                   <span>{stars}</span>
@@ -392,11 +385,11 @@ export default function TourReviewsSection({ tourSlug, tourTitle }: TourReviewsS
                 </button>
                 <div className="flex-1 h-2 rounded-full bg-[#E8DCD5] overflow-hidden">
                   <div
-                    className="h-full bg-[#8EB486] rounded-full transition-all duration-500"
+                    className="h-full bg-[#4A7244] rounded-full transition-all duration-500"
                     style={{ width: `${percentage}%` }}
                   />
                 </div>
-                <span className="w-8 sm:w-10 text-right font-medium text-[#997C70] shrink-0">
+                <span className="w-8 sm:w-10 text-right font-medium text-[#7A6862] shrink-0">
                   {count}
                 </span>
               </div>
@@ -425,7 +418,7 @@ export default function TourReviewsSection({ tourSlug, tourTitle }: TourReviewsS
             onClick={() => setFilterRating(st)}
             className={`shrink-0 whitespace-nowrap px-3.5 py-2 rounded-full transition-all cursor-pointer flex items-center gap-1 ${
               filterRating === st
-                ? "bg-[#8EB486] text-white shadow-xs"
+                ? "bg-[#4A7244] text-white shadow-xs"
                 : "bg-[#F7EFEA] text-[#7A6862] hover:bg-[#E8DCD5]"
             }`}
           >
@@ -438,12 +431,12 @@ export default function TourReviewsSection({ tourSlug, tourTitle }: TourReviewsS
 
       {/* Reviews List */}
       {loading ? (
-        <div className="py-12 text-center text-sm text-[#997C70]">
+        <div className="py-12 text-center text-sm text-[#7A6862]">
           Loading reviews...
         </div>
       ) : filteredReviews.length === 0 ? (
         <div className="p-8 rounded-3xl bg-[#F7EFEA] border border-[#E8DCD5] text-center space-y-3">
-          <MessageSquare className="w-8 h-8 text-[#997C70] mx-auto opacity-40" />
+          <MessageSquare className="w-8 h-8 text-[#7A6862] mx-auto opacity-40" />
           <h4 className="text-base font-bold text-[#685752]">No reviews match this filter</h4>
           <p className="text-xs text-[#7A6862]">
             Be the first to share your experience on this trip!
@@ -451,7 +444,7 @@ export default function TourReviewsSection({ tourSlug, tourTitle }: TourReviewsS
           <button
             type="button"
             onClick={() => setFormOpen(true)}
-            className="px-5 py-2 rounded-full bg-[#8EB486] text-white text-xs font-bold hover:bg-[#7A9F73]"
+            className="px-5 py-2 rounded-full bg-[#4A7244] text-white text-xs font-bold hover:bg-[#3F6339]"
           >
             Write a Review
           </button>
@@ -472,12 +465,12 @@ export default function TourReviewsSection({ tourSlug, tourTitle }: TourReviewsS
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
                       <span className="font-bold text-[#685752] text-sm break-words">{rev.userName}</span>
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-semibold shrink-0">
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-xs font-semibold shrink-0">
                         <CheckCircle className="w-2.5 h-2.5 text-emerald-600" />
                         Verified Traveller
                       </span>
                     </div>
-                    <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-[#997C70] mt-0.5">
+                    <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-[#7A6862] mt-0.5">
                       {rev.location && <span>{rev.location}</span>}
                       {rev.location && rev.tripDate && <span>•</span>}
                       {rev.tripDate && <span>{rev.tripDate}</span>}
@@ -510,7 +503,7 @@ export default function TourReviewsSection({ tourSlug, tourTitle }: TourReviewsS
               </p>
 
               {/* Date footer */}
-              <div className="pt-2 flex flex-wrap items-center justify-between gap-2 text-[11px] text-[#997C70] border-t border-[#E8DCD5]/60">
+              <div className="pt-2 flex flex-wrap items-center justify-between gap-2 text-xs text-[#7A6862] border-t border-[#E8DCD5]/60">
                 <span>
                   Travelled with Travel With Sonali
                 </span>

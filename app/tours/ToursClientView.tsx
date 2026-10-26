@@ -35,7 +35,7 @@ export default function ToursClientView({ tours }: { tours: Tour[] }) {
       <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-10 pb-6 border-b border-[#E8DCD5]">
         {/* Category Filter Pills */}
         <div className="flex items-center gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 scrollbar-none">
-          <span className="text-xs font-semibold text-[#997C70] uppercase tracking-wider hidden sm:inline mr-2">
+          <span className="text-xs font-semibold text-[#7A6862] uppercase tracking-wider hidden sm:inline mr-2">
             Filter:
           </span>
           {categories.map((cat) => (
@@ -44,7 +44,7 @@ export default function ToursClientView({ tours }: { tours: Tour[] }) {
               onClick={() => setCategoryFilter(cat)}
               className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
                 categoryFilter === cat
-                  ? "bg-[#8EB486] text-white shadow-sm"
+                  ? "bg-[#4A7244] text-white shadow-sm"
                   : "bg-[#F7EFEA] text-[#685752] hover:bg-[#E8DCD5]"
               }`}
             >
@@ -88,24 +88,24 @@ export default function ToursClientView({ tours }: { tours: Tour[] }) {
                   <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-black/60 backdrop-blur-xs text-white text-xs font-medium">
                     {tour.destination}
                   </div>
-                  <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-[#8EB486] text-white text-xs font-semibold">
+                  <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-[#4A7244] text-white text-xs font-semibold">
                     {tour.departureDate}
                   </div>
                 </div>
 
                 <div className="p-6 space-y-4">
-                  <div className="flex items-center justify-between text-xs text-[#997C70]">
+                  <div className="flex items-center justify-between text-xs text-[#7A6862]">
                     <span className="flex items-center gap-1 font-medium">
-                      <Clock className="w-3.5 h-3.5 text-[#8EB486]" />
+                      <Clock className="w-3.5 h-3.5 text-[#4A7244]" />
                       {tour.duration}
                     </span>
                     <span className="flex items-center gap-1 font-medium">
-                      <Users className="w-3.5 h-3.5 text-[#8EB486]" />
+                      <Users className="w-3.5 h-3.5 text-[#4A7244]" />
                       {tour.groupSize}
                     </span>
                   </div>
 
-                  <h3 className="text-xl font-bold text-[#685752] group-hover:text-[#8EB486] transition-colors">
+                  <h3 className="text-xl font-bold text-[#685752] group-hover:text-[#4A7244] transition-colors">
                     {tour.title}
                   </h3>
 
@@ -117,7 +117,7 @@ export default function ToursClientView({ tours }: { tours: Tour[] }) {
 
               <div className="px-6 pb-6 pt-4 border-t border-[#E8DCD5]/60 flex items-center justify-between">
                 <div>
-                  <span className="text-[11px] text-[#997C70] uppercase tracking-wider block">Starting From</span>
+                  <span className="text-xs text-[#7A6862] uppercase tracking-wider block">Starting From</span>
                   <div className="flex items-baseline gap-2">
                     <span className="text-2xl font-bold text-[#685752]">{tour.price}</span>
                     {tour.originalPrice && (
@@ -129,13 +129,13 @@ export default function ToursClientView({ tours }: { tours: Tour[] }) {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => handleEnquire(tour.title)}
-                    className="px-3.5 py-2 rounded-full border border-[#8EB486] text-[#8EB486] hover:bg-[#8EB486] hover:text-white text-xs font-semibold transition-colors cursor-pointer"
+                    className="px-3.5 py-2 rounded-full border border-[#4A7244] text-[#4A7244] hover:bg-[#4A7244] hover:text-white text-xs font-semibold transition-colors cursor-pointer"
                   >
                     Enquire
                   </button>
                   <Link
                     href={`/tours/${tour.slug}`}
-                    className="inline-flex items-center gap-1 px-4 py-2 rounded-full bg-[#685752] hover:bg-[#8EB486] text-white text-xs font-semibold transition-colors"
+                    className="inline-flex items-center gap-1 px-4 py-2 rounded-full bg-[#685752] hover:bg-[#4A7244] text-white text-xs font-semibold transition-colors"
                   >
                     <span>Explore</span>
                     <ChevronRight className="w-3.5 h-3.5" />
@@ -153,7 +153,7 @@ export default function ToursClientView({ tours }: { tours: Tour[] }) {
               setCategoryFilter("All");
               setSearchQuery("");
             }}
-            className="px-6 py-2.5 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white text-sm font-medium cursor-pointer"
+            className="px-6 py-2.5 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white text-sm font-medium cursor-pointer"
           >
             Reset Filters
           </button>

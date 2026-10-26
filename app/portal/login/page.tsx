@@ -64,7 +64,7 @@ export default function CustomerLoginPage() {
             />
           </div>
 
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#8EB486]/10 text-[#8EB486] text-xs font-semibold tracking-wider uppercase">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#8EB486]/10 text-[#4A7244] text-xs font-semibold tracking-wider uppercase">
             <Compass className="w-3.5 h-3.5" />
             <span>My Travel With Sonali</span>
           </div>
@@ -72,7 +72,7 @@ export default function CustomerLoginPage() {
           <h1 className="text-3xl font-bold tracking-tight text-[#685752] font-serif-italic">
             Welcome Back
           </h1>
-          <p className="text-xs text-[#997C70]">
+          <p className="text-xs text-[#7A6862]">
             Your journeys, bookings and travel details — all in one place.
           </p>
         </div>
@@ -92,7 +92,7 @@ export default function CustomerLoginPage() {
           )}
 
           <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-[#997C70]">
+            <label className="text-xs font-semibold text-[#7A6862]">
               Email or Mobile Number
             </label>
             <div className="relative">
@@ -110,12 +110,12 @@ export default function CustomerLoginPage() {
 
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-semibold text-[#997C70]">
+              <label className="text-xs font-semibold text-[#7A6862]">
                 Password
               </label>
               <Link
                 href="/portal/forgot-password"
-                className="text-[11px] text-[#8EB486] hover:underline font-semibold"
+                className="text-xs text-[#4A7244] hover:underline font-semibold"
               >
                 Forgot Password?
               </Link>
@@ -131,6 +131,7 @@ export default function CustomerLoginPage() {
                 className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-[#FDF7F4] border border-[#E8DCD5] text-xs text-[#685752] placeholder-[#9A938C] focus:outline-none focus:border-[#8EB486]"
               />
               <button
+                aria-label={showPassword ? "Hide password" : "Show password"}
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3.5 top-3 text-[#9A938C] hover:text-[#685752]"
@@ -143,7 +144,7 @@ export default function CustomerLoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3.5 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white text-xs font-bold tracking-wider uppercase shadow-lg shadow-[#8EB486]/30 transition-all active:scale-[0.98] disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2 group"
+            className="w-full py-3.5 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white text-xs font-bold tracking-wider uppercase shadow-lg shadow-[#8EB486]/30 transition-all active:scale-[0.98] disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2 group"
           >
             <span>{loading ? "Signing In..." : "Sign In"}</span>
             {!loading && (
@@ -152,12 +153,12 @@ export default function CustomerLoginPage() {
           </button>
         </form>
 
-        <div className="space-y-2 text-center pt-2 border-t border-[#E8DCD5] text-[11px] text-[#997C70]">
+        <div className="space-y-2 text-center pt-2 border-t border-[#E8DCD5] text-xs text-[#7A6862]">
           <div className="flex items-center justify-center gap-1">
             <span>Don&apos;t have an account?</span>
             <Link
               href="/portal/signup"
-              className="text-[#8EB486] font-bold hover:underline inline-flex items-center gap-0.5 group"
+              className="text-[#4A7244] font-bold hover:underline inline-flex items-center gap-0.5 group"
             >
               <span>Create Account</span>
               <ChevronRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
@@ -165,7 +166,7 @@ export default function CustomerLoginPage() {
           </div>
           <div>
             Need help accessing your booking?{" "}
-            <a href="https://wa.me/919152975552" target="_blank" rel="noopener noreferrer" className="text-[#8EB486] font-semibold hover:underline">
+            <a href="https://wa.me/919152975552" target="_blank" rel="noopener noreferrer" className="text-[#4A7244] font-semibold hover:underline">
               Contact Support
             </a>
           </div>

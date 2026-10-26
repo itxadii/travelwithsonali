@@ -33,7 +33,7 @@ export default function GalleryClientView({ items }: GalleryClientViewProps) {
               onClick={() => setActiveCategory(cat)}
               className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
                 activeCategory === cat
-                  ? "bg-[#8EB486] text-white shadow-xs"
+                  ? "bg-[#4A7244] text-white shadow-xs"
                   : "bg-[#F7EFEA] text-[#7A6862] hover:bg-[#E8DCD5]"
               }`}
             >
@@ -42,7 +42,7 @@ export default function GalleryClientView({ items }: GalleryClientViewProps) {
           ))}
         </div>
 
-        <span className="text-xs font-semibold text-[#997C70] whitespace-nowrap">
+        <span className="text-xs font-semibold text-[#7A6862] whitespace-nowrap">
           Showing {filteredItems.length} photograph{filteredItems.length === 1 ? "" : "s"}
         </span>
       </div>
@@ -50,7 +50,7 @@ export default function GalleryClientView({ items }: GalleryClientViewProps) {
       {/* Gallery Grid */}
       {filteredItems.length === 0 ? (
         <div className="text-center py-16 px-4 rounded-3xl bg-[#F7EFEA] border border-[#E8DCD5] max-w-lg mx-auto">
-          <Camera className="w-10 h-10 text-[#8EB486] mx-auto mb-3" />
+          <Camera className="w-10 h-10 text-[#4A7244] mx-auto mb-3" />
           <h3 className="text-lg font-bold text-[#685752]">No photos found</h3>
           <p className="text-xs text-[#7A6862] mt-1">
             No photographs available under this category. Switch to &quot;All&quot; to see full gallery.
@@ -61,8 +61,17 @@ export default function GalleryClientView({ items }: GalleryClientViewProps) {
           {filteredItems.map((item) => (
             <div
               key={item.id}
+              role="button"
+              tabIndex={0}
+              aria-label={`View photo: ${item.title}`}
               onClick={() => setActiveItem(item)}
-              className="group relative h-80 rounded-3xl overflow-hidden border border-[#E8DCD5] shadow-xs hover:shadow-xl transition-all duration-300 cursor-pointer"
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  setActiveItem(item);
+                }
+              }}
+              className="group relative h-80 rounded-3xl overflow-hidden border border-[#E8DCD5] shadow-xs hover:shadow-xl transition-all duration-300 cursor-pointer focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#4A7244]/60"
             >
               <Image
                 src={item.image}
@@ -74,7 +83,7 @@ export default function GalleryClientView({ items }: GalleryClientViewProps) {
               <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent opacity-80 sm:opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               
               <div className="absolute bottom-4 left-4 right-4 text-white z-10 space-y-1.5 transition-transform duration-300 sm:translate-y-2 group-hover:translate-y-0">
-                <span className="text-[10px] font-semibold uppercase tracking-wider bg-[#8EB486] text-white px-2.5 py-0.5 rounded-full inline-block">
+                <span className="text-xs font-semibold uppercase tracking-wider bg-[#4A7244] text-white px-2.5 py-0.5 rounded-full inline-block">
                   {item.category}
                 </span>
                 <h3 className="text-xl font-bold leading-snug">{item.title}</h3>

@@ -61,25 +61,25 @@ export default function StackedTourCard({
 
           {/* Top Floating Badges */}
           <div className="absolute top-3 left-3 sm:top-6 sm:left-6 flex items-center gap-2 z-10">
-            <span className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-black/60 backdrop-blur-md text-white text-[11px] sm:text-sm font-semibold tracking-wide border border-white/20">
+            <span className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-black/60 backdrop-blur-md text-white text-xs sm:text-sm font-semibold tracking-wide border border-white/20">
               <MapPin className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#8EB486]" />
               {tour.destination}
             </span>
           </div>
 
           <div className="absolute top-3 right-3 sm:top-6 sm:right-6 z-10">
-            <span className="inline-flex items-center px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-white/90 backdrop-blur-md text-[#685752] text-[11px] sm:text-sm font-bold font-mono tracking-wider shadow-md">
+            <span className="inline-flex items-center px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-white/90 backdrop-blur-md text-[#685752] text-xs sm:text-sm font-bold font-mono tracking-wider shadow-md">
               {cardIndexDisplay} / {totalDisplay}
             </span>
           </div>
 
           {/* Bottom Floating Info Pill Badges over Image */}
           <div className="absolute bottom-2.5 left-2.5 right-2.5 sm:bottom-6 sm:left-6 sm:right-6 flex flex-wrap items-center gap-1.5 sm:gap-2 z-10">
-            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 sm:px-3.5 sm:py-1.5 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white text-[10px] sm:text-xs font-semibold">
+            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 sm:px-3.5 sm:py-1.5 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white text-xs font-semibold">
               <Calendar className="w-3 h-3 text-[#8EB486]" />
               {tour.departureDate}
             </span>
-            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 sm:px-3.5 sm:py-1.5 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white text-[10px] sm:text-xs font-semibold">
+            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 sm:px-3.5 sm:py-1.5 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white text-xs font-semibold">
               <Clock className="w-3 h-3 text-[#8EB486]" />
               {tour.duration}
             </span>
@@ -96,7 +96,7 @@ export default function StackedTourCard({
           <div className="space-y-2 sm:space-y-3.5">
             {/* Category Tag & Host Pill */}
             <div className="flex items-center justify-between">
-              <span className="text-[10px] sm:text-xs uppercase tracking-widest text-[#8EB486] font-bold flex items-center gap-1 sm:gap-1.5">
+              <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold flex items-center gap-1 sm:gap-1.5">
                 <Sparkles className="w-3.5 h-3.5" />
                 {tour.category || "Curated Journey"}
               </span>
@@ -104,20 +104,20 @@ export default function StackedTourCard({
               <div className="flex items-center gap-1.5 sm:gap-2">
                 <div className="relative w-5 h-5 sm:w-6 sm:h-6 rounded-full overflow-hidden border border-[#E8DCD5]">
                   <Image
-                    src="/images/sonali.png"
+                    src="/images/sonali.jpg"
                     alt="Sonali Palekar"
                     fill
                     className="object-cover object-top"
                   />
                 </div>
-                <span className="text-[10px] sm:text-[11px] font-medium text-[#997C70]">
+                <span className="text-xs font-medium text-[#7A6862]">
                   Sonali Palekar Host
                 </span>
               </div>
             </div>
 
             {/* Title */}
-            <h3 className="text-lg sm:text-2xl lg:text-3xl font-bold tracking-tight text-[#685752] leading-snug hover:text-[#8EB486] transition-colors line-clamp-1 sm:line-clamp-2">
+            <h3 className="text-lg sm:text-2xl lg:text-3xl font-bold tracking-tight text-[#685752] leading-snug hover:text-[#4A7244] transition-colors line-clamp-1 sm:line-clamp-2">
               <Link href={`/tours/${tour.slug}`}>
                 {tour.title}
               </Link>
@@ -132,13 +132,13 @@ export default function StackedTourCard({
             <div className="hidden sm:block pt-1 space-y-1.5">
               {tour.startingPoint && (
                 <div className="flex items-center gap-2 text-xs sm:text-sm text-[#7A6862]">
-                  <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#8EB486] shrink-0" />
+                  <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#4A7244] shrink-0" />
                   <span>Departure: <strong className="text-[#685752]">{tour.startingPoint}</strong></span>
                 </div>
               )}
               {tour.accommodation && (
                 <div className="flex items-center gap-2 text-xs sm:text-sm text-[#7A6862]">
-                  <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#8EB486] shrink-0" />
+                  <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#4A7244] shrink-0" />
                   <span className="line-clamp-1">{tour.accommodation}</span>
                 </div>
               )}
@@ -149,7 +149,7 @@ export default function StackedTourCard({
           <div className="pt-3 sm:pt-5 border-t border-[#E8DCD5] flex items-center justify-between gap-2 sm:gap-4">
             {/* Price Block */}
             <div className="shrink-0">
-              <span className="text-[10px] sm:text-[11px] text-[#997C70] uppercase tracking-wider block font-medium">
+              <span className="text-xs text-[#7A6862] uppercase tracking-wider block font-medium">
                 Starting From
               </span>
               <div className="flex items-baseline gap-1.5 mt-0.5">
@@ -157,7 +157,7 @@ export default function StackedTourCard({
                   {tour.price}
                 </span>
                 {tour.originalPrice && (
-                  <span className="text-[11px] sm:text-sm text-[#997C70]/70 line-through font-medium hidden xs:inline">
+                  <span className="text-xs sm:text-sm text-[#997C70]/70 line-through font-medium hidden xs:inline">
                     {tour.originalPrice}
                   </span>
                 )}
@@ -168,13 +168,13 @@ export default function StackedTourCard({
             <div className="flex items-center gap-2 shrink-0">
               <button
                 onClick={() => onEnquire(tour.title)}
-                className="px-3.5 py-2 sm:px-5 sm:py-3 rounded-full border-2 border-[#8EB486] text-[#8EB486] hover:bg-[#8EB486] hover:text-white text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all duration-200 active:scale-95 cursor-pointer shadow-xs whitespace-nowrap"
+                className="px-3.5 py-2 sm:px-5 sm:py-3 rounded-full border-2 border-[#4A7244] text-[#4A7244] hover:bg-[#4A7244] hover:text-white text-xs font-bold uppercase tracking-wider transition-all duration-200 active:scale-95 cursor-pointer shadow-xs whitespace-nowrap"
               >
                 Enquire
               </button>
               <Link
                 href={`/tours/${tour.slug}`}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 sm:px-6 sm:py-3 rounded-full bg-[#685752] hover:bg-[#8EB486] text-white text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-md hover:shadow-lg active:scale-95 group/btn whitespace-nowrap"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 sm:px-6 sm:py-3 rounded-full bg-[#685752] hover:bg-[#4A7244] text-white text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-md hover:shadow-lg active:scale-95 group/btn whitespace-nowrap"
               >
                 <span>Explore</span>
                 <span className="hidden sm:inline">Tour</span>

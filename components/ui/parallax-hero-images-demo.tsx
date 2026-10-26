@@ -42,7 +42,7 @@ export function ParallaxHeroImagesDemo({ destinations, images }: ParallaxHeroIma
       <ParallaxHeroImages images={activeImages} />
       
       <div className="relative z-10 mx-auto flex max-w-4xl flex-col items-center gap-4 px-4 text-center">
-        <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold bg-white/85 backdrop-blur-md px-4 py-1.5 rounded-full border border-[#8EB486]/30 shadow-xs">
+        <span className="text-xs uppercase tracking-widest text-[#4A7244] font-bold bg-white/85 backdrop-blur-md px-4 py-1.5 rounded-full border border-[#8EB486]/30 shadow-xs">
           Handpicked Places & Sacred Trails
         </span>
         
@@ -51,7 +51,7 @@ export function ParallaxHeroImagesDemo({ destinations, images }: ParallaxHeroIma
           <SquigglyText
             stepDuration={70}
             scale={[5, 8]}
-            className="text-[#8EB486]"
+            className="text-[#4A7244]"
           >
             Destinations
           </SquigglyText>
@@ -65,7 +65,7 @@ export function ParallaxHeroImagesDemo({ destinations, images }: ParallaxHeroIma
         <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
           <Link
             href="/destinations"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white text-xs font-bold tracking-wider uppercase shadow-md hover:shadow-lg transition-all active:scale-95 cursor-pointer"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white text-xs font-bold tracking-wider uppercase shadow-md hover:shadow-lg transition-all active:scale-95 cursor-pointer"
           >
             <span>View All Destinations</span>
             <ChevronRight className="w-3.5 h-3.5" />
@@ -75,7 +75,7 @@ export function ParallaxHeroImagesDemo({ destinations, images }: ParallaxHeroIma
             className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/90 hover:bg-white text-[#685752] border border-[#E8DCD5] text-xs font-bold tracking-wider uppercase shadow-xs hover:shadow-sm transition-all active:scale-95 cursor-pointer"
           >
             <span>Explore Tours</span>
-            <ChevronRight className="w-3.5 h-3.5 text-[#8EB486]" />
+            <ChevronRight className="w-3.5 h-3.5 text-[#4A7244]" />
           </Link>
         </div>
       </div>

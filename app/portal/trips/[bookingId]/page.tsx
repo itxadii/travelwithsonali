@@ -113,15 +113,15 @@ export default function CustomerTripDetailPage({ params }: { params: Promise<{ b
   }, [bookingId]);
 
   if (loading) {
-    return <div className="p-12 text-center text-xs text-[#997C70]">Loading trip details...</div>;
+    return <div className="p-12 text-center text-xs text-[#7A6862]">Loading trip details...</div>;
   }
 
   if (!data) {
     return (
       <div className="p-12 text-center space-y-4">
         <h2 className="text-xl font-bold text-[#685752]">Trip Not Found</h2>
-        <p className="text-xs text-[#997C70]">This booking does not exist or you do not have permission to view it.</p>
-        <Link href="/portal/trips" className="inline-block px-6 py-2 rounded-full bg-[#8EB486] text-white text-xs font-semibold">
+        <p className="text-xs text-[#7A6862]">This booking does not exist or you do not have permission to view it.</p>
+        <Link href="/portal/trips" className="inline-block px-6 py-2 rounded-full bg-[#4A7244] text-white text-xs font-semibold">
           Return to My Trips
         </Link>
       </div>
@@ -135,8 +135,8 @@ export default function CustomerTripDetailPage({ params }: { params: Promise<{ b
   return (
     <div className="space-y-8">
       {/* Top Breadcrumb */}
-      <div className="flex items-center gap-2 text-xs text-[#997C70]">
-        <Link href="/portal/trips" className="hover:text-[#8EB486] flex items-center gap-1">
+      <div className="flex items-center gap-2 text-xs text-[#7A6862]">
+        <Link href="/portal/trips" className="hover:text-[#4A7244] flex items-center gap-1">
           <ChevronLeft className="w-3.5 h-3.5" />
           <span>My Trips</span>
         </Link>
@@ -159,7 +159,7 @@ export default function CustomerTripDetailPage({ params }: { params: Promise<{ b
 
         <div className="relative p-6 sm:p-10 space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-4">
-            <span className="px-3.5 py-1 rounded-full bg-[#8EB486] text-white text-[11px] font-bold uppercase tracking-wider">
+            <span className="px-3.5 py-1 rounded-full bg-[#4A7244] text-white text-xs font-bold uppercase tracking-wider">
               BOOKING {booking.bookingCode}
             </span>
             <span className="px-4 py-1.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-bold">
@@ -190,7 +190,7 @@ export default function CustomerTripDetailPage({ params }: { params: Promise<{ b
 
       {/* CUSTOMER-FACING BOOKING TIMELINE */}
       <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-3">
-        <h3 className="text-xs uppercase font-bold text-[#997C70] tracking-wider">Your Booking Journey</h3>
+        <h3 className="text-xs uppercase font-bold text-[#7A6862] tracking-wider">Your Booking Journey</h3>
 
         <div className="grid grid-cols-2 sm:grid-cols-6 gap-2 text-center text-xs">
           <div className="p-3 rounded-2xl bg-emerald-50 text-emerald-800 border border-emerald-100 font-semibold">
@@ -205,10 +205,10 @@ export default function CustomerTripDetailPage({ params }: { params: Promise<{ b
           <div className="p-3 rounded-2xl bg-amber-50 text-amber-800 border border-amber-100 font-semibold">
             ● Documents
           </div>
-          <div className="p-3 rounded-2xl bg-[#FDF7F4] text-[#997C70] border border-[#E8DCD5]">
+          <div className="p-3 rounded-2xl bg-[#FDF7F4] text-[#7A6862] border border-[#E8DCD5]">
             ○ Trip Starts
           </div>
-          <div className="p-3 rounded-2xl bg-[#FDF7F4] text-[#997C70] border border-[#E8DCD5]">
+          <div className="p-3 rounded-2xl bg-[#FDF7F4] text-[#7A6862] border border-[#E8DCD5]">
             ○ Completed
           </div>
         </div>
@@ -222,8 +222,8 @@ export default function CustomerTripDetailPage({ params }: { params: Promise<{ b
             onClick={() => setActiveTab(tab)}
             className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
               activeTab === tab
-                ? "bg-[#8EB486] text-white shadow-sm"
-                : "bg-white text-[#997C70] hover:text-[#685752] border border-[#E8DCD5]"
+                ? "bg-[#4A7244] text-white shadow-sm"
+                : "bg-white text-[#7A6862] hover:text-[#685752] border border-[#E8DCD5]"
             }`}
           >
             {tab}
@@ -245,15 +245,15 @@ export default function CustomerTripDetailPage({ params }: { params: Promise<{ b
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-4 text-xs">
                   <div className="p-3.5 rounded-2xl bg-[#FDF7F4] border border-[#E8DCD5]">
-                    <span className="text-[#997C70] block font-medium">Starting Point</span>
+                    <span className="text-[#7A6862] block font-medium">Starting Point</span>
                     <span className="font-bold text-[#685752]">{sanityTour?.startingPoint || "Mumbai / Delhi"}</span>
                   </div>
                   <div className="p-3.5 rounded-2xl bg-[#FDF7F4] border border-[#E8DCD5]">
-                    <span className="text-[#997C70] block font-medium">Transport</span>
+                    <span className="text-[#7A6862] block font-medium">Transport</span>
                     <span className="font-bold text-[#685752]">{sanityTour?.transport || "AC Bus / Vehicle"}</span>
                   </div>
                   <div className="p-3.5 rounded-2xl bg-[#FDF7F4] border border-[#E8DCD5]">
-                    <span className="text-[#997C70] block font-medium">Group Size</span>
+                    <span className="text-[#7A6862] block font-medium">Group Size</span>
                     <span className="font-bold text-[#685752]">{sanityTour?.groupSize || "10 - 15 Travellers"}</span>
                   </div>
                 </div>
@@ -291,13 +291,13 @@ export default function CustomerTripDetailPage({ params }: { params: Promise<{ b
             {/* Coordinator Support Box */}
             <div className="lg:col-span-4 space-y-6">
               <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-4">
-                <span className="text-[10px] uppercase font-bold text-[#8EB486] tracking-widest block">
+                <span className="text-xs uppercase font-bold text-[#4A7244] tracking-widest block">
                   YOUR TRIP COORDINATOR
                 </span>
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 rounded-full overflow-hidden border border-[#E8DCD5] shrink-0">
                     <Image
-                      src="/images/sonali.png"
+                      src="/images/sonali.jpg"
                       alt="Sonali Palekar"
                       width={48}
                       height={48}
@@ -306,7 +306,7 @@ export default function CustomerTripDetailPage({ params }: { params: Promise<{ b
                   </div>
                   <div>
                     <h4 className="font-bold text-[#685752] text-sm">{operationalInfo.coordinator.name}</h4>
-                    <p className="text-[11px] text-[#997C70]">{operationalInfo.coordinator.role}</p>
+                    <p className="text-xs text-[#7A6862]">{operationalInfo.coordinator.role}</p>
                   </div>
                 </div>
 
@@ -342,13 +342,13 @@ export default function CustomerTripDetailPage({ params }: { params: Promise<{ b
               <div className="relative border-l-2 border-[#8EB486]/30 pl-6 space-y-8 ml-3">
                 {sanityTour.itinerary.map((day, idx) => (
                   <div key={idx} className="relative space-y-2">
-                    <span className="absolute -left-[33px] top-0 w-4 h-4 rounded-full bg-[#8EB486] ring-4 ring-white" />
-                    <span className="px-2.5 py-0.5 rounded-full bg-[#8EB486]/10 text-[#8EB486] text-[10px] font-bold">
+                    <span className="absolute -left-[33px] top-0 w-4 h-4 rounded-full bg-[#4A7244] ring-4 ring-white" />
+                    <span className="px-2.5 py-0.5 rounded-full bg-[#8EB486]/10 text-[#4A7244] text-xs font-bold">
                       {day.day}
                     </span>
                     <h4 className="text-base font-bold text-[#685752]">{day.title}</h4>
                     <p className="text-xs sm:text-sm text-[#7A6862] leading-relaxed">{day.description}</p>
-                    <div className="flex items-center gap-4 text-xs text-[#997C70] pt-1">
+                    <div className="flex items-center gap-4 text-xs text-[#7A6862] pt-1">
                       {day.meals && <span>🍽️ Meals: <strong>{day.meals}</strong></span>}
                       {day.stay && <span>🏨 Stay: <strong>{day.stay}</strong></span>}
                     </div>
@@ -356,7 +356,7 @@ export default function CustomerTripDetailPage({ params }: { params: Promise<{ b
                 ))}
               </div>
             ) : (
-              <p className="text-xs text-[#997C70] py-4">Itinerary details will appear here shortly.</p>
+              <p className="text-xs text-[#7A6862] py-4">Itinerary details will appear here shortly.</p>
             )}
           </div>
         )}
@@ -371,10 +371,10 @@ export default function CustomerTripDetailPage({ params }: { params: Promise<{ b
                 <div key={t.id} className="p-4 rounded-2xl bg-[#FDF7F4] border border-[#E8DCD5] flex items-center justify-between">
                   <div>
                     <h4 className="font-bold text-[#685752] text-sm">{t.fullName}</h4>
-                    <p className="text-[#997C70]">Mobile: {t.mobile || "N/A"}</p>
+                    <p className="text-[#7A6862]">Mobile: {t.mobile || "N/A"}</p>
                     {t.idNumberMasked && <p className="text-emerald-700 font-mono font-bold">ID: {t.idDocumentType} ({t.idNumberMasked})</p>}
                   </div>
-                  <span className="px-3 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">
+                  <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
                     {t.idDocumentStatus}
                   </span>
                 </div>
@@ -388,17 +388,17 @@ export default function CustomerTripDetailPage({ params }: { params: Promise<{ b
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-4">
               <h3 className="text-base font-bold text-[#685752] flex items-center gap-2">
-                <Building className="w-4 h-4 text-[#8EB486]" />
+                <Building className="w-4 h-4 text-[#4A7244]" />
                 Hotel & Accommodation
               </h3>
               {operationalInfo.stay ? (
                 <div className="p-4 rounded-2xl bg-[#FDF7F4] border border-[#E8DCD5] text-xs space-y-1">
                   <p className="font-bold text-[#685752] text-sm">{operationalInfo.stay.name}</p>
-                  <p className="text-[#997C70]">{operationalInfo.stay.location}</p>
+                  <p className="text-[#7A6862]">{operationalInfo.stay.location}</p>
                   <p className="text-emerald-700 font-semibold">{operationalInfo.stay.dates}</p>
                 </div>
               ) : (
-                <p className="text-xs text-[#997C70] py-4 italic">
+                <p className="text-xs text-[#7A6862] py-4 italic">
                   Stay details will appear here once confirmed by your trip coordinator.
                 </p>
               )}
@@ -406,17 +406,17 @@ export default function CustomerTripDetailPage({ params }: { params: Promise<{ b
 
             <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-4">
               <h3 className="text-base font-bold text-[#685752] flex items-center gap-2">
-                <Bus className="w-4 h-4 text-[#8EB486]" />
+                <Bus className="w-4 h-4 text-[#4A7244]" />
                 Transport Details
               </h3>
               {operationalInfo.transport ? (
                 <div className="p-4 rounded-2xl bg-[#FDF7F4] border border-[#E8DCD5] text-xs space-y-1">
                   <p className="font-bold text-[#685752] text-sm">{operationalInfo.transport.vehicle}</p>
-                  <p className="text-[#997C70]">Number: {operationalInfo.transport.number}</p>
-                  <p className="text-[#997C70]">Driver: {operationalInfo.transport.driver} ({operationalInfo.transport.contact})</p>
+                  <p className="text-[#7A6862]">Number: {operationalInfo.transport.number}</p>
+                  <p className="text-[#7A6862]">Driver: {operationalInfo.transport.driver} ({operationalInfo.transport.contact})</p>
                 </div>
               ) : (
-                <p className="text-xs text-[#997C70] py-4 italic">
+                <p className="text-xs text-[#7A6862] py-4 italic">
                   Transport details will appear here once finalized before departure.
                 </p>
               )}
@@ -429,23 +429,23 @@ export default function CustomerTripDetailPage({ params }: { params: Promise<{ b
           <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-bold text-[#685752] font-serif-italic">Identity Documents</h3>
-              <Link href="/portal/documents" className="text-xs font-semibold text-[#8EB486] hover:underline inline-flex items-center gap-1 group">
+              <Link href="/portal/documents" className="text-xs font-semibold text-[#4A7244] hover:underline inline-flex items-center gap-1 group">
                 <span>Upload New Document</span>
                 <ChevronRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
               </Link>
             </div>
 
             {documents.length === 0 ? (
-              <p className="text-xs text-[#997C70] py-4">No document files uploaded yet.</p>
+              <p className="text-xs text-[#7A6862] py-4">No document files uploaded yet.</p>
             ) : (
               <div className="space-y-3 text-xs">
                 {documents.map((d) => (
                   <div key={d.id} className="p-4 rounded-2xl bg-[#FDF7F4] border border-[#E8DCD5] flex items-center justify-between">
                     <div>
                       <h4 className="font-bold text-[#685752]">{d.documentName}</h4>
-                      <p className="text-[#997C70]">{d.documentType}</p>
+                      <p className="text-[#7A6862]">{d.documentType}</p>
                     </div>
-                    <span className="px-3 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">
+                    <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
                       {d.status}
                     </span>
                   </div>
@@ -462,7 +462,7 @@ export default function CustomerTripDetailPage({ params }: { params: Promise<{ b
 
             <div className="grid grid-cols-3 gap-4 text-xs">
               <div className="p-4 rounded-2xl bg-[#FDF7F4] border border-[#E8DCD5]">
-                <span className="text-[#997C70] block font-medium">Total Cost</span>
+                <span className="text-[#7A6862] block font-medium">Total Cost</span>
                 <span className="text-base font-bold text-[#685752]">₹{booking.totalAmount.toLocaleString("en-IN")}</span>
               </div>
               <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-100">
@@ -481,12 +481,12 @@ export default function CustomerTripDetailPage({ params }: { params: Promise<{ b
                 <div key={p.id} className="p-4 rounded-2xl bg-[#FDF7F4] border border-[#E8DCD5] flex items-center justify-between">
                   <div>
                     <span className="font-bold text-emerald-700 text-sm">₹{p.amount.toLocaleString("en-IN")}</span>
-                    <span className="ml-2 text-[10px] uppercase font-bold text-[#685752] bg-white px-2 py-0.5 rounded-md border border-[#E8DCD5]">
+                    <span className="ml-2 text-xs uppercase font-bold text-[#685752] bg-white px-2 py-0.5 rounded-md border border-[#E8DCD5]">
                       {p.paymentMethod}
                     </span>
-                    {p.referenceNumber && <p className="text-[#666059] text-[11px] mt-0.5">Ref: {p.referenceNumber}</p>}
+                    {p.referenceNumber && <p className="text-[#666059] text-xs mt-0.5">Ref: {p.referenceNumber}</p>}
                   </div>
-                  <span className="text-[#997C70]">{p.paymentDate}</span>
+                  <span className="text-[#7A6862]">{p.paymentDate}</span>
                 </div>
               ))}
             </div>

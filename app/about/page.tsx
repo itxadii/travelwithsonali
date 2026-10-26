@@ -20,7 +20,7 @@ export default function AboutPage() {
       <section className="relative overflow-hidden w-full py-16 sm:py-24 bg-[#F7EFEA] border-b border-[#E8DCD5]">
         <AmbientCircles variant="1" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center sm:text-left space-y-4">
-          <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold">
+          <span className="text-xs uppercase tracking-widest text-[#4A7244] font-bold">
             Travel With Sonali
           </span>
           <h1 className="text-4xl sm:text-6xl font-serif-italic font-bold tracking-tight text-[#685752]">
@@ -41,7 +41,7 @@ export default function AboutPage() {
             <div className="lg:col-span-5">
               <div className="relative h-[480px] rounded-[100px] overflow-hidden shadow-2xl border-4 border-[#FDF7F4]">
                 <Image
-                  src="/images/sonali.png"
+                  src="/images/sonali.jpg"
                   alt="Sonali Palekar Founder"
                   fill
                   className="object-cover object-top"
@@ -50,7 +50,7 @@ export default function AboutPage() {
             </div>
 
             <div className="lg:col-span-7 space-y-6">
-              <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold">
+              <span className="text-xs uppercase tracking-widest text-[#4A7244] font-bold">
                 Meet Sonali
               </span>
               <h2 className="text-3xl sm:text-5xl font-bold text-[#685752]">
@@ -65,7 +65,7 @@ export default function AboutPage() {
               <div className="pt-2">
                 <button
                   onClick={() => setEnquireOpen(true)}
-                  className="px-7 py-3 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white font-semibold text-sm cursor-pointer transition-colors shadow-sm"
+                  className="px-7 py-3 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white font-semibold text-sm cursor-pointer transition-colors shadow-sm"
                 >
                   Come Travel With Us
                 </button>
@@ -89,17 +89,17 @@ export default function AboutPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="p-8 rounded-3xl bg-[#FDF7F4] border border-[#E8DCD5] space-y-3 shadow-xs">
-              <Compass className="w-8 h-8 text-[#8EB486]" />
+              <Compass className="w-8 h-8 text-[#4A7244]" />
               <h3 className="text-xl font-bold text-[#685752]">Experience First</h3>
               <p className="text-sm text-[#7A6862]">We prioritize quality time at destinations over cramming 10 locations in a single day.</p>
             </div>
             <div className="p-8 rounded-3xl bg-[#FDF7F4] border border-[#E8DCD5] space-y-3 shadow-xs">
-              <Users className="w-8 h-8 text-[#8EB486]" />
+              <Users className="w-8 h-8 text-[#4A7244]" />
               <h3 className="text-xl font-bold text-[#685752]">Inclusive Community</h3>
               <p className="text-sm text-[#7A6862]">Every traveler is treated with warmth, safety, and respect regardless of background.</p>
             </div>
             <div className="p-8 rounded-3xl bg-[#FDF7F4] border border-[#E8DCD5] space-y-3 shadow-xs">
-              <ShieldCheck className="w-8 h-8 text-[#8EB486]" />
+              <ShieldCheck className="w-8 h-8 text-[#4A7244]" />
               <h3 className="text-xl font-bold text-[#685752]">Total Transparency</h3>
               <p className="text-sm text-[#7A6862]">Honest pricing, clear inclusions, and zero hidden charges at any point.</p>
             </div>

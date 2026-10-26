@@ -28,8 +28,8 @@ function ResetPasswordForm() {
     e.preventDefault();
     setError("");
 
-    if (newPassword.length < 6) {
-      setError("Password must be at least 6 characters long.");
+    if (newPassword.length < 8) {
+      setError("Password must be at least 8 characters long.");
       return;
     }
 
@@ -87,7 +87,7 @@ function ResetPasswordForm() {
           />
         </div>
 
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#8EB486]/10 text-[#8EB486] text-xs font-semibold tracking-wider uppercase">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#8EB486]/10 text-[#4A7244] text-xs font-semibold tracking-wider uppercase">
           <Compass className="w-3.5 h-3.5" />
           <span>Create New Password</span>
         </div>
@@ -95,7 +95,7 @@ function ResetPasswordForm() {
         <h1 className="text-3xl font-bold tracking-tight text-[#685752] font-serif-italic">
           Set New Password
         </h1>
-        <p className="text-xs text-[#997C70]">
+        <p className="text-xs text-[#7A6862]">
           Enter your new password below to regain access to your travel portal.
         </p>
       </div>
@@ -122,7 +122,7 @@ function ResetPasswordForm() {
         <form onSubmit={handleSubmit} className="space-y-4">
           {!token && (
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold text-[#997C70]">
+              <label className="text-xs font-semibold text-[#7A6862]">
                 Email or Mobile Number
               </label>
               <div className="relative">
@@ -141,7 +141,7 @@ function ResetPasswordForm() {
 
           {!token && (
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold text-[#997C70]">
+              <label className="text-xs font-semibold text-[#7A6862]">
                 6-Digit Reset Code
               </label>
               <div className="relative">
@@ -159,8 +159,8 @@ function ResetPasswordForm() {
           )}
 
           <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-[#997C70]">
-              New Password (min 6 characters)
+            <label className="text-xs font-semibold text-[#7A6862]">
+              New Password (min 8 characters)
             </label>
             <div className="relative">
               <Lock className="w-4 h-4 absolute left-3.5 top-3 text-[#9A938C]" />
@@ -173,6 +173,7 @@ function ResetPasswordForm() {
                 className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-[#FDF7F4] border border-[#E8DCD5] text-xs text-[#685752] placeholder-[#9A938C] focus:outline-none focus:border-[#8EB486]"
               />
               <button
+                aria-label={showPassword ? "Hide password" : "Show password"}
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3.5 top-3 text-[#9A938C] hover:text-[#685752]"
@@ -183,7 +184,7 @@ function ResetPasswordForm() {
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-[#997C70]">
+            <label className="text-xs font-semibold text-[#7A6862]">
               Confirm New Password
             </label>
             <div className="relative">
@@ -202,7 +203,7 @@ function ResetPasswordForm() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3.5 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white text-xs font-bold tracking-wider uppercase shadow-lg shadow-[#8EB486]/30 transition-all active:scale-[0.98] disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2 group"
+            className="w-full py-3.5 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white text-xs font-bold tracking-wider uppercase shadow-lg shadow-[#8EB486]/30 transition-all active:scale-[0.98] disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2 group"
           >
             <span>{loading ? "Updating Password..." : "Update Password & Sign In"}</span>
             {!loading && (
@@ -215,7 +216,7 @@ function ResetPasswordForm() {
       <div className="text-center pt-3 border-t border-[#E8DCD5]">
         <Link
           href="/portal/login"
-          className="inline-flex items-center gap-1.5 text-xs text-[#8EB486] hover:underline font-semibold"
+          className="inline-flex items-center gap-1.5 text-xs text-[#4A7244] hover:underline font-semibold"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Back to Sign In</span>

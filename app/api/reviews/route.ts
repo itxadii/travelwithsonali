@@ -3,6 +3,7 @@ import { db, connectionString } from "@/db";
 import { reviews } from "@/db/schema";
 import { eq, and, desc } from "drizzle-orm";
 import { neon } from "@neondatabase/serverless";
+import { checkRateLimits, getClientIp, tooManyRequests } from "@/lib/rateLimit";
 
 let tableEnsured = false;
 
@@ -22,7 +23,7 @@ async function ensureTable() {
         comment TEXT NOT NULL,
         location TEXT,
         trip_date TEXT,
-        is_approved BOOLEAN NOT NULL DEFAULT TRUE,
+        is_approved BOOLEAN NOT NULL DEFAULT FALSE,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
       );
@@ -228,6 +229,25 @@ export async function POST(request: Request) {
       );
     }
 
+    const tooLong =
+      String(userName).length > 80 ||
+      String(comment).length > 2000 ||
+      (title && String(title).length > 150) ||
+      (location && String(location).length > 80) ||
+      (tripDate && String(tripDate).length > 60) ||
+      (userEmail && String(userEmail).length > 200);
+    if (tooLong) {
+      return NextResponse.json(
+        { error: "Your review is too long. Please keep the comment under 2,000 characters." },
+        { status: 400 }
+      );
+    }
+
+    const rate = await checkRateLimits([
+      { key: ["review:ip", getClientIp(request)], limit: 3, windowSeconds: 60 * 60 },
+    ]);
+    if (!rate.allowed) return tooManyRequests(rate.retryAfterSeconds);
+
     const numRating = Math.min(5, Math.max(1, parseInt(rating, 10) || 5));
     const newId = `rev-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
 
@@ -242,7 +262,7 @@ export async function POST(request: Request) {
       comment: comment.trim(),
       location: location?.trim() || null,
       tripDate: tripDate?.trim() || null,
-      isApproved: true, // Visible immediately; admin can delete if inappropriate
+      isApproved: false, // Hidden until an admin approves it
     };
 
     await db.insert(reviews).values(newReview);
@@ -250,8 +270,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         success: true,
-        message: "Thank you! Your review has been published.",
-        review: newReview,
+        message: "Thank you! Your review will appear once our team has approved it.",
       },
       { status: 201 }
     );

@@ -203,8 +203,8 @@ export async function resetCustomerPassword(
   };
 
   try {
-    if (!newPassword || newPassword.length < 6) {
-      return { success: false, error: "Password must be at least 6 characters long." };
+    if (!newPassword || newPassword.length < 8) {
+      return { success: false, error: "Password must be at least 8 characters long." };
     }
 
     let reset: typeof customerPasswordResets.$inferSelect | undefined;

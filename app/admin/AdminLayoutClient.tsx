@@ -25,6 +25,7 @@ import {
 import { AdminUserSession } from "@/lib/admin/auth";
 import { GooeyInput } from "@/components/ui/gooey-input";
 
+import { useEscapeKey } from "@/lib/useEscapeKey";
 interface AdminLayoutClientProps {
   admin: AdminUserSession | null;
   children: React.ReactNode;
@@ -36,6 +37,10 @@ export default function AdminLayoutClient({ admin, children }: AdminLayoutClient
   const [sidebarOpen, setSidebarOpen] = useState(false); // Mobile drawer state
   const [isCollapsed, setIsCollapsed] = useState(false); // Desktop collapse state
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+  useEscapeKey(sidebarOpen || profileDropdownOpen, () => {
+    setSidebarOpen(false);
+    setProfileDropdownOpen(false);
+  });
 
   // If on login page, render children directly without admin layout
   if (pathname === "/admin/login") {
@@ -67,7 +72,7 @@ export default function AdminLayoutClient({ admin, children }: AdminLayoutClient
   ];
 
   return (
-    <div className="min-h-screen bg-[#FDF7F4] text-[#685752] flex font-sans selection:bg-[#8EB486] selection:text-white relative">
+    <div className="min-h-screen bg-[#FDF7F4] text-[#685752] flex font-sans selection:bg-[#4A7244] selection:text-white relative">
       {/* Mobile Sidebar Overlay Backdrop */}
       <div
         onClick={() => setSidebarOpen(false)}
@@ -133,7 +138,7 @@ export default function AdminLayoutClient({ admin, children }: AdminLayoutClient
                     <span className="text-sm font-bold tracking-tight text-[#685752] leading-tight font-serif-italic truncate">
                       Travel With Sonali
                     </span>
-                    <span className="text-[10px] text-[#997C70] tracking-wider uppercase font-semibold">
+                    <span className="text-xs text-[#7A6862] tracking-wider uppercase font-semibold">
                       Admin Control
                     </span>
                   </div>
@@ -148,7 +153,7 @@ export default function AdminLayoutClient({ admin, children }: AdminLayoutClient
                       setSidebarOpen(false);
                     }
                   }}
-                  className="p-1.5 rounded-xl text-[#997C70] hover:text-[#685752] hover:bg-[#F7EFEA] transition-colors cursor-pointer"
+                  className="p-1.5 rounded-xl text-[#7A6862] hover:text-[#685752] hover:bg-[#F7EFEA] transition-colors cursor-pointer"
                   title="Collapse sidebar"
                 >
                   <PanelLeftClose className="w-5 h-5 hidden lg:block" />
@@ -177,7 +182,7 @@ export default function AdminLayoutClient({ admin, children }: AdminLayoutClient
                         : "gap-3 px-3.5 py-2.5 w-full"
                     } ${
                       isActive
-                        ? "bg-[#8EB486] text-white shadow-md shadow-[#8EB486]/20"
+                        ? "bg-[#4A7244] text-white shadow-md shadow-[#8EB486]/20"
                         : "text-[#7A6862] hover:bg-[#F7EFEA] hover:text-[#685752]"
                     }`}
                   >
@@ -190,7 +195,7 @@ export default function AdminLayoutClient({ admin, children }: AdminLayoutClient
               {/* Separator & Link to Sanity Studio */}
               <div className={`pt-3 mt-3 border-t border-[#E8DCD5] w-full ${isCollapsed ? "flex flex-col items-center" : ""}`}>
                 {!isCollapsed && (
-                  <span className="px-3.5 text-[10px] uppercase tracking-widest text-[#997C70] font-bold block mb-1.5">
+                  <span className="px-3.5 text-xs uppercase tracking-widest text-[#7A6862] font-bold block mb-1.5">
                     Content Management
                   </span>
                 )}
@@ -210,7 +215,7 @@ export default function AdminLayoutClient({ admin, children }: AdminLayoutClient
                     {!isCollapsed && <span className="truncate">Manage Website</span>}
                   </div>
                   {!isCollapsed && (
-                    <span className="text-[9px] uppercase px-1.5 py-0.5 rounded-md bg-emerald-200 text-emerald-800 font-bold shrink-0">
+                    <span className="text-xs uppercase px-1.5 py-0.5 rounded-md bg-emerald-200 text-emerald-800 font-bold shrink-0">
                       Sanity
                     </span>
                   )}
@@ -224,14 +229,14 @@ export default function AdminLayoutClient({ admin, children }: AdminLayoutClient
             {isCollapsed ? (
               <>
                 <div
-                  className="w-9 h-9 rounded-full bg-[#8EB486]/15 text-[#8EB486] flex items-center justify-center font-bold text-xs shrink-0 cursor-default"
+                  className="w-9 h-9 rounded-full bg-[#8EB486]/15 text-[#4A7244] flex items-center justify-center font-bold text-xs shrink-0 cursor-default"
                   title={`${admin?.name || "Admin"} (${admin?.email || ""})`}
                 >
                   {admin?.name?.charAt(0) || "A"}
                 </div>
                 <button
                   onClick={handleLogout}
-                  className="p-2 rounded-xl text-[#997C70] hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
+                  className="p-2 rounded-xl text-[#7A6862] hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
                   title="Sign Out"
                 >
                   <LogOut className="w-4 h-4" />
@@ -240,17 +245,17 @@ export default function AdminLayoutClient({ admin, children }: AdminLayoutClient
             ) : (
               <>
                 <div className="flex items-center gap-2.5 overflow-hidden">
-                  <div className="w-8 h-8 rounded-full bg-[#8EB486]/15 text-[#8EB486] flex items-center justify-center font-bold text-xs shrink-0">
+                  <div className="w-8 h-8 rounded-full bg-[#8EB486]/15 text-[#4A7244] flex items-center justify-center font-bold text-xs shrink-0">
                     {admin?.name?.charAt(0) || "A"}
                   </div>
                   <div className="truncate">
                     <p className="text-xs font-bold text-[#685752] truncate">{admin?.name || "Admin"}</p>
-                    <p className="text-[10px] text-[#997C70] truncate">{admin?.email || "admin@example.com"}</p>
+                    <p className="text-xs text-[#7A6862] truncate">{admin?.email || "admin@example.com"}</p>
                   </div>
                 </div>
                 <button
                   onClick={handleLogout}
-                  className="p-2 rounded-xl text-[#997C70] hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
+                  className="p-2 rounded-xl text-[#7A6862] hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
                   title="Sign Out"
                 >
                   <LogOut className="w-4 h-4" />
@@ -269,7 +274,7 @@ export default function AdminLayoutClient({ admin, children }: AdminLayoutClient
             {/* Mobile Hamburger Button */}
             <button
               onClick={() => setSidebarOpen(true)}
-              className="lg:hidden p-2 rounded-xl text-[#997C70] hover:text-[#685752] hover:bg-[#F7EFEA] transition-colors cursor-pointer"
+              className="lg:hidden p-2 rounded-xl text-[#7A6862] hover:text-[#685752] hover:bg-[#F7EFEA] transition-colors cursor-pointer"
               title="Open menu"
             >
               <Menu className="w-5 h-5" />
@@ -298,10 +303,10 @@ export default function AdminLayoutClient({ admin, children }: AdminLayoutClient
             {/* Notification Bell */}
             <Link
               href="/admin/notifications"
-              className="relative p-2 rounded-full bg-[#FDF7F4] text-[#997C70] hover:text-[#685752] hover:bg-[#E8DCD5] transition-colors border border-[#E8DCD5]"
+              className="relative p-2 rounded-full bg-[#FDF7F4] text-[#7A6862] hover:text-[#685752] hover:bg-[#E8DCD5] transition-colors border border-[#E8DCD5]"
             >
               <Bell className="w-4 h-4" />
-              <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-[#8EB486]" />
+              <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-[#4A7244]" />
             </Link>
 
             {/* Profile Dropdown Toggle */}
@@ -310,7 +315,7 @@ export default function AdminLayoutClient({ admin, children }: AdminLayoutClient
                 onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
                 className="flex items-center gap-2 p-1.5 rounded-full bg-[#FDF7F4] border border-[#E8DCD5] hover:border-[#8EB486] transition-all cursor-pointer"
               >
-                <div className="w-7 h-7 rounded-full bg-[#8EB486] text-white flex items-center justify-center text-xs font-bold">
+                <div className="w-7 h-7 rounded-full bg-[#4A7244] text-white flex items-center justify-center text-xs font-bold">
                   {admin?.name?.charAt(0) || "A"}
                 </div>
               </button>
@@ -319,8 +324,8 @@ export default function AdminLayoutClient({ admin, children }: AdminLayoutClient
                 <div className="absolute right-0 mt-2 w-56 bg-white rounded-2xl p-2 border border-[#E8DCD5] shadow-xl space-y-1 z-50">
                   <div className="px-3 py-2 border-b border-[#E8DCD5]">
                     <p className="text-xs font-bold text-[#685752]">{admin?.name}</p>
-                    <p className="text-[10px] text-[#997C70] truncate">{admin?.email}</p>
-                    <span className="text-[9px] uppercase font-bold text-[#8EB486] bg-[#8EB486]/15 px-2 py-0.5 rounded-md inline-block mt-1">
+                    <p className="text-xs text-[#7A6862] truncate">{admin?.email}</p>
+                    <span className="text-xs uppercase font-bold text-[#4A7244] bg-[#8EB486]/15 px-2 py-0.5 rounded-md inline-block mt-1">
                       {admin?.role}
                     </span>
                   </div>

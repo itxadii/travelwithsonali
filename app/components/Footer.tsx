@@ -44,10 +44,10 @@ export default function Footer({ onEnquireClick }: FooterProps) {
                   />
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-2xl font-serif-italic font-bold text-[#685752] tracking-tight group-hover:text-[#8EB486] transition-colors">
+                  <span className="text-2xl font-serif-italic font-bold text-[#685752] tracking-tight group-hover:text-[#4A7244] transition-colors">
                     Travel With Sonali
                   </span>
-                  <span className="text-[10px] tracking-widest uppercase font-semibold text-[#8EB486] -mt-1">
+                  <span className="text-xs tracking-widest uppercase font-semibold text-[#4A7244] -mt-1">
                     Group Experiences
                   </span>
                 </div>
@@ -63,7 +63,7 @@ export default function Footer({ onEnquireClick }: FooterProps) {
                   href="https://www.instagram.com/travel_withsonali"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-full bg-[#F7EFEA] hover:bg-[#8EB486] text-[#685752] hover:text-white border border-[#E8DCD5] flex items-center justify-center transition-all shadow-xs active:scale-95"
+                  className="w-10 h-10 rounded-full bg-[#F7EFEA] hover:bg-[#4A7244] text-[#685752] hover:text-white border border-[#E8DCD5] flex items-center justify-center transition-all shadow-xs active:scale-95"
                   aria-label="Instagram"
                 >
                   <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -74,7 +74,7 @@ export default function Footer({ onEnquireClick }: FooterProps) {
                   href="https://facebook.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-full bg-[#F7EFEA] hover:bg-[#8EB486] text-[#685752] hover:text-white border border-[#E8DCD5] flex items-center justify-center transition-all shadow-xs active:scale-95"
+                  className="w-10 h-10 rounded-full bg-[#F7EFEA] hover:bg-[#4A7244] text-[#685752] hover:text-white border border-[#E8DCD5] flex items-center justify-center transition-all shadow-xs active:scale-95"
                   aria-label="Facebook"
                 >
                   <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -85,7 +85,7 @@ export default function Footer({ onEnquireClick }: FooterProps) {
                   href="https://youtube.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-full bg-[#F7EFEA] hover:bg-[#8EB486] text-[#685752] hover:text-white border border-[#E8DCD5] flex items-center justify-center transition-all shadow-xs active:scale-95"
+                  className="w-10 h-10 rounded-full bg-[#F7EFEA] hover:bg-[#4A7244] text-[#685752] hover:text-white border border-[#E8DCD5] flex items-center justify-center transition-all shadow-xs active:scale-95"
                   aria-label="YouTube"
                 >
                   <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -102,27 +102,27 @@ export default function Footer({ onEnquireClick }: FooterProps) {
               </h4>
               <ul className="space-y-3 text-sm text-[#7A6862]">
                 <li>
-                  <Link href="/tours" className="hover:text-[#8EB486] transition-colors flex items-center gap-1">
+                  <Link href="/tours" className="hover:text-[#4A7244] transition-colors flex items-center gap-1">
                     <span>Upcoming Tours</span>
                   </Link>
                 </li>
                 <li>
-                  <Link href="/destinations" className="hover:text-[#8EB486] transition-colors">
+                  <Link href="/destinations" className="hover:text-[#4A7244] transition-colors">
                     Popular Destinations
                   </Link>
                 </li>
                 <li>
-                  <Link href="/about" className="hover:text-[#8EB486] transition-colors">
+                  <Link href="/about" className="hover:text-[#4A7244] transition-colors">
                     About Sonali
                   </Link>
                 </li>
                 <li>
-                  <Link href="/gallery" className="hover:text-[#8EB486] transition-colors">
+                  <Link href="/gallery" className="hover:text-[#4A7244] transition-colors">
                     Photo Gallery
                   </Link>
                 </li>
                 <li>
-                  <Link href="/stories" className="hover:text-[#8EB486] transition-colors">
+                  <Link href="/stories" className="hover:text-[#4A7244] transition-colors">
                     Travel Stories & Blogs
                   </Link>
                 </li>
@@ -136,32 +136,32 @@ export default function Footer({ onEnquireClick }: FooterProps) {
               </h4>
               <ul className="space-y-3 text-sm text-[#7A6862]">
                 <li>
-                  <Link href="/destinations/manali" className="hover:text-[#8EB486] transition-colors">
+                  <Link href="/destinations/manali" className="hover:text-[#4A7244] transition-colors">
                     Manali & Kasol
                   </Link>
                 </li>
                 <li>
-                  <Link href="/destinations/kedarnath" className="hover:text-[#8EB486] transition-colors">
+                  <Link href="/destinations/kedarnath" className="hover:text-[#4A7244] transition-colors">
                     Kedarnath Dham
                   </Link>
                 </li>
                 <li>
-                  <Link href="/destinations/spiti" className="hover:text-[#8EB486] transition-colors">
+                  <Link href="/destinations/spiti" className="hover:text-[#4A7244] transition-colors">
                     Spiti Valley
                   </Link>
                 </li>
                 <li>
-                  <Link href="/destinations/meghalaya" className="hover:text-[#8EB486] transition-colors">
+                  <Link href="/destinations/meghalaya" className="hover:text-[#4A7244] transition-colors">
                     Mystic Meghalaya
                   </Link>
                 </li>
                 <li>
-                  <Link href="/destinations/nepal" className="hover:text-[#8EB486] transition-colors">
+                  <Link href="/destinations/nepal" className="hover:text-[#4A7244] transition-colors">
                     Nepal & Muktinath
                   </Link>
                 </li>
                 <li>
-                  <Link href="/destinations/tirupati" className="hover:text-[#8EB486] transition-colors">
+                  <Link href="/destinations/tirupati" className="hover:text-[#4A7244] transition-colors">
                     Tirupati Balaji
                   </Link>
                 </li>
@@ -175,25 +175,25 @@ export default function Footer({ onEnquireClick }: FooterProps) {
               </h4>
               <ul className="space-y-3.5 text-sm text-[#7A6862]">
                 <li className="flex items-start gap-2.5">
-                  <MapPin className="w-4 h-4 text-[#8EB486] shrink-0 mt-0.5" />
+                  <MapPin className="w-4 h-4 text-[#4A7244] shrink-0 mt-0.5" />
                   <span>Mumbai / Delhi & Rishikesh, India</span>
                 </li>
                 <li className="flex items-center gap-2.5">
-                  <Phone className="w-4 h-4 text-[#8EB486] shrink-0" />
-                  <a href="tel:+919152975552" className="hover:text-[#8EB486] transition-colors font-medium">
+                  <Phone className="w-4 h-4 text-[#4A7244] shrink-0" />
+                  <a href="tel:+919152975552" className="hover:text-[#4A7244] transition-colors font-medium">
                     +91 9152975552
                   </a>
                 </li>
                 <li className="flex items-center gap-2.5">
-                  <Mail className="w-4 h-4 text-[#8EB486] shrink-0" />
-                  <a href="mailto:travelwithsonaliinfo@gmail.com" className="hover:text-[#8EB486] transition-colors">
+                  <Mail className="w-4 h-4 text-[#4A7244] shrink-0" />
+                  <a href="mailto:travelwithsonaliinfo@gmail.com" className="hover:text-[#4A7244] transition-colors">
                     travelwithsonaliinfo@gmail.com
                   </a>
                 </li>
                 <li className="pt-2">
                   <Link
                     href="/contact"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#8EB486] text-white text-xs font-bold uppercase tracking-wider hover:bg-[#7A9F73] transition-all shadow-sm active:scale-95"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#4A7244] text-white text-xs font-bold uppercase tracking-wider hover:bg-[#3F6339] transition-all shadow-sm active:scale-95"
                   >
                     <Send className="w-3.5 h-3.5" />
                     <span>Send Message</span>
@@ -205,10 +205,10 @@ export default function Footer({ onEnquireClick }: FooterProps) {
           </div>
 
           {/* Bottom Copyright & Legal Links */}
-          <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-[#997C70]">
+          <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-[#7A6862]">
             <p className="flex items-center gap-1 text-center md:text-left">
               © {new Date().getFullYear()} Travel With Sonali. Designed with{" "}
-              <Heart className="w-3.5 h-3.5 text-[#8EB486] fill-current inline" /> for curious travellers.
+              <Heart className="w-3.5 h-3.5 text-[#4A7244] fill-current inline" /> for curious travellers.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-6">
               <Link href="/privacy-policy" className="hover:text-[#685752] transition-colors">
@@ -273,12 +273,12 @@ export default function Footer({ onEnquireClick }: FooterProps) {
                   </div>
 
                   {/* Little Compass Satellite Badge */}
-                  <div className="absolute -bottom-1 -right-1 w-9 h-9 rounded-full bg-[#8EB486] text-white flex items-center justify-center shadow-lg border-2 border-[#1E1715]">
+                  <div className="absolute -bottom-1 -right-1 w-9 h-9 rounded-full bg-[#4A7244] text-white flex items-center justify-center shadow-lg border-2 border-[#1E1715]">
                     <Compass className="w-4 h-4 animate-spin-slow" />
                   </div>
                 </div>
 
-                <span className="text-[11px] font-mono tracking-widest uppercase text-stone-400 mt-3 font-semibold">
+                <span className="text-xs font-mono tracking-widest uppercase text-stone-400 mt-3 font-semibold">
                   EST. 2024 · MUMBAI
                 </span>
               </div>
@@ -309,7 +309,7 @@ export default function Footer({ onEnquireClick }: FooterProps) {
                 <div className="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-4">
                   <Link
                     href="/tours"
-                    className="px-8 py-4 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white font-bold text-xs sm:text-sm tracking-wider uppercase shadow-xl hover:shadow-2xl transition-all active:scale-95 inline-flex items-center gap-2 group cursor-pointer"
+                    className="px-8 py-4 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white font-bold text-xs sm:text-sm tracking-wider uppercase shadow-xl hover:shadow-2xl transition-all active:scale-95 inline-flex items-center gap-2 group cursor-pointer"
                   >
                     <span>Explore Upcoming Tours</span>
                     <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

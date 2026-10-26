@@ -37,7 +37,7 @@ export default function StoriesClientView({ initialStories }: StoriesClientViewP
       <section className="relative overflow-hidden w-full py-16 sm:py-24 bg-[#F7EFEA] border-b border-[#E8DCD5]">
         <AmbientCircles variant="2" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center sm:text-left">
-          <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold">
+          <span className="text-xs uppercase tracking-widest text-[#4A7244] font-bold">
             Travel Journal & Blog
           </span>
           <h1 className="text-4xl sm:text-6xl font-bold tracking-tight text-[#685752] mt-2">
@@ -45,7 +45,7 @@ export default function StoriesClientView({ initialStories }: StoriesClientViewP
             <SquigglyText
               stepDuration={70}
               scale={[4, 7]}
-              className="text-[#8EB486] font-serif-italic"
+              className="text-[#4A7244] font-serif-italic"
             >
               The Road
             </SquigglyText>
@@ -70,7 +70,7 @@ export default function StoriesClientView({ initialStories }: StoriesClientViewP
                 onClick={() => setActiveCat(cat)}
                 className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
                   activeCat === cat
-                    ? "bg-[#8EB486] text-white shadow-sm"
+                    ? "bg-[#4A7244] text-white shadow-sm"
                     : "bg-[#F7EFEA] text-[#7A6862] hover:bg-[#E8DCD5]"
                 }`}
               >
@@ -115,12 +115,12 @@ export default function StoriesClientView({ initialStories }: StoriesClientViewP
                 </Link>
 
                 <div className="mt-5 space-y-2.5">
-                  <div className="text-xs font-medium text-[#997C70]">
+                  <div className="text-xs font-medium text-[#7A6862]">
                     {story.date} • {story.readTime}
                   </div>
 
                   <Link href={`/stories/${story.slug}`} className="block">
-                    <h3 className="text-2xl sm:text-3xl font-bold text-[#685752] group-hover:text-[#8EB486] transition-colors leading-snug">
+                    <h3 className="text-2xl sm:text-3xl font-bold text-[#685752] group-hover:text-[#4A7244] transition-colors leading-snug">
                       {story.title}
                     </h3>
                   </Link>
@@ -141,7 +141,7 @@ export default function StoriesClientView({ initialStories }: StoriesClientViewP
 
                 <Link
                   href={`/stories/${story.slug}`}
-                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#8EB486] hover:underline group/btn"
+                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#4A7244] hover:underline group/btn"
                 >
                   <span>Read Story</span>
                   <ChevronRight className="w-4 h-4 group-hover/btn:translate-x-0.5 transition-transform" />

@@ -5,13 +5,13 @@
   --font-serif: var(--font-serif-playfair), Georgia, serif;
   --color-cream: #FDF7F4;
   --color-cream-card: #F7EFEA;
-  --color-sage: #8EB486;
-  --color-sage-hover: #7A9F73;
-  --color-taupe: #997C70;
+  --color-sage: #4A7244;
+  --color-sage-hover: #3F6339;
+  --color-taupe: #7A6862;
   --color-espresso: #685752;
   --color-divider: #E8DCD5;
-  --color-rust: #8EB486;
-  --color-rust-hover: #7A9F73;
+  --color-rust: #4A7244;
+  --color-rust-hover: #3F6339;
 }
 
 :root {
@@ -80,3 +80,15 @@ body {
 }
 
 
+
+/* Respect the OS "reduce motion" setting for CSS animations and transitions */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

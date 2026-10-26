@@ -69,7 +69,7 @@ export default function CustomerProfilePage() {
         <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#685752] font-serif-italic">
           My Travel Profile & Account Security
         </h1>
-        <p className="text-xs text-[#997C70] mt-1">
+        <p className="text-xs text-[#7A6862] mt-1">
           Manage your contact details and update your portal account password.
         </p>
       </div>
@@ -78,21 +78,21 @@ export default function CustomerProfilePage() {
       {customer && (
         <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-4">
           <h3 className="text-base font-bold text-[#685752] flex items-center gap-2">
-            <User className="w-4 h-4 text-[#8EB486]" />
+            <User className="w-4 h-4 text-[#4A7244]" />
             Personal Details
           </h3>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
             <div className="p-3.5 rounded-2xl bg-[#FDF7F4] border border-[#E8DCD5]">
-              <span className="text-[#997C70] block font-medium">Full Name</span>
+              <span className="text-[#7A6862] block font-medium">Full Name</span>
               <span className="text-[#685752] font-bold text-sm">{customer.name}</span>
             </div>
             <div className="p-3.5 rounded-2xl bg-[#FDF7F4] border border-[#E8DCD5]">
-              <span className="text-[#997C70] block font-medium">Mobile Phone</span>
+              <span className="text-[#7A6862] block font-medium">Mobile Phone</span>
               <span className="text-[#685752] font-bold text-sm">{customer.phone}</span>
             </div>
             <div className="p-3.5 rounded-2xl bg-[#FDF7F4] border border-[#E8DCD5] sm:col-span-2">
-              <span className="text-[#997C70] block font-medium">Email Address</span>
+              <span className="text-[#7A6862] block font-medium">Email Address</span>
               <span className="text-[#685752] font-bold text-sm">{customer.email || "N/A"}</span>
             </div>
           </div>
@@ -120,7 +120,7 @@ export default function CustomerProfilePage() {
 
         <form onSubmit={handlePasswordChange} className="space-y-4 text-xs">
           <div className="space-y-1">
-            <label className="text-[#997C70] font-semibold">Current Password</label>
+            <label className="text-[#7A6862] font-semibold">Current Password</label>
             <input
               type="password"
               required
@@ -133,7 +133,7 @@ export default function CustomerProfilePage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1">
-              <label className="text-[#997C70] font-semibold">New Password</label>
+              <label className="text-[#7A6862] font-semibold">New Password</label>
               <input
                 type="password"
                 required
@@ -145,7 +145,7 @@ export default function CustomerProfilePage() {
             </div>
 
             <div className="space-y-1">
-              <label className="text-[#997C70] font-semibold">Confirm New Password</label>
+              <label className="text-[#7A6862] font-semibold">Confirm New Password</label>
               <input
                 type="password"
                 required
@@ -160,7 +160,7 @@ export default function CustomerProfilePage() {
           <button
             type="submit"
             disabled={loading}
-            className="px-6 py-2.5 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white font-semibold text-xs cursor-pointer shadow-md disabled:opacity-50"
+            className="px-6 py-2.5 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white font-semibold text-xs cursor-pointer shadow-md disabled:opacity-50"
           >
             {loading ? "Updating..." : "Update Password"}
           </button>

@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import { X, Send, CheckCircle2 } from "lucide-react";
 import { TOURS_DATA } from "../data/toursData";
+import { submitEnquiry } from "@/lib/submitEnquiry";
+import { useEscapeKey } from "@/lib/useEscapeKey";
 
 interface EnquireModalProps {
   isOpen: boolean;
@@ -12,6 +14,8 @@ interface EnquireModalProps {
 
 export default function EnquireModal({ isOpen, onClose, defaultTourName = "" }: EnquireModalProps) {
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [sendError, setSendError] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     mobile: "",
@@ -21,22 +25,40 @@ export default function EnquireModal({ isOpen, onClose, defaultTourName = "" }: 
     message: ""
   });
 
+  useEscapeKey(isOpen, onClose);
+
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setSending(true);
+    setSendError("");
+    const error = await submitEnquiry(formData);
+    setSending(false);
+    if (error) {
+      setSendError(error);
+    } else {
+      setSubmitted(true);
+    }
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fade-in">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fade-in"
+      onClick={onClose}
+    >
       <div 
         className="relative w-full max-w-lg bg-[#FDF7F4] rounded-3xl border border-[#E8DCD5] shadow-2xl p-6 sm:p-8 overflow-hidden transition-all"
         onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Website enquiry form"
       >
         {/* Close button */}
         <button
+          type="button"
           onClick={onClose}
+          aria-label="Close enquiry form"
           className="absolute top-5 right-5 p-2 rounded-full text-[#7A6862] hover:text-[#685752] hover:bg-[#E8DCD5]/50 transition-colors cursor-pointer"
         >
           <X className="w-5 h-5" />
@@ -59,7 +81,7 @@ export default function EnquireModal({ isOpen, onClose, defaultTourName = "" }: 
                   setSubmitted(false);
                   onClose();
                 }}
-                className="px-8 py-3 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white text-sm font-semibold shadow-md cursor-pointer"
+                className="px-8 py-3 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white text-sm font-semibold shadow-md cursor-pointer"
               >
                 Close Window
               </button>
@@ -68,13 +90,13 @@ export default function EnquireModal({ isOpen, onClose, defaultTourName = "" }: 
         ) : (
           <div>
             <div className="mb-6">
-              <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold">
+              <span className="text-xs uppercase tracking-widest text-[#4A7244] font-bold">
                 Start Your Journey
               </span>
               <h3 className="text-2xl sm:text-3xl font-serif-italic font-bold text-[#685752] mt-1">
                 Website Enquiry Form
               </h3>
-              <p className="text-xs sm:text-sm text-[#997C70] mt-1">
+              <p className="text-xs sm:text-sm text-[#7A6862] mt-1">
                 Fill this short enquiry form and our team will connect with you directly.
               </p>
             </div>
@@ -173,12 +195,18 @@ export default function EnquireModal({ isOpen, onClose, defaultTourName = "" }: 
               </div>
 
               <div className="pt-2">
+                {sendError && (
+                  <p role="alert" className="mb-3 text-xs font-semibold text-rose-700">
+                    {sendError}
+                  </p>
+                )}
                 <button
                   type="submit"
-                  className="w-full py-3.5 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white font-semibold text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  disabled={sending}
+                  className="w-full py-3.5 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white font-semibold text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
                 >
                   <Send className="w-4 h-4" />
-                  Submit Website Enquiry
+                  {sending ? "Sending..." : "Submit Website Enquiry"}
                 </button>
               </div>
             </form>

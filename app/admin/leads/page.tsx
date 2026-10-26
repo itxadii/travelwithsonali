@@ -6,6 +6,7 @@ import { Plus, ArrowUpRight } from "lucide-react";
 import { GooeyInput } from "@/components/ui/gooey-input";
 import { TOURS_DATA } from "@/app/data/toursData";
 
+import { useEscapeKey } from "@/lib/useEscapeKey";
 interface LeadItem {
   id: string;
   name: string;
@@ -26,6 +27,7 @@ export default function LeadsPage() {
   const [statusFilter, setStatusFilter] = useState("All");
   const [sourceFilter, setSourceFilter] = useState("All");
   const [createModalOpen, setCreateModalOpen] = useState(false);
+  useEscapeKey(createModalOpen, () => setCreateModalOpen(false));
   const [loading, setLoading] = useState(true);
 
   // Form State
@@ -114,14 +116,14 @@ export default function LeadsPage() {
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#685752] font-serif-italic">
             Leads Directory
           </h1>
-          <p className="text-xs text-[#997C70] mt-1">
+          <p className="text-xs text-[#7A6862] mt-1">
             Manage incoming customer enquiries across Instagram, WhatsApp & Website.
           </p>
         </div>
 
         <button
           onClick={() => setCreateModalOpen(true)}
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white text-xs font-semibold shadow-md transition-all cursor-pointer"
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white text-xs font-semibold shadow-md transition-all cursor-pointer"
         >
           <Plus className="w-4 h-4" />
           <span>Add New Lead</span>
@@ -148,7 +150,7 @@ export default function LeadsPage() {
         {/* Filters */}
         <div className="flex items-center gap-3 w-full md:w-auto overflow-x-auto">
           <div className="flex items-center gap-2">
-            <span className="text-[11px] uppercase text-[#997C70] font-bold">Status:</span>
+            <span className="text-xs uppercase text-[#7A6862] font-bold">Status:</span>
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
@@ -165,7 +167,7 @@ export default function LeadsPage() {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-[11px] uppercase text-[#997C70] font-bold">Source:</span>
+            <span className="text-xs uppercase text-[#7A6862] font-bold">Source:</span>
             <select
               value={sourceFilter}
               onChange={(e) => setSourceFilter(e.target.value)}
@@ -186,10 +188,10 @@ export default function LeadsPage() {
       {/* Leads Table */}
       <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs">
         {loading ? (
-          <div className="py-12 text-center text-xs text-[#997C70]">Loading leads...</div>
+          <div className="py-12 text-center text-xs text-[#7A6862]">Loading leads...</div>
         ) : filteredLeads.length === 0 ? (
           <div className="py-16 text-center space-y-3">
-            <p className="text-sm text-[#997C70]">No leads found matching your filters.</p>
+            <p className="text-sm text-[#7A6862]">No leads found matching your filters.</p>
             <button
               onClick={() => {
                 setSearchQuery("");
@@ -205,7 +207,7 @@ export default function LeadsPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
-                <tr className="border-b border-[#E8DCD5] text-[#997C70] uppercase tracking-wider">
+                <tr className="border-b border-[#E8DCD5] text-[#7A6862] uppercase tracking-wider">
                   <th className="pb-3 font-semibold">Lead Name</th>
                   <th className="pb-3 font-semibold">Mobile</th>
                   <th className="pb-3 font-semibold">Interested Tour</th>
@@ -223,14 +225,14 @@ export default function LeadsPage() {
                     <td className="py-3.5 text-[#666059]">{l.mobile}</td>
                     <td className="py-3.5 text-[#685752] max-w-[200px] truncate">{l.interestedTourTitle}</td>
                     <td className="py-3.5">
-                      <span className="px-2.5 py-0.5 rounded-full bg-[#FDF7F4] border border-[#E8DCD5] text-[10px] text-[#666059]">
+                      <span className="px-2.5 py-0.5 rounded-full bg-[#FDF7F4] border border-[#E8DCD5] text-xs text-[#666059]">
                         {l.source}
                       </span>
                     </td>
                     <td className="py-3.5 text-[#685752] font-medium">{l.travellersCount}</td>
                     <td className="py-3.5">
                       <span
-                        className={`px-2.5 py-1 rounded-full text-[10px] font-semibold ${
+                        className={`px-2.5 py-1 rounded-full text-xs font-semibold ${
                           l.status === "New"
                             ? "bg-blue-100 text-blue-800"
                             : l.status === "Converted"
@@ -241,13 +243,13 @@ export default function LeadsPage() {
                         {l.status}
                       </span>
                     </td>
-                    <td className="py-3.5 text-[#997C70]">
+                    <td className="py-3.5 text-[#7A6862]">
                       {new Date(l.createdAt).toLocaleDateString("en-IN")}
                     </td>
                     <td className="py-3.5 text-right">
                       <Link
                         href={`/admin/leads/${l.id}`}
-                        className="px-3 py-1.5 rounded-xl bg-[#FDF7F4] border border-[#E8DCD5] hover:bg-[#8EB486] hover:text-white hover:border-[#8EB486] text-[#685752] text-[11px] font-semibold transition-colors inline-flex items-center gap-1"
+                        className="px-3 py-1.5 rounded-xl bg-[#FDF7F4] border border-[#E8DCD5] hover:bg-[#4A7244] hover:text-white hover:border-[#8EB486] text-[#685752] text-xs font-semibold transition-colors inline-flex items-center gap-1"
                       >
                         <span>View</span>
                         <ArrowUpRight className="w-3 h-3" />
@@ -270,7 +272,7 @@ export default function LeadsPage() {
             <form onSubmit={handleCreateLead} className="space-y-4 text-xs">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="text-[#997C70] font-semibold">Customer Name *</label>
+                  <label className="text-[#7A6862] font-semibold">Customer Name *</label>
                   <input
                     type="text"
                     required
@@ -281,7 +283,7 @@ export default function LeadsPage() {
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[#997C70] font-semibold">Mobile Number *</label>
+                  <label className="text-[#7A6862] font-semibold">Mobile Number *</label>
                   <input
                     type="text"
                     required
@@ -295,7 +297,7 @@ export default function LeadsPage() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="text-[#997C70] font-semibold">Email Address</label>
+                  <label className="text-[#7A6862] font-semibold">Email Address</label>
                   <input
                     type="email"
                     value={formData.email}
@@ -305,7 +307,7 @@ export default function LeadsPage() {
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[#997C70] font-semibold">Travellers</label>
+                  <label className="text-[#7A6862] font-semibold">Travellers</label>
                   <input
                     type="number"
                     min="1"
@@ -317,7 +319,7 @@ export default function LeadsPage() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-[#997C70] font-semibold">Interested Tour *</label>
+                <label className="text-[#7A6862] font-semibold">Interested Tour *</label>
                 <select
                   value={formData.interestedTourTitle}
                   onChange={(e) => setFormData({ ...formData, interestedTourTitle: e.target.value })}
@@ -332,7 +334,7 @@ export default function LeadsPage() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-[#997C70] font-semibold">Lead Source</label>
+                <label className="text-[#7A6862] font-semibold">Lead Source</label>
                 <select
                   value={formData.source}
                   onChange={(e) => setFormData({ ...formData, source: e.target.value })}
@@ -347,7 +349,7 @@ export default function LeadsPage() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-[#997C70] font-semibold">Initial Notes</label>
+                <label className="text-[#7A6862] font-semibold">Initial Notes</label>
                 <textarea
                   rows={2}
                   value={formData.notes}
@@ -367,7 +369,7 @@ export default function LeadsPage() {
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-2 rounded-full bg-[#8EB486] text-white font-semibold cursor-pointer shadow-sm"
+                  className="px-6 py-2 rounded-full bg-[#4A7244] text-white font-semibold cursor-pointer shadow-sm"
                 >
                   Save Lead
                 </button>

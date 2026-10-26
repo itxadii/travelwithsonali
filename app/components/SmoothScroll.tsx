@@ -2,6 +2,7 @@
 
 import React, { useEffect } from "react";
 import Lenis from "lenis";
+import { MotionConfig } from "motion/react";
 import "lenis/dist/lenis.css";
 
 interface SmoothScrollProps {
@@ -10,6 +11,9 @@ interface SmoothScrollProps {
 
 export default function SmoothScroll({ children }: SmoothScrollProps) {
   useEffect(() => {
+    // Respect the OS "reduce motion" setting: keep native scrolling
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
     // Initialize Lenis smooth scroll
     const lenis = new Lenis({
       duration: 1.2,
@@ -38,5 +42,6 @@ export default function SmoothScroll({ children }: SmoothScrollProps) {
     };
   }, []);
 
-  return <>{children}</>;
+  // reducedMotion="user" makes every motion/react animation follow the OS setting
+  return <MotionConfig reducedMotion="user">{children}</MotionConfig>;
 }

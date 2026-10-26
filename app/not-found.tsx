@@ -31,7 +31,7 @@ export default function NotFound() {
           <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
             <Link
               href="/"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white text-sm font-semibold shadow-sm transition-all"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white text-sm font-semibold shadow-sm transition-all"
             >
               <Home className="w-4 h-4" />
               <span>Return Home</span>
@@ -41,7 +41,7 @@ export default function NotFound() {
               href="/destinations"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white hover:bg-[#F7EFEA] text-[#685752] border border-[#E8DCD5] text-sm font-semibold shadow-2xs transition-all"
             >
-              <Compass className="w-4 h-4 text-[#8EB486]" />
+              <Compass className="w-4 h-4 text-[#4A7244]" />
               <span>Explore Destinations</span>
             </Link>
           </div>

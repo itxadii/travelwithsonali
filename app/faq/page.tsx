@@ -39,7 +39,7 @@ export default function FAQPage() {
       <section className="relative overflow-hidden w-full py-16 sm:py-24 bg-[#F7EFEA] border-b border-[#E8DCD5]">
         <AmbientCircles variant="3" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center sm:text-left">
-          <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold">
+          <span className="text-xs uppercase tracking-widest text-[#4A7244] font-bold">
             Frequently Asked Questions
           </span>
           <h1 className="text-4xl sm:text-6xl font-bold tracking-tight text-[#685752] mt-2">
@@ -47,7 +47,7 @@ export default function FAQPage() {
             <SquigglyText
               stepDuration={70}
               scale={[4, 7]}
-              className="text-[#8EB486] font-serif-italic"
+              className="text-[#4A7244] font-serif-italic"
             >
               Your Bags...
             </SquigglyText>
@@ -71,7 +71,7 @@ export default function FAQPage() {
               onClick={() => setSelectedCat(cat)}
               className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
                 selectedCat === cat
-                  ? "bg-[#8EB486] text-white shadow-sm"
+                  ? "bg-[#4A7244] text-white shadow-sm"
                   : "bg-[#F7EFEA] text-[#7A6862] hover:bg-[#E8DCD5]"
               }`}
             >
@@ -94,7 +94,7 @@ export default function FAQPage() {
                   className="w-full px-6 py-5 text-left font-bold text-[#685752] flex items-center justify-between gap-4 cursor-pointer"
                 >
                   <span className="text-base sm:text-lg">{faq.question}</span>
-                  <ChevronDown className={`w-5 h-5 text-[#8EB486] shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+                  <ChevronDown className={`w-5 h-5 text-[#4A7244] shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
                 </button>
                 {isOpen && (
                   <div className="px-6 pb-6 pt-2 text-sm text-[#7A6862] leading-relaxed border-t border-[#E8DCD5]/50">
@@ -115,7 +115,7 @@ export default function FAQPage() {
           <div className="pt-2 flex justify-center">
             <button
               onClick={() => setEnquireOpen(true)}
-              className="px-8 py-3.5 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white text-sm font-semibold cursor-pointer shadow-md transition-colors"
+              className="px-8 py-3.5 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white text-sm font-semibold cursor-pointer shadow-md transition-colors"
             >
               Send Website Enquiry
             </button>

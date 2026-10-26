@@ -2,6 +2,12 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import AmbientCircles from "../components/AmbientCircles";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Privacy Policy | Travel With Sonali",
+  description: "How Travel With Sonali collects, uses and protects your personal information.",
+};
 
 export default function PrivacyPolicyPage() {
   return (
@@ -11,7 +17,7 @@ export default function PrivacyPolicyPage() {
         <AmbientCircles variant="minimal" />
         <main className="relative z-10 max-w-4xl mx-auto px-4 py-16 space-y-6 text-[#7A6862] leading-relaxed text-sm sm:text-base">
         <h1 className="text-3xl sm:text-4xl font-bold text-[#685752]">Privacy Policy</h1>
-        <p className="text-xs text-[#997C70]">Last updated: June 2026</p>
+        <p className="text-xs text-[#7A6862]">Last updated: June 2026</p>
 
         <section className="space-y-3">
           <h2 className="text-xl font-bold text-[#685752]">1. Information We Collect</h2>

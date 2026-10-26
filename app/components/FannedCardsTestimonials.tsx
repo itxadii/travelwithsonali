@@ -151,7 +151,7 @@ function FannedCardsTestimonialsComponent({ testimonials }: FannedCardsTestimoni
             transition={{ duration: 0.2 }}
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/95 border border-[#E8DCD5] shadow-xs text-xs font-semibold text-[#685752] mb-4 z-20"
           >
-            <MapPin className="w-3.5 h-3.5 text-[#8EB486]" />
+            <MapPin className="w-3.5 h-3.5 text-[#4A7244]" />
             <span>{currentDest.locationTag}</span>
           </motion.div>
 
@@ -231,20 +231,20 @@ function FannedCardsTestimonialsComponent({ testimonials }: FannedCardsTestimoni
                       <div className="flex items-center justify-between gap-2">
                         <div className="flex items-center gap-1.5 flex-wrap">
                           {/* Rating Stars */}
-                          <div className="flex items-center gap-0.5 text-[#8EB486]">
+                          <div className="flex items-center gap-0.5 text-[#4A7244]">
                             {[...Array(item.rating || 5)].map((_, i) => (
-                              <Star key={i} className="w-3.5 h-3.5 fill-[#8EB486] text-[#8EB486]" />
+                              <Star key={i} className="w-3.5 h-3.5 fill-[#4A7244] text-[#4A7244]" />
                             ))}
                           </div>
 
                           {/* Trip Tag Badge */}
-                          <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#8EB486]/15 text-[#8EB486] border border-[#8EB486]/30 truncate max-w-[120px]">
+                          <span className="text-xs font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#8EB486]/15 text-[#4A7244] border border-[#8EB486]/30 truncate max-w-[120px]">
                             {item.trip}
                           </span>
                         </div>
 
                         {/* Card Index in Monospace */}
-                        <span className="text-xs font-mono font-bold text-[#997C70] tracking-wider">
+                        <span className="text-xs font-mono font-bold text-[#7A6862] tracking-wider">
                           0{idx + 1}
                         </span>
                       </div>
@@ -281,7 +281,7 @@ function FannedCardsTestimonialsComponent({ testimonials }: FannedCardsTestimoni
                         <p className="text-xs sm:text-sm font-bold text-[#685752] truncate">
                           {item.name}
                         </p>
-                        <p className="text-[10px] sm:text-xs text-[#997C70] truncate">
+                        <p className="text-xs text-[#7A6862] truncate">
                           {item.location} • {item.date}
                         </p>
                       </div>

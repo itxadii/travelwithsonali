@@ -7,9 +7,12 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { TOURS_DATA } from "../data/toursData";
 import AmbientCircles from "../components/AmbientCircles";
+import { submitEnquiry } from "@/lib/submitEnquiry";
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [sendError, setSendError] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     mobile: "",
@@ -19,9 +22,17 @@ export default function ContactPage() {
     message: ""
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setSending(true);
+    setSendError("");
+    const error = await submitEnquiry(formData);
+    setSending(false);
+    if (error) {
+      setSendError(error);
+    } else {
+      setSubmitted(true);
+    }
   };
 
   return (
@@ -32,7 +43,7 @@ export default function ContactPage() {
       <section className="relative overflow-hidden w-full py-16 sm:py-24 bg-[#F7EFEA] border-b border-[#E8DCD5]">
         <AmbientCircles variant="2" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center sm:text-left">
-          <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold">
+          <span className="text-xs uppercase tracking-widest text-[#4A7244] font-bold">
             Get in Touch
           </span>
           <h1 className="text-4xl sm:text-6xl font-bold tracking-tight text-[#685752] mt-2">
@@ -100,7 +111,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <h4 className="text-base font-bold text-[#685752]">Instagram DM</h4>
-                  <p className="text-xs text-[#997C70]">@travel_withsonali</p>
+                  <p className="text-xs text-[#7A6862]">@travel_withsonali</p>
                 </div>
               </a>
             </div>
@@ -110,7 +121,7 @@ export default function ContactPage() {
           <div className="lg:col-span-7 bg-[#F7EFEA] rounded-3xl p-8 border border-[#E8DCD5] shadow-sm">
             {submitted ? (
               <div className="py-12 text-center space-y-4">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#8EB486]/20 text-[#8EB486] mb-2">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#8EB486]/20 text-[#4A7244] mb-2">
                   <CheckCircle2 className="w-10 h-10" />
                 </div>
                 <h3 className="text-2xl font-serif-italic font-bold text-[#685752]">
@@ -122,7 +133,7 @@ export default function ContactPage() {
                 <div className="pt-4">
                   <button
                     onClick={() => setSubmitted(false)}
-                    className="px-8 py-3 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white font-semibold text-sm cursor-pointer transition-colors shadow-sm"
+                    className="px-8 py-3 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white font-semibold text-sm cursor-pointer transition-colors shadow-sm"
                   >
                     Submit Another Enquiry
                   </button>
@@ -134,7 +145,7 @@ export default function ContactPage() {
                   <h3 className="text-2xl font-serif-italic font-bold text-[#685752]">
                     Send An Enquiry
                   </h3>
-                  <p className="text-xs text-[#997C70] mt-1">
+                  <p className="text-xs text-[#7A6862] mt-1">
                     Fill out the form below to receive itinerary details and seat confirmation.
                   </p>
                 </div>
@@ -231,12 +242,18 @@ export default function ContactPage() {
                   />
                 </div>
 
+                {sendError && (
+                  <p role="alert" className="text-xs font-semibold text-rose-700">
+                    {sendError}
+                  </p>
+                )}
                 <button
                   type="submit"
-                  className="w-full py-4 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white font-semibold text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  disabled={sending}
+                  className="w-full py-4 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white font-semibold text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
                 >
                   <Send className="w-4 h-4" />
-                  Send Website Enquiry
+                  {sending ? "Sending..." : "Send Website Enquiry"}
                 </button>
               </form>
             )}

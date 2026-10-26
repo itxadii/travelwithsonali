@@ -70,12 +70,12 @@ export default function DestinationDetailClientView({
 
       {/* Breadcrumb Bar */}
       <nav aria-label="Breadcrumb" className="bg-[#F7EFEA] border-b border-[#E8DCD5] py-3">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-xs text-[#997C70] flex items-center gap-2">
-          <Link href="/" className="hover:text-[#8EB486] transition-colors">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-xs text-[#7A6862] flex items-center gap-2">
+          <Link href="/" className="hover:text-[#4A7244] transition-colors">
             Home
           </Link>
           <span>/</span>
-          <Link href="/destinations" className="hover:text-[#8EB486] flex items-center gap-1 transition-colors">
+          <Link href="/destinations" className="hover:text-[#4A7244] flex items-center gap-1 transition-colors">
             <ChevronLeft className="w-3.5 h-3.5" />
             Destinations
           </Link>
@@ -101,13 +101,13 @@ export default function DestinationDetailClientView({
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
           {/* Badges Ribbon */}
           <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-            <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#8EB486] text-white text-xs font-semibold uppercase tracking-wider shadow-xs">
+            <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#4A7244] text-white text-xs font-semibold uppercase tracking-wider shadow-xs">
               <Compass className="w-3.5 h-3.5" />
               {destination.tripVibe || "Soulful Adventure"}
             </span>
 
             <span className="inline-flex items-center gap-1 px-3.5 py-1 rounded-full bg-white/20 text-stone-200 text-xs font-medium backdrop-blur-xs">
-              <Calendar className="w-3.5 h-3.5 text-[#8EB486]" />
+              <Calendar className="w-3.5 h-3.5 text-[#4A7244]" />
               Best Season: {destination.bestTimeToVisit}
             </span>
 
@@ -136,7 +136,7 @@ export default function DestinationDetailClientView({
           <div className="pt-4 flex flex-wrap items-center gap-4">
             <a
               href="#tours-section"
-              className="px-7 py-3.5 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white font-semibold text-sm shadow-xl transition-all cursor-pointer inline-flex items-center gap-2"
+              className="px-7 py-3.5 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white font-semibold text-sm shadow-xl transition-all cursor-pointer inline-flex items-center gap-2"
             >
               <span>View Available Tours</span>
               <ChevronDown className="w-4 h-4" />
@@ -167,11 +167,11 @@ export default function DestinationDetailClientView({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             <div className="flex items-start gap-3.5">
-              <div className="p-2.5 rounded-2xl bg-white border border-[#E8DCD5] text-[#8EB486] shadow-xs">
+              <div className="p-2.5 rounded-2xl bg-white border border-[#E8DCD5] text-[#4A7244] shadow-xs">
                 <Clock className="w-5 h-5" />
               </div>
               <div>
-                <span className="text-[11px] uppercase tracking-wider text-[#997C70] font-semibold block">
+                <span className="text-xs uppercase tracking-wider text-[#7A6862] font-semibold block">
                   Ideal Duration
                 </span>
                 <p className="text-sm sm:text-base font-bold text-[#685752]">
@@ -181,11 +181,11 @@ export default function DestinationDetailClientView({
             </div>
 
             <div className="flex items-start gap-3.5">
-              <div className="p-2.5 rounded-2xl bg-white border border-[#E8DCD5] text-[#8EB486] shadow-xs">
+              <div className="p-2.5 rounded-2xl bg-white border border-[#E8DCD5] text-[#4A7244] shadow-xs">
                 <Mountain className="w-5 h-5" />
               </div>
               <div>
-                <span className="text-[11px] uppercase tracking-wider text-[#997C70] font-semibold block">
+                <span className="text-xs uppercase tracking-wider text-[#7A6862] font-semibold block">
                   Elevation / Altitude
                 </span>
                 <p className="text-sm sm:text-base font-bold text-[#685752] truncate">
@@ -195,11 +195,11 @@ export default function DestinationDetailClientView({
             </div>
 
             <div className="flex items-start gap-3.5">
-              <div className="p-2.5 rounded-2xl bg-white border border-[#E8DCD5] text-[#8EB486] shadow-xs">
+              <div className="p-2.5 rounded-2xl bg-white border border-[#E8DCD5] text-[#4A7244] shadow-xs">
                 <Plane className="w-5 h-5" />
               </div>
               <div>
-                <span className="text-[11px] uppercase tracking-wider text-[#997C70] font-semibold block">
+                <span className="text-xs uppercase tracking-wider text-[#7A6862] font-semibold block">
                   Nearest Travel Hub
                 </span>
                 <p className="text-sm sm:text-base font-bold text-[#685752] line-clamp-1">
@@ -209,11 +209,11 @@ export default function DestinationDetailClientView({
             </div>
 
             <div className="flex items-start gap-3.5">
-              <div className="p-2.5 rounded-2xl bg-white border border-[#E8DCD5] text-[#8EB486] shadow-xs">
+              <div className="p-2.5 rounded-2xl bg-white border border-[#E8DCD5] text-[#4A7244] shadow-xs">
                 <Wifi className="w-5 h-5" />
               </div>
               <div>
-                <span className="text-[11px] uppercase tracking-wider text-[#997C70] font-semibold block">
+                <span className="text-xs uppercase tracking-wider text-[#7A6862] font-semibold block">
                   Network Connectivity
                 </span>
                 <p className="text-sm sm:text-base font-bold text-[#685752] truncate">
@@ -235,11 +235,11 @@ export default function DestinationDetailClientView({
               {/* Left Column: About & Narrative */}
               <div className="lg:col-span-7 space-y-6">
                 <div>
-                  <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold">
+                  <span className="text-xs uppercase tracking-widest text-[#4A7244] font-bold">
                     Destination Overview
                   </span>
                   <h2 className="text-3xl sm:text-4xl font-serif-italic font-bold text-[#685752] mt-1">
-                    The Soul of <span className="text-[#8EB486]">{destination.name}</span>
+                    The Soul of <span className="text-[#4A7244]">{destination.name}</span>
                   </h2>
                 </div>
 
@@ -249,7 +249,7 @@ export default function DestinationDetailClientView({
 
                 {/* Highlights Pills */}
                 <div className="pt-4 space-y-3">
-                  <h3 className="text-xs uppercase tracking-wider text-[#997C70] font-bold">
+                  <h3 className="text-xs uppercase tracking-wider text-[#7A6862] font-bold">
                     Signature Highlights
                   </h3>
                   <div className="flex flex-wrap gap-2.5">
@@ -258,7 +258,7 @@ export default function DestinationDetailClientView({
                         key={i}
                         className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#F7EFEA] border border-[#E8DCD5] text-xs font-medium text-[#685752]"
                       >
-                        <span className="w-2 h-2 rounded-full bg-[#8EB486]" />
+                        <span className="w-2 h-2 rounded-full bg-[#4A7244]" />
                         <span>{h}</span>
                       </span>
                     ))}
@@ -272,7 +272,7 @@ export default function DestinationDetailClientView({
                   <div className="flex items-center gap-4 border-b border-[#E8DCD5] pb-5">
                     <div className="relative w-14 h-14 rounded-full overflow-hidden border-2 border-[#8EB486] shrink-0">
                       <Image
-                        src="/images/sonali.png"
+                        src="/images/sonali.jpg"
                         alt="Sonali Palekar"
                         fill
                         className="object-cover"
@@ -282,11 +282,11 @@ export default function DestinationDetailClientView({
                       <h4 className="text-base font-bold text-[#685752]">
                         Sonali Palekar
                       </h4>
-                      <p className="text-xs text-[#8EB486] font-medium">
+                      <p className="text-xs text-[#4A7244] font-medium">
                         Founder & Lead Explorer
                       </p>
-                      <span className="inline-flex items-center gap-1 text-[10px] text-[#997C70] mt-0.5">
-                        <ShieldCheck className="w-3 h-3 text-[#8EB486]" />
+                      <span className="inline-flex items-center gap-1 text-xs text-[#7A6862] mt-0.5">
+                        <ShieldCheck className="w-3 h-3 text-[#4A7244]" />
                         Personally Scouted Destination
                       </span>
                     </div>
@@ -296,11 +296,11 @@ export default function DestinationDetailClientView({
                     &ldquo;{destination.curatorNote?.quote || `Exploring ${destination.name} with a group of curious minds is transformative. We take care of every road hurdle and stay detail so you can immerse fully in the magic of the journey.`}&rdquo;
                   </blockquote>
 
-                  <div className="pt-2 flex items-center justify-between text-xs text-[#997C70] border-t border-[#E8DCD5]/60">
+                  <div className="pt-2 flex items-center justify-between text-xs text-[#7A6862] border-t border-[#E8DCD5]/60">
                     <span>Curated Group Departures</span>
                     <button
                       onClick={() => handleOpenEnquire(`Personal Query: ${destination.name}`)}
-                      className="text-[#8EB486] font-bold hover:underline cursor-pointer"
+                      className="text-[#4A7244] font-bold hover:underline cursor-pointer"
                     >
                       Talk to Sonali →
                     </button>
@@ -317,7 +317,7 @@ export default function DestinationDetailClientView({
             <AmbientCircles variant="2" />
             <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center max-w-2xl mx-auto mb-12">
-                <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold">
+                <span className="text-xs uppercase tracking-widest text-[#4A7244] font-bold">
                   Curated Itinerary Moments
                 </span>
                 <h2 className="text-3xl sm:text-4xl font-bold text-[#685752] mt-1">
@@ -335,12 +335,12 @@ export default function DestinationDetailClientView({
                     className="p-6 sm:p-7 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs hover:shadow-md transition-all duration-300 space-y-3 group"
                   >
                     <div className="flex items-center justify-between">
-                      <span className="px-3 py-1 rounded-full bg-[#F7EFEA] border border-[#E8DCD5] text-[11px] font-semibold text-[#8EB486]">
+                      <span className="px-3 py-1 rounded-full bg-[#F7EFEA] border border-[#E8DCD5] text-xs font-semibold text-[#4A7244]">
                         {exp.badge || `Highlight 0${index + 1}`}
                       </span>
-                      <Sparkles className="w-4 h-4 text-[#8EB486]/60 group-hover:text-[#8EB486] transition-colors" />
+                      <Sparkles className="w-4 h-4 text-[#8EB486]/60 group-hover:text-[#4A7244] transition-colors" />
                     </div>
-                    <h3 className="text-xl font-bold text-[#685752] group-hover:text-[#8EB486] transition-colors">
+                    <h3 className="text-xl font-bold text-[#685752] group-hover:text-[#4A7244] transition-colors">
                       {exp.title}
                     </h3>
                     <p className="text-sm text-[#7A6862] leading-relaxed">
@@ -359,15 +359,15 @@ export default function DestinationDetailClientView({
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8">
               <div>
-                <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold">
+                <span className="text-xs uppercase tracking-widest text-[#4A7244] font-bold">
                   Atmospheric Photography
                 </span>
                 <h2 className="text-3xl font-bold text-[#685752] mt-1">
                   Snapshots of {destination.name}
                 </h2>
               </div>
-              <span className="text-xs text-[#997C70] flex items-center gap-1.5 mt-2 sm:mt-0">
-                <Camera className="w-3.5 h-3.5 text-[#8EB486]" />
+              <span className="text-xs text-[#7A6862] flex items-center gap-1.5 mt-2 sm:mt-0">
+                <Camera className="w-3.5 h-3.5 text-[#4A7244]" />
                 Click any photo to enlarge
               </span>
             </div>
@@ -376,8 +376,17 @@ export default function DestinationDetailClientView({
               {galleryImages.map((img, i) => (
                 <div
                   key={i}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`View ${destination.name} photo ${i + 1}`}
                   onClick={() => handleOpenLightbox(img, `${destination.name} - View ${i + 1}`)}
-                  className="group relative h-48 sm:h-64 rounded-3xl overflow-hidden border border-[#E8DCD5] shadow-xs cursor-pointer"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      handleOpenLightbox(img, `${destination.name} - View ${i + 1}`);
+                    }
+                  }}
+                  className="group relative h-48 sm:h-64 rounded-3xl overflow-hidden border border-[#E8DCD5] shadow-xs cursor-pointer focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#4A7244]/60"
                 >
                   <Image
                     src={img}
@@ -404,7 +413,7 @@ export default function DestinationDetailClientView({
             <AmbientCircles variant="4" />
             <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center max-w-2xl mx-auto mb-12">
-                <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold">
+                <span className="text-xs uppercase tracking-widest text-[#4A7244] font-bold">
                   Weather & Seasons
                 </span>
                 <h2 className="text-3xl sm:text-4xl font-bold text-[#685752] mt-1">
@@ -423,9 +432,9 @@ export default function DestinationDetailClientView({
                   >
                     <div className="space-y-3">
                       <div className="flex items-center justify-between">
-                        <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                        <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${
                           season.tag === "Peak Season"
-                            ? "bg-[#8EB486] text-white"
+                            ? "bg-[#4A7244] text-white"
                             : season.tag === "Winter Snow"
                             ? "bg-sky-700 text-white"
                             : "bg-[#685752] text-white"
@@ -433,7 +442,7 @@ export default function DestinationDetailClientView({
                           {season.tag}
                         </span>
 
-                        <span className="text-xs font-semibold text-[#8EB486] flex items-center gap-1">
+                        <span className="text-xs font-semibold text-[#4A7244] flex items-center gap-1">
                           <Thermometer className="w-3.5 h-3.5" />
                           {season.temperature}
                         </span>
@@ -442,7 +451,7 @@ export default function DestinationDetailClientView({
                       <h3 className="text-lg font-bold text-[#685752]">
                         {season.name}
                       </h3>
-                      <p className="text-xs font-semibold text-[#997C70]">
+                      <p className="text-xs font-semibold text-[#7A6862]">
                         {season.months}
                       </p>
 
@@ -451,8 +460,8 @@ export default function DestinationDetailClientView({
                       </p>
                     </div>
 
-                    <div className="pt-3 border-t border-[#E8DCD5]/60 text-[11px] text-[#997C70] flex items-center gap-1">
-                      <Calendar className="w-3.5 h-3.5 text-[#8EB486]" />
+                    <div className="pt-3 border-t border-[#E8DCD5]/60 text-xs text-[#7A6862] flex items-center gap-1">
+                      <Calendar className="w-3.5 h-3.5 text-[#4A7244]" />
                       <span>Departures scheduled during this window</span>
                     </div>
                   </div>
@@ -468,7 +477,7 @@ export default function DestinationDetailClientView({
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12">
               <div>
-                <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold">
+                <span className="text-xs uppercase tracking-widest text-[#4A7244] font-bold">
                   Upcoming Group Batches
                 </span>
                 <h2 className="text-3xl sm:text-4xl font-bold text-[#685752] mt-1">
@@ -481,7 +490,7 @@ export default function DestinationDetailClientView({
 
               <Link
                 href="/tours"
-                className="mt-4 sm:mt-0 text-sm font-semibold text-[#8EB486] hover:underline inline-flex items-center gap-1"
+                className="mt-4 sm:mt-0 text-sm font-semibold text-[#4A7244] hover:underline inline-flex items-center gap-1"
               >
                 <span>View All Tours</span>
                 <ChevronRight className="w-4 h-4" />
@@ -490,7 +499,7 @@ export default function DestinationDetailClientView({
 
             {tours.length === 0 ? (
               <div className="p-8 sm:p-12 text-center rounded-3xl bg-[#F7EFEA] border border-[#E8DCD5] space-y-4 max-w-3xl mx-auto">
-                <Compass className="w-10 h-10 text-[#8EB486] mx-auto" />
+                <Compass className="w-10 h-10 text-[#4A7244] mx-auto" />
                 <h3 className="text-xl font-bold text-[#685752]">
                   Custom Group Departures for {destination.name}
                 </h3>
@@ -500,7 +509,7 @@ export default function DestinationDetailClientView({
                 <div className="pt-2">
                   <button
                     onClick={() => handleOpenEnquire(`${destination.name} Custom Group Departure`)}
-                    className="px-6 py-3 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white text-xs font-semibold shadow-md transition-all cursor-pointer"
+                    className="px-6 py-3 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white text-xs font-semibold shadow-md transition-all cursor-pointer"
                   >
                     Request Custom Batch Details
                   </button>
@@ -523,7 +532,7 @@ export default function DestinationDetailClientView({
                           className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                        <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-[#8EB486] text-white text-xs font-semibold shadow-xs">
+                        <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-[#4A7244] text-white text-xs font-semibold shadow-xs">
                           {tour.destination}
                         </span>
                         <span className="absolute bottom-4 left-4 text-xs font-semibold text-white/95">
@@ -533,7 +542,7 @@ export default function DestinationDetailClientView({
 
                       <div className="p-6 space-y-3">
                         <Link href={`/tours/${tour.slug}`}>
-                          <h3 className="text-xl font-bold text-[#685752] group-hover:text-[#8EB486] transition-colors line-clamp-2">
+                          <h3 className="text-xl font-bold text-[#685752] group-hover:text-[#4A7244] transition-colors line-clamp-2">
                             {tour.title}
                           </h3>
                         </Link>
@@ -541,13 +550,13 @@ export default function DestinationDetailClientView({
                           {tour.description}
                         </p>
 
-                        <div className="flex flex-wrap items-center gap-3 pt-2 text-xs text-[#997C70]">
+                        <div className="flex flex-wrap items-center gap-3 pt-2 text-xs text-[#7A6862]">
                           <span className="flex items-center gap-1">
-                            <Clock className="w-3.5 h-3.5 text-[#8EB486]" />
+                            <Clock className="w-3.5 h-3.5 text-[#4A7244]" />
                             {tour.duration}
                           </span>
                           <span className="flex items-center gap-1">
-                            <MapPin className="w-3.5 h-3.5 text-[#8EB486]" />
+                            <MapPin className="w-3.5 h-3.5 text-[#4A7244]" />
                             Starts: {tour.startingPoint}
                           </span>
                         </div>
@@ -556,7 +565,7 @@ export default function DestinationDetailClientView({
 
                     <div className="px-6 pb-6 pt-3 border-t border-[#E8DCD5]/70 flex items-center justify-between mt-auto">
                       <div>
-                        <span className="text-[10px] uppercase text-[#997C70] block font-semibold">
+                        <span className="text-xs uppercase text-[#7A6862] block font-semibold">
                           Starting From
                         </span>
                         <span className="text-xl font-bold text-[#685752]">{tour.price}</span>
@@ -565,13 +574,13 @@ export default function DestinationDetailClientView({
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => handleOpenEnquire(tour.title)}
-                          className="px-4 py-2 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white text-xs font-semibold shadow-xs transition-all cursor-pointer"
+                          className="px-4 py-2 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white text-xs font-semibold shadow-xs transition-all cursor-pointer"
                         >
                           Enquire
                         </button>
                         <Link
                           href={`/tours/${tour.slug}`}
-                          className="p-2 rounded-full border border-[#E8DCD5] hover:border-[#8EB486] text-[#685752] hover:text-[#8EB486] transition-all"
+                          className="p-2 rounded-full border border-[#E8DCD5] hover:border-[#4A7244] text-[#685752] hover:text-[#4A7244] transition-all"
                           aria-label={`View details of ${tour.title}`}
                         >
                           <ArrowUpRight className="w-4 h-4" />
@@ -595,21 +604,21 @@ export default function DestinationDetailClientView({
                 {destination.packingEssentials && (
                   <div className="bg-white rounded-3xl p-6 sm:p-8 border border-[#E8DCD5] shadow-xs space-y-4">
                     <div className="flex items-center gap-3 border-b border-[#E8DCD5] pb-4">
-                      <div className="p-2 rounded-xl bg-[#F7EFEA] text-[#8EB486]">
+                      <div className="p-2 rounded-xl bg-[#F7EFEA] text-[#4A7244]">
                         <CheckCircle2 className="w-5 h-5" />
                       </div>
                       <div>
                         <h3 className="text-xl font-bold text-[#685752]">
                           What to Pack
                         </h3>
-                        <p className="text-xs text-[#997C70]">Essential gear for this destination</p>
+                        <p className="text-xs text-[#7A6862]">Essential gear for this destination</p>
                       </div>
                     </div>
 
                     <ul className="space-y-3 pt-2">
                       {destination.packingEssentials.map((item, i) => (
                         <li key={i} className="flex items-start gap-3 text-sm text-[#7A6862]">
-                          <span className="w-5 h-5 rounded-full bg-[#8EB486]/15 text-[#8EB486] flex items-center justify-center shrink-0 mt-0.5 text-xs font-bold">
+                          <span className="w-5 h-5 rounded-full bg-[#8EB486]/15 text-[#4A7244] flex items-center justify-center shrink-0 mt-0.5 text-xs font-bold">
                             ✓
                           </span>
                           <span>{item}</span>
@@ -623,14 +632,14 @@ export default function DestinationDetailClientView({
                 {destination.travelTips && (
                   <div className="bg-white rounded-3xl p-6 sm:p-8 border border-[#E8DCD5] shadow-xs space-y-4">
                     <div className="flex items-center gap-3 border-b border-[#E8DCD5] pb-4">
-                      <div className="p-2 rounded-xl bg-[#F7EFEA] text-[#8EB486]">
+                      <div className="p-2 rounded-xl bg-[#F7EFEA] text-[#4A7244]">
                         <ShieldCheck className="w-5 h-5" />
                       </div>
                       <div>
                         <h3 className="text-xl font-bold text-[#685752]">
                           Local Etiquette & Pro Tips
                         </h3>
-                        <p className="text-xs text-[#997C70]">Travel smoothly & respectfully</p>
+                        <p className="text-xs text-[#7A6862]">Travel smoothly & respectfully</p>
                       </div>
                     </div>
 
@@ -657,7 +666,7 @@ export default function DestinationDetailClientView({
             <AmbientCircles variant="2" />
             <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
               <div className="text-center space-y-2">
-                <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold">
+                <span className="text-xs uppercase tracking-widest text-[#4A7244] font-bold">
                   Helpful Information
                 </span>
                 <h2 className="text-3xl sm:text-4xl font-bold text-[#685752]">
@@ -678,16 +687,16 @@ export default function DestinationDetailClientView({
                     >
                       <button
                         onClick={() => setOpenFaqIndex(isOpen ? null : index)}
-                        className="w-full p-5 text-left flex items-center justify-between gap-4 font-bold text-sm sm:text-base text-[#685752] hover:text-[#8EB486] transition-colors cursor-pointer"
+                        className="w-full p-5 text-left flex items-center justify-between gap-4 font-bold text-sm sm:text-base text-[#685752] hover:text-[#4A7244] transition-colors cursor-pointer"
                         aria-expanded={isOpen}
                       >
                         <span className="flex items-center gap-2.5">
-                          <HelpCircle className="w-4 h-4 text-[#8EB486] shrink-0" />
+                          <HelpCircle className="w-4 h-4 text-[#4A7244] shrink-0" />
                           <span>{faq.question}</span>
                         </span>
                         <ChevronDown
                           className={`w-4 h-4 text-[#7A6862] transition-transform duration-200 shrink-0 ${
-                            isOpen ? "rotate-180 text-[#8EB486]" : ""
+                            isOpen ? "rotate-180 text-[#4A7244]" : ""
                           }`}
                         />
                       </button>
@@ -720,7 +729,7 @@ export default function DestinationDetailClientView({
             <div className="pt-2 flex flex-wrap items-center justify-center gap-4">
               <button
                 onClick={() => handleOpenEnquire(`${destination.name} Custom Group`)}
-                className="px-8 py-3.5 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white font-semibold text-sm shadow-xl transition-all cursor-pointer"
+                className="px-8 py-3.5 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white font-semibold text-sm shadow-xl transition-all cursor-pointer"
               >
                 Plan a Custom Itinerary
               </button>
@@ -741,7 +750,7 @@ export default function DestinationDetailClientView({
             <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8">
                 <div>
-                  <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold">
+                  <span className="text-xs uppercase tracking-widest text-[#4A7244] font-bold">
                     Continue The Journey
                   </span>
                   <h2 className="text-2xl sm:text-3xl font-bold text-[#685752] mt-1">
@@ -750,7 +759,7 @@ export default function DestinationDetailClientView({
                 </div>
                 <Link
                   href="/destinations"
-                  className="mt-3 sm:mt-0 text-sm font-semibold text-[#8EB486] hover:underline inline-flex items-center gap-1"
+                  className="mt-3 sm:mt-0 text-sm font-semibold text-[#4A7244] hover:underline inline-flex items-center gap-1"
                 >
                   <span>View All Destinations</span>
                   <ChevronRight className="w-4 h-4" />
@@ -773,7 +782,7 @@ export default function DestinationDetailClientView({
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
                     <div className="absolute top-4 left-4">
-                      <span className="px-3 py-1 rounded-full bg-[#8EB486] text-white text-[11px] font-semibold">
+                      <span className="px-3 py-1 rounded-full bg-[#4A7244] text-white text-xs font-semibold">
                         Best: {d.bestTimeToVisit}
                       </span>
                     </div>

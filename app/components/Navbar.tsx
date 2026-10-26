@@ -8,6 +8,7 @@ import { X, User, ChevronRight, Music } from "lucide-react";
 import EnquireModal from "./EnquireModal";
 import { useAudio } from "../context/AudioContext";
 
+import { useEscapeKey } from "@/lib/useEscapeKey";
 function MusicSlashIcon({ className = "w-4 h-4" }: { className?: string }) {
   return (
     <svg
@@ -35,6 +36,7 @@ interface NavbarProps {
 export default function Navbar({ logoName = "Travel With Sonali" }: NavbarProps) {
   const { isPlaying, toggleMusic } = useAudio();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  useEscapeKey(mobileMenuOpen, () => setMobileMenuOpen(false));
   const [enquireOpen, setEnquireOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
@@ -178,13 +180,13 @@ export default function Navbar({ logoName = "Travel With Sonali" }: NavbarProps)
                 <span
                   className={`text-sm sm:text-base font-serif-italic font-semibold tracking-tight transition-colors leading-tight ${isDarkHero
                       ? "text-white group-hover:text-[#8EB486] drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]"
-                      : "text-slate-900 group-hover:text-[#8EB486]"
+                      : "text-slate-900 group-hover:text-[#4A7244]"
                     }`}
                 >
                   {logoName}
                 </span>
                 <span
-                  className={`text-[8px] sm:text-[9px] tracking-widest uppercase font-medium -mt-0.5 transition-colors ${isDarkHero
+                  className={`text-[10px] sm:text-[11px] tracking-widest uppercase font-medium -mt-0.5 transition-colors ${isDarkHero
                       ? "text-white/80 drop-shadow-[0_1px_1px_rgba(0,0,0,0.8)]"
                       : "text-slate-500"
                     }`}
@@ -208,7 +210,7 @@ export default function Navbar({ logoName = "Travel With Sonali" }: NavbarProps)
                           : "text-white/90 hover:text-white hover:bg-white/10"
                         }`
                         : `border-stone-300/70 ${isActive
-                          ? "text-[#8EB486] bg-[#8EB486]/10 font-semibold"
+                          ? "text-[#4A7244] bg-[#8EB486]/10 font-semibold"
                           : "text-slate-700 hover:text-slate-900 hover:bg-black/5"
                         }`
                       }`}
@@ -222,7 +224,7 @@ export default function Navbar({ logoName = "Travel With Sonali" }: NavbarProps)
 
                     {/* Active Indicator Underline */}
                     {isActive && (
-                      <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#8EB486]" />
+                      <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#4A7244]" />
                     )}
                   </Link>
                 );
@@ -250,13 +252,13 @@ export default function Navbar({ logoName = "Travel With Sonali" }: NavbarProps)
                 {isPlaying ? (
                   <>
                     <span className="relative flex items-center justify-center">
-                      <Music className="w-4 h-4 text-[#8EB486] transition-transform group-hover:scale-110" />
+                      <Music className={`w-4 h-4 transition-transform group-hover:scale-110 ${isDarkHero ? "text-[#8EB486]" : "text-[#4A7244]"}`} />
                     </span>
                     {/* Visual Soundwave Indicator */}
                     <span className="flex items-end gap-0.5 h-3.5 pb-0.5">
-                      <span className="w-0.5 h-2.5 bg-[#8EB486] rounded-full animate-[bounce_0.8s_infinite_100ms]" />
-                      <span className="w-0.5 h-3.5 bg-[#8EB486] rounded-full animate-[bounce_0.8s_infinite_300ms]" />
-                      <span className="w-0.5 h-2 bg-[#8EB486] rounded-full animate-[bounce_0.8s_infinite_200ms]" />
+                      <span className={`w-0.5 h-2.5 ${isDarkHero ? "bg-[#8EB486]" : "bg-[#4A7244]"} rounded-full animate-[bounce_0.8s_infinite_100ms]`} />
+                      <span className={`w-0.5 h-3.5 ${isDarkHero ? "bg-[#8EB486]" : "bg-[#4A7244]"} rounded-full animate-[bounce_0.8s_infinite_300ms]`} />
+                      <span className={`w-0.5 h-2 ${isDarkHero ? "bg-[#8EB486]" : "bg-[#4A7244]"} rounded-full animate-[bounce_0.8s_infinite_200ms]`} />
                     </span>
                   </>
                 ) : (
@@ -290,9 +292,9 @@ export default function Navbar({ logoName = "Travel With Sonali" }: NavbarProps)
                   : "bg-transparent hover:bg-black/5 text-slate-900 border-stone-300/70"
                 }`}
             >
-              <span className="group-hover:text-[#8EB486] transition-colors">Explore Tours</span>
+              <span className={`transition-colors ${isDarkHero ? "group-hover:text-[#8EB486]" : "group-hover:text-[#4A7244]"}`}>Explore Tours</span>
               <ChevronRight
-                className={`w-4 h-4 transition-all group-hover:text-[#8EB486] group-hover:translate-x-0.5 ${isDarkHero ? "text-white/70" : "text-slate-500"
+                className={`w-4 h-4 transition-all group-hover:translate-x-0.5 ${isDarkHero ? "text-white/70 group-hover:text-[#8EB486]" : "text-slate-500 group-hover:text-[#4A7244]"
                   }`}
               />
             </button>
@@ -315,8 +317,8 @@ export default function Navbar({ logoName = "Travel With Sonali" }: NavbarProps)
               >
                 {isPlaying ? (
                   <span className="relative flex items-center justify-center">
-                    <Music className="w-4 h-4 text-[#8EB486]" />
-                    <span className="absolute -top-1 -right-1 w-1.5 h-1.5 rounded-full bg-[#8EB486] animate-ping" />
+                    <Music className={`w-4 h-4 ${isDarkHero ? "text-[#8EB486]" : "text-[#4A7244]"}`} />
+                    <span className={`absolute -top-1 -right-1 w-1.5 h-1.5 rounded-full animate-ping ${isDarkHero ? "bg-[#8EB486]" : "bg-[#4A7244]"}`} />
                   </span>
                 ) : (
                   <MusicSlashIcon className="w-4 h-4 text-stone-400" />
@@ -389,7 +391,7 @@ export default function Navbar({ logoName = "Travel With Sonali" }: NavbarProps)
               <span className="text-sm font-bold tracking-tight text-[#685752] leading-tight font-serif-italic truncate">
                 {logoName}
               </span>
-              <span className="text-[9px] text-[#997C70] tracking-wider uppercase font-semibold">
+              <span className="text-xs text-[#7A6862] tracking-wider uppercase font-semibold">
                 Group Experiences
               </span>
             </div>
@@ -397,7 +399,7 @@ export default function Navbar({ logoName = "Travel With Sonali" }: NavbarProps)
 
           <button
             onClick={() => setMobileMenuOpen(false)}
-            className="p-2 rounded-xl text-[#997C70] hover:text-[#685752] hover:bg-[#F7EFEA] transition-colors cursor-pointer"
+            className="p-2 rounded-xl text-[#7A6862] hover:text-[#685752] hover:bg-[#F7EFEA] transition-colors cursor-pointer"
             aria-label="Close navigation menu"
             title="Close menu"
           >
@@ -408,7 +410,7 @@ export default function Navbar({ logoName = "Travel With Sonali" }: NavbarProps)
         {/* Drawer Body: Navigation Links */}
         <div className="flex-1 overflow-y-auto px-5 py-6">
           <div className="space-y-1">
-            <span className="text-[10px] uppercase tracking-widest text-[#997C70] font-bold px-3 block mb-2">
+            <span className="text-xs uppercase tracking-widest text-[#7A6862] font-bold px-3 block mb-2">
               Menu Navigation
             </span>
             {navLinks.map((link, idx) => {
@@ -419,17 +421,17 @@ export default function Navbar({ logoName = "Travel With Sonali" }: NavbarProps)
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
                   className={`flex items-center justify-between px-4 py-3 rounded-2xl text-base font-semibold transition-all ${isActive
-                      ? "bg-[#8EB486] text-white shadow-md shadow-[#8EB486]/20 font-bold"
+                      ? "bg-[#4A7244] text-white shadow-md shadow-[#8EB486]/20 font-bold"
                       : "text-[#685752] hover:bg-[#F7EFEA] active:bg-[#F4ECE7]"
                     }`}
                 >
                   <div className="flex items-center gap-3">
-                    <span className={`text-xs font-mono ${isActive ? "text-white/80" : "text-[#997C70]"}`}>
+                    <span className={`text-xs font-mono ${isActive ? "text-white/80" : "text-[#7A6862]"}`}>
                       {String(idx + 1).padStart(2, "0")}
                     </span>
                     <span>{link.label}</span>
                   </div>
-                  <ChevronRight className={`w-4 h-4 ${isActive ? "text-white" : "text-[#997C70]"}`} />
+                  <ChevronRight className={`w-4 h-4 ${isActive ? "text-white" : "text-[#7A6862]"}`} />
                 </Link>
               );
             })}
@@ -451,7 +453,7 @@ export default function Navbar({ logoName = "Travel With Sonali" }: NavbarProps)
               setMobileMenuOpen(false);
               setEnquireOpen(true);
             }}
-            className="flex items-center justify-center gap-2 w-full text-center px-5 py-3 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white font-bold text-xs tracking-wider uppercase shadow-md active:scale-95 transition-all cursor-pointer"
+            className="flex items-center justify-center gap-2 w-full text-center px-5 py-3 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white font-bold text-xs tracking-wider uppercase shadow-md active:scale-95 transition-all cursor-pointer"
           >
             <span>EXPLORE TOURS</span>
             <ChevronRight className="w-4 h-4" />

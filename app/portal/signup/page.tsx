@@ -28,8 +28,8 @@ export default function CustomerSignUpPage() {
       return;
     }
 
-    if (password.length < 6) {
-      setError("Password must be at least 6 characters long.");
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters long.");
       return;
     }
 
@@ -76,7 +76,7 @@ export default function CustomerSignUpPage() {
             />
           </div>
 
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#8EB486]/10 text-[#8EB486] text-xs font-semibold tracking-wider uppercase">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#8EB486]/10 text-[#4A7244] text-xs font-semibold tracking-wider uppercase">
             <Compass className="w-3.5 h-3.5" />
             <span>Join Travel With Sonali</span>
           </div>
@@ -84,7 +84,7 @@ export default function CustomerSignUpPage() {
           <h1 className="text-3xl font-bold tracking-tight text-[#685752] font-serif-italic">
             Create Your Account
           </h1>
-          <p className="text-xs text-[#997C70]">
+          <p className="text-xs text-[#7A6862]">
             Start your travel journey, manage bookings & view trip details.
           </p>
         </div>
@@ -98,7 +98,7 @@ export default function CustomerSignUpPage() {
           )}
 
           <div className="space-y-1">
-            <label className="text-xs font-semibold text-[#997C70]">Full Name *</label>
+            <label className="text-xs font-semibold text-[#7A6862]">Full Name *</label>
             <div className="relative">
               <User className="w-4 h-4 absolute left-3.5 top-3 text-[#9A938C]" />
               <input
@@ -113,7 +113,7 @@ export default function CustomerSignUpPage() {
           </div>
 
           <div className="space-y-1">
-            <label className="text-xs font-semibold text-[#997C70]">Phone Number *</label>
+            <label className="text-xs font-semibold text-[#7A6862]">Phone Number *</label>
             <div className="relative">
               <Phone className="w-4 h-4 absolute left-3.5 top-3 text-[#9A938C]" />
               <input
@@ -128,7 +128,7 @@ export default function CustomerSignUpPage() {
           </div>
 
           <div className="space-y-1">
-            <label className="text-xs font-semibold text-[#997C70]">Email Address (Optional)</label>
+            <label className="text-xs font-semibold text-[#7A6862]">Email Address (Optional)</label>
             <div className="relative">
               <Mail className="w-4 h-4 absolute left-3.5 top-3 text-[#9A938C]" />
               <input
@@ -143,7 +143,7 @@ export default function CustomerSignUpPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-[#997C70]">Password *</label>
+              <label className="text-xs font-semibold text-[#7A6862]">Password *</label>
               <div className="relative">
                 <Lock className="w-4 h-4 absolute left-3.5 top-3 text-[#9A938C]" />
                 <input
@@ -158,7 +158,7 @@ export default function CustomerSignUpPage() {
             </div>
 
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-[#997C70]">Confirm Password *</label>
+              <label className="text-xs font-semibold text-[#7A6862]">Confirm Password *</label>
               <div className="relative">
                 <Lock className="w-4 h-4 absolute left-3.5 top-3 text-[#9A938C]" />
                 <input
@@ -175,9 +175,10 @@ export default function CustomerSignUpPage() {
 
           <div className="flex justify-end">
             <button
+                aria-label={showPassword ? "Hide password" : "Show password"}
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="text-[11px] text-[#997C70] hover:text-[#685752] inline-flex items-center gap-1"
+              className="text-xs text-[#7A6862] hover:text-[#685752] inline-flex items-center gap-1"
             >
               {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
               <span>{showPassword ? "Hide Passwords" : "Show Passwords"}</span>
@@ -187,7 +188,7 @@ export default function CustomerSignUpPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3.5 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white text-xs font-bold tracking-wider uppercase shadow-lg shadow-[#8EB486]/30 transition-all active:scale-[0.98] disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2 group"
+            className="w-full py-3.5 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white text-xs font-bold tracking-wider uppercase shadow-lg shadow-[#8EB486]/30 transition-all active:scale-[0.98] disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2 group"
           >
             <span>{loading ? "Creating Account..." : "Create My Account"}</span>
             {!loading && (
@@ -196,9 +197,9 @@ export default function CustomerSignUpPage() {
           </button>
         </form>
 
-        <div className="text-center pt-2 border-t border-[#E8DCD5] text-xs text-[#997C70]">
+        <div className="text-center pt-2 border-t border-[#E8DCD5] text-xs text-[#7A6862]">
           Already have an account?{" "}
-          <Link href="/portal/login" className="text-[#8EB486] font-bold hover:underline inline-flex items-center gap-1">
+          <Link href="/portal/login" className="text-[#4A7244] font-bold hover:underline inline-flex items-center gap-1">
             <span>Sign In</span>
             <ChevronRight className="w-3.5 h-3.5" />
           </Link>

@@ -66,7 +66,7 @@ export default function CustomerProfilePage({ params }: { params: Promise<{ id: 
   }, [id]);
 
   if (loading) {
-    return <div className="p-8 text-center text-xs text-[#997C70]">Loading customer profile...</div>;
+    return <div className="p-8 text-center text-xs text-[#7A6862]">Loading customer profile...</div>;
   }
 
   if (!data) {
@@ -80,13 +80,13 @@ export default function CustomerProfilePage({ params }: { params: Promise<{ id: 
       <div className="flex items-center gap-3">
         <Link
           href="/admin/customers"
-          className="p-2 rounded-xl bg-white border border-[#E8DCD5] text-[#997C70] hover:text-[#685752]"
+          className="p-2 rounded-xl bg-white border border-[#E8DCD5] text-[#7A6862] hover:text-[#685752]"
         >
           <ChevronLeft className="w-4 h-4" />
         </Link>
         <div>
           <h1 className="text-2xl font-bold text-[#685752] font-serif-italic">{customer.name}</h1>
-          <p className="text-xs text-[#997C70]">Customer ID: {customer.id}</p>
+          <p className="text-xs text-[#7A6862]">Customer ID: {customer.id}</p>
         </div>
       </div>
 
@@ -94,33 +94,33 @@ export default function CustomerProfilePage({ params }: { params: Promise<{ id: 
         {/* Profile Card */}
         <div className="lg:col-span-4 p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-6">
           <div className="flex items-center justify-between border-b border-[#E8DCD5] pb-4">
-            <span className="text-xs font-semibold uppercase tracking-wider text-[#997C70]">
+            <span className="text-xs font-semibold uppercase tracking-wider text-[#7A6862]">
               Customer Profile
             </span>
-            <span className="px-2.5 py-1 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-800">
+            <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
               {customer.status}
             </span>
           </div>
 
           <div className="space-y-3 text-xs">
             <div>
-              <span className="text-[#997C70] block font-medium">Full Name</span>
+              <span className="text-[#7A6862] block font-medium">Full Name</span>
               <span className="text-[#685752] font-bold text-sm">{customer.name}</span>
             </div>
 
             <div>
-              <span className="text-[#997C70] block font-medium">Phone</span>
+              <span className="text-[#7A6862] block font-medium">Phone</span>
               <span className="text-[#685752] flex items-center gap-1.5 mt-0.5 font-semibold">
-                <Phone className="w-3.5 h-3.5 text-[#8EB486]" />
+                <Phone className="w-3.5 h-3.5 text-[#4A7244]" />
                 {customer.phone}
               </span>
             </div>
 
             {customer.email && (
               <div>
-                <span className="text-[#997C70] block font-medium">Email</span>
+                <span className="text-[#7A6862] block font-medium">Email</span>
                 <span className="text-[#685752] flex items-center gap-1.5 mt-0.5 font-semibold">
-                  <Mail className="w-3.5 h-3.5 text-[#8EB486]" />
+                  <Mail className="w-3.5 h-3.5 text-[#4A7244]" />
                   {customer.email}
                 </span>
               </div>
@@ -128,8 +128,8 @@ export default function CustomerProfilePage({ params }: { params: Promise<{ id: 
 
             {customer.notes && (
               <div className="pt-2 border-t border-[#E8DCD5]">
-                <span className="text-[#997C70] block font-medium">Notes</span>
-                <p className="text-[#4A4540] text-[11px] mt-1">{customer.notes}</p>
+                <span className="text-[#7A6862] block font-medium">Notes</span>
+                <p className="text-[#4A4540] text-xs mt-1">{customer.notes}</p>
               </div>
             )}
           </div>
@@ -140,12 +140,12 @@ export default function CustomerProfilePage({ params }: { params: Promise<{ id: 
           {/* Associated Bookings */}
           <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-4">
             <h3 className="text-base font-bold text-[#685752] flex items-center gap-2">
-              <CalendarCheck className="w-4 h-4 text-[#8EB486]" />
+              <CalendarCheck className="w-4 h-4 text-[#4A7244]" />
               Bookings History ({bookings.length})
             </h3>
 
             {bookings.length === 0 ? (
-              <p className="text-xs text-[#997C70] py-4 text-center">No bookings associated with this customer yet.</p>
+              <p className="text-xs text-[#7A6862] py-4 text-center">No bookings associated with this customer yet.</p>
             ) : (
               <div className="space-y-3">
                 {bookings.map((b) => (
@@ -153,18 +153,18 @@ export default function CustomerProfilePage({ params }: { params: Promise<{ id: 
                     <div>
                       <div className="flex items-center gap-2">
                         <span className="font-bold text-[#685752] text-sm">{b.bookingCode}</span>
-                        <span className="px-2 py-0.5 rounded-md bg-[#8EB486]/10 text-[#8EB486] text-[10px] font-semibold">
+                        <span className="px-2 py-0.5 rounded-md bg-[#8EB486]/10 text-[#4A7244] text-xs font-semibold">
                           {b.bookingStatus}
                         </span>
                       </div>
                       <p className="text-[#685752] font-semibold mt-1">{b.tourTitle}</p>
-                      <p className="text-[#997C70] text-[11px]">Departure: {b.departureDate}</p>
+                      <p className="text-[#7A6862] text-xs">Departure: {b.departureDate}</p>
                     </div>
 
                     <div className="text-right">
                       <p className="text-sm font-bold text-[#685752]">₹{b.totalAmount.toLocaleString("en-IN")}</p>
-                      <p className="text-[11px] text-emerald-700 font-semibold">Paid: ₹{b.paidAmount.toLocaleString("en-IN")}</p>
-                      <Link href={`/admin/bookings/${b.id}`} className="text-[11px] font-semibold text-[#8EB486] hover:underline mt-1 inline-block">
+                      <p className="text-xs text-emerald-700 font-semibold">Paid: ₹{b.paidAmount.toLocaleString("en-IN")}</p>
+                      <Link href={`/admin/bookings/${b.id}`} className="text-xs font-semibold text-[#4A7244] hover:underline mt-1 inline-block">
                         View Booking Details →
                       </Link>
                     </div>
@@ -182,16 +182,16 @@ export default function CustomerProfilePage({ params }: { params: Promise<{ id: 
             </h3>
 
             {documents.length === 0 ? (
-              <p className="text-xs text-[#997C70] py-4 text-center">No identity documents uploaded yet.</p>
+              <p className="text-xs text-[#7A6862] py-4 text-center">No identity documents uploaded yet.</p>
             ) : (
               <div className="space-y-2 text-xs">
                 {documents.map((doc) => (
                   <div key={doc.id} className="p-3 rounded-2xl bg-[#FDF7F4] border border-[#E8DCD5] flex items-center justify-between">
                     <div>
                       <p className="font-bold text-[#685752]">{doc.documentName}</p>
-                      <p className="text-[11px] text-[#997C70]">{doc.documentType}</p>
+                      <p className="text-xs text-[#7A6862]">{doc.documentType}</p>
                     </div>
-                    <span className="px-2.5 py-1 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-800">
+                    <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
                       {doc.status}
                     </span>
                   </div>

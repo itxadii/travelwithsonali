@@ -50,13 +50,13 @@ export default function PaymentsPage() {
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#685752] font-serif-italic">
             Payment Ledger & Invoices
           </h1>
-          <p className="text-xs text-[#997C70] mt-1">
+          <p className="text-xs text-[#7A6862] mt-1">
             Track transaction records, generate printable PDF tax receipts, and dispatch invoices to clients.
           </p>
         </div>
 
         <div className="p-3.5 rounded-2xl bg-white border border-[#E8DCD5] shadow-xs flex items-center gap-4 text-xs">
-          <span className="text-[#997C70] uppercase font-semibold">Total Collected</span>
+          <span className="text-[#7A6862] uppercase font-semibold">Total Collected</span>
           <span className="text-xl font-bold text-emerald-700">
             ₹{totalCollected.toLocaleString("en-IN")}
           </span>
@@ -81,14 +81,14 @@ export default function PaymentsPage() {
       {/* Payments Table */}
       <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs">
         {loading ? (
-          <div className="py-12 text-center text-xs text-[#997C70]">Loading payment records...</div>
+          <div className="py-12 text-center text-xs text-[#7A6862]">Loading payment records...</div>
         ) : filtered.length === 0 ? (
-          <div className="py-16 text-center text-sm text-[#997C70]">No payment records found.</div>
+          <div className="py-16 text-center text-sm text-[#7A6862]">No payment records found.</div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
-                <tr className="border-b border-[#E8DCD5] text-[#997C70] uppercase tracking-wider">
+                <tr className="border-b border-[#E8DCD5] text-[#7A6862] uppercase tracking-wider">
                   <th className="pb-3 font-semibold">Receipt / ID</th>
                   <th className="pb-3 font-semibold">Client & Tour</th>
                   <th className="pb-3 font-semibold">Booking Code</th>
@@ -118,7 +118,7 @@ export default function PaymentsPage() {
                         <div className="font-bold text-[#685752]">
                           {p.customerName || "Direct Guest"}
                         </div>
-                        <div className="text-[11px] text-[#997C70]">
+                        <div className="text-xs text-[#7A6862]">
                           {p.tourTitle || "Tour Package"}
                           {p.departureDate && ` • ${p.departureDate}`}
                         </div>
@@ -126,7 +126,7 @@ export default function PaymentsPage() {
 
                       {/* Booking Code */}
                       <td className="py-3.5">
-                        <span className="font-semibold text-[#8EB486] font-mono">
+                        <span className="font-semibold text-[#4A7244] font-mono">
                           {p.bookingCode || p.bookingId}
                         </span>
                       </td>
@@ -138,11 +138,11 @@ export default function PaymentsPage() {
 
                       {/* Method & Ref */}
                       <td className="py-3.5 space-y-0.5">
-                        <span className="inline-block px-2.5 py-0.5 rounded-md bg-[#FDF7F4] text-[#685752] text-[10px] font-semibold border border-[#E8DCD5]">
+                        <span className="inline-block px-2.5 py-0.5 rounded-md bg-[#FDF7F4] text-[#685752] text-xs font-semibold border border-[#E8DCD5]">
                           {p.paymentMethod}
                         </span>
                         {p.referenceNumber && (
-                          <div className="font-mono text-[10px] text-[#997C70]">
+                          <div className="font-mono text-xs text-[#7A6862]">
                             {p.referenceNumber}
                           </div>
                         )}
@@ -177,7 +177,7 @@ export default function PaymentsPage() {
                           <button
                             type="button"
                             onClick={() => setSelectedPaymentForInvoice(p)}
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#8EB486] hover:bg-[#7A9F73] text-white font-semibold text-xs transition-all active:scale-95 shadow-2xs cursor-pointer"
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#4A7244] hover:bg-[#3F6339] text-white font-semibold text-xs transition-all active:scale-95 shadow-2xs cursor-pointer"
                           >
                             <FileText className="w-3.5 h-3.5" />
                             <span>Invoice / PDF</span>

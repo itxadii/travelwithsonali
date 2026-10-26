@@ -35,8 +35,8 @@ export default function TourDetailClientView({ tour }: { tour: Tour }) {
 
       {/* Breadcrumb Bar */}
       <div className="bg-[#F7EFEA] border-b border-[#E8DCD5] py-3">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-xs text-[#997C70] flex items-center gap-2">
-          <Link href="/tours" className="hover:text-[#8EB486] flex items-center gap-1">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-xs text-[#7A6862] flex items-center gap-2">
+          <Link href="/tours" className="hover:text-[#4A7244] flex items-center gap-1">
             <ChevronLeft className="w-3.5 h-3.5" />
             Tours
           </Link>
@@ -61,7 +61,7 @@ export default function TourDetailClientView({ tour }: { tour: Tour }) {
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
           <div className="flex flex-wrap items-center gap-3">
-            <span className="px-3.5 py-1 rounded-full bg-[#8EB486] text-white text-xs font-semibold">
+            <span className="px-3.5 py-1 rounded-full bg-[#4A7244] text-white text-xs font-semibold">
               {tour.destination}
             </span>
             <span className="px-3.5 py-1 rounded-full bg-white/20 text-stone-200 text-xs font-medium backdrop-blur-xs">
@@ -75,15 +75,15 @@ export default function TourDetailClientView({ tour }: { tour: Tour }) {
 
           <div className="flex flex-wrap items-center gap-6 pt-2 text-stone-300 text-sm">
             <span className="flex items-center gap-1.5">
-              <Clock className="w-4 h-4 text-[#8EB486]" />
+              <Clock className="w-4 h-4 text-[#4A7244]" />
               {tour.duration}
             </span>
             <span className="flex items-center gap-1.5">
-              <Users className="w-4 h-4 text-[#8EB486]" />
+              <Users className="w-4 h-4 text-[#4A7244]" />
               {tour.groupSize}
             </span>
             <span className="flex items-center gap-1.5">
-              <MapPin className="w-4 h-4 text-[#8EB486]" />
+              <MapPin className="w-4 h-4 text-[#4A7244]" />
               Starts at {tour.startingPoint}
             </span>
             <a
@@ -98,7 +98,7 @@ export default function TourDetailClientView({ tour }: { tour: Tour }) {
           <div className="pt-6 flex flex-wrap items-center gap-4">
             <button
               onClick={() => setEnquireOpen(true)}
-              className="px-8 py-3.5 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white font-semibold text-sm shadow-xl cursor-pointer"
+              className="px-8 py-3.5 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white font-semibold text-sm shadow-xl cursor-pointer"
             >
               Enquire Now ({tour.price})
             </button>
@@ -118,19 +118,19 @@ export default function TourDetailClientView({ tour }: { tour: Tour }) {
             {/* Quick Info Bar */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-6 rounded-3xl bg-[#F7EFEA] border border-[#E8DCD5]">
               <div>
-                <span className="text-[11px] uppercase tracking-wider text-[#997C70] block font-medium">Duration</span>
+                <span className="text-xs uppercase tracking-wider text-[#7A6862] block font-medium">Duration</span>
                 <span className="text-sm font-bold text-[#685752]">{tour.duration}</span>
               </div>
               <div>
-                <span className="text-[11px] uppercase tracking-wider text-[#997C70] block font-medium">Starting Point</span>
+                <span className="text-xs uppercase tracking-wider text-[#7A6862] block font-medium">Starting Point</span>
                 <span className="text-sm font-bold text-[#685752]">{tour.startingPoint}</span>
               </div>
               <div>
-                <span className="text-[11px] uppercase tracking-wider text-[#997C70] block font-medium">Transport</span>
+                <span className="text-xs uppercase tracking-wider text-[#7A6862] block font-medium">Transport</span>
                 <span className="text-sm font-bold text-[#685752]">{tour.transport}</span>
               </div>
               <div>
-                <span className="text-[11px] uppercase tracking-wider text-[#997C70] block font-medium">Meals</span>
+                <span className="text-xs uppercase tracking-wider text-[#7A6862] block font-medium">Meals</span>
                 <span className="text-sm font-bold text-[#685752]">{tour.meals}</span>
               </div>
             </div>
@@ -156,17 +156,17 @@ export default function TourDetailClientView({ tour }: { tour: Tour }) {
                         className="w-full px-6 py-4 text-left font-bold text-[#685752] flex items-center justify-between gap-4 cursor-pointer"
                       >
                         <div className="flex items-center gap-3">
-                          <span className="px-3 py-1 rounded-full bg-[#8EB486]/15 text-[#8EB486] text-xs font-semibold">
+                          <span className="px-3 py-1 rounded-full bg-[#8EB486]/15 text-[#4A7244] text-xs font-semibold">
                             {item.day}
                           </span>
                           <span className="text-base font-semibold">{item.title}</span>
                         </div>
-                        <ChevronDown className={`w-4 h-4 text-[#8EB486] transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+                        <ChevronDown className={`w-4 h-4 text-[#4A7244] transition-transform ${isOpen ? 'rotate-180' : ''}`} />
                       </button>
                       {isOpen && (
                         <div className="px-6 pb-6 pt-2 text-sm text-[#7A6862] leading-relaxed border-t border-[#E8DCD5]/60 space-y-3">
                           <p>{item.description}</p>
-                          <div className="flex flex-wrap items-center gap-4 text-xs font-medium text-[#997C70] pt-2">
+                          <div className="flex flex-wrap items-center gap-4 text-xs font-medium text-[#7A6862] pt-2">
                             {item.meals && <span className="bg-white px-3 py-1 rounded-full border border-[#E8DCD5]">🍲 Meals: {item.meals}</span>}
                             {item.stay && <span className="bg-white px-3 py-1 rounded-full border border-[#E8DCD5]">🏨 Stay: {item.stay}</span>}
                           </div>
@@ -215,7 +215,7 @@ export default function TourDetailClientView({ tour }: { tour: Tour }) {
             {tour.importantInfo && tour.importantInfo.length > 0 && (
               <div className="p-6 rounded-3xl bg-[#F7EFEA] border border-[#E8DCD5] space-y-4">
                 <h3 className="text-xl font-bold text-[#685752] flex items-center gap-2">
-                  <AlertCircle className="w-5 h-5 text-[#8EB486]" />
+                  <AlertCircle className="w-5 h-5 text-[#4A7244]" />
                   Important Information & Things to Carry
                 </h3>
                 <div className="space-y-4 text-sm text-[#7A6862]">
@@ -241,12 +241,21 @@ export default function TourDetailClientView({ tour }: { tour: Tour }) {
                   {tour.gallery.map((img, i) => (
                     <div
                       key={i}
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`View ${tour.title} photo ${i + 1}`}
                       onClick={() => setLightboxSrc(img)}
-                      className="relative h-36 rounded-2xl overflow-hidden shadow-xs cursor-pointer group"
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          setLightboxSrc(img);
+                        }
+                      }}
+                      className="relative h-36 rounded-2xl overflow-hidden shadow-xs cursor-pointer group focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#4A7244]/60"
                     >
                       <Image
                         src={typeof img === "string" && img ? img : "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=1200&q=80"}
-                        alt="Gallery"
+                        alt={`${tour.title} photo ${i + 1}`}
                         fill
                         sizes="(max-width: 768px) 50vw, 25vw"
                         className="object-cover group-hover:scale-110 transition-transform"
@@ -267,10 +276,10 @@ export default function TourDetailClientView({ tour }: { tour: Tour }) {
             <div className="sticky top-28 space-y-6">
               <div className="p-8 rounded-3xl bg-[#F7EFEA] border border-[#E8DCD5] shadow-xl space-y-6">
                 <div>
-                  <span className="text-xs uppercase tracking-widest text-[#997C70] font-medium block">Starting Price</span>
+                  <span className="text-xs uppercase tracking-widest text-[#7A6862] font-medium block">Starting Price</span>
                   <div className="flex items-baseline gap-2 mt-1">
                     <span className="text-3xl font-bold text-[#685752]">{tour.price}</span>
-                    <span className="text-xs text-[#997C70]">/ person</span>
+                    <span className="text-xs text-[#7A6862]">/ person</span>
                   </div>
                 </div>
 
@@ -285,14 +294,14 @@ export default function TourDetailClientView({ tour }: { tour: Tour }) {
                   </div>
                   <div className="flex items-center justify-between">
                     <span>Booking Advance:</span>
-                    <span className="font-semibold text-[#8EB486]">₹3,000 to reserve</span>
+                    <span className="font-semibold text-[#4A7244]">₹3,000 to reserve</span>
                   </div>
                 </div>
 
                 <div className="space-y-3 pt-2">
                   <button
                     onClick={() => setEnquireOpen(true)}
-                    className="w-full py-3.5 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white font-semibold text-sm shadow-md transition-all cursor-pointer flex items-center justify-center gap-2"
+                    className="w-full py-3.5 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white font-semibold text-sm shadow-md transition-all cursor-pointer flex items-center justify-center gap-2"
                   >
                     Enquire About This Trip
                   </button>
@@ -320,12 +329,12 @@ export default function TourDetailClientView({ tour }: { tour: Tour }) {
       {/* Mobile Sticky Bottom CTA */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#FDF7F4] border-t border-[#E8DCD5] p-3 px-4 flex items-center justify-between shadow-2xl gap-3">
         <div>
-          <span className="text-[10px] uppercase text-[#997C70] block font-medium">Starting From</span>
+          <span className="text-xs uppercase text-[#7A6862] block font-medium">Starting From</span>
           <span className="text-xl font-bold text-[#685752]">{tour.price}</span>
         </div>
         <button
           onClick={() => setEnquireOpen(true)}
-          className="px-6 py-2.5 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white font-semibold text-xs shadow-md transition-colors cursor-pointer"
+          className="px-6 py-2.5 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white font-semibold text-xs shadow-md transition-colors cursor-pointer"
         >
           Enquire About This Trip
         </button>

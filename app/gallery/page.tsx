@@ -22,7 +22,7 @@ export default function GalleryPage() {
       <section className="relative overflow-hidden w-full py-16 sm:py-24 bg-[#F7EFEA] border-b border-[#E8DCD5]">
         <AmbientCircles variant="5" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center sm:text-left">
-          <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold">
+          <span className="text-xs uppercase tracking-widest text-[#4A7244] font-bold">
             Visual Storytelling
           </span>
           <h1 className="text-4xl sm:text-6xl font-bold tracking-tight text-[#685752] mt-2">

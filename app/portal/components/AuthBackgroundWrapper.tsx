@@ -11,7 +11,7 @@ interface AuthBackgroundWrapperProps {
 
 export default function AuthBackgroundWrapper({ children }: AuthBackgroundWrapperProps) {
   return (
-    <div className="relative min-h-screen w-full flex flex-col justify-between overflow-x-hidden font-sans selection:bg-[#8EB486] selection:text-white">
+    <div className="relative min-h-screen w-full flex flex-col justify-between overflow-x-hidden font-sans selection:bg-[#4A7244] selection:text-white">
       {/* Background Scenic Image with Multi-layer Atmospheric Overlay */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <Image
@@ -69,7 +69,7 @@ export default function AuthBackgroundWrapper({ children }: AuthBackgroundWrappe
                   <MapPin className="w-3.5 h-3.5 text-[#8EB486]" />
                   <span>50+ Destinations</span>
                 </div>
-                <p className="text-[11px] text-stone-300">Spiti, Kashmir, Meghalaya & more</p>
+                <p className="text-xs text-stone-300">Spiti, Kashmir, Meghalaya & more</p>
               </div>
 
               <div className="p-3.5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/15 space-y-1">
@@ -77,7 +77,7 @@ export default function AuthBackgroundWrapper({ children }: AuthBackgroundWrappe
                   <ShieldCheck className="w-3.5 h-3.5 text-[#8EB486]" />
                   <span>Verified Bookings</span>
                 </div>
-                <p className="text-[11px] text-stone-300">Instant vouchers & support</p>
+                <p className="text-xs text-stone-300">Instant vouchers & support</p>
               </div>
             </div>
           </div>

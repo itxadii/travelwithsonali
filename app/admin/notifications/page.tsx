@@ -34,7 +34,7 @@ export default function NotificationsPage() {
         <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#685752] font-serif-italic">
           Notifications Center
         </h1>
-        <p className="text-xs text-[#997C70] mt-1">
+        <p className="text-xs text-[#7A6862] mt-1">
           Operational alerts, booking confirmations, and payment activity.
         </p>
       </div>
@@ -49,7 +49,7 @@ export default function NotificationsPage() {
               <div className="flex-1 text-xs">
                 <div className="flex items-center justify-between">
                   <h4 className="font-bold text-[#685752] text-sm">{n.title}</h4>
-                  <span className="text-[10px] text-[#997C70]">{n.date}</span>
+                  <span className="text-xs text-[#7A6862]">{n.date}</span>
                 </div>
                 <p className="text-[#666059] mt-1 leading-relaxed">{n.message}</p>
               </div>

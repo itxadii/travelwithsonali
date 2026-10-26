@@ -61,7 +61,7 @@ export default function CustomerTripsPage() {
         <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#685752] font-serif-italic">
           My Journeys & Trips
         </h1>
-        <p className="text-xs text-[#997C70] mt-1">
+        <p className="text-xs text-[#7A6862] mt-1">
           View all your booked group expeditions, itineraries, and past travel memories.
         </p>
       </div>
@@ -82,8 +82,8 @@ export default function CustomerTripsPage() {
               onClick={() => setActiveTab(tab)}
               className={`px-4 py-2 rounded-full text-xs font-semibold transition-all cursor-pointer ${
                 activeTab === tab
-                  ? "bg-[#8EB486] text-white shadow-sm"
-                  : "bg-white text-[#997C70] hover:text-[#685752] border border-[#E8DCD5]"
+                  ? "bg-[#4A7244] text-white shadow-sm"
+                  : "bg-white text-[#7A6862] hover:text-[#685752] border border-[#E8DCD5]"
               }`}
             >
               <span>{tab} Trips</span>
@@ -95,14 +95,14 @@ export default function CustomerTripsPage() {
 
       {/* Trips Grid */}
       {loading ? (
-        <div className="py-12 text-center text-xs text-[#997C70]">Loading trips...</div>
+        <div className="py-12 text-center text-xs text-[#7A6862]">Loading trips...</div>
       ) : currentList.length === 0 ? (
         <div className="p-12 rounded-3xl bg-white border border-[#E8DCD5] text-center space-y-3">
           <p className="text-sm font-semibold text-[#685752]">No {activeTab.toLowerCase()} trips found.</p>
           {activeTab === "Upcoming" && (
             <Link
               href="/tours"
-              className="inline-flex items-center gap-1.5 px-6 py-2.5 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white text-xs font-semibold shadow-xs hover:shadow-md transition-all active:scale-95 group"
+              className="inline-flex items-center gap-1.5 px-6 py-2.5 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white text-xs font-semibold shadow-xs hover:shadow-md transition-all active:scale-95 group"
             >
               <span>Explore Group Departures</span>
               <ChevronRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" />
@@ -124,30 +124,30 @@ export default function CustomerTripsPage() {
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-700"
                   />
-                  <span className="absolute top-3 left-3 px-3 py-1 rounded-full bg-black/60 text-white text-[11px] font-semibold backdrop-blur-xs">
+                  <span className="absolute top-3 left-3 px-3 py-1 rounded-full bg-black/60 text-white text-xs font-semibold backdrop-blur-xs">
                     {trip.duration}
                   </span>
-                  <span className="absolute top-3 right-3 px-3 py-1 rounded-full bg-emerald-500 text-white text-[11px] font-bold shadow-md">
+                  <span className="absolute top-3 right-3 px-3 py-1 rounded-full bg-emerald-500 text-white text-xs font-bold shadow-md">
                     {trip.bookingStatus}
                   </span>
                 </div>
 
                 <div>
-                  <span className="text-[10px] uppercase font-bold text-[#8EB486] tracking-widest">
+                  <span className="text-xs uppercase font-bold text-[#4A7244] tracking-widest">
                     BOOKING {trip.bookingCode}
                   </span>
-                  <h3 className="text-xl font-bold text-[#685752] group-hover:text-[#8EB486] transition-colors mt-0.5">
+                  <h3 className="text-xl font-bold text-[#685752] group-hover:text-[#4A7244] transition-colors mt-0.5">
                     {trip.tourTitle}
                   </h3>
                 </div>
 
-                <div className="space-y-1.5 text-xs text-[#997C70]">
+                <div className="space-y-1.5 text-xs text-[#7A6862]">
                   <div className="flex items-center gap-2">
-                    <Calendar className="w-3.5 h-3.5 text-[#8EB486]" />
+                    <Calendar className="w-3.5 h-3.5 text-[#4A7244]" />
                     <span>Departure: <strong className="text-[#685752]">{trip.departureDate}</strong></span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Users className="w-3.5 h-3.5 text-[#8EB486]" />
+                    <Users className="w-3.5 h-3.5 text-[#4A7244]" />
                     <span>Travellers: <strong className="text-[#685752]">{trip.travellersCount} Person(s)</strong></span>
                   </div>
                 </div>
@@ -155,13 +155,13 @@ export default function CustomerTripsPage() {
 
               <div className="pt-4 border-t border-[#E8DCD5] flex items-center justify-between mt-6">
                 <div>
-                  <span className="text-[10px] uppercase text-[#997C70] font-semibold block">Total Cost</span>
+                  <span className="text-xs uppercase text-[#7A6862] font-semibold block">Total Cost</span>
                   <span className="text-sm font-bold text-[#685752]">₹{trip.totalAmount.toLocaleString("en-IN")}</span>
                 </div>
 
                 <Link
                   href={`/portal/trips/${trip.id}`}
-                  className="px-5 py-2 rounded-full bg-[#FDF7F4] border border-[#E8DCD5] hover:bg-[#8EB486] hover:text-white hover:border-[#8EB486] text-[#685752] text-xs font-semibold transition-all inline-flex items-center gap-1.5"
+                  className="px-5 py-2 rounded-full bg-[#FDF7F4] border border-[#E8DCD5] hover:bg-[#4A7244] hover:text-white hover:border-[#8EB486] text-[#685752] text-xs font-semibold transition-all inline-flex items-center gap-1.5"
                 >
                   <span>View Trip</span>
                   <ChevronRight className="w-3.5 h-3.5" />

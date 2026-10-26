@@ -206,6 +206,18 @@ export const documents = pgTable("documents", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
+// 10b. Uploaded document files (kept apart from documents so list queries stay light)
+export const documentFiles = pgTable("document_files", {
+  documentId: text("document_id")
+    .primaryKey()
+    .references(() => documents.id, { onDelete: "cascade" }),
+  fileName: text("file_name").notNull(),
+  mimeType: text("mime_type").notNull(),
+  sizeBytes: integer("size_bytes").notNull(),
+  dataBase64: text("data_base64").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 // 11. Notifications
 export const notifications = pgTable("notifications", {
   id: text("id").primaryKey(),
@@ -240,7 +252,7 @@ export const reviews = pgTable("reviews", {
   comment: text("comment").notNull(),
   location: text("location"),
   tripDate: text("trip_date"),
-  isApproved: boolean("is_approved").notNull().default(true),
+  isApproved: boolean("is_approved").notNull().default(false),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });

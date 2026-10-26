@@ -6,6 +6,7 @@ import { Plus, ArrowUpRight } from "lucide-react";
 import { GooeyInput } from "@/components/ui/gooey-input";
 import { TOURS_DATA } from "@/app/data/toursData";
 
+import { useEscapeKey } from "@/lib/useEscapeKey";
 interface BookingListItem {
   id: string;
   bookingCode: string;
@@ -31,6 +32,7 @@ export default function BookingsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [createModalOpen, setCreateModalOpen] = useState(false);
+  useEscapeKey(createModalOpen, () => setCreateModalOpen(false));
   const [loading, setLoading] = useState(true);
 
   // New Booking Form
@@ -126,14 +128,14 @@ export default function BookingsPage() {
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#685752] font-serif-italic">
             Bookings Ledger
           </h1>
-          <p className="text-xs text-[#997C70] mt-1">
+          <p className="text-xs text-[#7A6862] mt-1">
             Confirmed group trip reservations, commercial price snapshots & payment statuses.
           </p>
         </div>
 
         <button
           onClick={() => setCreateModalOpen(true)}
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white text-xs font-semibold shadow-md transition-all cursor-pointer"
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white text-xs font-semibold shadow-md transition-all cursor-pointer"
         >
           <Plus className="w-4 h-4" />
           <span>Create Booking</span>
@@ -158,7 +160,7 @@ export default function BookingsPage() {
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-[11px] uppercase text-[#997C70] font-bold">Booking Status:</span>
+          <span className="text-xs uppercase text-[#7A6862] font-bold">Booking Status:</span>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
@@ -178,14 +180,14 @@ export default function BookingsPage() {
       {/* Bookings Table */}
       <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs">
         {loading ? (
-          <div className="py-12 text-center text-xs text-[#997C70]">Loading bookings...</div>
+          <div className="py-12 text-center text-xs text-[#7A6862]">Loading bookings...</div>
         ) : filteredBookings.length === 0 ? (
-          <div className="py-16 text-center text-sm text-[#997C70]">No bookings found.</div>
+          <div className="py-16 text-center text-sm text-[#7A6862]">No bookings found.</div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
-                <tr className="border-b border-[#E8DCD5] text-[#997C70] uppercase tracking-wider">
+                <tr className="border-b border-[#E8DCD5] text-[#7A6862] uppercase tracking-wider">
                   <th className="pb-3 font-semibold">Booking Code</th>
                   <th className="pb-3 font-semibold">Customer</th>
                   <th className="pb-3 font-semibold">Tour</th>
@@ -201,7 +203,7 @@ export default function BookingsPage() {
               <tbody className="divide-y divide-[#E8DCD5]">
                 {filteredBookings.map((b) => (
                   <tr key={b.id} className="hover:bg-[#FDF7F4] transition-colors">
-                    <td className="py-3.5 font-bold text-[#8EB486]">{b.bookingCode}</td>
+                    <td className="py-3.5 font-bold text-[#4A7244]">{b.bookingCode}</td>
                     <td className="py-3.5 text-[#685752] font-semibold">{b.customerName}</td>
                     <td className="py-3.5 text-[#685752] max-w-[180px] truncate">{b.tourTitle}</td>
                     <td className="py-3.5 text-[#666059]">{b.departureDate}</td>
@@ -210,7 +212,7 @@ export default function BookingsPage() {
                     <td className="py-3.5 font-semibold text-emerald-700">₹{b.paidAmount.toLocaleString("en-IN")}</td>
                     <td className="py-3.5">
                       <span
-                        className={`px-2.5 py-0.5 rounded-full text-[10px] font-semibold ${
+                        className={`px-2.5 py-0.5 rounded-full text-xs font-semibold ${
                           b.paymentStatus === "Paid"
                             ? "bg-emerald-100 text-emerald-800"
                             : b.paymentStatus === "Partially Paid"
@@ -222,14 +224,14 @@ export default function BookingsPage() {
                       </span>
                     </td>
                     <td className="py-3.5">
-                      <span className="px-2.5 py-0.5 rounded-md bg-[#FDF7F4] text-[#685752] text-[10px] font-semibold border border-[#E8DCD5]">
+                      <span className="px-2.5 py-0.5 rounded-md bg-[#FDF7F4] text-[#685752] text-xs font-semibold border border-[#E8DCD5]">
                         {b.bookingStatus}
                       </span>
                     </td>
                     <td className="py-3.5 text-right">
                       <Link
                         href={`/admin/bookings/${b.id}`}
-                        className="px-3 py-1.5 rounded-xl bg-[#FDF7F4] border border-[#E8DCD5] hover:bg-[#8EB486] hover:text-white hover:border-[#8EB486] text-[#685752] text-[11px] font-semibold transition-colors inline-flex items-center gap-1"
+                        className="px-3 py-1.5 rounded-xl bg-[#FDF7F4] border border-[#E8DCD5] hover:bg-[#4A7244] hover:text-white hover:border-[#8EB486] text-[#685752] text-xs font-semibold transition-colors inline-flex items-center gap-1"
                       >
                         <span>Manage</span>
                         <ArrowUpRight className="w-3 h-3" />
@@ -252,7 +254,7 @@ export default function BookingsPage() {
             <form onSubmit={handleCreateBooking} className="space-y-4 text-xs">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="text-[#997C70] font-semibold">Customer Name *</label>
+                  <label className="text-[#7A6862] font-semibold">Customer Name *</label>
                   <input
                     type="text"
                     required
@@ -263,7 +265,7 @@ export default function BookingsPage() {
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[#997C70] font-semibold">Customer Phone *</label>
+                  <label className="text-[#7A6862] font-semibold">Customer Phone *</label>
                   <input
                     type="text"
                     required
@@ -276,7 +278,7 @@ export default function BookingsPage() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-[#997C70] font-semibold">Select Tour (from Sanity published list)</label>
+                <label className="text-[#7A6862] font-semibold">Select Tour (from Sanity published list)</label>
                 <select
                   value={formData.tourTitle}
                   onChange={(e) => handleTourChange(e.target.value)}
@@ -292,7 +294,7 @@ export default function BookingsPage() {
 
               <div className="grid grid-cols-3 gap-4">
                 <div className="space-y-1">
-                  <label className="text-[#997C70] font-semibold">Travellers</label>
+                  <label className="text-[#7A6862] font-semibold">Travellers</label>
                   <input
                     type="number"
                     min="1"
@@ -302,7 +304,7 @@ export default function BookingsPage() {
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[#997C70] font-semibold">Price / Person (₹)</label>
+                  <label className="text-[#7A6862] font-semibold">Price / Person (₹)</label>
                   <input
                     type="number"
                     value={formData.pricePerTraveller}
@@ -311,7 +313,7 @@ export default function BookingsPage() {
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[#997C70] font-semibold">Discount (₹)</label>
+                  <label className="text-[#7A6862] font-semibold">Discount (₹)</label>
                   <input
                     type="number"
                     value={formData.discount}
@@ -323,23 +325,23 @@ export default function BookingsPage() {
 
               {/* Price Calculation Summary Box */}
               <div className="p-4 rounded-2xl bg-[#FDF7F4] border border-[#E8DCD5] space-y-1 text-xs">
-                <div className="flex justify-between text-[#997C70]">
+                <div className="flex justify-between text-[#7A6862]">
                   <span>Subtotal ({formData.travellersCount} x ₹{formData.pricePerTraveller}):</span>
                   <span className="text-[#685752] font-bold">₹{(formData.travellersCount * formData.pricePerTraveller).toLocaleString("en-IN")}</span>
                 </div>
-                <div className="flex justify-between text-[#997C70]">
+                <div className="flex justify-between text-[#7A6862]">
                   <span>Discount:</span>
                   <span className="text-rose-600 font-bold">- ₹{formData.discount.toLocaleString("en-IN")}</span>
                 </div>
                 <div className="flex justify-between text-[#685752] font-bold text-sm pt-2 border-t border-[#E8DCD5]">
                   <span>Agreed Booking Total:</span>
-                  <span className="text-[#8EB486]">₹{Math.max(0, formData.travellersCount * formData.pricePerTraveller - formData.discount).toLocaleString("en-IN")}</span>
+                  <span className="text-[#4A7244]">₹{Math.max(0, formData.travellersCount * formData.pricePerTraveller - formData.discount).toLocaleString("en-IN")}</span>
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="text-[#997C70] font-semibold">Advance Payment Amount (₹)</label>
+                  <label className="text-[#7A6862] font-semibold">Advance Payment Amount (₹)</label>
                   <input
                     type="number"
                     value={formData.advancePayment}
@@ -348,7 +350,7 @@ export default function BookingsPage() {
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[#997C70] font-semibold">Payment Method</label>
+                  <label className="text-[#7A6862] font-semibold">Payment Method</label>
                   <select
                     value={formData.paymentMethod}
                     onChange={(e) => setFormData({ ...formData, paymentMethod: e.target.value })}
@@ -364,7 +366,7 @@ export default function BookingsPage() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-[#997C70] font-semibold">Departure Date</label>
+                <label className="text-[#7A6862] font-semibold">Departure Date</label>
                 <input
                   type="text"
                   value={formData.departureDate}
@@ -384,7 +386,7 @@ export default function BookingsPage() {
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-2 rounded-full bg-[#8EB486] text-white font-semibold cursor-pointer shadow-sm"
+                  className="px-6 py-2 rounded-full bg-[#4A7244] text-white font-semibold cursor-pointer shadow-sm"
                 >
                   Create Booking
                 </button>

@@ -64,14 +64,14 @@ export default function CustomerNotificationsPage() {
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#685752] font-serif-italic">
             Notification Center
           </h1>
-          <p className="text-xs text-[#997C70] mt-1">
+          <p className="text-xs text-[#7A6862] mt-1">
             Booking confirmations, payment updates, and important trip alerts.
           </p>
         </div>
 
         <button
           onClick={handleMarkAllRead}
-          className="text-xs font-semibold text-[#8EB486] hover:underline cursor-pointer"
+          className="text-xs font-semibold text-[#4A7244] hover:underline cursor-pointer"
         >
           Mark all as read
         </button>
@@ -79,9 +79,9 @@ export default function CustomerNotificationsPage() {
 
       <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-4">
         {loading ? (
-          <div className="py-12 text-center text-xs text-[#997C70]">Loading notifications...</div>
+          <div className="py-12 text-center text-xs text-[#7A6862]">Loading notifications...</div>
         ) : notifications.length === 0 ? (
-          <div className="py-16 text-center text-sm text-[#997C70]">You&apos;re all caught up! No new notifications.</div>
+          <div className="py-16 text-center text-sm text-[#7A6862]">You&apos;re all caught up! No new notifications.</div>
         ) : (
           <div className="space-y-3">
             {notifications.map((n) => (
@@ -98,7 +98,7 @@ export default function CustomerNotificationsPage() {
                 <div className="flex-1 text-xs">
                   <div className="flex items-center justify-between">
                     <h4 className="font-bold text-[#685752] text-sm">{n.title}</h4>
-                    <span className="text-[10px] text-[#997C70]">
+                    <span className="text-xs text-[#7A6862]">
                       {new Date(n.createdAt).toLocaleDateString("en-IN", { month: "short", day: "numeric" })}
                     </span>
                   </div>

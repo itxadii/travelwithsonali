@@ -42,7 +42,7 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FDF7F4] text-[#685752] flex items-center justify-center p-4 font-sans selection:bg-[#8EB486] selection:text-white">
+    <div className="min-h-screen bg-[#FDF7F4] text-[#685752] flex items-center justify-center p-4 font-sans selection:bg-[#4A7244] selection:text-white">
       <div className="w-full max-w-md bg-white rounded-3xl p-8 border border-[#E8DCD5] shadow-xl space-y-8">
         
         {/* Brand Banner */}
@@ -58,7 +58,7 @@ export default function AdminLoginPage() {
             />
           </div>
 
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#8EB486]/10 text-[#8EB486] text-xs font-semibold tracking-wider uppercase">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#8EB486]/10 text-[#4A7244] text-xs font-semibold tracking-wider uppercase">
             <Sparkles className="w-3.5 h-3.5" />
             Travel Operations Control
           </div>
@@ -66,7 +66,7 @@ export default function AdminLoginPage() {
           <h1 className="text-3xl font-bold tracking-tight text-[#685752] font-serif-italic">
             Travel With Sonali
           </h1>
-          <p className="text-xs text-[#997C70]">
+          <p className="text-xs text-[#7A6862]">
             Welcome Back. Sign in to manage your travel operations.
           </p>
         </div>
@@ -80,7 +80,7 @@ export default function AdminLoginPage() {
           )}
 
           <div className="space-y-1.5">
-            <label className="text-xs font-semibold uppercase tracking-wider text-[#997C70]">
+            <label className="text-xs font-semibold uppercase tracking-wider text-[#7A6862]">
               Email Address
             </label>
             <div className="relative">
@@ -97,7 +97,7 @@ export default function AdminLoginPage() {
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-xs font-semibold uppercase tracking-wider text-[#997C70]">
+            <label className="text-xs font-semibold uppercase tracking-wider text-[#7A6862]">
               Password
             </label>
             <div className="relative">
@@ -111,6 +111,7 @@ export default function AdminLoginPage() {
                 className="w-full pl-10 pr-10 py-3 rounded-2xl bg-[#FDF7F4] border border-[#E8DCD5] text-sm text-[#685752] placeholder-[#9A938C] focus:outline-none focus:border-[#8EB486] focus:bg-white transition-all"
               />
               <button
+                aria-label={showPassword ? "Hide password" : "Show password"}
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3.5 top-3.5 text-[#9A938C] hover:text-[#685752] transition-colors"
@@ -123,13 +124,13 @@ export default function AdminLoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3.5 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white font-semibold text-sm shadow-md transition-all cursor-pointer disabled:opacity-50"
+            className="w-full py-3.5 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white font-semibold text-sm shadow-md transition-all cursor-pointer disabled:opacity-50"
           >
             {loading ? "Authenticating..." : "Sign In to Admin Panel"}
           </button>
         </form>
 
-        <div className="pt-4 border-t border-[#E8DCD5] text-center text-xs text-[#997C70] flex items-center justify-center gap-1.5">
+        <div className="pt-4 border-t border-[#E8DCD5] text-center text-xs text-[#7A6862] flex items-center justify-center gap-1.5">
           <ShieldCheck className="w-4 h-4 text-emerald-600" />
           <span>Encrypted Session • Neon PostgreSQL Protection</span>
         </div>

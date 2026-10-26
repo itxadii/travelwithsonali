@@ -11,6 +11,7 @@ import {
   Copy,
 } from "lucide-react";
 
+import { useEscapeKey } from "@/lib/useEscapeKey";
 export interface ExtendedPaymentRecord {
   id: string;
   bookingId: string;
@@ -45,6 +46,7 @@ interface PaymentInvoiceModalProps {
 
 export default function PaymentInvoiceModal({ payment, onClose }: PaymentInvoiceModalProps) {
   const [copied, setCopied] = useState(false);
+  useEscapeKey(Boolean(payment), onClose);
 
   if (!payment) return null;
 
@@ -521,7 +523,7 @@ Mumbai / Delhi & Rishikesh, India`;
             </span>
             <div>
               <h3 className="text-sm font-bold text-[#685752]">Official Payment Invoice</h3>
-              <p className="text-[11px] text-[#997C70]">{invoiceNumber}</p>
+              <p className="text-[11px] text-[#7A6862]">{invoiceNumber}</p>
             </div>
           </div>
 
@@ -565,7 +567,7 @@ Mumbai / Delhi & Rishikesh, India`;
             <button
               type="button"
               onClick={handlePrintPdf}
-              className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white text-xs font-bold uppercase tracking-wider shadow-sm active:scale-95 transition-all cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white text-xs font-bold uppercase tracking-wider shadow-sm active:scale-95 transition-all cursor-pointer"
               title="Download or Print PDF Invoice"
             >
               <Download className="w-3.5 h-3.5" />
@@ -575,8 +577,9 @@ Mumbai / Delhi & Rishikesh, India`;
             {/* Close Button */}
             <button
               type="button"
+              aria-label="Close invoice"
               onClick={onClose}
-              className="p-1.5 rounded-full text-[#997C70] hover:text-[#685752] hover:bg-black/5 transition-colors cursor-pointer"
+              className="p-1.5 rounded-full text-[#7A6862] hover:text-[#685752] hover:bg-black/5 transition-colors cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -606,7 +609,7 @@ Mumbai / Delhi & Rishikesh, India`;
                     <h1 className="text-xl font-extrabold text-[#685752] tracking-tight leading-tight">
                       TRAVEL WITH SONALI
                     </h1>
-                    <p className="text-[10px] uppercase font-bold tracking-widest text-[#8EB486]">
+                    <p className="text-[10px] uppercase font-bold tracking-widest text-[#4A7244]">
                       Curated Group Tours & Soulful Journeys
                     </p>
                   </div>
@@ -620,7 +623,7 @@ Mumbai / Delhi & Rishikesh, India`;
               </div>
 
               <div className="text-left sm:text-right shrink-0">
-                <span className="text-xs uppercase font-extrabold tracking-wider text-[#997C70] block">
+                <span className="text-xs uppercase font-extrabold tracking-wider text-[#7A6862] block">
                   PAYMENT RECEIPT
                 </span>
                 <span className="text-lg font-bold text-[#685752] block font-mono">
@@ -640,7 +643,7 @@ Mumbai / Delhi & Rishikesh, India`;
             {/* Billed To & Trip Information Box */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 rounded-xl bg-[#FDF7F4] border border-[#E8DCD5]">
               <div className="space-y-1">
-                <span className="text-[10px] uppercase font-extrabold tracking-wider text-[#997C70] block">
+                <span className="text-[10px] uppercase font-extrabold tracking-wider text-[#7A6862] block">
                   Billed To (Traveller)
                 </span>
                 <h4 className="text-sm font-bold text-[#685752]">{clientName}</h4>
@@ -649,12 +652,12 @@ Mumbai / Delhi & Rishikesh, India`;
               </div>
 
               <div className="space-y-1 sm:border-l sm:border-[#E8DCD5] sm:pl-4">
-                <span className="text-[10px] uppercase font-extrabold tracking-wider text-[#997C70] block">
+                <span className="text-[10px] uppercase font-extrabold tracking-wider text-[#7A6862] block">
                   Trip & Booking Details
                 </span>
                 <h4 className="text-sm font-bold text-[#685752]">{tourName}</h4>
                 <p className="text-xs text-[#7A6862]">
-                  Booking Code: <span className="font-semibold text-[#8EB486]">{displayBookingCode}</span>
+                  Booking Code: <span className="font-semibold text-[#4A7244]">{displayBookingCode}</span>
                 </p>
                 <p className="text-xs text-[#7A6862]">
                   Departure: {payment.departureDate || "Scheduled Batch"} • {payment.travellersCount || 1} Traveller(s)
@@ -677,7 +680,7 @@ Mumbai / Delhi & Rishikesh, India`;
                   <tr>
                     <td className="py-3.5 px-3">
                       <p className="font-bold text-[#685752]">Tour Package Payment</p>
-                      <p className="text-[11px] text-[#997C70]">
+                      <p className="text-[11px] text-[#7A6862]">
                         {payment.notes || "Advance booking payment"}
                       </p>
                     </td>
@@ -701,10 +704,10 @@ Mumbai / Delhi & Rishikesh, India`;
             <div className="flex flex-col sm:flex-row justify-between items-start gap-4 pt-2">
               <div className="text-xs text-[#7A6862] space-y-1 max-w-xs">
                 <p className="font-bold text-[#685752]">Payment Acknowledgement</p>
-                <p className="text-[11px] text-[#997C70]">
+                <p className="text-[11px] text-[#7A6862]">
                   Recorded by: <span className="font-medium text-[#685752]">{payment.recordedBy}</span>
                 </p>
-                <p className="text-[11px] text-[#997C70]">
+                <p className="text-[11px] text-[#7A6862]">
                   Status: Electronic payment receipt verified and recorded in Travel With Sonali ledger.
                 </p>
               </div>
@@ -730,7 +733,7 @@ Mumbai / Delhi & Rishikesh, India`;
             </div>
 
             {/* Terms & Signature Footer */}
-            <div className="border-t border-[#E8DCD5] pt-4 mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-[10px] text-[#997C70]">
+            <div className="border-t border-[#E8DCD5] pt-4 mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-[10px] text-[#7A6862]">
               <div className="space-y-0.5 text-center sm:text-left">
                 <p>• Payments are governed by Travel With Sonali booking and cancellation terms.</p>
                 <p>• This is a computer-generated tax invoice & receipt requiring no physical signature.</p>
@@ -738,7 +741,7 @@ Mumbai / Delhi & Rishikesh, India`;
 
               <div className="text-center sm:text-right shrink-0">
                 <p className="font-serif-italic font-bold text-sm text-[#685752]">Sonali Palekar</p>
-                <p className="text-[9px] uppercase tracking-wider text-[#997C70]">Founder & Lead Explorer</p>
+                <p className="text-[9px] uppercase tracking-wider text-[#7A6862]">Founder & Lead Explorer</p>
               </div>
             </div>
           </div>

@@ -110,7 +110,7 @@ export default function HomeClientView({ tours, destinations, instagramData }: H
   };
 
   return (
-    <div className="min-h-screen bg-[#FDF7F4] text-[#685752] flex flex-col font-sans selection:bg-[#8EB486] selection:text-white">
+    <div className="min-h-screen bg-[#FDF7F4] text-[#685752] flex flex-col font-sans selection:bg-[#4A7244] selection:text-white">
       {/* Global Header Navigation */}
       <Navbar logoName="Travel With Sonali" />
 
@@ -158,7 +158,7 @@ export default function HomeClientView({ tours, destinations, instagramData }: H
                   <div className="relative w-full max-w-[280px] sm:max-w-[320px]">
                     <div className="relative w-full h-[360px] sm:h-[420px] rounded-[140px] sm:rounded-[160px] overflow-hidden border-4 border-white/20 shadow-2xl group transition-all duration-500 hover:shadow-3xl">
                       <Image
-                        src="/images/hero.png"
+                        src="/images/hero.jpg"
                         alt="Sonali Palekar - Travel With Sonali"
                         fill
                         priority
@@ -170,7 +170,7 @@ export default function HomeClientView({ tours, destinations, instagramData }: H
                     {/* Floating CTA circle button */}
                     <button
                       onClick={() => handleEnquireClick("Manali & Kasol Group Trip")}
-                      className="absolute -bottom-2 right-2 sm:bottom-4 sm:-right-2 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#8EB486] text-white flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all border-3 border-stone-900 cursor-pointer"
+                      className="absolute -bottom-2 right-2 sm:bottom-4 sm:-right-2 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#4A7244] text-white flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all border-3 border-stone-900 cursor-pointer"
                       aria-label="Book Manali & Kasol"
                     >
                       <ArrowUpRight className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -181,7 +181,7 @@ export default function HomeClientView({ tours, destinations, instagramData }: H
                 <div className="mt-6 sm:mt-8 flex flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-4">
                   <Link
                     href="/tours"
-                    className="inline-flex items-center gap-2 bg-[#8EB486] hover:bg-[#7A9F73] text-white px-6 sm:px-7 py-3 sm:py-3.5 rounded-full font-semibold text-sm sm:text-base transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
+                    className="inline-flex items-center gap-2 bg-[#4A7244] hover:bg-[#3F6339] text-white px-6 sm:px-7 py-3 sm:py-3.5 rounded-full font-semibold text-sm sm:text-base transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
                   >
                     <span>Explore Tours</span>
                     <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-0.5 transition-transform" />
@@ -222,7 +222,7 @@ export default function HomeClientView({ tours, destinations, instagramData }: H
               <div className="relative w-full max-w-[280px] sm:max-w-[340px] lg:max-w-[400px]">
                 <div className="relative w-full h-[360px] sm:h-[480px] lg:h-[600px] rounded-[140px] sm:rounded-[180px] lg:rounded-[220px] overflow-hidden border-4 border-white/20 shadow-2xl group transition-all duration-500 hover:shadow-3xl">
                   <Image
-                    src="/images/hero.png"
+                    src="/images/hero.jpg"
                     alt="Sonali Palekar - Travel With Sonali"
                     fill
                     priority
@@ -234,7 +234,7 @@ export default function HomeClientView({ tours, destinations, instagramData }: H
                 {/* Floating CTA circle button */}
                 <button
                   onClick={() => handleEnquireClick("Manali & Kasol Group Trip")}
-                  className="absolute -bottom-2 right-2 sm:bottom-8 sm:-right-4 w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-[#8EB486] text-white flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all border-3 sm:border-4 border-stone-900 cursor-pointer"
+                  className="absolute -bottom-2 right-2 sm:bottom-8 sm:-right-4 w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-[#4A7244] text-white flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all border-3 sm:border-4 border-stone-900 cursor-pointer"
                   aria-label="Book Manali & Kasol"
                 >
                   <ArrowUpRight className="w-5 h-5 sm:w-7 sm:h-7" />
@@ -269,7 +269,7 @@ export default function HomeClientView({ tours, destinations, instagramData }: H
                     <div className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
                       2,500<span className="text-[#8EB486]">+</span>
                     </div>
-                    <div className="text-[11px] sm:text-xs text-stone-300 font-medium mt-0.5">
+                    <div className="text-xs text-stone-300 font-medium mt-0.5">
                       Happy users
                     </div>
                   </div>
@@ -278,7 +278,7 @@ export default function HomeClientView({ tours, destinations, instagramData }: H
                     <div className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
                       50<span className="text-[#8EB486]">+</span>
                     </div>
-                    <div className="text-[11px] sm:text-xs text-stone-300 font-medium mt-0.5">
+                    <div className="text-xs text-stone-300 font-medium mt-0.5">
                       Group Trips
                     </div>
                   </div>
@@ -311,7 +311,7 @@ export default function HomeClientView({ tours, destinations, instagramData }: H
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
             <div>
-              <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold">
+              <span className="text-xs uppercase tracking-widest text-[#4A7244] font-bold">
                 Upcoming Journeys
               </span>
               <h2 className="text-4xl sm:text-5xl font-bold tracking-tight text-[#685752] mt-2">
@@ -319,7 +319,7 @@ export default function HomeClientView({ tours, destinations, instagramData }: H
                 <SquigglyText
                   stepDuration={70}
                   scale={[4, 7]}
-                  className="text-[#8EB486] font-serif-italic"
+                  className="text-[#4A7244] font-serif-italic"
                 >
                   Going Next?
                 </SquigglyText>
@@ -331,7 +331,7 @@ export default function HomeClientView({ tours, destinations, instagramData }: H
 
             <Link
               href="/tours"
-              className="mt-6 md:mt-0 inline-flex items-center gap-2 text-sm font-semibold text-[#8EB486] hover:text-[#7A9F73] group"
+              className="mt-6 md:mt-0 inline-flex items-center gap-2 text-sm font-semibold text-[#4A7244] hover:text-[#3F6339] group"
             >
               <span>View All 8+ Upcoming Tours</span>
               <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -354,12 +354,12 @@ export default function HomeClientView({ tours, destinations, instagramData }: H
         {/* Section Heading Container */}
         <div className="relative z-30 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16 space-y-3">
-            <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold">
+            <span className="text-xs uppercase tracking-widest text-[#4A7244] font-bold">
               Meet Sonali & The Personal Touch
             </span>
             <h2 className="text-4xl sm:text-5xl font-bold tracking-tight text-[#685752]">
               Why Travel With{" "}
-              <span className="text-[#8EB486] font-serif-italic">
+              <span className="text-[#4A7244] font-serif-italic">
                 Sonali?
               </span>
             </h2>
@@ -384,10 +384,10 @@ export default function HomeClientView({ tours, destinations, instagramData }: H
               >
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <div className="w-11 h-11 rounded-2xl bg-[#8EB486]/15 text-[#8EB486] flex items-center justify-center shrink-0">
+                    <div className="w-11 h-11 rounded-2xl bg-[#8EB486]/15 text-[#4A7244] flex items-center justify-center shrink-0">
                       <item.icon className="w-5 h-5" />
                     </div>
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#8EB486] bg-[#8EB486]/10 px-3 py-1 rounded-full border border-[#8EB486]/20">
+                    <span className="text-xs font-bold uppercase tracking-wider text-[#4A7244] bg-[#8EB486]/10 px-3 py-1 rounded-full border border-[#8EB486]/20">
                       {item.tag}
                     </span>
                   </div>
@@ -402,9 +402,9 @@ export default function HomeClientView({ tours, destinations, instagramData }: H
                   </div>
                 </div>
 
-                <div className="pt-3 border-t border-[#E8DCD5]/70 flex items-center justify-between text-[11px] text-[#997C70]">
+                <div className="pt-3 border-t border-[#E8DCD5]/70 flex items-center justify-between text-xs text-[#7A6862]">
                   <span className="truncate">{item.perk}</span>
-                  <span className="font-mono text-[#8EB486] font-bold ml-2">{item.num}</span>
+                  <span className="font-mono text-[#4A7244] font-bold ml-2">{item.num}</span>
                 </div>
               </div>
             ))}
@@ -420,7 +420,7 @@ export default function HomeClientView({ tours, destinations, instagramData }: H
         <DraggableCardContainer className="relative flex min-h-[90vh] lg:min-h-screen w-full items-center justify-center overflow-clip py-16">
           {/* Centered Hero Heading & Call to Action */}
           <div className="pointer-events-none relative z-0 mx-auto flex max-w-2xl flex-col items-center gap-5 px-6 py-8 text-center select-none">
-            <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full border border-[#8EB486]/30 shadow-xs">
+            <span className="text-xs uppercase tracking-widest text-[#4A7244] font-bold bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full border border-[#8EB486]/30 shadow-xs">
               Handpicked Places & Sacred Valleys
             </span>
             
@@ -429,7 +429,7 @@ export default function HomeClientView({ tours, destinations, instagramData }: H
               <SquigglyText
                 stepDuration={70}
                 scale={[5, 8]}
-                className="text-[#8EB486]"
+                className="text-[#4A7244]"
               >
                 Destinations
               </SquigglyText>
@@ -442,7 +442,7 @@ export default function HomeClientView({ tours, destinations, instagramData }: H
             <div className="pointer-events-auto flex flex-wrap items-center justify-center gap-3 pt-2">
               <Link
                 href="/destinations"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white text-xs font-bold tracking-wider uppercase shadow-md hover:shadow-lg transition-all active:scale-95 cursor-pointer"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white text-xs font-bold tracking-wider uppercase shadow-md hover:shadow-lg transition-all active:scale-95 cursor-pointer"
               >
                 <span>View All Destinations</span>
                 <ChevronRight className="w-3.5 h-3.5" />
@@ -452,11 +452,11 @@ export default function HomeClientView({ tours, destinations, instagramData }: H
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white hover:bg-[#FDF7F4] text-[#685752] border border-[#E8DCD5] text-xs font-bold tracking-wider uppercase shadow-xs hover:shadow-sm transition-all active:scale-95 cursor-pointer"
               >
                 <span>Explore Tours</span>
-                <ChevronRight className="w-3.5 h-3.5 text-[#8EB486]" />
+                <ChevronRight className="w-3.5 h-3.5 text-[#4A7244]" />
               </Link>
             </div>
 
-            <div className="inline-flex items-center gap-2 pt-1 text-[11px] font-semibold text-[#997C70]/70 tracking-widest uppercase">
+            <div className="inline-flex items-center gap-2 pt-1 text-xs font-semibold text-[#997C70]/70 tracking-widest uppercase">
               <span>✦ Drag any card</span>
               <span>•</span>
               <span>Fling to toss</span>
@@ -544,10 +544,10 @@ export default function HomeClientView({ tours, destinations, instagramData }: H
                   sizes="(max-width: 640px) 288px, 320px"
                   className="pointer-events-none h-full w-full object-cover select-none"
                 />
-                <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-[11px] font-semibold border border-white/20">
+                <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-xs font-semibold border border-white/20">
                   {item.tag}
                 </div>
-                <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-[#8EB486] text-white text-[11px] font-bold shadow-xs">
+                <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-[#4A7244] text-white text-xs font-bold shadow-xs">
                   {item.badge}
                 </div>
               </div>
@@ -559,7 +559,7 @@ export default function HomeClientView({ tours, destinations, instagramData }: H
                   </h3>
                   <Link
                     href={`/destinations/${item.slug}`}
-                    className="text-xs font-semibold text-[#8EB486] hover:text-[#7A9F73] flex items-center gap-0.5"
+                    className="text-xs font-semibold text-[#4A7244] hover:text-[#3F6339] flex items-center gap-0.5"
                     onClick={(e) => e.stopPropagation()}
                   >
                     <span>Explore</span>
@@ -580,7 +580,7 @@ export default function HomeClientView({ tours, destinations, instagramData }: H
         <AmbientCircles variant="5" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16">
-            <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold">
+            <span className="text-xs uppercase tracking-widest text-[#4A7244] font-bold">
               Simple 4-Step Process
             </span>
             <h2 className="text-4xl sm:text-5xl font-bold text-[#685752] mt-2">
@@ -588,7 +588,7 @@ export default function HomeClientView({ tours, destinations, instagramData }: H
               <SquigglyText
                 stepDuration={70}
                 scale={[4, 7]}
-                className="text-[#8EB486] font-serif-italic"
+                className="text-[#4A7244] font-serif-italic"
               >
                 Works
               </SquigglyText>
@@ -622,7 +622,7 @@ export default function HomeClientView({ tours, destinations, instagramData }: H
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
             <div>
-              <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold">
+              <span className="text-xs uppercase tracking-widest text-[#4A7244] font-bold">
                 Editorial Journal
               </span>
               <h2 className="text-4xl sm:text-5xl font-bold text-[#685752] mt-2">
@@ -630,13 +630,13 @@ export default function HomeClientView({ tours, destinations, instagramData }: H
                 <SquigglyText
                   stepDuration={70}
                   scale={[4, 7]}
-                  className="text-[#8EB486] font-serif-italic"
+                  className="text-[#4A7244] font-serif-italic"
                 >
                   The Road
                 </SquigglyText>
               </h2>
             </div>
-            <Link href="/stories" className="mt-4 md:mt-0 inline-flex items-center gap-1 text-sm font-semibold text-[#8EB486] hover:underline group">
+            <Link href="/stories" className="mt-4 md:mt-0 inline-flex items-center gap-1 text-sm font-semibold text-[#4A7244] hover:underline group">
               <span>Read All Stories</span>
               <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
             </Link>
@@ -658,11 +658,11 @@ export default function HomeClientView({ tours, destinations, instagramData }: H
                     </span>
                   </Link>
                   <div className="mt-5 space-y-2.5">
-                    <div className="text-xs font-medium text-[#997C70]">
+                    <div className="text-xs font-medium text-[#7A6862]">
                       {story.date} • {story.readTime}
                     </div>
                     <Link href={`/stories/${story.slug}`} className="block">
-                      <h3 className="text-2xl sm:text-3xl font-bold text-[#685752] group-hover:text-[#8EB486] transition-colors leading-snug">
+                      <h3 className="text-2xl sm:text-3xl font-bold text-[#685752] group-hover:text-[#4A7244] transition-colors leading-snug">
                         {story.title}
                       </h3>
                     </Link>
@@ -672,7 +672,7 @@ export default function HomeClientView({ tours, destinations, instagramData }: H
                   </div>
                 </div>
                 <div className="pt-4 flex items-center justify-between mt-3">
-                  <Link href={`/stories/${story.slug}`} className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#8EB486] hover:underline group/btn">
+                  <Link href={`/stories/${story.slug}`} className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#4A7244] hover:underline group/btn">
                     <span>Read Story</span>
                     <ChevronRight className="w-4 h-4 group-hover/btn:translate-x-0.5 transition-transform" />
                   </Link>
@@ -691,7 +691,7 @@ export default function HomeClientView({ tours, destinations, instagramData }: H
             <div className="lg:col-span-5">
               <div className="relative h-[480px] sm:h-[560px] rounded-[100px] overflow-hidden shadow-2xl border-4 border-[#FDF7F4]">
                 <Image
-                  src="/images/sonali.png"
+                  src="/images/sonali.jpg"
                   alt="Sonali Palekar Founder"
                   fill
                   className="object-cover object-top"
@@ -700,12 +700,12 @@ export default function HomeClientView({ tours, destinations, instagramData }: H
             </div>
 
             <div className="lg:col-span-7 space-y-6">
-              <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold">
+              <span className="text-xs uppercase tracking-widest text-[#4A7244] font-bold">
                 Meet Your Host
               </span>
               <h2 className="text-4xl sm:text-5xl font-serif-italic font-bold text-[#685752]">
                 Meet{" "}
-                <span className="text-[#8EB486]">
+                <span className="text-[#4A7244]">
                   Sonali
                 </span>
               </h2>
@@ -721,7 +721,7 @@ export default function HomeClientView({ tours, destinations, instagramData }: H
               <div className="pt-2">
                 <Link
                   href="/about"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white font-semibold text-sm transition-all shadow-md"
+                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white font-semibold text-sm transition-all shadow-md"
                 >
                   <span>Read Our Full Story</span>
                   <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -737,7 +737,7 @@ export default function HomeClientView({ tours, destinations, instagramData }: H
         <AmbientCircles variant="3" />
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-16">
-            <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold">
+            <span className="text-xs uppercase tracking-widest text-[#4A7244] font-bold">
               Clear Answers
             </span>
             <h2 className="text-4xl sm:text-5xl font-bold text-[#685752] mt-2">
@@ -745,7 +745,7 @@ export default function HomeClientView({ tours, destinations, instagramData }: H
               <SquigglyText
                 stepDuration={70}
                 scale={[4, 7]}
-                className="text-[#8EB486] font-serif-italic"
+                className="text-[#4A7244] font-serif-italic"
               >
                 Your Bags...
               </SquigglyText>
@@ -762,7 +762,7 @@ export default function HomeClientView({ tours, destinations, instagramData }: H
                     className="w-full px-6 py-5 text-left font-bold text-[#685752] flex items-center justify-between gap-4 cursor-pointer"
                   >
                     <span className="text-base sm:text-lg">{faq.question}</span>
-                    <ChevronDown className={`w-5 h-5 text-[#8EB486] shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+                    <ChevronDown className={`w-5 h-5 text-[#4A7244] shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
                   </button>
                   {isOpen && (
                     <div className="px-6 pb-6 pt-2 text-sm text-[#7A6862] leading-relaxed border-t border-[#E8DCD5]/50">
@@ -775,7 +775,7 @@ export default function HomeClientView({ tours, destinations, instagramData }: H
           </div>
 
           <div className="text-center mt-10">
-            <Link href="/faq" className="inline-flex items-center gap-1 text-sm font-semibold text-[#8EB486] hover:underline group">
+            <Link href="/faq" className="inline-flex items-center gap-1 text-sm font-semibold text-[#4A7244] hover:underline group">
               <span>Have more questions? Read Full FAQ Page</span>
               <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
             </Link>

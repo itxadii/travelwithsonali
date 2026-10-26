@@ -2,6 +2,12 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import AmbientCircles from "../components/AmbientCircles";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Cancellation & Refund Policy | Travel With Sonali",
+  description: "Cancellation charges, refund timelines and rescheduling rules for Travel With Sonali trips.",
+};
 
 export default function CancellationPolicyPage() {
   return (
@@ -11,7 +17,7 @@ export default function CancellationPolicyPage() {
         <AmbientCircles variant="minimal" />
         <main className="relative z-10 max-w-4xl mx-auto px-4 py-16 space-y-6 text-[#7A6862] leading-relaxed text-sm sm:text-base">
         <h1 className="text-3xl sm:text-4xl font-bold text-[#685752]">Cancellation & Refund Policy</h1>
-        <p className="text-xs text-[#997C70]">Last updated: June 2026</p>
+        <p className="text-xs text-[#7A6862]">Last updated: June 2026</p>
 
         <section className="space-y-3">
           <h2 className="text-xl font-bold text-[#685752]">1. Standard Cancellation Terms</h2>

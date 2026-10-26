@@ -11,9 +11,12 @@ import {
   MessageSquare,
   ShieldAlert,
   RefreshCw,
+  Clock,
+  EyeOff,
 } from "lucide-react";
 import Link from "next/link";
 
+import { useEscapeKey } from "@/lib/useEscapeKey";
 interface AdminReview {
   id: string;
   tourSlug: string;
@@ -35,8 +38,11 @@ export default function AdminReviewsPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [ratingFilter, setRatingFilter] = useState<number | "all">("all");
   const [tourFilter, setTourFilter] = useState<string>("all");
+  const [statusFilter, setStatusFilter] = useState<"all" | "pending" | "approved">("all");
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [approvingId, setApprovingId] = useState<string | null>(null);
   const [confirmDeleteReview, setConfirmDeleteReview] = useState<AdminReview | null>(null);
+  useEscapeKey(Boolean(confirmDeleteReview), () => setConfirmDeleteReview(null));
   const [toastMessage, setToastMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
   const fetchAdminReviews = async () => {
@@ -115,6 +121,35 @@ export default function AdminReviewsPage() {
     }
   };
 
+  const setApproval = async (rev: AdminReview, isApproved: boolean) => {
+    try {
+      setApprovingId(rev.id);
+      const res = await fetch(`/api/admin/reviews/${rev.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ isApproved }),
+      });
+
+      if (res.ok) {
+        setReviewsList((prev) => prev.map((r) => (r.id === rev.id ? { ...r, isApproved } : r)));
+        showToast(
+          "success",
+          isApproved
+            ? `Review by ${rev.userName} is now live on the website.`
+            : `Review by ${rev.userName} has been hidden from the website.`
+        );
+      } else {
+        const err = await res.json();
+        showToast("error", err.error || "Failed to update review.");
+      }
+    } catch (err) {
+      console.error("Update review error:", err);
+      showToast("error", "An error occurred while updating the review.");
+    } finally {
+      setApprovingId(null);
+    }
+  };
+
   // Unique list of tour titles for the filter
   const uniqueTours = Array.from(new Set(reviewsList.map((r) => r.tourTitle))).filter(Boolean);
 
@@ -127,11 +162,14 @@ export default function AdminReviewsPage() {
 
     const matchesRating = ratingFilter === "all" || r.rating === ratingFilter;
     const matchesTour = tourFilter === "all" || r.tourTitle === tourFilter;
+    const matchesStatus =
+      statusFilter === "all" || (statusFilter === "pending" ? !r.isApproved : r.isApproved);
 
-    return matchesSearch && matchesRating && matchesTour;
+    return matchesSearch && matchesRating && matchesTour && matchesStatus;
   });
 
   const totalReviews = reviewsList.length;
+  const pendingCount = reviewsList.filter((r) => !r.isApproved).length;
   const avgRating =
     totalReviews > 0
       ? (reviewsList.reduce((acc, curr) => acc + (curr.rating || 5), 0) / totalReviews).toFixed(1)
@@ -163,7 +201,7 @@ export default function AdminReviewsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E8DCD5] pb-6">
         <div>
           <div className="flex items-center gap-2">
-            <span className="px-3 py-1 rounded-full bg-[#8EB486]/20 text-[#8EB486] text-xs font-bold uppercase tracking-wider">
+            <span className="px-3 py-1 rounded-full bg-[#8EB486]/20 text-[#4A7244] text-xs font-bold uppercase tracking-wider">
               Moderation & Trust
             </span>
           </div>
@@ -171,7 +209,7 @@ export default function AdminReviewsPage() {
             Tour Reviews & Testimonials
           </h1>
           <p className="text-sm text-[#7A6862] mt-0.5">
-            Monitor public traveller reviews, verify feedback authenticity, and delete inappropriate content.
+            New reviews stay hidden until you approve them. Approve genuine feedback and delete spam.
           </p>
         </div>
 
@@ -181,7 +219,7 @@ export default function AdminReviewsPage() {
           disabled={loading}
           className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#E8DCD5] bg-white text-xs font-bold text-[#685752] hover:bg-[#FDF7F4] active:scale-95 transition-all self-start sm:self-auto cursor-pointer"
         >
-          <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin text-[#8EB486]" : ""}`} />
+          <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin text-[#4A7244]" : ""}`} />
           <span>Refresh</span>
         </button>
       </div>
@@ -189,17 +227,17 @@ export default function AdminReviewsPage() {
       {/* Metrics Row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="p-5 rounded-2xl bg-[#FFFDF9] border border-[#E8DCD5] shadow-xs">
-          <span className="text-xs font-semibold text-[#997C70] uppercase tracking-wider block">
+          <span className="text-xs font-semibold text-[#7A6862] uppercase tracking-wider block">
             Total Reviews
           </span>
           <div className="flex items-baseline gap-2 mt-2">
             <span className="text-3xl font-bold text-[#685752]">{totalReviews}</span>
-            <span className="text-xs text-emerald-600 font-medium">Published</span>
+            <span className="text-xs text-emerald-700 font-medium">{totalReviews - pendingCount} published</span>
           </div>
         </div>
 
         <div className="p-5 rounded-2xl bg-[#FFFDF9] border border-[#E8DCD5] shadow-xs">
-          <span className="text-xs font-semibold text-[#997C70] uppercase tracking-wider block">
+          <span className="text-xs font-semibold text-[#7A6862] uppercase tracking-wider block">
             Average Rating
           </span>
           <div className="flex items-baseline gap-2 mt-2">
@@ -211,22 +249,25 @@ export default function AdminReviewsPage() {
         </div>
 
         <div className="p-5 rounded-2xl bg-[#FFFDF9] border border-[#E8DCD5] shadow-xs">
-          <span className="text-xs font-semibold text-[#997C70] uppercase tracking-wider block">
+          <span className="text-xs font-semibold text-[#7A6862] uppercase tracking-wider block">
             5-Star Share
           </span>
           <div className="flex items-baseline gap-2 mt-2">
             <span className="text-3xl font-bold text-[#685752]">{fiveStarPercent}%</span>
-            <span className="text-xs text-[#997C70]">({fiveStarsCount} reviews)</span>
+            <span className="text-xs text-[#7A6862]">({fiveStarsCount} reviews)</span>
           </div>
         </div>
 
         <div className="p-5 rounded-2xl bg-[#FFFDF9] border border-[#E8DCD5] shadow-xs">
-          <span className="text-xs font-semibold text-[#997C70] uppercase tracking-wider block">
-            Moderation Controls
+          <span className="text-xs font-semibold text-[#7A6862] uppercase tracking-wider block">
+            Awaiting Approval
           </span>
-          <div className="mt-2 text-xs text-[#7A6862] flex items-center gap-1.5 font-medium">
-            <ShieldAlert className="w-4 h-4 text-emerald-600 shrink-0" />
-            <span>Live moderation enabled</span>
+          <div className="flex items-baseline gap-2 mt-2">
+            <span className="text-3xl font-bold text-[#685752]">{pendingCount}</span>
+            <span className="text-xs text-[#7A6862] flex items-center gap-1">
+              <ShieldAlert className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+              hidden until approved
+            </span>
           </div>
         </div>
       </div>
@@ -235,7 +276,7 @@ export default function AdminReviewsPage() {
       <div className="p-4 rounded-2xl bg-[#FFFDF9] border border-[#E8DCD5] shadow-xs flex flex-col md:flex-row items-center justify-between gap-4">
         {/* Search Input */}
         <div className="relative w-full md:w-80">
-          <Search className="w-4 h-4 text-[#997C70] absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-[#7A6862] absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             value={searchTerm}
@@ -246,6 +287,18 @@ export default function AdminReviewsPage() {
         </div>
 
         <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
+          {/* Status Filter */}
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value as "all" | "pending" | "approved")}
+            aria-label="Filter by approval status"
+            className="px-3.5 py-2 rounded-xl bg-[#F7EFEA] border border-[#E8DCD5] text-xs text-[#685752] focus:border-[#8EB486] focus:outline-none"
+          >
+            <option value="all">All Statuses</option>
+            <option value="pending">Awaiting Approval ({pendingCount})</option>
+            <option value="approved">Published</option>
+          </select>
+
           {/* Tour Filter */}
           <select
             value={tourFilter}
@@ -280,12 +333,12 @@ export default function AdminReviewsPage() {
 
       {/* Reviews Table / Cards */}
       {loading ? (
-        <div className="py-16 text-center text-sm text-[#997C70]">
+        <div className="py-16 text-center text-sm text-[#7A6862]">
           Loading reviews...
         </div>
       ) : filtered.length === 0 ? (
         <div className="p-12 rounded-3xl bg-[#FFFDF9] border border-[#E8DCD5] text-center space-y-3">
-          <MessageSquare className="w-10 h-10 text-[#997C70] mx-auto opacity-40" />
+          <MessageSquare className="w-10 h-10 text-[#7A6862] mx-auto opacity-40" />
           <h3 className="text-base font-bold text-[#685752]">No reviews found</h3>
           <p className="text-xs text-[#7A6862]">
             Try clearing your search query or adjusting the filters.
@@ -306,21 +359,26 @@ export default function AdminReviewsPage() {
                       {rev.userName}
                     </span>
                     {rev.location && (
-                      <span className="text-xs text-[#997C70]">
+                      <span className="text-xs text-[#7A6862]">
                         ({rev.location})
                       </span>
                     )}
-                    <span className="px-2.5 py-0.5 rounded-full bg-[#8EB486]/15 text-[#8EB486] text-[11px] font-bold">
+                    <span className="px-2.5 py-0.5 rounded-full bg-[#8EB486]/15 text-[#4A7244] text-xs font-bold">
                       {rev.tourTitle}
                     </span>
                     {rev.tripDate && (
-                      <span className="text-xs text-[#997C70]">
+                      <span className="text-xs text-[#7A6862]">
                         • {rev.tripDate}
+                      </span>
+                    )}
+                    {!rev.isApproved && (
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 text-xs font-bold">
+                        <Clock className="w-3 h-3" /> Awaiting approval
                       </span>
                     )}
                   </div>
                   {rev.userEmail && (
-                    <p className="text-xs text-[#997C70]">Email: {rev.userEmail}</p>
+                    <p className="text-xs text-[#7A6862]">Email: {rev.userEmail}</p>
                   )}
                 </div>
 
@@ -340,11 +398,35 @@ export default function AdminReviewsPage() {
                   <Link
                     href={`/tours/${rev.tourSlug}`}
                     target="_blank"
-                    className="p-2 rounded-lg text-[#997C70] hover:text-[#685752] hover:bg-[#F7EFEA] transition-colors"
+                    className="p-2 rounded-lg text-[#7A6862] hover:text-[#685752] hover:bg-[#F7EFEA] transition-colors"
                     title="View Tour Page"
                   >
                     <ExternalLink className="w-4 h-4" />
                   </Link>
+
+                  {rev.isApproved ? (
+                    <button
+                      type="button"
+                      disabled={approvingId === rev.id}
+                      onClick={() => setApproval(rev, false)}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white hover:bg-[#F7EFEA] text-[#685752] border border-[#E8DCD5] text-xs font-bold transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
+                      title="Hide this review from the website"
+                    >
+                      <EyeOff className="w-3.5 h-3.5" />
+                      <span>Hide</span>
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      disabled={approvingId === rev.id}
+                      onClick={() => setApproval(rev, true)}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 text-xs font-bold transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
+                      title="Publish this review on the website"
+                    >
+                      <CheckCircle className="w-3.5 h-3.5" />
+                      <span>{approvingId === rev.id ? "Approving..." : "Approve"}</span>
+                    </button>
+                  )}
 
                   <button
                     type="button"
@@ -371,7 +453,7 @@ export default function AdminReviewsPage() {
               </p>
 
               {/* Metadata Footer */}
-              <div className="flex items-center justify-between text-[11px] text-[#997C70] pt-1">
+              <div className="flex items-center justify-between text-xs text-[#7A6862] pt-1">
                 <span>ID: {rev.id}</span>
                 <span>
                   Submitted on{" "}

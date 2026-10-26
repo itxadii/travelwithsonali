@@ -26,7 +26,7 @@ export default function CustomerHelpPage() {
         <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#685752] font-serif-italic">
           Help & Traveler Support
         </h1>
-        <p className="text-xs text-[#997C70] mt-1">
+        <p className="text-xs text-[#7A6862] mt-1">
           Have questions about your upcoming trip? We&apos;re here to make your journey seamless.
         </p>
       </div>
@@ -43,7 +43,7 @@ export default function CustomerHelpPage() {
             <MessageCircle className="w-5 h-5" />
           </div>
           <h3 className="font-bold text-emerald-900 text-sm">WhatsApp Us</h3>
-          <p className="text-[11px] text-emerald-700">Quick response team</p>
+          <p className="text-xs text-emerald-700">Quick response team</p>
         </a>
 
         <a
@@ -54,18 +54,18 @@ export default function CustomerHelpPage() {
             <Phone className="w-5 h-5" />
           </div>
           <h3 className="font-bold text-[#685752] text-sm">Call Direct</h3>
-          <p className="text-[11px] text-[#997C70]">+91 9152975552</p>
+          <p className="text-xs text-[#7A6862]">+91 9152975552</p>
         </a>
 
         <a
           href="mailto:travelwithsonaliinfo@gmail.com"
           className="p-6 rounded-3xl bg-white border border-[#E8DCD5] hover:shadow-md transition-all text-center space-y-2 group"
         >
-          <div className="w-10 h-10 rounded-full bg-[#FDF7F4] text-[#8EB486] flex items-center justify-center mx-auto group-hover:scale-110 transition-transform">
+          <div className="w-10 h-10 rounded-full bg-[#FDF7F4] text-[#4A7244] flex items-center justify-center mx-auto group-hover:scale-110 transition-transform">
             <Mail className="w-5 h-5" />
           </div>
           <h3 className="font-bold text-[#685752] text-sm">Email Support</h3>
-          <p className="text-[11px] text-[#997C70]">travelwithsonaliinfo@gmail.com</p>
+          <p className="text-xs text-[#7A6862]">travelwithsonaliinfo@gmail.com</p>
         </a>
       </div>
 
@@ -83,8 +83,8 @@ export default function CustomerHelpPage() {
         </div>
 
         <div className="pt-2 flex justify-between items-center text-xs">
-          <span className="text-[#997C70]">Looking for tour guidelines?</span>
-          <Link href="/faq" className="text-[#8EB486] font-bold hover:underline inline-flex items-center gap-1">
+          <span className="text-[#7A6862]">Looking for tour guidelines?</span>
+          <Link href="/faq" className="text-[#4A7244] font-bold hover:underline inline-flex items-center gap-1">
             <span>View Public FAQ</span>
             <ChevronRight className="w-3.5 h-3.5" />
           </Link>

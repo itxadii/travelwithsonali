@@ -33,7 +33,7 @@ export default function DestinationClientView({ tours }: { tours: Tour[] }) {
                   className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-[#8EB486] text-white text-xs font-semibold">
+                <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-[#4A7244] text-white text-xs font-semibold">
                   {tour.destination}
                 </span>
                 <span className="absolute bottom-4 left-4 text-xs font-semibold text-white/90">
@@ -43,7 +43,7 @@ export default function DestinationClientView({ tours }: { tours: Tour[] }) {
 
               <div className="p-6 space-y-3">
                 <Link href={`/tours/${tour.slug}`}>
-                  <h3 className="text-xl font-bold text-[#685752] group-hover:text-[#8EB486] transition-colors line-clamp-2">
+                  <h3 className="text-xl font-bold text-[#685752] group-hover:text-[#4A7244] transition-colors line-clamp-2">
                     {tour.title}
                   </h3>
                 </Link>
@@ -51,13 +51,13 @@ export default function DestinationClientView({ tours }: { tours: Tour[] }) {
                   {tour.description}
                 </p>
 
-                <div className="flex flex-wrap items-center gap-3 pt-2 text-xs text-[#997C70]">
+                <div className="flex flex-wrap items-center gap-3 pt-2 text-xs text-[#7A6862]">
                   <span className="flex items-center gap-1">
-                    <Clock className="w-3.5 h-3.5 text-[#8EB486]" />
+                    <Clock className="w-3.5 h-3.5 text-[#4A7244]" />
                     {tour.duration}
                   </span>
                   <span className="flex items-center gap-1">
-                    <MapPin className="w-3.5 h-3.5 text-[#8EB486]" />
+                    <MapPin className="w-3.5 h-3.5 text-[#4A7244]" />
                     {tour.startingPoint}
                   </span>
                 </div>
@@ -66,7 +66,7 @@ export default function DestinationClientView({ tours }: { tours: Tour[] }) {
 
             <div className="px-6 pb-6 pt-2 border-t border-[#E8DCD5] flex items-center justify-between mt-auto">
               <div>
-                <span className="text-[10px] uppercase text-[#997C70] block font-medium">
+                <span className="text-xs uppercase text-[#7A6862] block font-medium">
                   Starting From
                 </span>
                 <span className="text-xl font-bold text-[#685752]">{tour.price}</span>
@@ -75,13 +75,13 @@ export default function DestinationClientView({ tours }: { tours: Tour[] }) {
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => handleEnquire(tour.title)}
-                  className="px-4 py-2 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white text-xs font-semibold shadow-xs transition-all cursor-pointer"
+                  className="px-4 py-2 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white text-xs font-semibold shadow-xs transition-all cursor-pointer"
                 >
                   Enquire
                 </button>
                 <Link
                   href={`/tours/${tour.slug}`}
-                  className="p-2 rounded-full border border-[#E8DCD5] hover:border-[#8EB486] text-[#685752] hover:text-[#8EB486] transition-all"
+                  className="p-2 rounded-full border border-[#E8DCD5] hover:border-[#4A7244] text-[#685752] hover:text-[#4A7244] transition-all"
                   aria-label="View details"
                 >
                   <ArrowUpRight className="w-4 h-4" />

@@ -5,6 +5,12 @@ import ToursClientView from "./ToursClientView";
 import AmbientCircles from "../components/AmbientCircles";
 import WhatsAppFloatingButton from "../components/WhatsAppFloatingButton";
 import { getActiveTours } from "@/lib/sanity/queries";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Group Tours & Yatras | Travel With Sonali",
+  description: "Browse upcoming group tours, Himalayan treks and spiritual yatras with fixed departures, curated stays and expert trip leaders.",
+};
 
 export default function ToursPage() {
   const tours = use(getActiveTours());
@@ -17,7 +23,7 @@ export default function ToursPage() {
       <section className="relative overflow-hidden w-full py-16 sm:py-24 bg-[#F7EFEA] border-b border-[#E8DCD5]">
         <AmbientCircles variant="3" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center sm:text-left">
-          <span className="text-xs uppercase tracking-widest text-[#8EB486] font-bold">
+          <span className="text-xs uppercase tracking-widest text-[#4A7244] font-bold">
             Curated Group Packages
           </span>
           <h1 className="text-4xl sm:text-6xl font-bold tracking-tight text-[#685752] mt-2">

@@ -47,6 +47,50 @@ export async function sendPasswordResetEmail(to: string, name: string, code: str
   });
 }
 
+/** Notifies the team inbox (ENQUIRY_NOTIFY_EMAIL, falling back to SMTP_USER) about a website enquiry. */
+export async function sendNewEnquiryEmail(enquiry: {
+  name: string;
+  mobile: string;
+  email: string;
+  tour: string;
+  travellersCount: number;
+  message: string;
+}) {
+  const to = process.env.ENQUIRY_NOTIFY_EMAIL || process.env.SMTP_USER;
+  if (!to) throw new Error("No ENQUIRY_NOTIFY_EMAIL or SMTP_USER configured.");
+
+  const rows: [string, string][] = [
+    ["Name", enquiry.name],
+    ["Mobile", enquiry.mobile],
+    ["Email", enquiry.email || "-"],
+    ["Tour", enquiry.tour],
+    ["Travellers", String(enquiry.travellersCount)],
+    ["Message", enquiry.message || "-"],
+  ];
+
+  await getTransport().sendMail({
+    from: `"Travel With Sonali Website" <${process.env.SMTP_USER}>`,
+    to,
+    replyTo: enquiry.email || undefined,
+    subject: `New enquiry: ${enquiry.tour} - ${enquiry.name}`,
+    text: [...rows.map(([k, v]) => `${k}: ${v}`), "", "View it in the admin panel under Leads."].join("\n"),
+    html: `
+      <div style="font-family: Arial, sans-serif; color: #685752; max-width: 520px;">
+        <p><strong>New website enquiry</strong></p>
+        <table style="border-collapse: collapse;">
+          ${rows
+            .map(
+              ([k, v]) =>
+                `<tr><td style="padding: 4px 12px 4px 0; color: #7A6862;">${k}</td><td style="padding: 4px 0;">${escapeHtml(v)}</td></tr>`
+            )
+            .join("")}
+        </table>
+        <p style="font-size: 12px; color: #7A6862;">View it in the admin panel under Leads.</p>
+      </div>
+    `,
+  });
+}
+
 function escapeHtml(value: string): string {
   return value
     .replace(/&/g, "&amp;")

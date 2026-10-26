@@ -24,7 +24,7 @@ export default function ReportsPage() {
         <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#685752] font-serif-italic">
           Operational Reports & Analytics
         </h1>
-        <p className="text-xs text-[#997C70] mt-1">
+        <p className="text-xs text-[#7A6862] mt-1">
           Revenue, lead conversion sources, and tour performance metrics.
         </p>
       </div>
@@ -32,15 +32,15 @@ export default function ReportsPage() {
       {/* Revenue Breakdown */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
         <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs">
-          <span className="text-xs uppercase text-[#997C70] font-semibold">Total Revenue Agreed</span>
+          <span className="text-xs uppercase text-[#7A6862] font-semibold">Total Revenue Agreed</span>
           <p className="text-3xl font-bold text-[#685752] mt-2">₹{totalBookingValue.toLocaleString("en-IN")}</p>
         </div>
         <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs">
-          <span className="text-xs uppercase text-[#997C70] font-semibold">Total Cash Collected</span>
+          <span className="text-xs uppercase text-[#7A6862] font-semibold">Total Cash Collected</span>
           <p className="text-3xl font-bold text-emerald-700 mt-2">₹{totalCollected.toLocaleString("en-IN")}</p>
         </div>
         <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs">
-          <span className="text-xs uppercase text-[#997C70] font-semibold">Outstanding Receivables</span>
+          <span className="text-xs uppercase text-[#7A6862] font-semibold">Outstanding Receivables</span>
           <p className="text-3xl font-bold text-amber-700 mt-2">₹{totalOutstanding.toLocaleString("en-IN")}</p>
         </div>
       </div>
@@ -50,7 +50,7 @@ export default function ReportsPage() {
         {/* Lead Sources */}
         <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-4">
           <h3 className="text-base font-bold text-[#685752] flex items-center gap-2">
-            <Users className="w-4 h-4 text-[#8EB486]" />
+            <Users className="w-4 h-4 text-[#4A7244]" />
             Leads by Acquisition Source
           </h3>
 
@@ -58,7 +58,7 @@ export default function ReportsPage() {
             {Object.entries(sourceCounts).map(([source, count]) => (
               <div key={source} className="flex items-center justify-between p-3.5 rounded-2xl bg-[#FDF7F4] border border-[#E8DCD5]">
                 <span className="font-semibold text-[#685752]">{source}</span>
-                <span className="px-3 py-1 rounded-full bg-[#8EB486]/10 text-[#8EB486] font-bold">{count} Lead(s)</span>
+                <span className="px-3 py-1 rounded-full bg-[#8EB486]/10 text-[#4A7244] font-bold">{count} Lead(s)</span>
               </div>
             ))}
           </div>

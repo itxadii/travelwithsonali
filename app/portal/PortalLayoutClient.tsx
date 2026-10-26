@@ -84,7 +84,7 @@ export default function PortalLayoutClient({ customer, children }: PortalLayoutC
   ];
 
   return (
-    <div className="min-h-screen bg-[#FDF7F4] text-[#685752] flex flex-col font-sans selection:bg-[#8EB486] selection:text-white pb-16 lg:pb-0">
+    <div className="min-h-screen bg-[#FDF7F4] text-[#685752] flex flex-col font-sans selection:bg-[#4A7244] selection:text-white pb-16 lg:pb-0">
       
       {/* Desktop Top Navigation Bar */}
       <header className="h-20 bg-[#FFFDF9] border-b border-[#E8DCD5] sticky top-0 z-40 px-4 sm:px-8 flex items-center justify-between shadow-2xs">
@@ -105,7 +105,7 @@ export default function PortalLayoutClient({ customer, children }: PortalLayoutC
               <span className="text-lg font-bold tracking-tight text-[#685752] font-serif-italic leading-none">
                 Travel With Sonali
               </span>
-              <span className="text-[10px] text-[#8EB486] tracking-widest uppercase font-semibold mt-0.5">
+              <span className="text-xs text-[#4A7244] tracking-widest uppercase font-semibold mt-0.5">
                 My Travel Portal
               </span>
             </div>
@@ -128,7 +128,7 @@ export default function PortalLayoutClient({ customer, children }: PortalLayoutC
                 href={item.href}
                 className={`relative flex items-center gap-2 px-3.5 py-2 rounded-full text-xs font-semibold transition-all ${
                   isActive
-                    ? "bg-[#8EB486] text-white shadow-sm"
+                    ? "bg-[#4A7244] text-white shadow-sm"
                     : "text-[#7A6862] hover:bg-[#FDF7F4] hover:text-[#685752]"
                 }`}
               >
@@ -136,8 +136,8 @@ export default function PortalLayoutClient({ customer, children }: PortalLayoutC
                 <span>{item.label}</span>
                 {item.badge && item.badge > 0 ? (
                   <span
-                    className={`ml-1 px-1.5 py-0.2 text-[10px] rounded-full font-bold ${
-                      isActive ? "bg-white text-[#8EB486]" : "bg-[#8EB486] text-white"
+                    className={`ml-1 px-1.5 py-0.2 text-xs rounded-full font-bold ${
+                      isActive ? "bg-white text-[#4A7244]" : "bg-[#4A7244] text-white"
                     }`}
                   >
                     {item.badge}
@@ -157,7 +157,7 @@ export default function PortalLayoutClient({ customer, children }: PortalLayoutC
           >
             <Bell className="w-4.5 h-4.5" />
             {unreadCount > 0 && (
-              <span className="absolute top-1 right-1 w-2.5 h-2.5 rounded-full bg-[#8EB486] ring-2 ring-white animate-pulse" />
+              <span className="absolute top-1 right-1 w-2.5 h-2.5 rounded-full bg-[#4A7244] ring-2 ring-white animate-pulse" />
             )}
           </Link>
 
@@ -167,27 +167,27 @@ export default function PortalLayoutClient({ customer, children }: PortalLayoutC
               onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
               className="flex items-center gap-2.5 p-1.5 pr-3 rounded-full bg-[#FDF7F4] border border-[#E8DCD5] hover:border-[#8EB486]/40 transition-colors cursor-pointer"
             >
-              <div className="w-8 h-8 rounded-full bg-[#8EB486] text-white font-bold flex items-center justify-center text-xs">
+              <div className="w-8 h-8 rounded-full bg-[#4A7244] text-white font-bold flex items-center justify-center text-xs">
                 {customer.name.charAt(0).toUpperCase()}
               </div>
               <span className="hidden sm:inline text-xs font-semibold text-[#685752] max-w-[120px] truncate">
                 {customer.name}
               </span>
-              <ChevronDown className="w-3.5 h-3.5 text-[#997C70]" />
+              <ChevronDown className="w-3.5 h-3.5 text-[#7A6862]" />
             </button>
 
             {profileDropdownOpen && (
               <div className="absolute right-0 mt-2 w-56 bg-white rounded-2xl p-2 border border-[#E8DCD5] shadow-xl z-50 space-y-1 text-xs">
                 <div className="px-3 py-2 border-b border-[#E8DCD5]">
                   <p className="font-bold text-[#685752]">{customer.name}</p>
-                  <p className="text-[11px] text-[#997C70] truncate">{customer.email || customer.phone}</p>
+                  <p className="text-xs text-[#7A6862] truncate">{customer.email || customer.phone}</p>
                 </div>
                 <Link
                   href="/portal/profile"
                   onClick={() => setProfileDropdownOpen(false)}
                   className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-[#685752] hover:bg-[#FDF7F4] transition-colors"
                 >
-                  <User className="w-4 h-4 text-[#997C70]" />
+                  <User className="w-4 h-4 text-[#7A6862]" />
                   <span>My Profile</span>
                 </Link>
                 <Link
@@ -195,7 +195,7 @@ export default function PortalLayoutClient({ customer, children }: PortalLayoutC
                   onClick={() => setProfileDropdownOpen(false)}
                   className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-[#685752] hover:bg-[#FDF7F4] transition-colors"
                 >
-                  <HelpCircle className="w-4 h-4 text-[#997C70]" />
+                  <HelpCircle className="w-4 h-4 text-[#7A6862]" />
                   <span>Help & Support</span>
                 </Link>
                 <div className="border-t border-[#E8DCD5] pt-1">
@@ -238,8 +238,8 @@ export default function PortalLayoutClient({ customer, children }: PortalLayoutC
             <Link
               key={item.href}
               href={item.href}
-              className={`flex flex-col items-center justify-center w-14 py-1 rounded-xl text-[10px] font-medium transition-colors ${
-                isActive ? "text-[#8EB486] font-bold" : "text-[#997C70] hover:text-[#685752]"
+              className={`flex flex-col items-center justify-center w-14 py-1 rounded-xl text-xs font-medium transition-colors ${
+                isActive ? "text-[#4A7244] font-bold" : "text-[#7A6862] hover:text-[#685752]"
               }`}
             >
               <Icon className="w-5 h-5 mb-0.5" />

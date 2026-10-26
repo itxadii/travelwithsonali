@@ -57,3 +57,49 @@ export async function DELETE(
     );
   }
 }
+
+export async function PATCH(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const admin = await getCurrentAdmin();
+  if (!admin) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const { id } = await params;
+
+  try {
+    const body = await request.json();
+    if (typeof body.isApproved !== "boolean") {
+      return NextResponse.json({ error: "isApproved must be true or false" }, { status: 400 });
+    }
+
+    const updated = await db
+      .update(reviews)
+      .set({ isApproved: body.isApproved, updatedAt: new Date() })
+      .where(eq(reviews.id, id))
+      .returning();
+
+    if (updated.length === 0) {
+      return NextResponse.json({ error: "Review not found" }, { status: 404 });
+    }
+
+    await db.insert(activityLogs).values({
+      id: `act-${Date.now()}`,
+      actorEmail: admin.email,
+      action: body.isApproved ? "APPROVE_REVIEW" : "UNAPPROVE_REVIEW",
+      entityType: "review",
+      entityId: id,
+      metadata: JSON.stringify({
+        reviewer: updated[0].userName,
+        tourTitle: updated[0].tourTitle,
+      }),
+    });
+
+    return NextResponse.json({ success: true, review: updated[0] });
+  } catch (err) {
+    console.error("PATCH /api/admin/reviews/[id] error:", err);
+    return NextResponse.json({ error: "Failed to update review" }, { status: 500 });
+  }
+}

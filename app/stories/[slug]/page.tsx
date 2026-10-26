@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
+import type { Metadata } from "next";
 
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
@@ -9,6 +10,29 @@ import AmbientCircles from "../../components/AmbientCircles";
 import { getStoryBySlug } from "@/lib/sanity/queries";
 
 export const revalidate = 60;
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const story = await getStoryBySlug(slug);
+
+  if (!story) {
+    return { title: "Story Not Found | Travel With Sonali" };
+  }
+
+  return {
+    title: `${story.title} | Travel With Sonali`,
+    description: story.excerpt?.slice(0, 160),
+    openGraph: {
+      title: story.title,
+      description: story.excerpt?.slice(0, 160),
+      images: story.image ? [{ url: story.image, width: 1200, height: 630, alt: story.title }] : undefined,
+    },
+  };
+}
 
 export default async function StoryDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -20,7 +44,7 @@ export default async function StoryDetailPage({ params }: { params: Promise<{ sl
         <Navbar logoName="Travel With Sonali" />
         <div className="max-w-xl mx-auto px-4 py-24 text-center space-y-4">
           <h1 className="text-3xl font-bold text-[#685752]">Story Not Found</h1>
-          <Link href="/stories" className="inline-block px-6 py-3 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white text-sm font-semibold transition-colors">
+          <Link href="/stories" className="inline-block px-6 py-3 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white text-sm font-semibold transition-colors">
             View All Stories
           </Link>
         </div>
@@ -35,8 +59,8 @@ export default async function StoryDetailPage({ params }: { params: Promise<{ sl
 
       {/* Breadcrumb */}
       <div className="bg-[#F7EFEA] border-b border-[#E8DCD5] py-3">
-        <div className="max-w-4xl mx-auto px-4 text-xs text-[#997C70] flex items-center gap-2">
-          <Link href="/stories" className="hover:text-[#8EB486] flex items-center gap-1">
+        <div className="max-w-4xl mx-auto px-4 text-xs text-[#7A6862] flex items-center gap-2">
+          <Link href="/stories" className="hover:text-[#4A7244] flex items-center gap-1">
             <ChevronLeft className="w-3.5 h-3.5" />
             Stories
           </Link>
@@ -51,14 +75,14 @@ export default async function StoryDetailPage({ params }: { params: Promise<{ sl
         <article className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 py-12 space-y-8">
         
         <div className="space-y-4 text-center">
-          <span className="px-3.5 py-1 rounded-full bg-[#8EB486]/10 text-[#8EB486] text-xs font-semibold uppercase tracking-wider">
+          <span className="px-3.5 py-1 rounded-full bg-[#8EB486]/10 text-[#4A7244] text-xs font-semibold uppercase tracking-wider">
             {story.category}
           </span>
           <h1 className="text-3xl sm:text-5xl font-serif-italic font-bold tracking-tight text-[#685752] leading-tight">
             {story.title}
           </h1>
 
-          <div className="flex items-center justify-center gap-6 pt-4 text-xs text-[#997C70]">
+          <div className="flex items-center justify-center gap-6 pt-4 text-xs text-[#7A6862]">
             <div className="flex items-center gap-2">
               <div className="relative w-8 h-8 rounded-full overflow-hidden border border-[#E8DCD5]">
                 <Image src={story.authorAvatar} alt={story.author} fill className="object-cover" />
@@ -100,7 +124,7 @@ export default async function StoryDetailPage({ params }: { params: Promise<{ sl
           <div className="pt-2">
             <Link
               href="/tours"
-              className="inline-block px-8 py-3.5 rounded-full bg-[#8EB486] hover:bg-[#7A9F73] text-white font-semibold text-sm shadow-md transition-colors"
+              className="inline-block px-8 py-3.5 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white font-semibold text-sm shadow-md transition-colors"
             >
               Explore Tours Now
             </Link>
