@@ -75,7 +75,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
           id: newCustomerId,
           name: targetLead.name,
           phone: targetLead.mobile,
-          email: targetLead.email || null,
+          email: targetLead.email?.trim().toLowerCase() || null,
           status: "Active",
           notes: `Converted from lead for ${targetLead.interestedTourTitle}`,
         });

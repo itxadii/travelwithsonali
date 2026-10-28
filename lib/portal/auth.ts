@@ -55,7 +55,8 @@ export async function findCustomerByIdentifier(identifier: string) {
     const list = await db
       .select()
       .from(customers)
-      .where(eq(customers.email, clean));
+      // Case-insensitive: accounts created from the admin panel may store mixed-case emails
+      .where(sql`LOWER(TRIM(${customers.email})) = ${clean}`);
     return list[0] || null;
   }
 

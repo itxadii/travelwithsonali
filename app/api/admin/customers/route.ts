@@ -41,7 +41,7 @@ export async function POST(request: Request) {
       id: customerId,
       name,
       phone,
-      email: email || null,
+      email: email?.trim().toLowerCase() || null,
       notes: notes || null,
     });
 
