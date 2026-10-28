@@ -278,5 +278,21 @@ export async function createTablesIfNotExist() {
   await sql`CREATE INDEX IF NOT EXISTS analytics_events_visitor_id_idx ON analytics_events (visitor_id)`;
   await sql`CREATE INDEX IF NOT EXISTS analytics_events_created_at_idx ON analytics_events (created_at)`;
 
+  // Email verification. Existing customers are treated as verified (the column is added with
+  // DEFAULT TRUE so current rows get TRUE); every customer created afterwards starts unverified.
+  await sql`ALTER TABLE customers ADD COLUMN IF NOT EXISTS email_verified BOOLEAN NOT NULL DEFAULT TRUE`;
+  await sql`ALTER TABLE customers ALTER COLUMN email_verified SET DEFAULT FALSE`;
+  await sql`
+    CREATE TABLE IF NOT EXISTS customer_email_verifications (
+      id TEXT PRIMARY KEY,
+      customer_id TEXT NOT NULL REFERENCES customers(id) ON DELETE CASCADE,
+      code TEXT NOT NULL,
+      attempts INTEGER NOT NULL DEFAULT 0,
+      expires_at TIMESTAMP NOT NULL,
+      used BOOLEAN NOT NULL DEFAULT FALSE,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+    );
+  `;
+
   console.log("✅ Neon PostgreSQL DDL migration complete!");
 }

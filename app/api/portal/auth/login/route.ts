@@ -20,6 +20,9 @@ export async function POST(req: Request) {
     const result = await loginCustomer(loginIdentifier, password);
 
     if (!result.success) {
+      if (result.reason === "unverified") {
+        return NextResponse.json({ error: result.error, reason: "unverified", email: result.email }, { status: 403 });
+      }
       return NextResponse.json({ error: result.error || "Authentication failed." }, { status: 401 });
     }
 

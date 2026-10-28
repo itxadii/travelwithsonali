@@ -1,12 +1,10 @@
 import { NextResponse } from "next/server";
 import { db } from "@/db";
-import { customers, customerSessions } from "@/db/schema";
+import { customers } from "@/db/schema";
 import bcrypt from "bcryptjs";
-import { cookies } from "next/headers";
-import { findCustomerByIdentifier } from "@/lib/portal/auth";
+import { eq } from "drizzle-orm";
+import { findCustomerByIdentifier, sendEmailVerificationCode } from "@/lib/portal/auth";
 import { checkRateLimits, getClientIp, tooManyRequests } from "@/lib/rateLimit";
-
-const CUSTOMER_COOKIE_NAME = "customer_session";
 
 export async function POST(req: Request) {
   try {
@@ -34,9 +32,19 @@ export async function POST(req: Request) {
     const cleanEmail = email ? email.trim().toLowerCase() : null;
 
     // Check if customer already exists by phone or email (using resilient normalization)
-    const existingCustomer =
-      (await findCustomerByIdentifier(cleanPhone)) ||
-      (cleanEmail ? await findCustomerByIdentifier(cleanEmail) : null);
+    const existingByEmail = cleanEmail ? await findCustomerByIdentifier(cleanEmail) : null;
+    const existingCustomer = existingByEmail || (await findCustomerByIdentifier(cleanPhone));
+
+    // Someone who signed up but never entered their code: send a fresh code instead of failing
+    if (existingByEmail && existingByEmail.passwordHash && !existingByEmail.emailVerified) {
+      try {
+        await sendEmailVerificationCode(existingByEmail);
+      } catch (mailErr) {
+        console.error("Signup resend verification error:", mailErr);
+        return NextResponse.json({ error: "We couldn't send the verification email. Please try again shortly." }, { status: 502 });
+      }
+      return NextResponse.json({ success: true, needsVerification: true, email: cleanEmail });
+    }
 
     // Existing records (including ones created by admin without a password) can only be
     // claimed through the emailed password reset, which proves ownership of the email.
@@ -44,7 +52,7 @@ export async function POST(req: Request) {
       return NextResponse.json(
         {
           error:
-            "An account with this phone/email already exists. Please sign in, or use Forgot Password to set your password.",
+            "An account with this mobile number or email already exists. Sign in, or use Forgot password to set your password.",
         },
         { status: 400 }
       );
@@ -53,36 +61,26 @@ export async function POST(req: Request) {
     const passwordHash = await bcrypt.hash(password, 10);
 
     const customerId = `cust-${crypto.randomUUID()}`;
+    const customer = { id: customerId, name: name.trim(), email: cleanEmail };
     await db.insert(customers).values({
-      id: customerId,
-      name: name.trim(),
+      ...customer,
       phone: cleanPhone,
-      email: cleanEmail,
       passwordHash,
+      emailVerified: false,
       status: "Active",
     });
 
-    // Auto log-in customer and issue session token
-    const token = crypto.randomUUID();
-    const expiresAt = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000); // 14 days
+    // No session yet: the account becomes usable once the emailed code is entered
+    try {
+      await sendEmailVerificationCode(customer);
+    } catch (mailErr) {
+      console.error("Signup verification email error:", mailErr);
+      // Remove the half-created account so the person can simply try again
+      await db.delete(customers).where(eq(customers.id, customerId));
+      return NextResponse.json({ error: "We couldn't send the verification email. Please try again shortly." }, { status: 502 });
+    }
 
-    await db.insert(customerSessions).values({
-      id: crypto.randomUUID(),
-      customerId,
-      token,
-      expiresAt,
-    });
-
-    const cookieStore = await cookies();
-    cookieStore.set(CUSTOMER_COOKIE_NAME, token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      expires: expiresAt,
-      path: "/",
-    });
-
-    return NextResponse.json({ success: true, message: "Account created successfully!" });
+    return NextResponse.json({ success: true, needsVerification: true, email: cleanEmail });
   } catch (err) {
     console.error("POST /api/portal/auth/signup error:", err);
     return NextResponse.json({ error: "Failed to create customer account." }, { status: 500 });

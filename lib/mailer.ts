@@ -5,11 +5,24 @@ import nodemailer from "nodemailer";
  *   SMTP_USER  – sending Gmail address (e.g. travelwithsonaliinfo@gmail.com)
  *   SMTP_PASS  – a Google App Password for that account (not the normal login password)
  */
+/** Strips quotes and whitespace that often sneak in when pasting values into a hosting dashboard. */
+function cleanEnv(value: string | undefined): string {
+  return (value || "").trim().replace(/^["']|["']$/g, "").trim();
+}
+
+function getSmtpUser(): string {
+  return cleanEnv(process.env.SMTP_USER);
+}
+
 function getTransport() {
-  const user = process.env.SMTP_USER;
-  const pass = process.env.SMTP_PASS;
+  const user = getSmtpUser();
+  // Google shows App Passwords as "abcd efgh ijkl mnop"; the spaces are not part of the password
+  const pass = cleanEnv(process.env.SMTP_PASS).replace(/\s+/g, "");
   if (!user || !pass) {
     throw new Error("SMTP_USER and SMTP_PASS must be set to send email.");
+  }
+  if (pass.length !== 16) {
+    console.warn(`SMTP_PASS is ${pass.length} characters; a Google App Password is 16. Gmail will likely reject it.`);
   }
   return nodemailer.createTransport({
     service: "gmail",
@@ -17,8 +30,36 @@ function getTransport() {
   });
 }
 
+export async function sendEmailVerificationEmail(to: string, name: string, code: string) {
+  await getTransport().sendMail({
+    from: `"Travel With Sonali" <${getSmtpUser()}>`,
+    to,
+    subject: `${code} is your Travel With Sonali verification code`,
+    text: [
+      `Hi ${name},`,
+      "",
+      `Your verification code is: ${code}`,
+      "",
+      "Enter it on the website to finish creating your account. It expires in 30 minutes.",
+      "If you didn't create an account, you can ignore this email.",
+      "",
+      "— Travel With Sonali",
+    ].join("\n"),
+    html: `
+      <div style="font-family: Arial, sans-serif; color: #685752; max-width: 480px;">
+        <p>Hi ${escapeHtml(name)},</p>
+        <p>Your verification code is:</p>
+        <p style="font-size: 28px; font-weight: bold; letter-spacing: 6px; font-family: monospace;">${code}</p>
+        <p>Enter it on the website to finish creating your account. It expires in 30 minutes.</p>
+        <p style="font-size: 12px; color: #7A6862;">If you didn't create an account, you can ignore this email.</p>
+        <p>— Travel With Sonali</p>
+      </div>
+    `,
+  });
+}
+
 export async function sendPasswordResetEmail(to: string, name: string, code: string, resetLink: string) {
-  const from = `"Travel With Sonali" <${process.env.SMTP_USER}>`;
+  const from = `"Travel With Sonali" <${getSmtpUser()}>`;
   await getTransport().sendMail({
     from,
     to,
@@ -56,7 +97,7 @@ export async function sendNewEnquiryEmail(enquiry: {
   travellersCount: number;
   message: string;
 }) {
-  const to = process.env.ENQUIRY_NOTIFY_EMAIL || process.env.SMTP_USER;
+  const to = cleanEnv(process.env.ENQUIRY_NOTIFY_EMAIL) || getSmtpUser();
   if (!to) throw new Error("No ENQUIRY_NOTIFY_EMAIL or SMTP_USER configured.");
 
   const rows: [string, string][] = [
@@ -69,7 +110,7 @@ export async function sendNewEnquiryEmail(enquiry: {
   ];
 
   await getTransport().sendMail({
-    from: `"Travel With Sonali Website" <${process.env.SMTP_USER}>`,
+    from: `"Travel With Sonali Website" <${getSmtpUser()}>`,
     to,
     replyTo: enquiry.email || undefined,
     subject: `New enquiry: ${enquiry.tour} - ${enquiry.name}`,

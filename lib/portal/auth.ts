@@ -1,10 +1,10 @@
 import { cookies } from "next/headers";
 import { db } from "@/db";
-import { customers, customerSessions, customerPasswordResets } from "@/db/schema";
+import { customers, customerSessions, customerPasswordResets, customerEmailVerifications } from "@/db/schema";
 import { eq, and, gt, or, sql, desc } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 import { createHash, randomInt, randomUUID, timingSafeEqual } from "node:crypto";
-import { sendPasswordResetEmail } from "@/lib/mailer";
+import { sendEmailVerificationEmail, sendPasswordResetEmail } from "@/lib/mailer";
 
 const CUSTOMER_COOKIE_NAME = "customer_session";
 
@@ -82,7 +82,7 @@ const INVALID_LOGIN_MESSAGE =
 export async function loginCustomer(
   loginIdentifier: string,
   password: string
-): Promise<{ success: boolean; error?: string; token?: string; expiresAt?: Date }> {
+): Promise<{ success: boolean; error?: string; token?: string; expiresAt?: Date; reason?: "unverified"; email?: string }> {
   try {
     const customer = await findCustomerByIdentifier(loginIdentifier);
 
@@ -94,6 +94,17 @@ export async function loginCustomer(
     const isValid = await bcrypt.compare(password, customer.passwordHash);
     if (!isValid) {
       return { success: false, error: INVALID_LOGIN_MESSAGE };
+    }
+
+    // Correct password but email not confirmed yet: send a fresh code and ask for it
+    if (!customer.emailVerified && customer.email) {
+      await sendEmailVerificationCode(customer);
+      return {
+        success: false,
+        reason: "unverified",
+        email: customer.email,
+        error: "Confirm your email to finish signing in. We've sent you a new 6-digit code.",
+      };
     }
 
     const { token, expiresAt } = await createCustomerSession(customer.id);
@@ -283,6 +294,8 @@ export async function resetCustomerPassword(
       .update(customers)
       .set({
         passwordHash,
+        // The code or link arrived by email, which proves the customer owns that address
+        emailVerified: true,
         updatedAt: new Date(),
       })
       .where(eq(customers.id, reset.customerId));
@@ -346,5 +359,83 @@ export async function logoutCustomer(): Promise<void> {
     cookieStore.delete(CUSTOMER_COOKIE_NAME);
   } catch (err) {
     console.error("Logout customer error:", err);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Email verification for new accounts
+// ---------------------------------------------------------------------------
+
+const VERIFY_TTL_MS = 30 * 60 * 1000; // 30 minutes
+const MAX_VERIFY_ATTEMPTS = 5;
+
+/** Emails a new 6-digit code to the customer; any earlier unused code stops working. */
+export async function sendEmailVerificationCode(customer: { id: string; name: string; email: string | null }) {
+  if (!customer.email) throw new Error("Customer has no email address to verify.");
+
+  await db
+    .update(customerEmailVerifications)
+    .set({ used: true })
+    .where(and(eq(customerEmailVerifications.customerId, customer.id), eq(customerEmailVerifications.used, false)));
+
+  const code = randomInt(100000, 1000000).toString();
+  await db.insert(customerEmailVerifications).values({
+    id: randomUUID(),
+    customerId: customer.id,
+    code: hashSecret(code),
+    expiresAt: new Date(Date.now() + VERIFY_TTL_MS),
+  });
+
+  await sendEmailVerificationEmail(customer.email, customer.name, code);
+}
+
+/** Checks the emailed code; on success marks the email verified and signs the customer in. */
+export async function verifyCustomerEmail(email: string, code: string): Promise<{ success: boolean; error?: string }> {
+  const invalid = { success: false, error: "That code is wrong or has expired. Check the latest email, or send a new code." };
+  try {
+    const customer = await findCustomerByIdentifier(email);
+    if (!customer || !customer.email) return invalid;
+    if (customer.emailVerified) {
+      return { success: false, error: "This email is already confirmed. Sign in with your password." };
+    }
+
+    const pending = (
+      await db
+        .select()
+        .from(customerEmailVerifications)
+        .where(
+          and(
+            eq(customerEmailVerifications.customerId, customer.id),
+            eq(customerEmailVerifications.used, false),
+            gt(customerEmailVerifications.expiresAt, new Date())
+          )
+        )
+        .orderBy(desc(customerEmailVerifications.createdAt))
+        .limit(1)
+    )[0];
+    if (!pending) return invalid;
+
+    if (!secretsMatch(hashSecret(code.trim()), pending.code)) {
+      const attempts = pending.attempts + 1;
+      await db
+        .update(customerEmailVerifications)
+        .set({ attempts, used: attempts >= MAX_VERIFY_ATTEMPTS })
+        .where(eq(customerEmailVerifications.id, pending.id));
+      return invalid;
+    }
+
+    const claimed = await db
+      .update(customerEmailVerifications)
+      .set({ used: true })
+      .where(and(eq(customerEmailVerifications.id, pending.id), eq(customerEmailVerifications.used, false)))
+      .returning({ id: customerEmailVerifications.id });
+    if (claimed.length === 0) return invalid;
+
+    await db.update(customers).set({ emailVerified: true, updatedAt: new Date() }).where(eq(customers.id, customer.id));
+    await createCustomerSession(customer.id);
+    return { success: true };
+  } catch (err) {
+    console.error("verifyCustomerEmail error:", err);
+    return { success: false, error: "Couldn't confirm your email right now. Please try again." };
   }
 }

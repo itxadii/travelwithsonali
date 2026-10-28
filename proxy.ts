@@ -30,7 +30,8 @@ export function proxy(request: NextRequest) {
       pathname === "/portal/login" ||
       pathname === "/portal/signup" ||
       pathname === "/portal/forgot-password" ||
-      pathname === "/portal/reset-password"
+      pathname === "/portal/reset-password" ||
+      pathname === "/portal/verify-email"
     ) {
       return NextResponse.next();
     }

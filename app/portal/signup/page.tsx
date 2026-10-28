@@ -41,8 +41,8 @@ export default function CustomerSignUpPage() {
         return;
       }
 
-      router.push("/portal");
-      router.refresh();
+      // The account is created; it opens once the emailed code is entered
+      router.push(`/portal/verify-email?email=${encodeURIComponent(data.email || email)}`);
     } catch {
       setError("Couldn't reach the server. Check your connection and try again.");
     } finally {

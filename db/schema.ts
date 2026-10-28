@@ -110,6 +110,8 @@ export const customers = pgTable("customers", {
   phone: text("phone").notNull(),
   email: text("email"),
   passwordHash: text("password_hash"),
+  // New sign-ups must confirm their email with a code before they can sign in
+  emailVerified: boolean("email_verified").notNull().default(false),
   status: text("status").notNull().default("Active"),
   notes: text("notes"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
@@ -255,6 +257,17 @@ export const reviews = pgTable("reviews", {
   isApproved: boolean("is_approved").notNull().default(false),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+// Six-digit codes emailed to confirm a new account's email address. Codes are SHA-256 hashed.
+export const customerEmailVerifications = pgTable("customer_email_verifications", {
+  id: text("id").primaryKey(),
+  customerId: text("customer_id").notNull().references(() => customers.id, { onDelete: "cascade" }),
+  code: text("code").notNull(),
+  attempts: integer("attempts").notNull().default(0),
+  expiresAt: timestamp("expires_at").notNull(),
+  used: boolean("used").notNull().default(false),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
 // Login / password-reset rate limiting (see lib/rateLimit.ts). Keys are SHA-256 hashes.

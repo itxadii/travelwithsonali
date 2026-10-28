@@ -29,6 +29,11 @@ export default function CustomerLoginPage() {
 
       const data = await res.json();
 
+      if (res.status === 403 && data.reason === "unverified") {
+        router.push(`/portal/verify-email?email=${encodeURIComponent(data.email)}&resent=1`);
+        return;
+      }
+
       if (!res.ok) {
         setError(data.error || "That email, mobile number or password is incorrect.");
         setLoading(false);

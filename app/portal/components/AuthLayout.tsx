@@ -132,14 +132,22 @@ export function PasswordField({
 }
 
 /** Six-digit emailed code: one wide field with spaced digits and a number keypad on phones. */
-export function CodeField({ value, onChange }: { value: string; onChange: (value: string) => void }) {
+export function CodeField({
+  value,
+  onChange,
+  id = "reset-code",
+}: {
+  value: string;
+  onChange: (value: string) => void;
+  id?: string;
+}) {
   return (
     <div>
-      <label htmlFor="reset-code" className="block text-sm font-semibold text-[#685752] mb-1.5">
+      <label htmlFor={id} className="block text-sm font-semibold text-[#685752] mb-1.5">
         6-digit code
       </label>
       <input
-        id="reset-code"
+        id={id}
         inputMode="numeric"
         autoComplete="one-time-code"
         pattern="[0-9]{6}"
