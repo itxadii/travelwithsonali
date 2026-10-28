@@ -149,18 +149,31 @@ function secretsMatch(a: string, b: string): boolean {
 
 /**
  * Generate a password reset token & 6-digit code and email them to the customer.
- * Always reports success to the caller so the endpoint can't be used to discover
- * which emails / phone numbers have accounts.
+ * Reports clearly when no account matches or the account has no email, so the
+ * visitor knows what to do next; the endpoint's rate limits slow down account scanning.
  */
 export async function requestPasswordReset(
   identifier: string,
   siteUrl: string
-): Promise<{ success: boolean; error?: string }> {
+): Promise<{ success: boolean; error?: string; reason?: "not_found" | "no_email" }> {
   try {
     const customer = await findCustomerByIdentifier(identifier);
 
-    if (!customer || !customer.email) {
-      return { success: true };
+    // Tell the visitor plainly instead of pretending a code was sent.
+    // (Rate limits on the endpoint keep this from being used to scan for accounts.)
+    if (!customer) {
+      return {
+        success: false,
+        reason: "not_found",
+        error: "No account exists with that email or mobile number. Check it, or create a new account.",
+      };
+    }
+    if (!customer.email) {
+      return {
+        success: false,
+        reason: "no_email",
+        error: "This account has no email address, so we can't send a code. Message us on WhatsApp and we'll help you reset it.",
+      };
     }
 
     // Only the most recent reset request stays valid

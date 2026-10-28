@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     siteName: SITE_NAME,
     locale: "en_IN",
     type: "website",
-    images: [{ url: DEFAULT_OG_IMAGE, width: 2560, height: 1707, alt: "Travel With Sonali group trip in the mountains" }],
+    images: [{ url: DEFAULT_OG_IMAGE, width: 1200, height: 630, alt: "A trekker resting on a Himalayan ridge at sunrise" }],
   },
 };
 

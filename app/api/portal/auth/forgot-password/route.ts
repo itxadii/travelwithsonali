@@ -26,17 +26,16 @@ export async function POST(req: Request) {
     const result = await requestPasswordReset(identifier, siteUrl);
 
     if (!result.success) {
+      const status = result.reason === "not_found" ? 404 : result.reason === "no_email" ? 422 : 500;
       return NextResponse.json(
-        { error: result.error || "Unable to send reset email." },
-        { status: 500 }
+        { error: result.error || "Unable to send reset email.", reason: result.reason },
+        { status }
       );
     }
 
-    // Same response whether or not an account exists, so this can't be used to look up customers
     return NextResponse.json({
       success: true,
-      message:
-        "If an account with an email address matches what you entered, we've emailed it a 6-digit reset code and link.",
+      message: "We've emailed you a 6-digit reset code and link.",
     });
   } catch (err) {
     console.error("POST /api/portal/auth/forgot-password error:", err);

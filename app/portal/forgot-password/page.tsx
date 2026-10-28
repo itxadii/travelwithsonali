@@ -8,11 +8,13 @@ export default function ForgotPasswordPage() {
   const [identifier, setIdentifier] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [errorReason, setErrorReason] = useState<"not_found" | "no_email" | null>(null);
   const [sent, setSent] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    setErrorReason(null);
     setLoading(true);
 
     try {
@@ -26,6 +28,7 @@ export default function ForgotPasswordPage() {
 
       if (!res.ok) {
         setError(data.error || "Couldn't send the code. Please try again.");
+        setErrorReason(data.reason === "not_found" || data.reason === "no_email" ? data.reason : null);
         setLoading(false);
         return;
       }
@@ -43,7 +46,7 @@ export default function ForgotPasswordPage() {
       title={sent ? "Check your email" : "Reset your password"}
       description={
         sent
-          ? "If that matches an account with an email address, we've sent it a 6-digit code. It expires in 1 hour."
+          ? "We've emailed a 6-digit code to the address on your account. It expires in 1 hour."
           : "Enter the email or mobile number on your account. We'll email you a 6-digit code."
       }
       footer={
@@ -81,7 +84,27 @@ export default function ForgotPasswordPage() {
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-5">
-          {error && <FormMessage>{error}</FormMessage>}
+          {error && (
+            <FormMessage>
+              {error}
+              {errorReason === "not_found" && (
+                <>
+                  {" "}
+                  <Link href="/portal/signup" className={textLink}>
+                    Create an account
+                  </Link>
+                </>
+              )}
+              {errorReason === "no_email" && (
+                <>
+                  {" "}
+                  <a href="https://wa.me/919152975552" target="_blank" rel="noopener noreferrer" className={textLink}>
+                    Message us on WhatsApp
+                  </a>
+                </>
+              )}
+            </FormMessage>
+          )}
           <Field
             id="forgot-identifier"
             label="Email or mobile number"

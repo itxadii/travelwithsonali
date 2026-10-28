@@ -5,7 +5,7 @@ export const SITE_URL = (process.env.SITE_URL || "https://travelwithsonali.com")
 export const SITE_NAME = "Travel With Sonali";
 export const DEFAULT_DESCRIPTION =
   "Small-group tours, Himalayan treks and spiritual yatras across India and Nepal, personally planned and led by Sonali. Fixed departures, safe stays and a warm travel community.";
-export const DEFAULT_OG_IMAGE = "/images/hero_bg.jpg";
+export const DEFAULT_OG_IMAGE = "/images/og-default.jpg";
 export const INSTAGRAM_URL = "https://www.instagram.com/travel_withsonali";
 
 export function absoluteUrl(path: string): string {
