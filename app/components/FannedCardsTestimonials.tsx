@@ -56,8 +56,9 @@ function FannedCardsTestimonialsComponent({ testimonials }: FannedCardsTestimoni
   // Use first 5 testimonials for the 5-card fan deck
   const items = testimonials.slice(0, 5);
 
-  // Center card (index 2) is active by default
-  const [activeIndex, setActiveIndex] = useState<number>(2);
+  // The middle card is active by default (works for 3 to 5 cards)
+  const center = Math.floor((items.length - 1) / 2);
+  const [activeIndex, setActiveIndex] = useState<number>(center);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [hasEnteredView, setHasEnteredView] = useState(false);
 
@@ -74,7 +75,8 @@ function FannedCardsTestimonialsComponent({ testimonials }: FannedCardsTestimoni
   );
 
   const activeOrHovered = hoveredIndex !== null ? hoveredIndex : activeIndex;
-  const currentDest = TESTIMONIAL_DESTINATIONS[activeOrHovered] || TESTIMONIAL_DESTINATIONS[2];
+  // Backgrounds are scenery only; the badge names the tour the active review is about
+  const activeItem = items[activeOrHovered] || items[center];
 
   const handleCardClick = useCallback((idx: number) => {
     setActiveIndex(idx);
@@ -94,7 +96,7 @@ function FannedCardsTestimonialsComponent({ testimonials }: FannedCardsTestimoni
       {/* Dynamic Destination Background Photos - Pure CSS compositor cross-fade */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
         {TESTIMONIAL_DESTINATIONS.map((dest, idx) => {
-          const isCurrent = activeOrHovered === idx;
+          const isCurrent = activeOrHovered % TESTIMONIAL_DESTINATIONS.length === idx;
           return (
             <div
               key={dest.trip}
@@ -145,14 +147,14 @@ function FannedCardsTestimonialsComponent({ testimonials }: FannedCardsTestimoni
         <div className="relative w-full max-w-5xl mx-auto flex flex-col items-center">
           {/* Active Destination Indicator Badge */}
           <motion.div
-            key={currentDest.locationTag}
+            key={activeItem?.id}
             initial={{ opacity: 0, y: -4 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.2 }}
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/95 border border-[#E8DCD5] shadow-xs text-xs font-semibold text-[#685752] mb-4 z-20"
           >
             <MapPin className="w-3.5 h-3.5 text-[#4A7244]" />
-            <span>{currentDest.locationTag}</span>
+            <span>{activeItem?.trip}</span>
           </motion.div>
 
           {/* Interactive Deck Area */}
@@ -163,7 +165,7 @@ function FannedCardsTestimonialsComponent({ testimonials }: FannedCardsTestimoni
             viewport={{ once: true, amount: 0.25 }}
           >
             {items.map((item, idx) => {
-              const offset = idx - 2;
+              const offset = idx - center;
               const isSelected = activeOrHovered === idx;
 
               // Precomputed geometry
@@ -267,22 +269,19 @@ function FannedCardsTestimonialsComponent({ testimonials }: FannedCardsTestimoni
 
                     {/* Card Footer: Traveller Avatar & Info */}
                     <div className="relative z-10 pt-3 border-t border-[#E8DCD5] flex items-center gap-3">
-                      <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden border-2 border-[#8EB486]/40 shrink-0 shadow-xs">
-                        <Image
-                          src={item.avatar}
-                          alt={item.name}
-                          fill
-                          className="object-cover"
-                          sizes="48px"
-                          loading="lazy"
-                        />
+                      <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden border-2 border-[#8EB486]/40 shrink-0 shadow-xs bg-[#685752] text-white flex items-center justify-center text-sm font-bold">
+                        {item.avatar ? (
+                          <Image src={item.avatar} alt={item.name} fill className="object-cover" sizes="48px" loading="lazy" />
+                        ) : (
+                          <span aria-hidden="true">{item.name.trim().charAt(0).toUpperCase()}</span>
+                        )}
                       </div>
                       <div className="min-w-0 flex-1">
                         <p className="text-xs sm:text-sm font-bold text-[#685752] truncate">
                           {item.name}
                         </p>
                         <p className="text-xs text-[#7A6862] truncate">
-                          {item.location} • {item.date}
+                          {[item.location, item.date].filter(Boolean).join(" • ")}
                         </p>
                       </div>
                     </div>

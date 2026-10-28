@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import HomeClientView from "./HomeClientView";
 import { DEFAULT_DESCRIPTION, DEFAULT_OG_IMAGE, SITE_NAME } from "@/lib/seo";
 import { getFeaturedTours, getInstagramSection } from "@/lib/sanity/queries";
+import { getHomepageTestimonials } from "@/lib/reviews";
 
 const homeTitle = `${SITE_NAME} | Group Tours, Himalayan Treks & Yatras`;
 
@@ -22,6 +23,7 @@ export const metadata: Metadata = {
 export default function Home() {
   const tours = use(getFeaturedTours());
   const instagramData = use(getInstagramSection());
+  const testimonials = use(getHomepageTestimonials());
 
-  return <HomeClientView tours={tours} instagramData={instagramData} />;
+  return <HomeClientView tours={tours} instagramData={instagramData} testimonials={testimonials} />;
 }

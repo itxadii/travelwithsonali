@@ -67,7 +67,7 @@ export default function AdminLayoutClient({ admin, children }: AdminLayoutClient
     { label: "Payments", href: "/admin/payments", icon: CreditCard },
     { label: "Documents", href: "/admin/documents", icon: FileCheck },
     { label: "Reviews", href: "/admin/reviews", icon: Star },
-    { label: "Notifications", href: "/admin/notifications", icon: Bell },
+    { label: "Activity", href: "/admin/notifications", icon: Bell },
     { label: "Reports", href: "/admin/reports", icon: BarChart3 },
     { label: "Analytics", href: "/admin/analytics", icon: Activity },
     { label: "Settings", href: "/admin/settings", icon: Settings },

@@ -36,7 +36,7 @@ export function AuthLayout({
           fill
           priority
           sizes="(max-width: 1024px) 100vw, 50vw"
-          className="object-cover object-[50%_35%]"
+          className="object-cover object-[50%_48%] lg:object-[50%_35%]"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/5 to-transparent" />
         <p className="absolute bottom-5 left-5 right-5 lg:bottom-12 lg:left-12 lg:right-12 max-w-md font-serif-italic text-white text-xl sm:text-2xl lg:text-4xl leading-snug">
@@ -54,7 +54,7 @@ export function AuthLayout({
           Travel With Sonali
         </Link>
 
-        <main className="flex-1 flex flex-col justify-center w-full max-w-sm mx-auto lg:mx-0 py-8">
+        <main className="flex-1 flex flex-col justify-center w-full max-w-sm py-8">
           <h1 className="font-serif-italic font-bold text-3xl sm:text-4xl text-[#685752]">{title}</h1>
           {description && <p className="mt-2 text-base text-[#7A6862] leading-relaxed">{description}</p>}
           <div className="mt-8">{children}</div>

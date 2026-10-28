@@ -1,61 +1,80 @@
-"use client";
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import { desc, ne } from "drizzle-orm";
+import { db } from "@/db";
+import { activityLogs } from "@/db/schema";
+import { getCurrentAdmin } from "@/lib/admin/auth";
 
-import React from "react";
-import { CheckCircle2 } from "lucide-react";
+export const dynamic = "force-dynamic";
 
-export default function NotificationsPage() {
-  const notifications = [
-    {
-      id: "notif-1",
-      title: "Booking Confirmed",
-      message: "Booking TWS-2026-881 for Manali & Kasol Group Trip confirmed for Rahul Verma.",
-      type: "success",
-      date: "16 Aug 2026",
-    },
-    {
-      id: "notif-2",
-      title: "Payment Received",
-      message: "₹10,000 payment recorded via UPI for Booking TWS-2026-881.",
-      type: "info",
-      date: "16 Aug 2026",
-    },
-    {
-      id: "notif-3",
-      title: "Document Verified",
-      message: "Aadhaar document for Rahul Verma verified by Sonali Palekar.",
-      type: "success",
-      date: "16 Aug 2026",
-    },
-  ];
+const ACTION_LABELS: Record<string, string> = {
+  CREATE_LEAD: "New enquiry",
+  UPDATE_LEAD: "Enquiry updated",
+  AUTO_CONVERT_CUSTOMER: "Enquiry converted to customer",
+  CREATE_CUSTOMER: "Customer added",
+  CREATE_BOOKING: "Booking created",
+  UPDATE_BOOKING_STATUS: "Booking status changed",
+  ADD_PAYMENT: "Payment recorded",
+  ADD_TRAVELLER: "Traveller added",
+  DELETE_REVIEW: "Review deleted",
+  CHANGE_PASSWORD: "Admin password changed",
+};
+
+const ENTITY_LINKS: Record<string, string> = {
+  LEAD: "/admin/leads",
+  CUSTOMER: "/admin/customers",
+  BOOKING: "/admin/bookings",
+};
+
+/** Real operational activity from the activity log, newest first. */
+export default async function NotificationsPage() {
+  const admin = await getCurrentAdmin();
+  if (!admin) redirect("/admin/login");
+
+  const events = await db
+    .select()
+    .from(activityLogs)
+    .where(ne(activityLogs.action, "ADMIN_SEED"))
+    .orderBy(desc(activityLogs.createdAt))
+    .limit(100);
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#685752] font-serif-italic">
-          Notifications Center
-        </h1>
-        <p className="text-xs text-[#7A6862] mt-1">
-          Operational alerts, booking confirmations, and payment activity.
-        </p>
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#685752] font-serif-italic">Activity</h1>
+        <p className="text-sm text-[#7A6862] mt-1">New enquiries, bookings, payments and other changes, newest first.</p>
       </div>
 
-      <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-4">
-        <div className="space-y-3">
-          {notifications.map((n) => (
-            <div key={n.id} className="p-4 rounded-2xl bg-[#FDF7F4] border border-[#E8DCD5] flex items-start gap-4">
-              <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
-                <CheckCircle2 className="w-4 h-4" />
-              </div>
-              <div className="flex-1 text-xs">
-                <div className="flex items-center justify-between">
-                  <h4 className="font-bold text-[#685752] text-sm">{n.title}</h4>
-                  <span className="text-xs text-[#7A6862]">{n.date}</span>
-                </div>
-                <p className="text-[#666059] mt-1 leading-relaxed">{n.message}</p>
-              </div>
-            </div>
-          ))}
-        </div>
+      <div className="rounded-3xl bg-white border border-[#E8DCD5] shadow-xs">
+        {events.length === 0 ? (
+          <p className="p-6 text-sm text-[#7A6862]">Nothing yet. New enquiries and bookings will show up here.</p>
+        ) : (
+          <ul className="divide-y divide-[#E8DCD5]">
+            {events.map((event) => {
+              const href = ENTITY_LINKS[event.entityType] && event.entityId ? `${ENTITY_LINKS[event.entityType]}/${event.entityId}` : null;
+              const label = ACTION_LABELS[event.action] ?? event.action.replace(/_/g, " ").toLowerCase();
+              return (
+                <li key={event.id} className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 px-5 py-4">
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-[#685752]">
+                      {href ? (
+                        <Link href={href} className="hover:text-[#4A7244] hover:underline underline-offset-4">
+                          {label}
+                        </Link>
+                      ) : (
+                        label
+                      )}
+                    </p>
+                    <p className="text-sm text-[#7A6862] break-words">By {event.actorEmail}</p>
+                  </div>
+                  <time dateTime={event.createdAt.toISOString()} className="text-sm text-[#7A6862] whitespace-nowrap">
+                    {event.createdAt.toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short", timeZone: "Asia/Kolkata" })}
+                  </time>
+                </li>
+              );
+            })}
+          </ul>
+        )}
       </div>
     </div>
   );

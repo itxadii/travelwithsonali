@@ -67,13 +67,31 @@ interface DashboardData {
   }[];
 }
 
+const MONTHS = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
+
+/** Departure dates are stored as text like "15 September 2026"; returns epoch ms, or null if unreadable. */
+function parseDepartureDate(value?: string): number | null {
+  if (!value) return null;
+  const match = value.trim().match(/^(\d{1,2})\s+([a-z]+)\s+(\d{4})$/i);
+  if (match) {
+    const month = MONTHS.findIndex((m) => m.startsWith(match[2].toLowerCase().slice(0, 3)));
+    if (month >= 0) return new Date(Number(match[3]), month, Number(match[1])).getTime();
+  }
+  const parsed = Date.parse(value);
+  return Number.isNaN(parsed) ? null : parsed;
+}
+
 export default function CustomerDashboardPage() {
   const router = useRouter();
   const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Countdown State
-  const [countdown, setCountdown] = useState({ days: 27, hours: 8, minutes: 42, seconds: 15 });
+  // Countdown to the real departure date, refreshed every minute
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    const timer = setInterval(() => setNow(Date.now()), 60_000);
+    return () => clearInterval(timer);
+  }, []);
 
   useEffect(() => {
     async function fetchDashboard() {
@@ -97,16 +115,6 @@ export default function CustomerDashboardPage() {
     fetchDashboard();
   }, [router]);
 
-  // Timer simulation
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCountdown((prev) => {
-        if (prev.seconds > 0) return { ...prev, seconds: prev.seconds - 1 };
-        return { ...prev, seconds: 59, minutes: prev.minutes > 0 ? prev.minutes - 1 : 59 };
-      });
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
 
   if (loading) {
     return (
@@ -124,6 +132,13 @@ export default function CustomerDashboardPage() {
   if (!data) return null;
 
   const { customer, nextTrip, featuredTours } = data;
+  const departureAt = parseDepartureDate(nextTrip?.booking.departureDate);
+  const msLeft = departureAt ? departureAt - now : 0;
+  const countdown = {
+    days: Math.floor(msLeft / 86_400_000),
+    hours: Math.floor((msLeft % 86_400_000) / 3_600_000),
+    minutes: Math.floor((msLeft % 3_600_000) / 60_000),
+  };
 
   return (
     <div className="space-y-8">
@@ -185,6 +200,7 @@ export default function CustomerDashboardPage() {
 
             {/* LIVE COUNTDOWN DISPLAY */}
             <div className="pt-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-6">
+              {msLeft > 0 && (
               <div>
                 <span className="text-xs uppercase font-bold text-stone-400 tracking-widest block mb-2">
                   TRIP COUNTDOWN
@@ -206,6 +222,7 @@ export default function CustomerDashboardPage() {
                   </div>
                 </div>
               </div>
+              )}
 
               <Link
                 href={`/portal/trips/${nextTrip.booking.id}`}

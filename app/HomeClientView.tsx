@@ -43,7 +43,7 @@ export const REAL_DESTINATION_IMAGES = [
 import { Tour } from "./data/toursData";
 import { InstagramSectionData } from "@/lib/sanity/types";
 import { STORIES_DATA } from "./data/storiesData";
-import { TESTIMONIALS_DATA } from "./data/testimonialsData";
+import type { Testimonial } from "./data/testimonialsData";
 import { FAQS_DATA } from "./data/faqsData";
 const TRIP_PILLARS = [
   {
@@ -83,9 +83,10 @@ const TRIP_PILLARS = [
 interface HomeClientViewProps {
   tours: Tour[];
   instagramData?: InstagramSectionData;
+  testimonials: Testimonial[];
 }
 
-export default function HomeClientView({ tours, instagramData }: HomeClientViewProps) {
+export default function HomeClientView({ tours, instagramData, testimonials }: HomeClientViewProps) {
   const [enquireOpen, setEnquireOpen] = useState(false);
   const [selectedTourName, setSelectedTourName] = useState("");
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
@@ -397,7 +398,8 @@ export default function HomeClientView({ tours, instagramData }: HomeClientViewP
       </section>
 
       {/* ================= SECTION 4: TESTIMONIALS ================= */}
-      <FannedCardsTestimonials testimonials={TESTIMONIALS_DATA} />
+      {/* Real approved reviews only; hidden until there are enough to fill the deck */}
+      {testimonials.length >= 3 && <FannedCardsTestimonials testimonials={testimonials} />}
 
       {/* ================= SECTION 5: DRAGGABLE DESTINATIONS SHOWCASE ================= */}
       <section className="relative flex min-h-[90vh] lg:min-h-screen w-full items-center justify-center overflow-clip bg-[#F7EFEA] border-t border-[#E8DCD5]">

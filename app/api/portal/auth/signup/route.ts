@@ -13,8 +13,12 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { name, phone, email, password } = body;
 
-    if (!name || !phone || !password) {
-      return NextResponse.json({ error: "Full name, phone number, and password are required." }, { status: 400 });
+    // Email is required: password reset codes can only be sent by email
+    if (!name || !phone || !email || !password) {
+      return NextResponse.json({ error: "Full name, mobile number, email and password are required." }, { status: 400 });
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email).trim())) {
+      return NextResponse.json({ error: "Enter a valid email address, like name@gmail.com." }, { status: 400 });
     }
 
     if (password.length < 8) {

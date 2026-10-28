@@ -34,86 +34,6 @@ async function ensureTable() {
   }
 }
 
-// Initial sample reviews for tours to provide immediate social proof
-const defaultSeedReviews: Record<string, Array<{
-  id: string;
-  tourSlug: string;
-  tourTitle: string;
-  userName: string;
-  rating: number;
-  title: string;
-  comment: string;
-  location: string;
-  tripDate: string;
-  createdAt: string;
-}>> = {
-  "char-dham-yatra": [
-    {
-      id: "seed-cd-1",
-      tourSlug: "char-dham-yatra",
-      tourTitle: "Char Dham Yatra",
-      userName: "Pooja Verma",
-      rating: 5,
-      title: "Soul-stirring journey with perfect coordination!",
-      comment: "Traveling to Char Dham with Sonali and team was the best decision for my parents and me. The stays, warm food in high altitudes, and the support during the Kedarnath trek made everything effortless. Highly recommended!",
-      location: "Mumbai",
-      tripDate: "May 2026 Batch",
-      createdAt: new Date(Date.now() - 14 * 86400000).toISOString(),
-    },
-    {
-      id: "seed-cd-2",
-      tourSlug: "char-dham-yatra",
-      tourTitle: "Char Dham Yatra",
-      userName: "Ramesh Iyer",
-      rating: 5,
-      title: "Very well managed and safe for families",
-      comment: "The vehicle driver was very skilled on mountain roads and the tour coordinator treated everyone like family. Pure vegetarian warm meals were provided throughout. Truly grateful for this experience.",
-      location: "Bengaluru",
-      tripDate: "June 2026 Batch",
-      createdAt: new Date(Date.now() - 25 * 86400000).toISOString(),
-    },
-    {
-      id: "seed-cd-3",
-      tourSlug: "char-dham-yatra",
-      tourTitle: "Char Dham Yatra",
-      userName: "Sneha Patil",
-      rating: 5,
-      title: "Memorable Himalayan pilgrimage",
-      comment: "Such an organized group trip! I was traveling solo as a woman and felt 100% safe and welcomed. Made lifelong friends on this sacred tour.",
-      location: "Pune",
-      tripDate: "June 2026 Batch",
-      createdAt: new Date(Date.now() - 40 * 86400000).toISOString(),
-    },
-  ],
-  "kedarnath-dham-yatra": [
-    {
-      id: "seed-kn-1",
-      tourSlug: "kedarnath-dham-yatra",
-      tourTitle: "Kedarnath Dham Yatra",
-      userName: "Amit Joshi",
-      rating: 5,
-      title: "Divine experience, zero hassle",
-      comment: "Sonali's team took care of pony/helicopter coordination and biometric passes so seamlessly. The temple darshan at dawn is unforgettable.",
-      location: "Ahmedabad",
-      tripDate: "May 2026 Batch",
-      createdAt: new Date(Date.now() - 10 * 86400000).toISOString(),
-    },
-  ],
-  "spiti-valley-explorer": [
-    {
-      id: "seed-sp-1",
-      tourSlug: "spiti-valley-explorer",
-      tourTitle: "Spiti Valley Explorer",
-      userName: "Karan Mehta",
-      rating: 5,
-      title: "Mindblowing landscapes and thrilling drives",
-      comment: "Homestays were cozy, the group vibe was super energetic, and stargazing at Kaza was breathtaking. Best Himalayan road trip ever.",
-      location: "Delhi",
-      tripDate: "July 2026 Batch",
-      createdAt: new Date(Date.now() - 30 * 86400000).toISOString(),
-    },
-  ],
-};
 
 export async function GET(request: Request) {
   await ensureTable();
@@ -136,37 +56,8 @@ export async function GET(request: Request) {
         .orderBy(desc(reviews.createdAt));
     }
 
-    // Include seed reviews for tour if user DB has few or no entries
-    let allList = [...dbReviews];
-    if (tourSlug && defaultSeedReviews[tourSlug]) {
-      const existingIds = new Set(dbReviews.map((r) => r.id));
-      const seedsToAdd = defaultSeedReviews[tourSlug]
-        .filter((s) => !existingIds.has(s.id))
-        .map((s) => ({
-          ...s,
-          userEmail: null,
-          isApproved: true,
-          createdAt: new Date(s.createdAt),
-          updatedAt: new Date(s.createdAt),
-        }));
-      allList = [...dbReviews, ...seedsToAdd];
-    } else if (!tourSlug) {
-      // General list: combine seeds
-      const existingIds = new Set(dbReviews.map((r) => r.id));
-      Object.values(defaultSeedReviews).forEach((seeds) => {
-        seeds.forEach((s) => {
-          if (!existingIds.has(s.id)) {
-            allList.push({
-              ...s,
-              userEmail: null,
-              isApproved: true,
-              createdAt: new Date(s.createdAt),
-              updatedAt: new Date(s.createdAt),
-            });
-          }
-        });
-      });
-    }
+    // Only real, admin-approved reviews are shown
+    const allList = dbReviews;
 
     // Compute stats
     const totalReviews = allList.length;
@@ -178,7 +69,7 @@ export async function GET(request: Request) {
               totalReviews
             ).toFixed(1)
           )
-        : 5.0;
+        : 0;
 
     const ratingDistribution: Record<number, number> = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
     allList.forEach((r) => {
@@ -194,13 +85,12 @@ export async function GET(request: Request) {
     });
   } catch (err) {
     console.error("GET /api/reviews error:", err);
-    // Graceful fallback with seed reviews if DB unavailable
-    const fallbackList = tourSlug ? (defaultSeedReviews[tourSlug] || []) : [];
+    // If the database is unavailable, show no reviews rather than invented ones
     return NextResponse.json({
-      reviews: fallbackList,
-      totalReviews: fallbackList.length,
-      averageRating: 5.0,
-      ratingDistribution: { 5: fallbackList.length, 4: 0, 3: 0, 2: 0, 1: 0 },
+      reviews: [],
+      totalReviews: 0,
+      averageRating: 0,
+      ratingDistribution: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 },
     });
   }
 }
