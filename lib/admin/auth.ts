@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { db } from "@/db";
 import { adminUsers, adminSessions } from "@/db/schema";
 import { eq, and, gt } from "drizzle-orm";
@@ -86,6 +87,13 @@ export async function getCurrentAdmin(): Promise<AdminUserSession | null> {
     console.error("getCurrentAdmin error:", err);
     return null;
   }
+}
+
+/** For admin server pages: the signed-in admin, or a redirect to the login page. */
+export async function requireAdmin(): Promise<AdminUserSession> {
+  const admin = await getCurrentAdmin();
+  if (!admin) redirect("/admin/login");
+  return admin;
 }
 
 export async function logoutAdmin(): Promise<void> {

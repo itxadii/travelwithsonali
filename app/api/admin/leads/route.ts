@@ -45,7 +45,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const leadId = `lead-${Date.now()}`;
+    const leadId = `lead-${crypto.randomUUID()}`;
     await db.insert(leads).values({
       id: leadId,
       name,
@@ -62,7 +62,7 @@ export async function POST(request: Request) {
 
     // Log Activity
     await db.insert(activityLogs).values({
-      id: `log-${Date.now()}`,
+      id: `log-${crypto.randomUUID()}`,
       actorEmail: admin.email,
       action: "CREATE_LEAD",
       entityType: "LEAD",

@@ -84,7 +84,7 @@ export async function POST(request: Request) {
       newPaymentStatus = "Partially Paid";
     }
 
-    const payId = `pay-${Date.now()}`;
+    const payId = `pay-${crypto.randomUUID()}`;
     await db.insert(payments).values({
       id: payId,
       bookingId,
@@ -109,7 +109,7 @@ export async function POST(request: Request) {
 
     // Audit log
     await db.insert(activityLogs).values({
-      id: `log-${Date.now()}`,
+      id: `log-${crypto.randomUUID()}`,
       actorEmail: admin.email,
       action: "ADD_PAYMENT",
       entityType: "BOOKING",

@@ -83,7 +83,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     await db.update(bookings).set(updateObj).where(eq(bookings.id, id));
 
     await db.insert(activityLogs).values({
-      id: `log-${Date.now()}`,
+      id: `log-${crypto.randomUUID()}`,
       actorEmail: admin.email,
       action: "UPDATE_BOOKING_STATUS",
       entityType: "BOOKING",

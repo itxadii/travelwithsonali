@@ -8,10 +8,8 @@ export function proxy(request: NextRequest) {
   if (pathname.startsWith("/admin")) {
     const adminToken = request.cookies.get("admin_session")?.value;
 
+    // The login page checks the session itself: a stale cookie must not bounce it back to /admin
     if (pathname === "/admin/login") {
-      if (adminToken) {
-        return NextResponse.redirect(new URL("/admin", request.url));
-      }
       return NextResponse.next();
     }
 

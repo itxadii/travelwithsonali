@@ -1,4 +1,4 @@
-import React, { use } from "react";
+import React from "react";
 import Link from "next/link";
 import {
   Users,
@@ -10,14 +10,19 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { db } from "@/db";
+import { requireAdmin } from "@/lib/admin/auth";
 import { leads, customers, bookings, activityLogs } from "@/db/schema";
 import { desc } from "drizzle-orm";
 
-export default function AdminDashboardPage() {
-  const allLeads = use(db.select().from(leads).orderBy(desc(leads.createdAt)));
-  const allCustomers = use(db.select().from(customers));
-  const allBookings = use(db.select().from(bookings).orderBy(desc(bookings.createdAt)));
-  const recentLogs = use(db.select().from(activityLogs).orderBy(desc(activityLogs.createdAt)).limit(6));
+export default async function AdminDashboardPage() {
+  await requireAdmin();
+
+  const [allLeads, allCustomers, allBookings, recentLogs] = await Promise.all([
+    db.select().from(leads).orderBy(desc(leads.createdAt)),
+    db.select().from(customers),
+    db.select().from(bookings).orderBy(desc(bookings.createdAt)),
+    db.select().from(activityLogs).orderBy(desc(activityLogs.createdAt)).limit(6),
+  ]);
 
   const totalLeadsCount = allLeads.length;
   const newLeadsCount = allLeads.filter((l) => l.status === "New").length;

@@ -36,7 +36,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const customerId = `cust-${Date.now()}`;
+    const customerId = `cust-${crypto.randomUUID()}`;
     await db.insert(customers).values({
       id: customerId,
       name,
@@ -46,7 +46,7 @@ export async function POST(request: Request) {
     });
 
     await db.insert(activityLogs).values({
-      id: `log-${Date.now()}`,
+      id: `log-${crypto.randomUUID()}`,
       actorEmail: admin.email,
       action: "CREATE_CUSTOMER",
       entityType: "CUSTOMER",

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
@@ -43,10 +43,17 @@ export default function AdminLayoutClient({ admin, children }: AdminLayoutClient
     setProfileDropdownOpen(false);
   });
 
+  const isLoginPage = pathname === "/admin/login";
+  // An expired or unknown session cookie passes the proxy (it only checks the cookie exists)
+  useEffect(() => {
+    if (!admin && !isLoginPage) router.replace(`/admin/login?from=${encodeURIComponent(pathname)}`);
+  }, [admin, isLoginPage, pathname, router]);
+
   // If on login page, render children directly without admin layout
-  if (pathname === "/admin/login") {
+  if (isLoginPage) {
     return <>{children}</>;
   }
+  if (!admin) return null;
 
   const handleLogout = async () => {
     try {

@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Plus, ArrowUpRight } from "lucide-react";
 import { GooeyInput } from "@/components/ui/gooey-input";
-import { TOURS_DATA } from "@/app/data/toursData";
+import { useTourOptions } from "@/lib/useTourOptions";
 
 import { useEscapeKey } from "@/lib/useEscapeKey";
 interface LeadItem {
@@ -29,13 +29,16 @@ export default function LeadsPage() {
   const [createModalOpen, setCreateModalOpen] = useState(false);
   useEscapeKey(createModalOpen, () => setCreateModalOpen(false));
   const [loading, setLoading] = useState(true);
+  const tours = useTourOptions();
+  const [saving, setSaving] = useState(false);
+  const [formError, setFormError] = useState("");
 
   // Form State
   const [formData, setFormData] = useState({
     name: "",
     mobile: "",
     email: "",
-    interestedTourTitle: "Manali & Kasol Group Trip",
+    interestedTourTitle: "",
     source: "Website",
     travellersCount: 2,
     notes: "",
@@ -73,6 +76,8 @@ export default function LeadsPage() {
 
   const handleCreateLead = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSaving(true);
+    setFormError("");
     try {
       const res = await fetch("/api/admin/leads", {
         method: "POST",
@@ -86,15 +91,21 @@ export default function LeadsPage() {
           name: "",
           mobile: "",
           email: "",
-          interestedTourTitle: "Manali & Kasol Group Trip",
+          interestedTourTitle: "",
           source: "Website",
           travellersCount: 2,
           notes: "",
         });
         fetchLeads();
+      } else {
+        const data = await res.json().catch(() => ({}));
+        setFormError(data.error || "Couldn't save the lead. Please try again.");
       }
     } catch (err) {
       console.error(err);
+      setFormError("Couldn't reach the server. Check your connection and try again.");
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -321,11 +332,15 @@ export default function LeadsPage() {
               <div className="space-y-1">
                 <label className="text-[#7A6862] font-semibold">Interested Tour *</label>
                 <select
+                  required
                   value={formData.interestedTourTitle}
                   onChange={(e) => setFormData({ ...formData, interestedTourTitle: e.target.value })}
                   className="w-full p-2.5 rounded-xl bg-[#FDF7F4] border border-[#E8DCD5] text-[#685752] focus:outline-none focus:border-[#8EB486]"
                 >
-                  {TOURS_DATA.map((t) => (
+                  <option value="" disabled>
+                    Choose a tour
+                  </option>
+                  {tours.map((t) => (
                     <option key={t.id} value={t.title}>
                       {t.title} ({t.price})
                     </option>
@@ -359,6 +374,12 @@ export default function LeadsPage() {
                 />
               </div>
 
+              {formError && (
+                <p role="alert" className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-800">
+                  {formError}
+                </p>
+              )}
+
               <div className="pt-2 flex items-center justify-end gap-3">
                 <button
                   type="button"
@@ -369,9 +390,10 @@ export default function LeadsPage() {
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-2 rounded-full bg-[#4A7244] text-white font-semibold cursor-pointer shadow-sm"
+                  disabled={saving}
+                  className="px-6 py-2 rounded-full bg-[#4A7244] text-white font-semibold cursor-pointer shadow-sm disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  Save Lead
+                  {saving ? "Saving…" : "Save Lead"}
                 </button>
               </div>
             </form>

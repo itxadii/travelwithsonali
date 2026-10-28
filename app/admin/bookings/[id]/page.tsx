@@ -60,6 +60,9 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
   const [loading, setLoading] = useState(true);
   const [paymentModalOpen, setPaymentModalOpen] = useState(false);
   const [travellerModalOpen, setTravellerModalOpen] = useState(false);
+  // Guards against double-clicks recording the same payment or traveller twice
+  const [saving, setSaving] = useState(false);
+  const [formError, setFormError] = useState("");
   useEscapeKey(paymentModalOpen || travellerModalOpen, () => {
     setPaymentModalOpen(false);
     setTravellerModalOpen(false);
@@ -110,6 +113,9 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
   const handleAddPayment = async (e: React.FormEvent) => {
     e.preventDefault();
     if (payAmount <= 0) return;
+    if (saving) return;
+    setSaving(true);
+    setFormError("");
 
     try {
       const res = await fetch("/api/admin/payments", {
@@ -130,15 +136,24 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
         setPayRef("");
         setPayNotes("");
         fetchDetail();
+      } else {
+        const json = await res.json().catch(() => ({}));
+        setFormError(json.error || "Couldn't record the payment. Please try again.");
       }
     } catch (err) {
       console.error(err);
+      setFormError("Couldn't reach the server. Check your connection and try again.");
+    } finally {
+      setSaving(false);
     }
   };
 
   const handleAddTraveller = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!travName) return;
+    if (saving) return;
+    setSaving(true);
+    setFormError("");
 
     try {
       const res = await fetch("/api/admin/travellers", {
@@ -159,9 +174,15 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
         setTravMobile("");
         setTravIdNumber("");
         fetchDetail();
+      } else {
+        const json = await res.json().catch(() => ({}));
+        setFormError(json.error || "Couldn't add the traveller. Please try again.");
       }
     } catch (err) {
       console.error(err);
+      setFormError("Couldn't reach the server. Check your connection and try again.");
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -286,7 +307,10 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
             </div>
 
             <button
-              onClick={() => setPaymentModalOpen(true)}
+              onClick={() => {
+                setFormError("");
+                setPaymentModalOpen(true);
+              }}
               className="w-full py-3 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white font-semibold text-xs transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md"
             >
               <Plus className="w-4 h-4" />
@@ -305,7 +329,10 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
                 Payment Ledger History ({payments.length})
               </h3>
               <button
-                onClick={() => setPaymentModalOpen(true)}
+                onClick={() => {
+                  setFormError("");
+                  setPaymentModalOpen(true);
+                }}
                 className="text-xs text-[#4A7244] hover:underline font-semibold cursor-pointer"
               >
                 + Add Payment
@@ -341,7 +368,10 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
                 Traveller Manifest ({travellers.length})
               </h3>
               <button
-                onClick={() => setTravellerModalOpen(true)}
+                onClick={() => {
+                  setFormError("");
+                  setTravellerModalOpen(true);
+                }}
                 className="text-xs text-[#4A7244] hover:underline font-semibold cursor-pointer"
               >
                 + Add Traveller
@@ -430,6 +460,12 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
                 />
               </div>
 
+              {formError && (
+                <p role="alert" className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-800">
+                  {formError}
+                </p>
+              )}
+
               <div className="pt-2 flex items-center justify-end gap-3">
                 <button
                   type="button"
@@ -440,9 +476,10 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-2 rounded-full bg-[#4A7244] text-white font-semibold cursor-pointer shadow-sm"
+                  disabled={saving}
+                  className="px-6 py-2 rounded-full bg-[#4A7244] text-white font-semibold cursor-pointer shadow-sm disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  Save Payment
+                  {saving ? "Saving…" : "Save Payment"}
                 </button>
               </div>
             </form>
@@ -508,6 +545,12 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
                 </div>
               </div>
 
+              {formError && (
+                <p role="alert" className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-800">
+                  {formError}
+                </p>
+              )}
+
               <div className="pt-2 flex items-center justify-end gap-3">
                 <button
                   type="button"
@@ -518,9 +561,10 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-2 rounded-full bg-[#4A7244] text-white font-semibold cursor-pointer shadow-sm"
+                  disabled={saving}
+                  className="px-6 py-2 rounded-full bg-[#4A7244] text-white font-semibold cursor-pointer shadow-sm disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  Save Traveller
+                  {saving ? "Saving…" : "Save Traveller"}
                 </button>
               </div>
             </form>

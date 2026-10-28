@@ -5,6 +5,18 @@ import { bookings, customers, activityLogs, payments, travellers } from "@/db/sc
 import { desc, eq } from "drizzle-orm";
 import { findCustomerByIdentifier } from "@/lib/portal/auth";
 
+/** TWS-<year>-<4 digits>, re-rolled until it isn't already used (booking_code is unique). */
+async function generateBookingCode(): Promise<string> {
+  const year = new Date().getFullYear();
+  for (let attempt = 0; attempt < 10; attempt++) {
+    const code = `TWS-${year}-${Math.floor(1000 + Math.random() * 9000)}`;
+    const taken = await db.select({ id: bookings.id }).from(bookings).where(eq(bookings.bookingCode, code)).limit(1);
+    if (taken.length === 0) return code;
+  }
+  // Practically unreachable; fall back to a code that can't collide
+  return `TWS-${year}-${crypto.randomUUID().slice(0, 8).toUpperCase()}`;
+}
+
 export async function GET() {
   const admin = await getCurrentAdmin();
   if (!admin) {
@@ -89,7 +101,7 @@ export async function POST(request: Request) {
             .where(eq(customers.id, existingCustomer.id));
         }
       } else {
-        targetCustomerId = `cust-${Date.now()}`;
+        targetCustomerId = `cust-${crypto.randomUUID()}`;
         await db.insert(customers).values({
           id: targetCustomerId,
           name: customerName.trim(),
@@ -116,8 +128,8 @@ export async function POST(request: Request) {
       paymentStatus = "Partially Paid";
     }
 
-    const bookingId = `book-${Date.now()}`;
-    const bookingCode = `TWS-${new Date().getFullYear()}-${Math.floor(100 + Math.random() * 900)}`;
+    const bookingId = `book-${crypto.randomUUID()}`;
+    const bookingCode = await generateBookingCode();
 
     await db.insert(bookings).values({
       id: bookingId,
@@ -140,7 +152,7 @@ export async function POST(request: Request) {
     // Advance Payment entry if provided
     if (advanceVal > 0) {
       await db.insert(payments).values({
-        id: `pay-${Date.now()}`,
+        id: `pay-${crypto.randomUUID()}`,
         bookingId,
         amount: paidAmount,
         paymentMethod: paymentMethod || "UPI",
@@ -155,7 +167,7 @@ export async function POST(request: Request) {
     const primaryCust = await db.select().from(customers).where(eq(customers.id, targetCustomerId));
     if (primaryCust.length > 0) {
       await db.insert(travellers).values({
-        id: `trav-${Date.now()}`,
+        id: `trav-${crypto.randomUUID()}`,
         bookingId,
         customerId: targetCustomerId,
         fullName: primaryCust[0].name,
@@ -165,7 +177,7 @@ export async function POST(request: Request) {
     }
 
     await db.insert(activityLogs).values({
-      id: `log-${Date.now()}`,
+      id: `log-${crypto.randomUUID()}`,
       actorEmail: admin.email,
       action: "CREATE_BOOKING",
       entityType: "BOOKING",

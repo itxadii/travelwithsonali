@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Plus, ArrowUpRight } from "lucide-react";
 import { GooeyInput } from "@/components/ui/gooey-input";
-import { TOURS_DATA } from "@/app/data/toursData";
+import { useTourOptions } from "@/lib/useTourOptions";
 
 import { useEscapeKey } from "@/lib/useEscapeKey";
 interface BookingListItem {
@@ -34,19 +34,22 @@ export default function BookingsPage() {
   const [createModalOpen, setCreateModalOpen] = useState(false);
   useEscapeKey(createModalOpen, () => setCreateModalOpen(false));
   const [loading, setLoading] = useState(true);
+  const tours = useTourOptions();
+  const [saving, setSaving] = useState(false);
+  const [formError, setFormError] = useState("");
 
   // New Booking Form
   const [formData, setFormData] = useState({
     customerName: "",
     customerPhone: "",
     customerEmail: "",
-    tourTitle: TOURS_DATA[0].title,
-    sanityTourId: TOURS_DATA[0].id,
-    departureDate: "15 September 2026",
+    tourTitle: "",
+    sanityTourId: "",
+    departureDate: "",
     travellersCount: 2,
-    pricePerTraveller: TOURS_DATA[0].numericPrice,
+    pricePerTraveller: 0,
     discount: 0,
-    advancePayment: 5000,
+    advancePayment: 0,
     paymentMethod: "UPI",
     notes: "",
   });
@@ -82,7 +85,7 @@ export default function BookingsPage() {
   }, []);
 
   const handleTourChange = (title: string) => {
-    const selected = TOURS_DATA.find((t) => t.title === title);
+    const selected = tours.find((t) => t.title === title);
     if (selected) {
       setFormData({
         ...formData,
@@ -95,6 +98,8 @@ export default function BookingsPage() {
 
   const handleCreateBooking = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSaving(true);
+    setFormError("");
     try {
       const res = await fetch("/api/admin/bookings", {
         method: "POST",
@@ -105,9 +110,15 @@ export default function BookingsPage() {
       if (res.ok) {
         setCreateModalOpen(false);
         fetchBookings();
+      } else {
+        const data = await res.json().catch(() => ({}));
+        setFormError(data.error || "Couldn't create the booking. Please try again.");
       }
     } catch (err) {
       console.error(err);
+      setFormError("Couldn't reach the server. Check your connection and try again.");
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -278,13 +289,17 @@ export default function BookingsPage() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-[#7A6862] font-semibold">Select Tour (from Sanity published list)</label>
+                <label className="text-[#7A6862] font-semibold">Tour *</label>
                 <select
+                  required
                   value={formData.tourTitle}
                   onChange={(e) => handleTourChange(e.target.value)}
                   className="w-full p-2.5 rounded-xl bg-[#FDF7F4] border border-[#E8DCD5] text-[#685752] focus:outline-none focus:border-[#8EB486]"
                 >
-                  {TOURS_DATA.map((t) => (
+                  <option value="" disabled>
+                    Choose a tour
+                  </option>
+                  {tours.map((t) => (
                     <option key={t.id} value={t.title}>
                       {t.title} ({t.price})
                     </option>
@@ -376,6 +391,12 @@ export default function BookingsPage() {
                 />
               </div>
 
+              {formError && (
+                <p role="alert" className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-800">
+                  {formError}
+                </p>
+              )}
+
               <div className="pt-2 flex items-center justify-end gap-3">
                 <button
                   type="button"
@@ -386,9 +407,10 @@ export default function BookingsPage() {
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-2 rounded-full bg-[#4A7244] text-white font-semibold cursor-pointer shadow-sm"
+                  disabled={saving}
+                  className="px-6 py-2 rounded-full bg-[#4A7244] text-white font-semibold cursor-pointer shadow-sm disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  Create Booking
+                  {saving ? "Saving…" : "Create Booking"}
                 </button>
               </div>
             </form>

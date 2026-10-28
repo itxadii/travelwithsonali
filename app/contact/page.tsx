@@ -5,7 +5,7 @@ import { Phone, Mail, Send, CheckCircle2 } from "lucide-react";
 
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { TOURS_DATA } from "../data/toursData";
+import { useTourOptions } from "@/lib/useTourOptions";
 import AmbientCircles from "../components/AmbientCircles";
 import { submitEnquiry } from "@/lib/submitEnquiry";
 
@@ -13,11 +13,12 @@ export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
   const [sendError, setSendError] = useState("");
+  const tours = useTourOptions();
   const [formData, setFormData] = useState({
     name: "",
     mobile: "",
     email: "",
-    tour: "Kedarnath Yatra",
+    tour: "",
     travellers: "2 Travellers",
     message: ""
   });
@@ -190,7 +191,12 @@ export default function ContactPage() {
                       onChange={(e) => setFormData({ ...formData, tour: e.target.value })}
                       className="w-full px-4 py-3 rounded-xl border border-[#E8DCD5] bg-white text-sm text-[#685752] focus:outline-none focus:border-[#8EB486]"
                     >
-                      {TOURS_DATA.map((t) => (
+                      <option value="">Not sure yet</option>
+                      {/* Keep a tour passed in from a tour page selectable even if the list hasn't loaded it */}
+                      {formData.tour && !tours.some((t) => t.title === formData.tour) && (
+                        <option value={formData.tour}>{formData.tour}</option>
+                      )}
+                      {tours.map((t) => (
                         <option key={t.id} value={t.title}>
                           {t.title}
                         </option>

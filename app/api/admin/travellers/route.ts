@@ -66,7 +66,7 @@ export async function POST(request: Request) {
       }
     }
 
-    const travId = `trav-${Date.now()}`;
+    const travId = `trav-${crypto.randomUUID()}`;
     await db.insert(travellers).values({
       id: travId,
       bookingId,
@@ -81,7 +81,7 @@ export async function POST(request: Request) {
     });
 
     await db.insert(activityLogs).values({
-      id: `log-${Date.now()}`,
+      id: `log-${crypto.randomUUID()}`,
       actorEmail: admin.email,
       action: "ADD_TRAVELLER",
       entityType: "TRAVELLER",

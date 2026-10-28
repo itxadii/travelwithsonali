@@ -31,7 +31,7 @@ export async function DELETE(
 
     // Log deletion activity
     await db.insert(activityLogs).values({
-      id: `act-${Date.now()}`,
+      id: `act-${crypto.randomUUID()}`,
       actorEmail: admin.email,
       action: "DELETE_REVIEW",
       entityType: "review",
@@ -86,7 +86,7 @@ export async function PATCH(
     }
 
     await db.insert(activityLogs).values({
-      id: `act-${Date.now()}`,
+      id: `act-${crypto.randomUUID()}`,
       actorEmail: admin.email,
       action: body.isApproved ? "APPROVE_REVIEW" : "UNAPPROVE_REVIEW",
       entityType: "review",

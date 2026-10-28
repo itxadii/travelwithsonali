@@ -1,17 +1,43 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Lock, Mail, ShieldCheck, Eye, EyeOff } from "lucide-react";
 
 export default function AdminLoginPage() {
+  return (
+    <Suspense>
+      <AdminLoginForm />
+    </Suspense>
+  );
+}
+
+function AdminLoginForm() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const searchParams = useSearchParams();
+  const from = searchParams.get("from");
+  // Only return to admin pages, never to an arbitrary URL from the query string
+  const destination = from && from.startsWith("/admin") && !from.startsWith("/admin/login") ? from : "/admin";
+
+  // Already signed in: skip the form
+  useEffect(() => {
+    let ignore = false;
+    fetch("/api/admin/auth/me")
+      .then((res) => res.json())
+      .then((data) => {
+        if (!ignore && data.authenticated) router.replace(destination);
+      })
+      .catch(() => {});
+    return () => {
+      ignore = true;
+    };
+  }, [destination, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,7 +59,8 @@ export default function AdminLoginPage() {
         return;
       }
 
-      router.push("/admin");
+      router.push(destination);
+      router.refresh();
     } catch (err: unknown) {
       console.error("Login fetch error:", err);
       setError(err instanceof Error ? err.message : "Unable to connect to login server. Please try again.");

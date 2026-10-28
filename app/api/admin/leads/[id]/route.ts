@@ -3,6 +3,7 @@ import { getCurrentAdmin } from "@/lib/admin/auth";
 import { db } from "@/db";
 import { leads, leadFollowups, customers, activityLogs } from "@/db/schema";
 import { eq, desc } from "drizzle-orm";
+import { findCustomerByIdentifier } from "@/lib/portal/auth";
 
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const admin = await getCurrentAdmin();
@@ -64,13 +65,12 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
 
     // AUTO-CONVERT LEAD TO CUSTOMER IF STATUS SET TO 'Converted'
     if (status === "Converted") {
-      const existingCustomer = await db
-        .select()
-        .from(customers)
-        .where(eq(customers.phone, targetLead.mobile));
+      const existingCustomer =
+        (await findCustomerByIdentifier(targetLead.mobile)) ||
+        (targetLead.email ? await findCustomerByIdentifier(targetLead.email) : null);
 
-      if (existingCustomer.length === 0) {
-        const newCustomerId = `cust-${Date.now()}`;
+      if (!existingCustomer) {
+        const newCustomerId = `cust-${crypto.randomUUID()}`;
         await db.insert(customers).values({
           id: newCustomerId,
           name: targetLead.name,
@@ -81,7 +81,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
         });
 
         await db.insert(activityLogs).values({
-          id: `log-${Date.now()}`,
+          id: `log-${crypto.randomUUID()}`,
           actorEmail: admin.email,
           action: "AUTO_CONVERT_CUSTOMER",
           entityType: "CUSTOMER",
@@ -93,7 +93,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
 
     if (followupNote) {
       await db.insert(leadFollowups).values({
-        id: `fol-${Date.now()}`,
+        id: `fol-${crypto.randomUUID()}`,
         leadId: id,
         note: followupNote,
         createdBy: admin.name,
@@ -101,7 +101,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     }
 
     await db.insert(activityLogs).values({
-      id: `log-${Date.now()}`,
+      id: `log-${crypto.randomUUID()}`,
       actorEmail: admin.email,
       action: "UPDATE_LEAD",
       entityType: "LEAD",

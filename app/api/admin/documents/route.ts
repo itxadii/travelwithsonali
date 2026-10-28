@@ -52,8 +52,11 @@ export async function PATCH(request: Request) {
     if (!documentId || !status) {
       return NextResponse.json({ error: "Document ID and Status are required." }, { status: 400 });
     }
+    if (!["Under Review", "Verified", "Rejected"].includes(status)) {
+      return NextResponse.json({ error: "Status must be Under Review, Verified or Rejected." }, { status: 400 });
+    }
 
-    await db
+    const updated = await db
       .update(documents)
       .set({
         status,
@@ -61,11 +64,24 @@ export async function PATCH(request: Request) {
         notes: notes || null,
         updatedAt: new Date(),
       })
-      .where(eq(documents.id, documentId));
+      .where(eq(documents.id, documentId))
+      .returning({ travellerId: documents.travellerId });
+
+    if (updated.length === 0) {
+      return NextResponse.json({ error: "Document not found." }, { status: 404 });
+    }
+
+    // Keep the traveller's ID status in step with the verification decision
+    if (updated[0].travellerId) {
+      await db
+        .update(travellers)
+        .set({ idDocumentStatus: status })
+        .where(eq(travellers.id, updated[0].travellerId));
+    }
 
     // Audit log
     await db.insert(activityLogs).values({
-      id: `log-${Date.now()}`,
+      id: `log-${crypto.randomUUID()}`,
       actorEmail: admin.email,
       action: status === "Verified" ? "VERIFY_DOCUMENT" : "REJECT_DOCUMENT",
       entityType: "DOCUMENT",

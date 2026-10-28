@@ -51,7 +51,7 @@ export async function POST(request: Request) {
       .where(eq(adminUsers.id, admin.id));
 
     await db.insert(activityLogs).values({
-      id: `log-${Date.now()}`,
+      id: `log-${crypto.randomUUID()}`,
       actorEmail: admin.email,
       action: "CHANGE_PASSWORD",
       entityType: "ADMIN_USER",

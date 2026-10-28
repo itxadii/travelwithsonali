@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { X, Send, CheckCircle2 } from "lucide-react";
-import { TOURS_DATA } from "../data/toursData";
+import { useTourOptions } from "@/lib/useTourOptions";
 import { submitEnquiry } from "@/lib/submitEnquiry";
 import { useEscapeKey } from "@/lib/useEscapeKey";
 
@@ -16,14 +16,23 @@ export default function EnquireModal({ isOpen, onClose, defaultTourName = "" }: 
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
   const [sendError, setSendError] = useState("");
+  const tours = useTourOptions();
   const [formData, setFormData] = useState({
     name: "",
     mobile: "",
     email: "",
-    tour: defaultTourName || "Kedarnath Yatra",
+    tour: defaultTourName,
     travellers: "2 Travellers",
     message: ""
   });
+
+  // The modal stays mounted between openings: pick up the tour it was opened for
+  const [openedFor, setOpenedFor] = useState<string | null>(isOpen ? defaultTourName : null);
+  const openKey = isOpen ? defaultTourName : null;
+  if (openKey !== openedFor) {
+    setOpenedFor(openKey);
+    if (openKey !== null) setFormData((f) => ({ ...f, tour: openKey }));
+  }
 
   useEscapeKey(isOpen, onClose);
 
@@ -137,7 +146,12 @@ export default function EnquireModal({ isOpen, onClose, defaultTourName = "" }: 
                     onChange={(e) => setFormData({ ...formData, tour: e.target.value })}
                     className="w-full px-4 py-2.5 rounded-xl border border-[#E8DCD5] bg-white text-sm text-[#685752] focus:outline-none focus:border-[#8EB486]"
                   >
-                    {TOURS_DATA.map((t) => (
+                    <option value="">Not sure yet</option>
+                    {/* Keep a tour passed in from a tour page selectable even if the list hasn't loaded it */}
+                    {formData.tour && !tours.some((t) => t.title === formData.tour) && (
+                      <option value={formData.tour}>{formData.tour}</option>
+                    )}
+                    {tours.map((t) => (
                       <option key={t.id} value={t.title}>
                         {t.title}
                       </option>

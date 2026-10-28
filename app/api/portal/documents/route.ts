@@ -168,6 +168,11 @@ export async function POST(req: Request) {
       throw err;
     }
 
+    // The traveller's ID status follows their latest document (shown in the admin panel and the portal)
+    if (travellerId) {
+      await db.update(travellers).set({ idDocumentStatus: "Under Review" }).where(eq(travellers.id, travellerId));
+    }
+
     return NextResponse.json({ success: true, message: "Document uploaded successfully!", documentId: newId });
   } catch (err) {
     console.error("POST /api/portal/documents error:", err);
