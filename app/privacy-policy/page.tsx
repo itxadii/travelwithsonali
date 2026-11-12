@@ -111,7 +111,7 @@ export default function PrivacyPolicyPage() {
         <section className="space-y-3">
           <h2 className="text-xl font-bold text-[#685752]">6. Grievances & Contact Us</h2>
           <p>
-            For any question, request, or grievance about your personal data, email us at travelwithsonaliinfo@gmail.com. If you are not
+            For any question, request, or grievance about your personal data, email us at enquiries@travelwithsonali.com. If you are not
             satisfied with our response, you may complain to the{" "}
             <a href={DPB_COMPLAINT_URL} target="_blank" rel="noopener noreferrer" className="font-semibold text-[#4A7244] underline">
               Data Protection Board of India

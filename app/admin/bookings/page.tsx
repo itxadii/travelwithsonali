@@ -7,6 +7,7 @@ import { GooeyInput } from "@/components/ui/gooey-input";
 import { useTourOptions } from "@/lib/useTourOptions";
 
 import { useEscapeKey } from "@/lib/useEscapeKey";
+import { CompassLoader } from "@/components/ui/compass-loader";
 interface BookingListItem {
   id: string;
   bookingCode: string;
@@ -189,14 +190,14 @@ export default function BookingsPage() {
       </div>
 
       {/* Bookings Table */}
-      <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs">
+      <div className="p-4 sm:p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs">
         {loading ? (
-          <div className="py-12 text-center text-xs text-[#7A6862]">Loading bookings...</div>
+          <CompassLoader size={80} className="py-12" label="Loading bookings…" />
         ) : filteredBookings.length === 0 ? (
           <div className="py-16 text-center text-sm text-[#7A6862]">No bookings found.</div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
+            <table className="admin-table w-full text-left text-xs">
               <thead>
                 <tr className="border-b border-[#E8DCD5] text-[#7A6862] uppercase tracking-wider">
                   <th className="pb-3 font-semibold">Booking Code</th>
@@ -214,14 +215,14 @@ export default function BookingsPage() {
               <tbody className="divide-y divide-[#E8DCD5]">
                 {filteredBookings.map((b) => (
                   <tr key={b.id} className="hover:bg-[#FDF7F4] transition-colors">
-                    <td className="py-3.5 font-bold text-[#4A7244]">{b.bookingCode}</td>
-                    <td className="py-3.5 text-[#685752] font-semibold">{b.customerName}</td>
-                    <td className="py-3.5 text-[#685752] max-w-[180px] truncate">{b.tourTitle}</td>
-                    <td className="py-3.5 text-[#666059]">{b.departureDate}</td>
-                    <td className="py-3.5 text-[#685752] font-medium">{b.travellersCount}</td>
-                    <td className="py-3.5 font-bold text-[#685752]">₹{b.totalAmount.toLocaleString("en-IN")}</td>
-                    <td className="py-3.5 font-semibold text-emerald-700">₹{b.paidAmount.toLocaleString("en-IN")}</td>
-                    <td className="py-3.5">
+                    <td data-label="Booking Code" className="py-3.5 font-bold text-[#4A7244]">{b.bookingCode}</td>
+                    <td data-label="Customer" className="py-3.5 text-[#685752] font-semibold">{b.customerName}</td>
+                    <td data-label="Tour" className="py-3.5 text-[#685752] max-w-[180px] truncate">{b.tourTitle}</td>
+                    <td data-label="Departure" className="py-3.5 text-[#666059]">{b.departureDate}</td>
+                    <td data-label="Travellers" className="py-3.5 text-[#685752] font-medium">{b.travellersCount}</td>
+                    <td data-label="Total Amount" className="py-3.5 font-bold text-[#685752]">₹{b.totalAmount.toLocaleString("en-IN")}</td>
+                    <td data-label="Paid" className="py-3.5 font-semibold text-emerald-700">₹{b.paidAmount.toLocaleString("en-IN")}</td>
+                    <td data-label="Payment Status" className="py-3.5">
                       <span
                         className={`px-2.5 py-0.5 rounded-full text-xs font-semibold ${
                           b.paymentStatus === "Paid"
@@ -234,12 +235,12 @@ export default function BookingsPage() {
                         {b.paymentStatus}
                       </span>
                     </td>
-                    <td className="py-3.5">
+                    <td data-label="Status" className="py-3.5">
                       <span className="px-2.5 py-0.5 rounded-md bg-[#FDF7F4] text-[#685752] text-xs font-semibold border border-[#E8DCD5]">
                         {b.bookingStatus}
                       </span>
                     </td>
-                    <td className="py-3.5 text-right">
+                    <td data-label="" className="py-3.5 text-right">
                       <Link
                         href={`/admin/bookings/${b.id}`}
                         className="px-3 py-1.5 rounded-xl bg-[#FDF7F4] border border-[#E8DCD5] hover:bg-[#4A7244] hover:text-white hover:border-[#8EB486] text-[#685752] text-xs font-semibold transition-colors inline-flex items-center gap-1"
@@ -258,12 +259,12 @@ export default function BookingsPage() {
 
       {/* Create Booking Modal */}
       {createModalOpen && (
-        <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4 backdrop-blur-xs">
-          <div className="w-full max-w-xl bg-white rounded-3xl p-6 border border-[#E8DCD5] shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-black/40 z-50 flex items-end sm:items-center justify-center sm:p-4 backdrop-blur-xs">
+          <div className="w-full max-w-xl bg-white rounded-t-3xl sm:rounded-3xl p-4 sm:p-6 border border-[#E8DCD5] shadow-2xl space-y-6 max-h-[92dvh] overflow-y-auto">
             <h2 className="text-xl font-bold text-[#685752]">Create New Booking</h2>
 
             <form onSubmit={handleCreateBooking} className="space-y-4 text-xs">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
                   <label className="text-[#7A6862] font-semibold">Customer Name *</label>
                   <input
@@ -307,7 +308,7 @@ export default function BookingsPage() {
                 </select>
               </div>
 
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="space-y-1">
                   <label className="text-[#7A6862] font-semibold">Travellers</label>
                   <input
@@ -340,21 +341,21 @@ export default function BookingsPage() {
 
               {/* Price Calculation Summary Box */}
               <div className="p-4 rounded-2xl bg-[#FDF7F4] border border-[#E8DCD5] space-y-1 text-xs">
-                <div className="flex justify-between text-[#7A6862]">
+                <div className="flex justify-between gap-3 text-[#7A6862]">
                   <span>Subtotal ({formData.travellersCount} x ₹{formData.pricePerTraveller}):</span>
                   <span className="text-[#685752] font-bold">₹{(formData.travellersCount * formData.pricePerTraveller).toLocaleString("en-IN")}</span>
                 </div>
-                <div className="flex justify-between text-[#7A6862]">
+                <div className="flex justify-between gap-3 text-[#7A6862]">
                   <span>Discount:</span>
                   <span className="text-rose-600 font-bold">- ₹{formData.discount.toLocaleString("en-IN")}</span>
                 </div>
-                <div className="flex justify-between text-[#685752] font-bold text-sm pt-2 border-t border-[#E8DCD5]">
+                <div className="flex justify-between gap-3 text-[#685752] font-bold text-sm pt-2 border-t border-[#E8DCD5]">
                   <span>Agreed Booking Total:</span>
                   <span className="text-[#4A7244]">₹{Math.max(0, formData.travellersCount * formData.pricePerTraveller - formData.discount).toLocaleString("en-IN")}</span>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
                   <label className="text-[#7A6862] font-semibold">Advance Payment Amount (₹)</label>
                   <input

@@ -2,7 +2,7 @@ import React, { use } from "react";
 import type { Metadata } from "next";
 import HomeClientView from "./HomeClientView";
 import { DEFAULT_DESCRIPTION, DEFAULT_OG_IMAGE, SITE_NAME } from "@/lib/seo";
-import { getFeaturedTours, getInstagramSection } from "@/lib/sanity/queries";
+import { getFeaturedTours, getInstagramSection, getStories } from "@/lib/sanity/queries";
 import { getHomepageTestimonials } from "@/lib/reviews";
 
 const homeTitle = `${SITE_NAME} | Group Tours, Himalayan Treks & Yatras`;
@@ -24,6 +24,11 @@ export default function Home() {
   const tours = use(getFeaturedTours());
   const instagramData = use(getInstagramSection());
   const testimonials = use(getHomepageTestimonials());
+  // Latest stories from Sanity, featured ones first
+  const stories = use(getStories())
+    .slice()
+    .sort((a, b) => Number(Boolean(b.featured)) - Number(Boolean(a.featured)))
+    .slice(0, 2);
 
-  return <HomeClientView tours={tours} instagramData={instagramData} testimonials={testimonials} />;
+  return <HomeClientView tours={tours} instagramData={instagramData} testimonials={testimonials} stories={stories} />;
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { CompassLoader } from "@/components/ui/compass-loader";
 
 interface PaymentSummary {
   total: number;
@@ -93,7 +94,7 @@ export default function CustomerPaymentsPage() {
         <h3 className="text-base font-bold text-[#685752] font-serif-italic">Payment Installment Ledger</h3>
 
         {loading ? (
-          <div className="py-12 text-center text-xs text-[#7A6862]">Loading payment records...</div>
+          <CompassLoader size={80} className="py-12" label="Loading payment records…" />
         ) : payments.length === 0 ? (
           <div className="py-16 text-center text-sm text-[#7A6862]">No payment entries recorded yet.</div>
         ) : (

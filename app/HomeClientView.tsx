@@ -42,7 +42,7 @@ export const REAL_DESTINATION_IMAGES = [
 
 import { Tour } from "./data/toursData";
 import { InstagramSectionData } from "@/lib/sanity/types";
-import { STORIES_DATA } from "./data/storiesData";
+import { Story } from "./data/storiesData";
 import type { Testimonial } from "./data/testimonialsData";
 import { FAQS_DATA } from "./data/faqsData";
 const TRIP_PILLARS = [
@@ -84,9 +84,10 @@ interface HomeClientViewProps {
   tours: Tour[];
   instagramData?: InstagramSectionData;
   testimonials: Testimonial[];
+  stories: Story[];
 }
 
-export default function HomeClientView({ tours, instagramData, testimonials }: HomeClientViewProps) {
+export default function HomeClientView({ tours, instagramData, testimonials, stories }: HomeClientViewProps) {
   const [enquireOpen, setEnquireOpen] = useState(false);
   const [selectedTourName, setSelectedTourName] = useState("");
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
@@ -629,7 +630,7 @@ export default function HomeClientView({ tours, instagramData, testimonials }: H
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
-            {STORIES_DATA.slice(0, 2).map((story) => (
+            {stories.map((story) => (
               <div key={story.id} className="group flex flex-col justify-between">
                 <div>
                   <Link href={`/stories/${story.slug}`} className="block relative h-72 sm:h-80 rounded-2xl sm:rounded-3xl overflow-hidden">
@@ -637,6 +638,7 @@ export default function HomeClientView({ tours, instagramData, testimonials }: H
                       src={story.image}
                       alt={story.title}
                       fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
                       className="object-cover group-hover:scale-105 transition-transform duration-700"
                     />
                     <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-black/60 text-white text-xs font-medium backdrop-blur-xs">

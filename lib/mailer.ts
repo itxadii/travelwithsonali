@@ -32,7 +32,10 @@ export function getTeamEmail(): string {
 }
 
 function getFromHeader(): string {
-  return `"Travel With Sonali" <${cleanEnv(process.env.MAIL_FROM) || getSmtpUser()}>`;
+  // Accept either "noreply@site.com" or "Name <noreply@site.com>"; only the address is used
+  const raw = cleanEnv(process.env.MAIL_FROM) || getSmtpUser();
+  const address = raw.match(/<([^>]+)>/)?.[1].trim() || raw;
+  return `"Travel With Sonali" <${address}>`;
 }
 
 function getTransport() {

@@ -90,7 +90,7 @@ ${clientPhone ? `• Phone: ${clientPhone}\n` : ""}${clientEmail ? `• Email: $
 • Remaining Balance: ₹${balanceDue.toLocaleString("en-IN")}
 
 Thank you for travelling with Sonali!
-Contact: +91 9152975552 | travelwithsonaliinfo@gmail.com
+Contact: +91 9152975552 | enquiries@travelwithsonali.com
 Mumbai / Delhi & Rishikesh, India`;
 
   const handleCopyText = async () => {
@@ -311,7 +311,7 @@ Mumbai / Delhi & Rishikesh, India`;
                   </table>
                   <div class="contact-line">
                     Mumbai / Delhi & Rishikesh, India<br/>
-                    Phone: +91 9152975552 • Email: travelwithsonaliinfo@gmail.com<br/>
+                    Phone: +91 9152975552 • Email: enquiries@travelwithsonali.com<br/>
                     Website: www.travelwithsonali.com
                   </div>
                 </td>
@@ -590,7 +590,7 @@ Mumbai / Delhi & Rishikesh, India`;
         <div className="flex-1 overflow-y-auto p-4 sm:p-8 bg-[#F4EDE8]/50">
           <div
             id="invoice-printable-area"
-            className="max-w-2xl mx-auto bg-white p-6 sm:p-10 rounded-2xl border border-[#E8DCD5] shadow-md space-y-6 text-[#473B37]"
+            className="max-w-2xl mx-auto bg-white p-4 sm:p-6 sm:p-10 rounded-2xl border border-[#E8DCD5] shadow-md space-y-6 text-[#473B37]"
           >
             {/* Header: Brand & Invoice Meta */}
             <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b-2 border-[#E8DCD5] pb-6">
@@ -617,7 +617,7 @@ Mumbai / Delhi & Rishikesh, India`;
 
                 <div className="text-[11px] text-[#7A6862] mt-3 space-y-0.5">
                   <p>Mumbai / Delhi & Rishikesh, India</p>
-                  <p>Phone: +91 9152975552 • Email: travelwithsonaliinfo@gmail.com</p>
+                  <p>Phone: +91 9152975552 • Email: enquiries@travelwithsonali.com</p>
                   <p>Website: www.travelwithsonali.com</p>
                 </div>
               </div>
@@ -713,19 +713,19 @@ Mumbai / Delhi & Rishikesh, India`;
               </div>
 
               <div className="w-full sm:w-64 space-y-2 border-t sm:border-t-0 pt-2 sm:pt-0">
-                <div className="flex justify-between text-xs text-[#7A6862]">
+                <div className="flex justify-between gap-3 text-xs text-[#7A6862]">
                   <span>Total Tour Cost:</span>
                   <span className="font-semibold text-[#685752]">₹{packageTotal.toLocaleString("en-IN")}</span>
                 </div>
-                <div className="flex justify-between text-xs text-[#7A6862]">
+                <div className="flex justify-between gap-3 text-xs text-[#7A6862]">
                   <span>Total Paid to Date:</span>
                   <span className="font-semibold text-[#685752]">₹{totalPaid.toLocaleString("en-IN")}</span>
                 </div>
-                <div className="flex justify-between text-xs text-[#7A6862]">
+                <div className="flex justify-between gap-3 text-xs text-[#7A6862]">
                   <span>Remaining Balance:</span>
                   <span className="font-semibold text-[#685752]">₹{balanceDue.toLocaleString("en-IN")}</span>
                 </div>
-                <div className="flex justify-between text-sm font-bold text-emerald-800 bg-emerald-50/70 p-2 rounded-lg border border-emerald-200">
+                <div className="flex justify-between gap-3 text-sm font-bold text-emerald-800 bg-emerald-50/70 p-2 rounded-lg border border-emerald-200">
                   <span>Received This Receipt:</span>
                   <span>₹{payment.amount.toLocaleString("en-IN")}</span>
                 </div>

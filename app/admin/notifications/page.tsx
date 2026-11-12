@@ -48,7 +48,7 @@ export default async function NotificationsPage() {
 
       <div className="rounded-3xl bg-white border border-[#E8DCD5] shadow-xs">
         {events.length === 0 ? (
-          <p className="p-6 text-sm text-[#7A6862]">Nothing yet. New enquiries and bookings will show up here.</p>
+          <p className="p-4 sm:p-6 text-sm text-[#7A6862]">Nothing yet. New enquiries and bookings will show up here.</p>
         ) : (
           <ul className="divide-y divide-[#E8DCD5]">
             {events.map((event) => {

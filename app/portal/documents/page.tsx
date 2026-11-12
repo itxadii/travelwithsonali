@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Upload, ShieldCheck, Plus, FileText } from "lucide-react";
 import { useEscapeKey } from "@/lib/useEscapeKey";
+import { CompassLoader } from "@/components/ui/compass-loader";
 
 interface DocItem {
   id: string;
@@ -154,7 +155,7 @@ export default function CustomerDocumentsPage() {
       {/* Document List */}
       <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-4">
         {loading ? (
-          <div className="py-12 text-center text-xs text-[#7A6862]">Loading documents...</div>
+          <CompassLoader size={80} className="py-12" label="Loading documents…" />
         ) : docs.length === 0 ? (
           <div className="py-16 text-center text-sm text-[#7A6862]">No documents uploaded yet.</div>
         ) : (

@@ -17,7 +17,7 @@ export const CONSENT_MAX_AGE_SECONDS = 365 * 24 * 60 * 60;
 /** Analytics events older than this are deleted. */
 export const ANALYTICS_RETENTION_DAYS = 365;
 
-export const GRIEVANCE_EMAIL = "travelwithsonaliinfo@gmail.com";
+export const GRIEVANCE_EMAIL = "enquiries@travelwithsonali.com";
 /** Data Protection Board of India complaint link. Set NEXT_PUBLIC_DPB_COMPLAINT_URL once the Board's portal URL is confirmed. */
 export const DPB_COMPLAINT_URL = process.env.NEXT_PUBLIC_DPB_COMPLAINT_URL || "https://www.meity.gov.in";
 

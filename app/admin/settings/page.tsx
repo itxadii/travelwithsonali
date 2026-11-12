@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Lock, User, MonitorSmartphone, LogOut } from "lucide-react";
+import { CompassLoader } from "@/components/ui/compass-loader";
 
 interface AdminDevice {
   id: string;
@@ -170,7 +171,7 @@ export default function SettingsPage() {
       </div>
 
       {/* Account Info Card */}
-      <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-4">
+      <div className="p-4 sm:p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-4">
         <h3 className="text-base font-bold text-[#685752] flex items-center gap-2">
           <User className="w-4 h-4 text-[#4A7244]" />
           Business & Account Details
@@ -189,7 +190,7 @@ export default function SettingsPage() {
       </div>
 
       {/* Signed-in devices */}
-      <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-5">
+      <div className="p-4 sm:p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-5">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <h3 className="text-base font-bold text-[#685752] flex items-center gap-2">
             <MonitorSmartphone className="w-4 h-4 text-[#4A7244]" />
@@ -223,7 +224,7 @@ export default function SettingsPage() {
         )}
 
         {devicesLoading ? (
-          <p className="text-xs text-[#7A6862]">Loading devices…</p>
+          <CompassLoader size={56} className="py-4" label="Loading devices…" />
         ) : devices.length === 0 ? (
           <p className="text-xs text-[#7A6862]">No active sessions found.</p>
         ) : (
@@ -255,7 +256,7 @@ export default function SettingsPage() {
       </div>
 
       {/* Change Password Form */}
-      <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-6">
+      <div className="p-4 sm:p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-6">
         <h3 className="text-base font-bold text-[#685752] flex items-center gap-2">
           <Lock className="w-4 h-4 text-emerald-600" />
           Change Password

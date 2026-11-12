@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { FileText } from "lucide-react";
 import { GooeyInput } from "@/components/ui/gooey-input";
 import PaymentInvoiceModal, { ExtendedPaymentRecord } from "./PaymentInvoiceModal";
+import { CompassLoader } from "@/components/ui/compass-loader";
 
 export default function PaymentsPage() {
   const [paymentsList, setPaymentsList] = useState<ExtendedPaymentRecord[]>([]);
@@ -79,14 +80,14 @@ export default function PaymentsPage() {
       </div>
 
       {/* Payments Table */}
-      <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs">
+      <div className="p-4 sm:p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs">
         {loading ? (
-          <div className="py-12 text-center text-xs text-[#7A6862]">Loading payment records...</div>
+          <CompassLoader size={80} className="py-12" label="Loading payment records…" />
         ) : filtered.length === 0 ? (
           <div className="py-16 text-center text-sm text-[#7A6862]">No payment records found.</div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
+            <table className="admin-table w-full text-left text-xs">
               <thead>
                 <tr className="border-b border-[#E8DCD5] text-[#7A6862] uppercase tracking-wider">
                   <th className="pb-3 font-semibold">Receipt / ID</th>
@@ -109,12 +110,12 @@ export default function PaymentsPage() {
                   return (
                     <tr key={p.id} className="hover:bg-[#FDF7F4] transition-colors">
                       {/* Receipt ID */}
-                      <td className="py-3.5 font-bold text-[#685752] font-mono">
+                      <td data-label="Receipt / ID" className="py-3.5 font-bold text-[#685752] font-mono">
                         {p.id.substring(0, 14)}
                       </td>
 
                       {/* Client & Tour */}
-                      <td className="py-3.5 space-y-0.5">
+                      <td data-label="Client & Tour" className="py-3.5 space-y-0.5">
                         <div className="font-bold text-[#685752]">
                           {p.customerName || "Direct Guest"}
                         </div>
@@ -125,19 +126,19 @@ export default function PaymentsPage() {
                       </td>
 
                       {/* Booking Code */}
-                      <td className="py-3.5">
+                      <td data-label="Booking Code" className="py-3.5">
                         <span className="font-semibold text-[#4A7244] font-mono">
                           {p.bookingCode || p.bookingId}
                         </span>
                       </td>
 
                       {/* Amount */}
-                      <td className="py-3.5 font-bold text-sm text-emerald-700">
+                      <td data-label="Amount Received" className="py-3.5 font-bold text-sm text-emerald-700">
                         ₹{p.amount.toLocaleString("en-IN")}
                       </td>
 
                       {/* Method & Ref */}
-                      <td className="py-3.5 space-y-0.5">
+                      <td data-label="Method & Ref" className="py-3.5 space-y-0.5">
                         <span className="inline-block px-2.5 py-0.5 rounded-md bg-[#FDF7F4] text-[#685752] text-xs font-semibold border border-[#E8DCD5]">
                           {p.paymentMethod}
                         </span>
@@ -149,12 +150,12 @@ export default function PaymentsPage() {
                       </td>
 
                       {/* Payment Date */}
-                      <td className="py-3.5 text-[#7A6862] whitespace-nowrap">
+                      <td data-label="Payment Date" className="py-3.5 text-[#7A6862] whitespace-nowrap">
                         {p.paymentDate}
                       </td>
 
                       {/* Invoice & Export Actions */}
-                      <td className="py-3.5 text-right whitespace-nowrap">
+                      <td data-label="" className="py-3.5 text-right whitespace-nowrap">
                         <div className="inline-flex items-center gap-1.5">
                           {/* Quick WhatsApp Send */}
                           <a

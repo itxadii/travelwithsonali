@@ -19,13 +19,35 @@ const AudioContext = createContext<AudioContextType>({
 
 // Ambient audio belongs to the public site only
 const SILENT_ROUTE_PREFIXES = ["/admin", "/portal", "/studio"];
+// Remembers a visitor who switched the music off, so it doesn't start again on their next page
+const PREFERENCE_KEY = "tws_music";
+
+function isSilentRoute(pathname: string | null): boolean {
+  return Boolean(pathname && SILENT_ROUTE_PREFIXES.some((p) => pathname.startsWith(p)));
+}
+
+function readPreference(): "on" | "off" {
+  try {
+    return localStorage.getItem(PREFERENCE_KEY) === "off" ? "off" : "on";
+  } catch {
+    return "on";
+  }
+}
+
+function savePreference(value: "on" | "off") {
+  try {
+    localStorage.setItem(PREFERENCE_KEY, value);
+  } catch {
+    // Private mode or blocked storage: the music still works for this visit
+  }
+}
 
 export function AudioProvider({ children }: { children: React.ReactNode }) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const pathname = usePathname();
+  const silent = isSilentRoute(pathname);
 
-  // Music only ever starts from the play button; the file is fetched on first play
   const getAudio = useCallback(() => {
     if (!audioRef.current) {
       const audio = new Audio("/audio/birdsaudio.mp3");
@@ -46,24 +68,57 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  const playMusic = useCallback(() => {
-    getAudio()
-      .play()
-      .then(() => setIsPlaying(true))
-      .catch(console.error);
+  /** Starts playback; resolves false when the browser blocks it (no user gesture yet). */
+  const tryPlay = useCallback(async (): Promise<boolean> => {
+    try {
+      await getAudio().play();
+      setIsPlaying(true);
+      return true;
+    } catch {
+      return false;
+    }
   }, [getAudio]);
 
+  const playMusic = useCallback(() => {
+    savePreference("on");
+    tryPlay();
+  }, [tryPlay]);
+
   const stopMusic = useCallback(() => {
+    savePreference("off");
     audioRef.current?.pause();
     setIsPlaying(false);
   }, []);
 
+  // Music is on by default. Browsers only allow sound after the visitor has interacted with
+  // the page, so if the first attempt is blocked it starts on their first tap, click or key press.
   useEffect(() => {
-    if (pathname && SILENT_ROUTE_PREFIXES.some((p) => pathname.startsWith(p)) && audioRef.current && !audioRef.current.paused) {
-      audioRef.current.pause();
-      setIsPlaying(false);
+    if (silent) {
+      if (audioRef.current && !audioRef.current.paused) {
+        audioRef.current.pause();
+        setIsPlaying(false);
+      }
+      return;
     }
-  }, [pathname]);
+    if (readPreference() === "off") return;
+    if (audioRef.current && !audioRef.current.paused) return;
+
+    let cancelled = false;
+    const gestures = ["pointerdown", "keydown", "touchend"] as const;
+    const onGesture = () => {
+      gestures.forEach((g) => window.removeEventListener(g, onGesture));
+      if (!cancelled && readPreference() !== "off") tryPlay();
+    };
+
+    tryPlay().then((started) => {
+      if (!started && !cancelled) gestures.forEach((g) => window.addEventListener(g, onGesture, { passive: true }));
+    });
+
+    return () => {
+      cancelled = true;
+      gestures.forEach((g) => window.removeEventListener(g, onGesture));
+    };
+  }, [silent, tryPlay]);
 
   const toggleMusic = useCallback(() => {
     if (isPlaying) {

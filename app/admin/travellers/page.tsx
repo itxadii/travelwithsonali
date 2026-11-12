@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { GooeyInput } from "@/components/ui/gooey-input";
+import { CompassLoader } from "@/components/ui/compass-loader";
 
 interface TravellerItem {
   id: string;
@@ -75,14 +76,14 @@ export default function TravellersPage() {
         />
       </div>
 
-      <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs">
+      <div className="p-4 sm:p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs">
         {loading ? (
-          <div className="py-12 text-center text-xs text-[#7A6862]">Loading traveller manifest...</div>
+          <CompassLoader size={80} className="py-12" label="Loading traveller manifest…" />
         ) : filtered.length === 0 ? (
           <div className="py-16 text-center text-sm text-[#7A6862]">No travellers found.</div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
+            <table className="admin-table w-full text-left text-xs">
               <thead>
                 <tr className="border-b border-[#E8DCD5] text-[#7A6862] uppercase tracking-wider">
                   <th className="pb-3 font-semibold">Traveller Name</th>
@@ -96,14 +97,14 @@ export default function TravellersPage() {
               <tbody className="divide-y divide-[#E8DCD5]">
                 {filtered.map((t) => (
                   <tr key={t.id} className="hover:bg-[#FDF7F4] transition-colors">
-                    <td className="py-3.5 font-bold text-[#685752]">{t.fullName}</td>
-                    <td className="py-3.5 font-semibold text-[#4A7244]">{t.bookingCode}</td>
-                    <td className="py-3.5 text-[#685752] max-w-[180px] truncate">{t.tourTitle}</td>
-                    <td className="py-3.5 text-[#666059]">{t.departureDate}</td>
-                    <td className="py-3.5 text-[#666059] font-mono">
+                    <td data-label="Traveller Name" className="py-3.5 font-bold text-[#685752]">{t.fullName}</td>
+                    <td data-label="Booking Code" className="py-3.5 font-semibold text-[#4A7244]">{t.bookingCode}</td>
+                    <td data-label="Tour Title" className="py-3.5 text-[#685752] max-w-[180px] truncate">{t.tourTitle}</td>
+                    <td data-label="Departure" className="py-3.5 text-[#666059]">{t.departureDate}</td>
+                    <td data-label="Masked ID Number" className="py-3.5 text-[#666059] font-mono">
                       {t.idNumberMasked ? `${t.idDocumentType}: ${t.idNumberMasked}` : "N/A"}
                     </td>
-                    <td className="py-3.5">
+                    <td data-label="ID Status" className="py-3.5">
                       <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
                         {t.idDocumentStatus}
                       </span>

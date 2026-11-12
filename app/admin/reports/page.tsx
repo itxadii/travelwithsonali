@@ -48,15 +48,15 @@ export default async function ReportsPage() {
 
       {/* Revenue Breakdown */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-        <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs">
+        <div className="p-4 sm:p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs">
           <span className="text-xs uppercase text-[#7A6862] font-semibold">Total Revenue Agreed</span>
           <p className="text-3xl font-bold text-[#685752] mt-2">₹{totalBookingValue.toLocaleString("en-IN")}</p>
         </div>
-        <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs">
+        <div className="p-4 sm:p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs">
           <span className="text-xs uppercase text-[#7A6862] font-semibold">Total Cash Collected</span>
           <p className="text-3xl font-bold text-emerald-700 mt-2">₹{totalCollected.toLocaleString("en-IN")}</p>
         </div>
-        <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs">
+        <div className="p-4 sm:p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs">
           <span className="text-xs uppercase text-[#7A6862] font-semibold">Outstanding Receivables</span>
           <p className="text-3xl font-bold text-amber-700 mt-2">₹{totalOutstanding.toLocaleString("en-IN")}</p>
         </div>
@@ -65,7 +65,7 @@ export default async function ReportsPage() {
       {/* Lead Sources & Tour Performance */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Lead Sources */}
-        <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-4">
+        <div className="p-4 sm:p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-4">
           <h3 className="text-base font-bold text-[#685752] flex items-center gap-2">
             <Users className="w-4 h-4 text-[#4A7244]" />
             Leads by Acquisition Source
@@ -83,7 +83,7 @@ export default async function ReportsPage() {
         </div>
 
         {/* Sanity Tour Performance */}
-        <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-4">
+        <div className="p-4 sm:p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-4">
           <h3 className="text-base font-bold text-[#685752] flex items-center gap-2">
             <CalendarCheck className="w-4 h-4 text-emerald-600" />
             Tour Demand

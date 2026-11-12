@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { GooeyInput } from "@/components/ui/gooey-input";
+import { CompassLoader } from "@/components/ui/compass-loader";
 
 interface CustomerItem {
   id: string;
@@ -73,14 +74,14 @@ export default function CustomersPage() {
       </div>
 
       {/* Table */}
-      <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs">
+      <div className="p-4 sm:p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs">
         {loading ? (
-          <div className="py-12 text-center text-xs text-[#7A6862]">Loading customer records...</div>
+          <CompassLoader size={80} className="py-12" label="Loading customer records…" />
         ) : filteredCustomers.length === 0 ? (
           <div className="py-16 text-center text-sm text-[#7A6862]">No customers found.</div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
+            <table className="admin-table w-full text-left text-xs">
               <thead>
                 <tr className="border-b border-[#E8DCD5] text-[#7A6862] uppercase tracking-wider">
                   <th className="pb-3 font-semibold">Customer Name</th>
@@ -94,18 +95,18 @@ export default function CustomersPage() {
               <tbody className="divide-y divide-[#E8DCD5]">
                 {filteredCustomers.map((c) => (
                   <tr key={c.id} className="hover:bg-[#FDF7F4] transition-colors">
-                    <td className="py-3.5 font-bold text-[#685752]">{c.name}</td>
-                    <td className="py-3.5 text-[#666059]">{c.phone}</td>
-                    <td className="py-3.5 text-[#666059]">{c.email || "N/A"}</td>
-                    <td className="py-3.5">
+                    <td data-label="Customer Name" className="py-3.5 font-bold text-[#685752]">{c.name}</td>
+                    <td data-label="Phone" className="py-3.5 text-[#666059]">{c.phone}</td>
+                    <td data-label="Email" className="py-3.5 text-[#666059]">{c.email || "N/A"}</td>
+                    <td data-label="Status" className="py-3.5">
                       <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
                         {c.status}
                       </span>
                     </td>
-                    <td className="py-3.5 text-[#7A6862]">
+                    <td data-label="Registered" className="py-3.5 text-[#7A6862]">
                       {new Date(c.createdAt).toLocaleDateString("en-IN")}
                     </td>
-                    <td className="py-3.5 text-right">
+                    <td data-label="" className="py-3.5 text-right">
                       <Link
                         href={`/admin/customers/${c.id}`}
                         className="px-3 py-1.5 rounded-xl bg-[#FDF7F4] border border-[#E8DCD5] hover:bg-[#4A7244] hover:text-white hover:border-[#8EB486] text-[#685752] text-xs font-semibold transition-colors inline-flex items-center gap-1"

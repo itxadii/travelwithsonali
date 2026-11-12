@@ -67,7 +67,7 @@ export default async function AdminDashboardPage() {
       {/* Top Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         {/* Card 1: Total Leads */}
-        <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-3">
+        <div className="p-4 sm:p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold uppercase tracking-wider text-[#7A6862]">
               Total Leads
@@ -86,7 +86,7 @@ export default async function AdminDashboardPage() {
         </div>
 
         {/* Card 2: Registered Customers */}
-        <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-3">
+        <div className="p-4 sm:p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold uppercase tracking-wider text-[#7A6862]">
               Customers
@@ -105,7 +105,7 @@ export default async function AdminDashboardPage() {
         </div>
 
         {/* Card 3: Active Bookings */}
-        <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-3">
+        <div className="p-4 sm:p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold uppercase tracking-wider text-[#7A6862]">
               Active Bookings
@@ -124,7 +124,7 @@ export default async function AdminDashboardPage() {
         </div>
 
         {/* Card 4: Outstanding Payments */}
-        <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-3">
+        <div className="p-4 sm:p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold uppercase tracking-wider text-[#7A6862]">
               Outstanding
@@ -144,7 +144,7 @@ export default async function AdminDashboardPage() {
       </div>
 
       {/* Payment Summary Financial Bar */}
-      <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-4">
+      <div className="p-4 sm:p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#E8DCD5] pb-4">
           <div className="flex items-center gap-2">
             <TrendingUp className="w-5 h-5 text-[#4A7244]" />
@@ -170,9 +170,9 @@ export default async function AdminDashboardPage() {
       </div>
 
       {/* Grid of Tables: Recent Leads & Upcoming Trips */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
         {/* Recent Leads */}
-        <div className="lg:col-span-8 p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-6">
+        <div className="lg:col-span-8 p-4 sm:p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-6">
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-lg font-bold text-[#685752]">Recent Leads</h3>
@@ -187,7 +187,7 @@ export default async function AdminDashboardPage() {
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
+            <table className="admin-table w-full text-left text-xs">
               <thead>
                 <tr className="border-b border-[#E8DCD5] text-[#7A6862] uppercase tracking-wider">
                   <th className="pb-3 font-semibold">Customer</th>
@@ -201,15 +201,15 @@ export default async function AdminDashboardPage() {
               <tbody className="divide-y divide-[#E8DCD5]">
                 {allLeads.slice(0, 5).map((l) => (
                   <tr key={l.id} className="hover:bg-[#FDF7F4] transition-colors">
-                    <td className="py-3.5 font-bold text-[#685752]">{l.name}</td>
-                    <td className="py-3.5 text-[#666059]">{l.mobile}</td>
-                    <td className="py-3.5 text-[#685752] max-w-[160px] truncate">{l.interestedTourTitle}</td>
-                    <td className="py-3.5">
+                    <td data-label="Customer" className="py-3.5 font-bold text-[#685752]">{l.name}</td>
+                    <td data-label="Mobile" className="py-3.5 text-[#666059]">{l.mobile}</td>
+                    <td data-label="Interested Tour" className="py-3.5 text-[#685752] max-w-[160px] truncate">{l.interestedTourTitle}</td>
+                    <td data-label="Source" className="py-3.5">
                       <span className="px-2.5 py-0.5 rounded-full bg-[#FDF7F4] border border-[#E8DCD5] text-xs text-[#666059]">
                         {l.source}
                       </span>
                     </td>
-                    <td className="py-3.5">
+                    <td data-label="Status" className="py-3.5">
                       <span
                         className={`px-2.5 py-1 rounded-full text-xs font-semibold ${
                           l.status === "New"
@@ -222,7 +222,7 @@ export default async function AdminDashboardPage() {
                         {l.status}
                       </span>
                     </td>
-                    <td className="py-3.5 text-right">
+                    <td data-label="" className="py-3.5 text-right">
                       <Link
                         href={`/admin/leads/${l.id}`}
                         className="p-1.5 rounded-lg bg-[#FDF7F4] text-[#666059] hover:text-[#685752] border border-[#E8DCD5] inline-block"
@@ -238,7 +238,7 @@ export default async function AdminDashboardPage() {
         </div>
 
         {/* Activity Feed */}
-        <div className="lg:col-span-4 p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-6">
+        <div className="lg:col-span-4 p-4 sm:p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-6">
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-bold text-[#685752]">Recent Activity</h3>
             <span className="text-xs text-[#7A6862]">Audit Trail</span>

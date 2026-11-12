@@ -7,6 +7,7 @@ import { GooeyInput } from "@/components/ui/gooey-input";
 import { useTourOptions } from "@/lib/useTourOptions";
 
 import { useEscapeKey } from "@/lib/useEscapeKey";
+import { CompassLoader } from "@/components/ui/compass-loader";
 interface LeadItem {
   id: string;
   name: string;
@@ -159,7 +160,7 @@ export default function LeadsPage() {
         </div>
 
         {/* Filters */}
-        <div className="flex items-center gap-3 w-full md:w-auto overflow-x-auto">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 w-full md:w-auto">
           <div className="flex items-center gap-2">
             <span className="text-xs uppercase text-[#7A6862] font-bold">Status:</span>
             <select
@@ -197,9 +198,9 @@ export default function LeadsPage() {
       </div>
 
       {/* Leads Table */}
-      <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs">
+      <div className="p-4 sm:p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs">
         {loading ? (
-          <div className="py-12 text-center text-xs text-[#7A6862]">Loading leads...</div>
+          <CompassLoader size={80} className="py-12" label="Loading leads…" />
         ) : filteredLeads.length === 0 ? (
           <div className="py-16 text-center space-y-3">
             <p className="text-sm text-[#7A6862]">No leads found matching your filters.</p>
@@ -216,7 +217,7 @@ export default function LeadsPage() {
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
+            <table className="admin-table w-full text-left text-xs">
               <thead>
                 <tr className="border-b border-[#E8DCD5] text-[#7A6862] uppercase tracking-wider">
                   <th className="pb-3 font-semibold">Lead Name</th>
@@ -232,16 +233,16 @@ export default function LeadsPage() {
               <tbody className="divide-y divide-[#E8DCD5]">
                 {filteredLeads.map((l) => (
                   <tr key={l.id} className="hover:bg-[#FDF7F4] transition-colors">
-                    <td className="py-3.5 font-bold text-[#685752]">{l.name}</td>
-                    <td className="py-3.5 text-[#666059]">{l.mobile}</td>
-                    <td className="py-3.5 text-[#685752] max-w-[200px] truncate">{l.interestedTourTitle}</td>
-                    <td className="py-3.5">
+                    <td data-label="Lead Name" className="py-3.5 font-bold text-[#685752]">{l.name}</td>
+                    <td data-label="Mobile" className="py-3.5 text-[#666059]">{l.mobile}</td>
+                    <td data-label="Interested Tour" className="py-3.5 text-[#685752] max-w-[200px] truncate">{l.interestedTourTitle}</td>
+                    <td data-label="Source" className="py-3.5">
                       <span className="px-2.5 py-0.5 rounded-full bg-[#FDF7F4] border border-[#E8DCD5] text-xs text-[#666059]">
                         {l.source}
                       </span>
                     </td>
-                    <td className="py-3.5 text-[#685752] font-medium">{l.travellersCount}</td>
-                    <td className="py-3.5">
+                    <td data-label="Travellers" className="py-3.5 text-[#685752] font-medium">{l.travellersCount}</td>
+                    <td data-label="Status" className="py-3.5">
                       <span
                         className={`px-2.5 py-1 rounded-full text-xs font-semibold ${
                           l.status === "New"
@@ -254,10 +255,10 @@ export default function LeadsPage() {
                         {l.status}
                       </span>
                     </td>
-                    <td className="py-3.5 text-[#7A6862]">
+                    <td data-label="Created" className="py-3.5 text-[#7A6862]">
                       {new Date(l.createdAt).toLocaleDateString("en-IN")}
                     </td>
-                    <td className="py-3.5 text-right">
+                    <td data-label="" className="py-3.5 text-right">
                       <Link
                         href={`/admin/leads/${l.id}`}
                         className="px-3 py-1.5 rounded-xl bg-[#FDF7F4] border border-[#E8DCD5] hover:bg-[#4A7244] hover:text-white hover:border-[#8EB486] text-[#685752] text-xs font-semibold transition-colors inline-flex items-center gap-1"
@@ -276,12 +277,12 @@ export default function LeadsPage() {
 
       {/* Create Lead Modal */}
       {createModalOpen && (
-        <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4 backdrop-blur-xs">
-          <div className="w-full max-w-lg bg-white rounded-3xl p-6 border border-[#E8DCD5] shadow-2xl space-y-6">
+        <div className="fixed inset-0 bg-black/40 z-50 flex items-end sm:items-center justify-center sm:p-4 backdrop-blur-xs">
+          <div className="w-full max-w-lg bg-white rounded-t-3xl sm:rounded-3xl p-4 sm:p-6 border border-[#E8DCD5] shadow-2xl space-y-6 max-h-[92dvh] overflow-y-auto">
             <h2 className="text-xl font-bold text-[#685752]">Add New Lead</h2>
 
             <form onSubmit={handleCreateLead} className="space-y-4 text-xs">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
                   <label className="text-[#7A6862] font-semibold">Customer Name *</label>
                   <input
@@ -306,7 +307,7 @@ export default function LeadsPage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
                   <label className="text-[#7A6862] font-semibold">Email Address</label>
                   <input

@@ -65,7 +65,7 @@ const organizationJsonLd = {
   image: `${SITE_URL}${DEFAULT_OG_IMAGE}`,
   description: DEFAULT_DESCRIPTION,
   telephone: "+91-9152975552",
-  email: "travelwithsonaliinfo@gmail.com",
+  email: "enquiries@travelwithsonali.com",
   founder: { "@type": "Person", name: "Sonali Palekar" },
   address: { "@type": "PostalAddress", addressLocality: "Mumbai", addressRegion: "Maharashtra", addressCountry: "IN" },
   areaServed: ["IN", "NP"],

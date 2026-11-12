@@ -3,6 +3,7 @@
 import React, { useState, useEffect, use } from "react";
 import Link from "next/link";
 import { ChevronLeft, Phone, Mail, Clock } from "lucide-react";
+import { CompassLoader } from "@/components/ui/compass-loader";
 
 interface LeadDetailData {
   lead: {
@@ -91,7 +92,7 @@ export default function LeadDetailPage({ params }: { params: Promise<{ id: strin
   };
 
   if (loading) {
-    return <div className="p-8 text-center text-xs text-[#7A6862]">Loading lead details...</div>;
+    return <CompassLoader size={80} className="p-8" label="Loading lead details…" />;
   }
 
   if (!data) {
@@ -106,7 +107,7 @@ export default function LeadDetailPage({ params }: { params: Promise<{ id: strin
       <div className="flex items-center gap-3">
         <Link
           href="/admin/leads"
-          className="p-2 rounded-xl bg-white border border-[#E8DCD5] text-[#7A6862] hover:text-[#685752]"
+          aria-label="Back" className="w-10 h-10 shrink-0 flex items-center justify-center rounded-xl bg-white border border-[#E8DCD5] text-[#7A6862] hover:text-[#685752]"
         >
           <ChevronLeft className="w-4 h-4" />
         </Link>
@@ -116,9 +117,9 @@ export default function LeadDetailPage({ params }: { params: Promise<{ id: strin
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
         {/* Left Column: Lead Profile Info */}
-        <div className="lg:col-span-4 p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-6">
+        <div className="lg:col-span-4 p-4 sm:p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-6">
           <div className="flex items-center justify-between border-b border-[#E8DCD5] pb-4">
             <span className="text-xs font-semibold uppercase tracking-wider text-[#7A6862]">
               Lead Details
@@ -180,7 +181,7 @@ export default function LeadDetailPage({ params }: { params: Promise<{ id: strin
         {/* Right Column: Status Update & Activity Timeline */}
         <div className="lg:col-span-8 space-y-6">
           {/* Status Update Card */}
-          <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-4">
+          <div className="p-4 sm:p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-4">
             <h3 className="text-base font-bold text-[#685752]">Update Lead Status & Add Log Note</h3>
 
             <form onSubmit={handleUpdate} className="space-y-4 text-xs">
@@ -225,7 +226,7 @@ export default function LeadDetailPage({ params }: { params: Promise<{ id: strin
           </div>
 
           {/* Activity Timeline */}
-          <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-4">
+          <div className="p-4 sm:p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-4">
             <h3 className="text-base font-bold text-[#685752] flex items-center gap-2">
               <Clock className="w-4 h-4 text-[#4A7244]" />
               Follow-up History & Timeline

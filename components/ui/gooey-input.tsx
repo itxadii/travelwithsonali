@@ -2,6 +2,7 @@
 
 import React, {
   useState,
+  useSyncExternalStore,
   useRef,
   useEffect,
   useId,
@@ -99,6 +100,18 @@ export interface GooeyInputProps {
   disabled?: boolean;
 }
 
+/** Page gutters plus card padding on phones (2 × 16px + 2 × 16px), with a little breathing room. */
+const PHONE_EDGE_ALLOWANCE = 80;
+
+function subscribeToResize(onChange: () => void) {
+  window.addEventListener("resize", onChange);
+  return () => window.removeEventListener("resize", onChange);
+}
+
+function getViewportWidth() {
+  return window.innerWidth;
+}
+
 export function GooeyInput({
   placeholder = "Type to search...",
   className,
@@ -162,12 +175,19 @@ export function GooeyInput({
     prevExpandedRef.current = isExpanded;
   }, [isExpanded, setSearchText]);
 
+  // On phones the expanded pill (width + offset) must fit inside the page's padded card
+  const viewportWidth = useSyncExternalStore(subscribeToResize, getViewportWidth, () => Infinity);
+  const fittedExpandedWidth = Math.max(
+    collapsedWidth,
+    Math.min(expandedWidth, viewportWidth - PHONE_EDGE_ALLOWANCE - expandedOffset),
+  );
+
   const buttonVariants = useMemo(
     () => ({
       collapsed: { width: collapsedWidth, marginLeft: 0 },
-      expanded: { width: expandedWidth, marginLeft: expandedOffset },
+      expanded: { width: fittedExpandedWidth, marginLeft: expandedOffset },
     }),
-    [collapsedWidth, expandedWidth, expandedOffset],
+    [collapsedWidth, fittedExpandedWidth, expandedOffset],
   );
 
   const handleExpand = useCallback(() => {

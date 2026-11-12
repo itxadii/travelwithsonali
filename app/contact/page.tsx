@@ -86,7 +86,7 @@ export default function ContactPage() {
 
               {/* Email Card */}
               <a
-                href="mailto:travelwithsonaliinfo@gmail.com"
+                href="mailto:enquiries@travelwithsonali.com"
                 className="p-5 rounded-2xl bg-[#F7EFEA] border border-[#E8DCD5] flex items-center gap-4 hover:border-[#8EB486] transition-all"
               >
                 <div className="w-12 h-12 rounded-full bg-[#685752] text-white flex items-center justify-center shrink-0">
@@ -94,7 +94,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <h4 className="text-base font-bold text-[#685752]">Email Us</h4>
-                  <p className="text-xs text-[#997C70]">travelwithsonaliinfo@gmail.com</p>
+                  <p className="text-xs text-[#997C70]">enquiries@travelwithsonali.com</p>
                 </div>
               </a>
 

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { CompassLoader } from "@/components/ui/compass-loader";
 
 interface TravellerItem {
   id: string;
@@ -49,7 +50,7 @@ export default function CustomerTravellersPage() {
 
       <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-4">
         {loading ? (
-          <div className="py-12 text-center text-xs text-[#7A6862]">Loading traveller records...</div>
+          <CompassLoader size={80} className="py-12" label="Loading traveller records…" />
         ) : travellers.length === 0 ? (
           <div className="py-16 text-center text-sm text-[#7A6862]">No travellers found in your bookings.</div>
         ) : (

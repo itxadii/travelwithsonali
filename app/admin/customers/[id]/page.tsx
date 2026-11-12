@@ -3,6 +3,7 @@
 import React, { useState, useEffect, use } from "react";
 import Link from "next/link";
 import { ChevronLeft, Phone, Mail, CalendarCheck, ShieldCheck } from "lucide-react";
+import { CompassLoader } from "@/components/ui/compass-loader";
 
 interface CustomerProfileData {
   customer: {
@@ -66,7 +67,7 @@ export default function CustomerProfilePage({ params }: { params: Promise<{ id: 
   }, [id]);
 
   if (loading) {
-    return <div className="p-8 text-center text-xs text-[#7A6862]">Loading customer profile...</div>;
+    return <CompassLoader size={80} className="p-8" label="Loading customer profile…" />;
   }
 
   if (!data) {
@@ -80,7 +81,7 @@ export default function CustomerProfilePage({ params }: { params: Promise<{ id: 
       <div className="flex items-center gap-3">
         <Link
           href="/admin/customers"
-          className="p-2 rounded-xl bg-white border border-[#E8DCD5] text-[#7A6862] hover:text-[#685752]"
+          aria-label="Back" className="w-10 h-10 shrink-0 flex items-center justify-center rounded-xl bg-white border border-[#E8DCD5] text-[#7A6862] hover:text-[#685752]"
         >
           <ChevronLeft className="w-4 h-4" />
         </Link>
@@ -90,9 +91,9 @@ export default function CustomerProfilePage({ params }: { params: Promise<{ id: 
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
         {/* Profile Card */}
-        <div className="lg:col-span-4 p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-6">
+        <div className="lg:col-span-4 p-4 sm:p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-6">
           <div className="flex items-center justify-between border-b border-[#E8DCD5] pb-4">
             <span className="text-xs font-semibold uppercase tracking-wider text-[#7A6862]">
               Customer Profile
@@ -138,7 +139,7 @@ export default function CustomerProfilePage({ params }: { params: Promise<{ id: 
         {/* Customer History: Bookings & Documents */}
         <div className="lg:col-span-8 space-y-6">
           {/* Associated Bookings */}
-          <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-4">
+          <div className="p-4 sm:p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-4">
             <h3 className="text-base font-bold text-[#685752] flex items-center gap-2">
               <CalendarCheck className="w-4 h-4 text-[#4A7244]" />
               Bookings History ({bookings.length})
@@ -175,7 +176,7 @@ export default function CustomerProfilePage({ params }: { params: Promise<{ id: 
           </div>
 
           {/* Associated Identity Documents */}
-          <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-4">
+          <div className="p-4 sm:p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-4">
             <h3 className="text-base font-bold text-[#685752] flex items-center gap-2">
               <ShieldCheck className="w-4 h-4 text-emerald-600" />
               Verified Identity Documents ({documents.length})
@@ -186,7 +187,7 @@ export default function CustomerProfilePage({ params }: { params: Promise<{ id: 
             ) : (
               <div className="space-y-2 text-xs">
                 {documents.map((doc) => (
-                  <div key={doc.id} className="p-3 rounded-2xl bg-[#FDF7F4] border border-[#E8DCD5] flex items-center justify-between">
+                  <div key={doc.id} className="p-3 rounded-2xl bg-[#FDF7F4] border border-[#E8DCD5] flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <div>
                       <p className="font-bold text-[#685752]">{doc.documentName}</p>
                       <p className="text-xs text-[#7A6862]">{doc.documentType}</p>

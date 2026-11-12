@@ -278,24 +278,30 @@ export default function AdminLayoutClient({ admin, children }: AdminLayoutClient
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0 min-h-screen transition-all duration-300 ease-in-out">
         {/* Top Header (Sticky) */}
-        <header className="h-16 bg-[#FFFDF9]/95 backdrop-blur-md border-b border-[#E8DCD5] px-4 sm:px-8 flex items-center justify-between gap-4 sticky top-0 z-20">
-          <div className="flex items-center gap-3">
+        <header className="h-16 bg-[#FFFDF9]/95 backdrop-blur-md border-b border-[#E8DCD5] px-3 sm:px-8 flex items-center justify-between gap-3 sticky top-0 z-20">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
             {/* Mobile Hamburger Button */}
             <button
               onClick={() => setSidebarOpen(true)}
-              className="lg:hidden p-2 rounded-xl text-[#7A6862] hover:text-[#685752] hover:bg-[#F7EFEA] transition-colors cursor-pointer"
+              className="lg:hidden w-11 h-11 -ml-1 flex items-center justify-center rounded-xl text-[#7A6862] hover:text-[#685752] hover:bg-[#F7EFEA] transition-colors cursor-pointer"
               title="Open menu"
+              aria-label="Open menu"
             >
               <Menu className="w-5 h-5" />
             </button>
 
-            <h1 className="text-base font-bold text-[#685752] tracking-tight font-serif-italic">
+            {/* Phones show the brand; the long title needs tablet width */}
+            <Link href="/admin" className="sm:hidden flex items-center gap-2 min-w-0">
+              <Image src="/travelwithsonalilogo.jpg" alt="" width={28} height={28} className="w-7 h-7 rounded-full border border-[#E8DCD5] shrink-0" />
+              <span className="text-sm font-bold text-[#685752] tracking-tight font-serif-italic truncate">Travel With Sonali</span>
+            </Link>
+            <h1 className="hidden sm:block text-base font-bold text-[#685752] tracking-tight font-serif-italic truncate">
               Operational Control Center
             </h1>
           </div>
 
           {/* Global Actions Bar */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             {/* Global Quick Search */}
             <div className="hidden md:flex items-center">
               <GooeyInput
@@ -362,7 +368,7 @@ export default function AdminLayoutClient({ admin, children }: AdminLayoutClient
         </header>
 
         {/* Page View Body (Scrolls naturally while sidebar & header remain sticky) */}
-        <main className="flex-1 p-4 sm:p-8">{children}</main>
+        <main className="flex-1 min-w-0 px-4 py-5 sm:p-8">{children}</main>
       </div>
     </div>
   );

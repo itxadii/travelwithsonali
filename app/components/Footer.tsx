@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useConsent } from "@/app/context/ConsentContext";
 import {
   Compass,
-  Heart,
   MapPin,
   Phone,
   Mail,
@@ -188,8 +187,8 @@ export default function Footer({ onEnquireClick }: FooterProps) {
                 </li>
                 <li className="flex items-center gap-2.5">
                   <Mail className="w-4 h-4 text-[#4A7244] shrink-0" />
-                  <a href="mailto:travelwithsonaliinfo@gmail.com" className="hover:text-[#4A7244] transition-colors">
-                    travelwithsonaliinfo@gmail.com
+                  <a href="mailto:enquiries@travelwithsonali.com" className="hover:text-[#4A7244] transition-colors">
+                    enquiries@travelwithsonali.com
                   </a>
                 </li>
               </ul>
@@ -199,12 +198,7 @@ export default function Footer({ onEnquireClick }: FooterProps) {
 
           {/* Bottom Copyright & Legal Links */}
           <div className="pt-5 sm:pt-8 flex flex-col-reverse md:flex-row items-center justify-between gap-2.5 sm:gap-4 text-xs text-[#7A6862]">
-            <p className="flex items-center gap-1 text-center md:text-left">
-              © {new Date().getFullYear()} Travel With Sonali
-              <span className="hidden sm:inline-flex items-center gap-1">
-                . Designed with <Heart className="w-3.5 h-3.5 text-[#4A7244] fill-current inline" /> for curious travellers.
-              </span>
-            </p>
+            <p className="text-center md:text-left">© {new Date().getFullYear()} Travel With Sonali</p>
             <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 sm:gap-x-6">
               <Link href="/privacy-policy" className="hover:text-[#685752] transition-colors py-1">
                 Privacy
@@ -250,6 +244,17 @@ export default function Footer({ onEnquireClick }: FooterProps) {
             />
           </div>
           <div className="absolute inset-0 bg-gradient-to-t from-[#140F0E] via-black/50 to-transparent pointer-events-none" />
+
+          {/* Studio credit, pinned to the corner */}
+          <a
+            href="https://stivate.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="absolute bottom-4 right-4 sm:bottom-6 sm:right-8 z-20 inline-flex items-center gap-1.5 text-xs text-stone-400 hover:text-stone-200 transition-colors"
+          >
+            Made with <span aria-label="love">❤️</span> by
+            <Image src="/images/stivate-logo-white.png" alt="Stivate" width={674} height={120} className="h-3.5 w-auto opacity-80" />
+          </a>
 
           {/* Main Reveal Content Container */}
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-8">

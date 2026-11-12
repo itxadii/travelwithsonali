@@ -18,7 +18,7 @@ async function rows<T extends Row>(query: ReturnType<typeof sql>): Promise<T[]> 
 function RankedList({ title, items, empty }: { title: string; items: { label: string; count: number }[]; empty: string }) {
   const max = Math.max(1, ...items.map((i) => i.count));
   return (
-    <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-4">
+    <div className="p-4 sm:p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-4">
       <h3 className="text-base font-bold text-[#685752]">{title}</h3>
       {items.length === 0 ? (
         <p className="text-sm text-[#7A6862]">{empty}</p>
@@ -138,7 +138,7 @@ export default async function AnalyticsPage() {
         <RankedList title="Browsers (visitors)" items={browsers} empty="No data yet." />
       </div>
 
-      <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-4">
+      <div className="p-4 sm:p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs space-y-4">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <h3 className="text-base font-bold text-[#685752]">Cookie consent log</h3>
           <p className="text-sm text-[#7A6862]">
@@ -157,7 +157,7 @@ export default async function AnalyticsPage() {
           <p className="text-sm text-[#7A6862]">No consent choices recorded yet.</p>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
+            <table className="admin-table w-full text-left text-sm">
               <thead className="text-xs uppercase text-[#7A6862]">
                 <tr>
                   <th className="py-2 pr-4 font-semibold">When</th>
@@ -172,15 +172,15 @@ export default async function AnalyticsPage() {
               <tbody className="divide-y divide-[#E8DCD5] text-[#685752]">
                 {recentConsents.map((c) => (
                   <tr key={`${c.consent_id}-${c.created_at}`}>
-                    <td className="py-2 pr-4 whitespace-nowrap">
+                    <td data-label="When" className="py-2 pr-4 whitespace-nowrap">
                       {new Date(c.created_at).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" })}
                     </td>
-                    <td className="py-2 pr-4 font-mono text-xs">{c.consent_id.slice(0, 8)}…</td>
-                    <td className="py-2 pr-4">{actionLabel[c.action] ?? c.action}</td>
-                    <td className="py-2 pr-4">{c.analytics ? "Yes" : "No"}</td>
-                    <td className="py-2 pr-4">{c.marketing ? "Yes" : "No"}</td>
-                    <td className="py-2 pr-4 uppercase">{c.language}</td>
-                    <td className="py-2">{c.notice_version}</td>
+                    <td data-label="Consent ID" className="py-2 pr-4 font-mono text-xs">{c.consent_id.slice(0, 8)}…</td>
+                    <td data-label="Choice" className="py-2 pr-4">{actionLabel[c.action] ?? c.action}</td>
+                    <td data-label="Analytics" className="py-2 pr-4">{c.analytics ? "Yes" : "No"}</td>
+                    <td data-label="Marketing" className="py-2 pr-4">{c.marketing ? "Yes" : "No"}</td>
+                    <td data-label="Language" className="py-2 pr-4 uppercase">{c.language}</td>
+                    <td data-label="Notice" className="py-2">{c.notice_version}</td>
                   </tr>
                 ))}
               </tbody>

@@ -17,6 +17,7 @@ import {
 import Link from "next/link";
 
 import { useEscapeKey } from "@/lib/useEscapeKey";
+import { CompassLoader } from "@/components/ui/compass-loader";
 interface AdminReview {
   id: string;
   tourSlug: string;
@@ -333,9 +334,7 @@ export default function AdminReviewsPage() {
 
       {/* Reviews Table / Cards */}
       {loading ? (
-        <div className="py-16 text-center text-sm text-[#7A6862]">
-          Loading reviews...
-        </div>
+        <CompassLoader size={80} className="py-16" label="Loading reviews…" />
       ) : filtered.length === 0 ? (
         <div className="p-12 rounded-3xl bg-[#FFFDF9] border border-[#E8DCD5] text-center space-y-3">
           <MessageSquare className="w-10 h-10 text-[#7A6862] mx-auto opacity-40" />
@@ -471,8 +470,8 @@ export default function AdminReviewsPage() {
 
       {/* In-App Confirmation Modal for Deleting Inappropriate Reviews */}
       {confirmDeleteReview && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs animate-in fade-in duration-200">
-          <div className="w-full max-w-md p-6 rounded-3xl bg-[#FFFDF9] border border-[#E8DCD5] shadow-2xl space-y-4 animate-in zoom-in-95 duration-200">
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center sm:p-4 bg-black/50 backdrop-blur-xs animate-in fade-in duration-200">
+          <div className="w-full max-w-md p-4 sm:p-6 rounded-t-3xl sm:rounded-3xl bg-[#FFFDF9] border border-[#E8DCD5] shadow-2xl space-y-4 animate-in zoom-in-95 duration-200 max-h-[92dvh] overflow-y-auto">
             <div className="w-12 h-12 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center mx-auto">
               <Trash2 className="w-6 h-6" />
             </div>

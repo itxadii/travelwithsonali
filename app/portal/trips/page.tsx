@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Calendar, Users, ChevronRight } from "lucide-react";
+import { CompassLoader } from "@/components/ui/compass-loader";
 
 interface CustomerTrip {
   id: string;
@@ -95,7 +96,7 @@ export default function CustomerTripsPage() {
 
       {/* Trips Grid */}
       {loading ? (
-        <div className="py-12 text-center text-xs text-[#7A6862]">Loading trips...</div>
+        <CompassLoader size={80} className="py-12" label="Loading trips…" />
       ) : currentList.length === 0 ? (
         <div className="p-12 rounded-3xl bg-white border border-[#E8DCD5] text-center space-y-3">
           <p className="text-sm font-semibold text-[#685752]">No {activeTab.toLowerCase()} trips found.</p>

@@ -14,6 +14,7 @@ import {
   Bus,
   ChevronRight,
 } from "lucide-react";
+import { CompassLoader } from "@/components/ui/compass-loader";
 
 interface TripDetailData {
   booking: {
@@ -113,7 +114,7 @@ export default function CustomerTripDetailPage({ params }: { params: Promise<{ b
   }, [bookingId]);
 
   if (loading) {
-    return <div className="p-12 text-center text-xs text-[#7A6862]">Loading trip details...</div>;
+    return <CompassLoader size={80} className="p-12" label="Loading trip details…" />;
   }
 
   if (!data) {

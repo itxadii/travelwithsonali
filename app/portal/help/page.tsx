@@ -58,14 +58,14 @@ export default function CustomerHelpPage() {
         </a>
 
         <a
-          href="mailto:travelwithsonaliinfo@gmail.com"
+          href="mailto:enquiries@travelwithsonali.com"
           className="p-6 rounded-3xl bg-white border border-[#E8DCD5] hover:shadow-md transition-all text-center space-y-2 group"
         >
           <div className="w-10 h-10 rounded-full bg-[#FDF7F4] text-[#4A7244] flex items-center justify-center mx-auto group-hover:scale-110 transition-transform">
             <Mail className="w-5 h-5" />
           </div>
           <h3 className="font-bold text-[#685752] text-sm">Email Support</h3>
-          <p className="text-xs text-[#7A6862]">travelwithsonaliinfo@gmail.com</p>
+          <p className="text-xs text-[#7A6862]">enquiries@travelwithsonali.com</p>
         </a>
       </div>
 

@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Star, CheckCircle, X } from "lucide-react";
 import { useEscapeKey } from "@/lib/useEscapeKey";
+import { CompassLoader } from "@/components/ui/compass-loader";
 
 export interface TourReview {
   id: string;
@@ -301,7 +302,7 @@ export default function TourReviewsSection({ tourSlug, tourTitle }: TourReviewsS
       </div>
 
       {loading ? (
-        <p className="py-10 text-sm text-[#7A6862]">Loading reviews…</p>
+        <CompassLoader size={72} className="py-10" label="Loading reviews…" />
       ) : reviews.length === 0 ? (
         <p className="py-10 text-sm text-[#7A6862]">
           No reviews yet. Been on this trip?{" "}

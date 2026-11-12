@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { ShieldCheck, FileText } from "lucide-react";
 import { GooeyInput } from "@/components/ui/gooey-input";
+import { CompassLoader } from "@/components/ui/compass-loader";
 
 interface DocumentItem {
   id: string;
@@ -100,14 +101,14 @@ export default function DocumentsPage() {
         />
       </div>
 
-      <div className="p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs">
+      <div className="p-4 sm:p-6 rounded-3xl bg-white border border-[#E8DCD5] shadow-xs">
         {loading ? (
-          <div className="py-12 text-center text-xs text-[#7A6862]">Loading verification queue...</div>
+          <CompassLoader size={80} className="py-12" label="Loading verification queue…" />
         ) : filtered.length === 0 ? (
           <div className="py-16 text-center text-sm text-[#7A6862]">No identity documents found.</div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
+            <table className="admin-table w-full text-left text-xs">
               <thead>
                 <tr className="border-b border-[#E8DCD5] text-[#7A6862] uppercase tracking-wider">
                   <th className="pb-3 font-semibold">Document Name</th>
@@ -121,13 +122,13 @@ export default function DocumentsPage() {
               <tbody className="divide-y divide-[#E8DCD5]">
                 {filtered.map((d) => (
                   <tr key={d.id} className="hover:bg-[#FDF7F4] transition-colors">
-                    <td className="py-3.5 font-bold text-[#685752] flex items-center gap-2">
+                    <td data-label="Document Name" className="py-3.5 font-bold text-[#685752] flex items-center gap-2">
                       <ShieldCheck className="w-4 h-4 text-emerald-600" />
                       <span>{d.documentName}</span>
                     </td>
-                    <td className="py-3.5 text-[#666059]">{d.documentType}</td>
-                    <td className="py-3.5 text-[#685752] font-medium">{d.travellerName || d.customerName || "Customer"}</td>
-                    <td className="py-3.5">
+                    <td data-label="Type" className="py-3.5 text-[#666059]">{d.documentType}</td>
+                    <td data-label="Traveller / Customer" className="py-3.5 text-[#685752] font-medium">{d.travellerName || d.customerName || "Customer"}</td>
+                    <td data-label="Status" className="py-3.5">
                       <span
                         className={`px-2.5 py-1 rounded-full text-xs font-semibold ${
                           d.status === "Verified"
@@ -140,8 +141,8 @@ export default function DocumentsPage() {
                         {d.status}
                       </span>
                     </td>
-                    <td className="py-3.5 text-[#7A6862]">{d.verifiedBy || "Pending"}</td>
-                    <td className="py-3.5 text-right space-x-2">
+                    <td data-label="Verified By" className="py-3.5 text-[#7A6862]">{d.verifiedBy || "Pending"}</td>
+                    <td data-label="" className="py-3.5 text-right space-x-2">
                       {d.filePath ? (
                         <a
                           href={`/api/admin/documents/${d.id}/file`}
