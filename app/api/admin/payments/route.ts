@@ -3,6 +3,7 @@ import { getCurrentAdmin } from "@/lib/admin/auth";
 import { db } from "@/db";
 import { payments, bookings, customers, activityLogs } from "@/db/schema";
 import { eq, desc } from "drizzle-orm";
+import { sendPaymentReceivedEmail } from "@/lib/mailer";
 
 export async function GET() {
   const admin = await getCurrentAdmin();
@@ -85,12 +86,14 @@ export async function POST(request: Request) {
     }
 
     const payId = `pay-${crypto.randomUUID()}`;
+    const method = paymentMethod || "UPI";
+    const date = paymentDate || new Date().toISOString().split("T")[0];
     await db.insert(payments).values({
       id: payId,
       bookingId,
       amount: amountVal,
-      paymentMethod: paymentMethod || "UPI",
-      paymentDate: paymentDate || new Date().toISOString().split("T")[0],
+      paymentMethod: method,
+      paymentDate: date,
       referenceNumber: referenceNumber || null,
       notes: notes || null,
       recordedBy: admin.email,
@@ -122,6 +125,28 @@ export async function POST(request: Request) {
         newOutstanding,
       }),
     });
+
+    // Receipt email is a bonus; the payment is already saved
+    const payer = (await db.select().from(customers).where(eq(customers.id, booking.customerId)))[0];
+    if (payer?.email) {
+      try {
+        await sendPaymentReceivedEmail({
+          to: payer.email,
+          name: payer.name,
+          bookingId,
+          bookingCode: booking.bookingCode,
+          tourTitle: booking.tourTitle,
+          amount: amountVal,
+          paymentMethod: method,
+          paymentDate: date,
+          referenceNumber: referenceNumber || null,
+          paidAmount: newPaidAmount,
+          outstandingAmount: newOutstanding,
+        });
+      } catch (mailErr) {
+        console.warn("Payment receipt email not sent:", mailErr instanceof Error ? mailErr.message : mailErr);
+      }
+    }
 
     return NextResponse.json({
       success: true,

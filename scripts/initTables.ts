@@ -294,5 +294,24 @@ export async function createTablesIfNotExist() {
     );
   `;
 
+  // Admin sign-in: device info per session, and the emailed-code step
+  await sql`ALTER TABLE admin_sessions ADD COLUMN IF NOT EXISTS user_agent TEXT`;
+  await sql`ALTER TABLE admin_sessions ADD COLUMN IF NOT EXISTS ip TEXT`;
+  await sql`ALTER TABLE admin_sessions ADD COLUMN IF NOT EXISTS last_seen_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL`;
+  await sql`
+    CREATE TABLE IF NOT EXISTS admin_login_codes (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL REFERENCES admin_users(id) ON DELETE CASCADE,
+      challenge TEXT NOT NULL UNIQUE,
+      code TEXT NOT NULL,
+      attempts INTEGER NOT NULL DEFAULT 0,
+      expires_at TIMESTAMP NOT NULL,
+      used BOOLEAN NOT NULL DEFAULT FALSE,
+      ip TEXT,
+      user_agent TEXT,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+    );
+  `;
+
   console.log("✅ Neon PostgreSQL DDL migration complete!");
 }

@@ -3,6 +3,7 @@ import { getCurrentAdmin } from "@/lib/admin/auth";
 import { db } from "@/db";
 import { documents, customers, travellers, activityLogs } from "@/db/schema";
 import { eq, desc } from "drizzle-orm";
+import { sendDocumentStatusEmail } from "@/lib/mailer";
 
 export async function GET() {
   const admin = await getCurrentAdmin();
@@ -65,7 +66,7 @@ export async function PATCH(request: Request) {
         updatedAt: new Date(),
       })
       .where(eq(documents.id, documentId))
-      .returning({ travellerId: documents.travellerId });
+      .returning({ travellerId: documents.travellerId, customerId: documents.customerId, documentName: documents.documentName });
 
     if (updated.length === 0) {
       return NextResponse.json({ error: "Document not found." }, { status: 404 });
@@ -77,6 +78,24 @@ export async function PATCH(request: Request) {
         .update(travellers)
         .set({ idDocumentStatus: status })
         .where(eq(travellers.id, updated[0].travellerId));
+    }
+
+    // Let the customer know the outcome (email is a bonus; the status is saved)
+    if (status !== "Under Review" && updated[0].customerId) {
+      const owner = (await db.select().from(customers).where(eq(customers.id, updated[0].customerId)))[0];
+      if (owner?.email) {
+        try {
+          await sendDocumentStatusEmail({
+            to: owner.email,
+            name: owner.name,
+            documentName: updated[0].documentName,
+            status,
+            notes: notes || null,
+          });
+        } catch (mailErr) {
+          console.warn("Document status email not sent:", mailErr instanceof Error ? mailErr.message : mailErr);
+        }
+      }
     }
 
     // Audit log

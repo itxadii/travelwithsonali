@@ -8,6 +8,7 @@ import { getCurrentAdmin } from "@/lib/admin/auth";
 export const dynamic = "force-dynamic";
 
 const ACTION_LABELS: Record<string, string> = {
+  ADMIN_LOGIN: "Admin signed in",
   CREATE_LEAD: "New enquiry",
   UPDATE_LEAD: "Enquiry updated",
   AUTO_CONVERT_CUSTOMER: "Enquiry converted to customer",

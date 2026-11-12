@@ -13,11 +13,13 @@ function VerifyEmailForm() {
   const email = searchParams.get("email") || "";
 
   const [code, setCode] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState(
+    searchParams.get("resent") === "0" ? "We couldn't send a code just now. Press \u201cSend a new code\u201d to try again." : ""
+  );
   const [notice, setNotice] = useState(searchParams.get("resent") === "1" ? "We've sent a new code to your email." : "");
   const [loading, setLoading] = useState(false);
   const [resending, setResending] = useState(false);
-  const [cooldown, setCooldown] = useState(RESEND_COOLDOWN_SECONDS);
+  const [cooldown, setCooldown] = useState(searchParams.get("resent") === "0" ? 0 : RESEND_COOLDOWN_SECONDS);
 
   useEffect(() => {
     if (cooldown <= 0) return;

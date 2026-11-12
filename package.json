@@ -10,6 +10,8 @@
     "seed:sanity": "npx tsx scripts/seedSanity.ts",
     "seed:admin": "npx tsx scripts/seedAdmin.ts",
     "db:migrate": "npx tsx scripts/migrate.ts",
+    "mail:check": "npx tsx scripts/mailCheck.ts",
+    "admin:email": "npx tsx scripts/setAdminEmail.ts",
     "security:clear-default-passwords": "npx tsx scripts/clearDefaultPasswords.ts"
   },
   "dependencies": {

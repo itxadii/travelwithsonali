@@ -82,7 +82,16 @@ const INVALID_LOGIN_MESSAGE =
 export async function loginCustomer(
   loginIdentifier: string,
   password: string
-): Promise<{ success: boolean; error?: string; token?: string; expiresAt?: Date; reason?: "unverified"; email?: string }> {
+): Promise<{
+  success: boolean;
+  error?: string;
+  token?: string;
+  expiresAt?: Date;
+  reason?: "unverified";
+  email?: string;
+  /** For "unverified": whether a fresh code was actually emailed */
+  codeSent?: boolean;
+}> {
   try {
     const customer = await findCustomerByIdentifier(loginIdentifier);
 
@@ -96,14 +105,28 @@ export async function loginCustomer(
       return { success: false, error: INVALID_LOGIN_MESSAGE };
     }
 
+    if (customer.status && customer.status !== "Active") {
+      return { success: false, error: "This account is not active. Message us on WhatsApp and we'll sort it out." };
+    }
+
     // Correct password but email not confirmed yet: send a fresh code and ask for it
     if (!customer.emailVerified && customer.email) {
-      await sendEmailVerificationCode(customer);
+      let codeSent = true;
+      try {
+        await sendEmailVerificationCode(customer);
+      } catch (mailErr) {
+        // Still take them to the code page, where "Send a new code" can retry
+        console.error("Login verification code not sent:", mailErr);
+        codeSent = false;
+      }
       return {
         success: false,
         reason: "unverified",
         email: customer.email,
-        error: "Confirm your email to finish signing in. We've sent you a new 6-digit code.",
+        codeSent,
+        error: codeSent
+          ? "Confirm your email to finish signing in. We've sent you a new 6-digit code."
+          : "Confirm your email to finish signing in. We couldn't send a code just now; use \u201cSend a new code\u201d.",
       };
     }
 
@@ -125,7 +148,8 @@ async function createCustomerSession(customerId: string): Promise<{ token: strin
   await db.insert(customerSessions).values({
     id: randomUUID(),
     customerId,
-    token,
+    // Only a hash is stored, so a database leak can't be used to hijack sessions
+    token: hashSecret(token),
     expiresAt,
   });
 
@@ -228,8 +252,8 @@ export async function resetCustomerPassword(
   };
 
   try {
-    if (!newPassword || newPassword.length < 8) {
-      return { success: false, error: "Password must be at least 8 characters long." };
+    if (!newPassword || newPassword.length < 8 || newPassword.length > 128) {
+      return { success: false, error: "Password must be between 8 and 128 characters." };
     }
 
     let reset: typeof customerPasswordResets.$inferSelect | undefined;
@@ -329,11 +353,12 @@ export async function getCurrentCustomer(): Promise<CustomerSession | null> {
       })
       .from(customerSessions)
       .innerJoin(customers, eq(customerSessions.customerId, customers.id))
-      .where(and(eq(customerSessions.token, token), gt(customerSessions.expiresAt, new Date())));
+      .where(and(eq(customerSessions.token, hashSecret(token)), gt(customerSessions.expiresAt, new Date())));
 
     if (sessions.length === 0) return null;
 
     const session = sessions[0];
+    if (session.status && session.status !== "Active") return null;
     return {
       id: session.id,
       name: session.name,
@@ -353,7 +378,7 @@ export async function logoutCustomer(): Promise<void> {
     const token = cookieStore.get(CUSTOMER_COOKIE_NAME)?.value;
 
     if (token) {
-      await db.delete(customerSessions).where(eq(customerSessions.token, token));
+      await db.delete(customerSessions).where(eq(customerSessions.token, hashSecret(token)));
     }
 
     cookieStore.delete(CUSTOMER_COOKIE_NAME);

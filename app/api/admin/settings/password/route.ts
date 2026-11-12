@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getCurrentAdmin } from "@/lib/admin/auth";
+import { getCurrentAdmin, revokeOtherAdminSessions } from "@/lib/admin/auth";
 import { db } from "@/db";
 import { adminUsers, activityLogs } from "@/db/schema";
 import { eq } from "drizzle-orm";
@@ -20,8 +20,8 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Current and New passwords are required." }, { status: 400 });
     }
 
-    if (newPassword.length < 8) {
-      return NextResponse.json({ error: "New password must be at least 8 characters long." }, { status: 400 });
+    if (typeof newPassword !== "string" || newPassword.length < 8 || newPassword.length > 128) {
+      return NextResponse.json({ error: "New password must be between 8 and 128 characters." }, { status: 400 });
     }
 
     const rate = await checkRateLimits([
@@ -49,6 +49,9 @@ export async function POST(request: Request) {
         updatedAt: new Date(),
       })
       .where(eq(adminUsers.id, admin.id));
+
+    // Anyone holding an old session (e.g. a stolen cookie) is signed out
+    await revokeOtherAdminSessions(admin.id, admin.sessionId);
 
     await db.insert(activityLogs).values({
       id: `log-${crypto.randomUUID()}`,

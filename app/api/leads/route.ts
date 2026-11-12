@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/db";
 import { leads, activityLogs } from "@/db/schema";
 import { checkRateLimits, getClientIp, tooManyRequests } from "@/lib/rateLimit";
-import { sendNewEnquiryEmail } from "@/lib/mailer";
+import { sendEnquiryThanksEmail, sendNewEnquiryEmail } from "@/lib/mailer";
 
 /** Public website enquiry form (Enquire modal + Contact page) → admin Leads. */
 export async function POST(request: Request) {
@@ -51,12 +51,14 @@ export async function POST(request: Request) {
       metadata: JSON.stringify({ name, interestedTourTitle: tour, source: "Website enquiry form" }),
     });
 
-    // Email alert is a bonus; the lead is already saved, so never fail the request over it
-    try {
-      await sendNewEnquiryEmail({ name, mobile, email, tour, travellersCount, message });
-    } catch (err) {
-      console.warn("Enquiry email notification not sent:", err instanceof Error ? err.message : err);
-    }
+    // Emails are a bonus; the lead is already saved, so never fail the request over them
+    const enquiry = { name, mobile, email, tour, travellersCount, message };
+    const [teamMail, thanksMail] = await Promise.allSettled([
+      sendNewEnquiryEmail(enquiry),
+      email ? sendEnquiryThanksEmail(enquiry) : Promise.resolve(),
+    ]);
+    if (teamMail.status === "rejected") console.warn("Enquiry team alert not sent:", teamMail.reason?.message || teamMail.reason);
+    if (thanksMail.status === "rejected") console.warn("Enquiry thank-you not sent:", thanksMail.reason?.message || thanksMail.reason);
 
     return NextResponse.json({ success: true });
   } catch (err) {

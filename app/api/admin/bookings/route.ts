@@ -4,6 +4,7 @@ import { db } from "@/db";
 import { bookings, customers, activityLogs, payments, travellers } from "@/db/schema";
 import { desc, eq } from "drizzle-orm";
 import { findCustomerByIdentifier } from "@/lib/portal/auth";
+import { sendBookingConfirmedEmail } from "@/lib/mailer";
 
 /** TWS-<year>-<4 digits>, re-rolled until it isn't already used (booking_code is unique). */
 async function generateBookingCode(): Promise<string> {
@@ -174,6 +175,27 @@ export async function POST(request: Request) {
         mobile: primaryCust[0].phone,
         idDocumentStatus: "Pending",
       });
+    }
+
+    // Confirmation email is a bonus; the booking is already saved
+    if (primaryCust[0]?.email) {
+      try {
+        await sendBookingConfirmedEmail({
+          to: primaryCust[0].email,
+          name: primaryCust[0].name,
+          bookingId,
+          bookingCode,
+          tourTitle,
+          departureDate: departureDate || "Upcoming Batch",
+          travellersCount: tCount,
+          totalAmount,
+          paidAmount,
+          outstandingAmount,
+          hasPortalAccount: Boolean(primaryCust[0].passwordHash),
+        });
+      } catch (mailErr) {
+        console.warn("Booking confirmation email not sent:", mailErr instanceof Error ? mailErr.message : mailErr);
+      }
     }
 
     await db.insert(activityLogs).values({

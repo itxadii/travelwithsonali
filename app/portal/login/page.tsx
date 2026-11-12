@@ -30,7 +30,7 @@ export default function CustomerLoginPage() {
       const data = await res.json();
 
       if (res.status === 403 && data.reason === "unverified") {
-        router.push(`/portal/verify-email?email=${encodeURIComponent(data.email)}&resent=1`);
+        router.push(`/portal/verify-email?email=${encodeURIComponent(data.email)}&resent=${data.codeSent === false ? "0" : "1"}`);
         return;
       }
 

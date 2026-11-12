@@ -5,7 +5,8 @@ import { checkRateLimits, getClientIp, tooManyRequests } from "@/lib/rateLimit";
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { loginIdentifier, password } = body;
+    const loginIdentifier = typeof body.loginIdentifier === "string" ? body.loginIdentifier.trim() : "";
+    const password = typeof body.password === "string" ? body.password : "";
 
     if (!loginIdentifier || !password) {
       return NextResponse.json({ error: "Email or Phone and password are required." }, { status: 400 });
@@ -21,7 +22,10 @@ export async function POST(req: Request) {
 
     if (!result.success) {
       if (result.reason === "unverified") {
-        return NextResponse.json({ error: result.error, reason: "unverified", email: result.email }, { status: 403 });
+        return NextResponse.json(
+          { error: result.error, reason: "unverified", email: result.email, codeSent: result.codeSent },
+          { status: 403 }
+        );
       }
       return NextResponse.json({ error: result.error || "Authentication failed." }, { status: 401 });
     }

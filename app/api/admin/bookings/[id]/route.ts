@@ -3,6 +3,7 @@ import { getCurrentAdmin } from "@/lib/admin/auth";
 import { db } from "@/db";
 import { bookings, customers, travellers, payments, documents, activityLogs } from "@/db/schema";
 import { eq, desc } from "drizzle-orm";
+import { sendBookingStatusEmail } from "@/lib/mailer";
 
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const admin = await getCurrentAdmin();
@@ -80,7 +81,32 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     if (bookingStatus) updateObj.bookingStatus = bookingStatus;
     if (notes !== undefined) updateObj.notes = notes;
 
+    const before = (await db.select().from(bookings).where(eq(bookings.id, id)))[0];
+    if (!before) {
+      return NextResponse.json({ error: "Booking not found" }, { status: 404 });
+    }
+
     await db.update(bookings).set(updateObj).where(eq(bookings.id, id));
+
+    // Tell the customer when the status actually changes (email is a bonus; the update is saved)
+    if (bookingStatus && bookingStatus !== before.bookingStatus) {
+      const customer = (await db.select().from(customers).where(eq(customers.id, before.customerId)))[0];
+      if (customer?.email) {
+        try {
+          await sendBookingStatusEmail({
+            to: customer.email,
+            name: customer.name,
+            bookingId: id,
+            bookingCode: before.bookingCode,
+            tourTitle: before.tourTitle,
+            departureDate: before.departureDate,
+            status: bookingStatus,
+          });
+        } catch (mailErr) {
+          console.warn("Booking status email not sent:", mailErr instanceof Error ? mailErr.message : mailErr);
+        }
+      }
+    }
 
     await db.insert(activityLogs).values({
       id: `log-${crypto.randomUUID()}`,

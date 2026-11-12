@@ -72,8 +72,27 @@ export const adminUsers = pgTable("admin_users", {
 export const adminSessions = pgTable("admin_sessions", {
   id: text("id").primaryKey(),
   userId: text("user_id").notNull().references(() => adminUsers.id, { onDelete: "cascade" }),
+  // SHA-256 of the cookie value, never the raw token
   token: text("token").notNull().unique(),
   expiresAt: timestamp("expires_at").notNull(),
+  // Which device/browser signed in, shown under Settings → Signed-in devices
+  userAgent: text("user_agent"),
+  ip: text("ip"),
+  lastSeenAt: timestamp("last_seen_at").defaultNow().notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+// 2b. Admin Login Codes (second step of admin sign-in: a 6-digit code emailed to the admin)
+export const adminLoginCodes = pgTable("admin_login_codes", {
+  id: text("id").primaryKey(),
+  userId: text("user_id").notNull().references(() => adminUsers.id, { onDelete: "cascade" }),
+  challenge: text("challenge").notNull().unique(), // hashed cookie value linking both steps
+  code: text("code").notNull(), // hashed 6-digit code
+  attempts: integer("attempts").notNull().default(0),
+  expiresAt: timestamp("expires_at").notNull(),
+  used: boolean("used").notNull().default(false),
+  ip: text("ip"),
+  userAgent: text("user_agent"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
