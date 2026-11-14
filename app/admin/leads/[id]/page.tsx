@@ -2,8 +2,10 @@
 
 import React, { useState, useEffect, use } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ChevronLeft, Phone, Mail, Clock } from "lucide-react";
 import { CompassLoader } from "@/components/ui/compass-loader";
+import { DeleteButton } from "../../components/DeleteButton";
 
 interface LeadDetailData {
   lead: {
@@ -30,6 +32,7 @@ interface LeadDetailData {
 export default function LeadDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params);
   const { id } = resolvedParams;
+  const router = useRouter();
 
   const [data, setData] = useState<LeadDetailData | null>(null);
   const [newNote, setNewNote] = useState("");
@@ -250,6 +253,17 @@ export default function LeadDetailPage({ params }: { params: Promise<{ id: strin
           </div>
         </div>
       </div>
+      {/* Permanent delete, kept apart from everyday actions */}
+      <div className="pt-6 border-t border-[#E8DCD5] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <p className="text-xs text-[#7A6862]">Deleting removes this lead for good. It can&apos;t be undone.</p>
+        <DeleteButton
+          endpoint={`/api/admin/leads/${id}`}
+          noun="lead"
+          itemLabel={lead.name}
+          onDeleted={() => router.push("/admin/leads")}
+        />
+      </div>
+
     </div>
   );
 }

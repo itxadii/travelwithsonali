@@ -117,6 +117,20 @@ export async function sendAdminLoginCodeEmail(to: string, name: string, code: st
   });
 }
 
+/** Invite to the admin panel, or a password reset sent by an owner. */
+export async function sendAdminInviteEmail(to: string, name: string, inviter: string, link: string, kind: "invite" | "reset") {
+  const invite = kind === "invite";
+  await send(to, invite ? "You've been added to the Travel With Sonali admin panel" : "Reset your admin password", {
+    preheader: invite ? `${inviter} added you to the admin panel. Set your password to get started.` : "Use the link to choose a new admin password.",
+    heading: invite ? `Hi ${name}, welcome to the team` : `Hi ${name}, reset your password`,
+    intro: invite
+      ? [`${inviter} has given you access to the Travel With Sonali admin panel, where the team manages leads, bookings, payments and travellers.`, "Choose your password to finish setting up. After that you'll sign in with this email, your password and a code we email you each time."]
+      : [`${inviter} sent you a link to choose a new password for the admin panel. Your devices will be signed out once you set it.`],
+    cta: { label: invite ? "Set my password" : "Choose a new password", url: link },
+    footnote: "This link works once and expires in 3 days. If you weren't expecting it, you can ignore this email.",
+  });
+}
+
 // ---------------------------------------------------------------------------
 // Enquiries
 // ---------------------------------------------------------------------------

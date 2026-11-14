@@ -5,6 +5,7 @@ import { FileText } from "lucide-react";
 import { GooeyInput } from "@/components/ui/gooey-input";
 import PaymentInvoiceModal, { ExtendedPaymentRecord } from "./PaymentInvoiceModal";
 import { CompassLoader } from "@/components/ui/compass-loader";
+import { DeleteButton } from "../components/DeleteButton";
 
 export default function PaymentsPage() {
   const [paymentsList, setPaymentsList] = useState<ExtendedPaymentRecord[]>([]);
@@ -183,6 +184,14 @@ export default function PaymentsPage() {
                             <FileText className="w-3.5 h-3.5" />
                             <span>Invoice / PDF</span>
                           </button>
+                          <DeleteButton
+                            variant="icon"
+                            endpoint={`/api/admin/payments/${p.id}`}
+                            noun="payment"
+                            itemLabel={`₹${p.amount.toLocaleString("en-IN")} from ${p.customerName || "customer"}`}
+                            note="The booking's paid amount and balance will be recalculated."
+                            onDeleted={() => setPaymentsList((prev) => prev.filter((x) => x.id !== p.id))}
+                          />
                         </div>
                       </td>
                     </tr>

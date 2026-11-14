@@ -8,6 +8,7 @@ import { useTourOptions } from "@/lib/useTourOptions";
 
 import { useEscapeKey } from "@/lib/useEscapeKey";
 import { CompassLoader } from "@/components/ui/compass-loader";
+import { DeleteButton } from "../components/DeleteButton";
 interface BookingListItem {
   id: string;
   bookingCode: string;
@@ -241,13 +242,23 @@ export default function BookingsPage() {
                       </span>
                     </td>
                     <td data-label="" className="py-3.5 text-right">
-                      <Link
-                        href={`/admin/bookings/${b.id}`}
-                        className="px-3 py-1.5 rounded-xl bg-[#FDF7F4] border border-[#E8DCD5] hover:bg-[#4A7244] hover:text-white hover:border-[#8EB486] text-[#685752] text-xs font-semibold transition-colors inline-flex items-center gap-1"
-                      >
-                        <span>Manage</span>
-                        <ArrowUpRight className="w-3 h-3" />
-                      </Link>
+                      <div className="inline-flex items-center gap-1.5">
+                        <Link
+                          href={`/admin/bookings/${b.id}`}
+                          className="px-3 py-1.5 rounded-xl bg-[#FDF7F4] border border-[#E8DCD5] hover:bg-[#4A7244] hover:text-white hover:border-[#8EB486] text-[#685752] text-xs font-semibold transition-colors inline-flex items-center gap-1"
+                        >
+                          <span>Manage</span>
+                          <ArrowUpRight className="w-3 h-3" />
+                        </Link>
+                        <DeleteButton
+                          variant="icon"
+                          endpoint={`/api/admin/bookings/${b.id}`}
+                          noun="booking"
+                          itemLabel={`${b.bookingCode} · ${b.customerName}`}
+                          preview={{ kind: "booking", id: b.id }}
+                          onDeleted={() => setBookingsList((prev) => prev.filter((x) => x.id !== b.id))}
+                        />
+                      </div>
                     </td>
                   </tr>
                 ))}

@@ -313,5 +313,17 @@ export async function createTablesIfNotExist() {
     );
   `;
 
+  // Admin team: invites and one-time password setup links
+  await sql`ALTER TABLE admin_users ADD COLUMN IF NOT EXISTS invite_pending BOOLEAN NOT NULL DEFAULT FALSE`;
+  await sql`
+    CREATE TABLE IF NOT EXISTS admin_setup_tokens (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL REFERENCES admin_users(id) ON DELETE CASCADE,
+      token TEXT NOT NULL UNIQUE,
+      expires_at TIMESTAMP NOT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+    );
+  `;
+
   console.log("✅ Neon PostgreSQL DDL migration complete!");
 }

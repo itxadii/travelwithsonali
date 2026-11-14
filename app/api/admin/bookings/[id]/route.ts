@@ -4,6 +4,7 @@ import { db } from "@/db";
 import { bookings, customers, travellers, payments, documents, activityLogs } from "@/db/schema";
 import { eq, desc } from "drizzle-orm";
 import { sendBookingStatusEmail } from "@/lib/mailer";
+import { deleteBooking } from "@/lib/admin/deletes";
 
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const admin = await getCurrentAdmin();
@@ -121,5 +122,23 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
   } catch (err) {
     console.error("PATCH booking error:", err);
     return NextResponse.json({ error: "Failed to update booking" }, { status: 500 });
+  }
+}
+
+/** Permanently deletes the record (and anything that only belongs to it). */
+export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const admin = await getCurrentAdmin();
+  if (!admin) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const { id } = await params;
+  try {
+    const result = await deleteBooking(id, admin.email);
+    if (!result.success) return NextResponse.json({ error: result.error }, { status: result.status });
+    return NextResponse.json(result);
+  } catch (err) {
+    console.error("DELETE deleteBooking error:", err);
+    return NextResponse.json({ error: "Couldn't delete it. Please try again." }, { status: 500 });
   }
 }

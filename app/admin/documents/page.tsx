@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { ShieldCheck, FileText } from "lucide-react";
 import { GooeyInput } from "@/components/ui/gooey-input";
 import { CompassLoader } from "@/components/ui/compass-loader";
+import { DeleteButton } from "../components/DeleteButton";
 
 interface DocumentItem {
   id: string;
@@ -169,6 +170,13 @@ export default function DocumentsPage() {
                       >
                         Reject
                       </button>
+                      <DeleteButton
+                        variant="icon"
+                        endpoint={`/api/admin/documents/${d.id}`}
+                        noun="document"
+                        itemLabel={d.documentName}
+                        onDeleted={() => setDocList((prev) => prev.filter((x) => x.id !== d.id))}
+                      />
                     </td>
                   </tr>
                 ))}

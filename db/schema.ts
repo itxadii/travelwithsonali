@@ -63,9 +63,21 @@ export const adminUsers = pgTable("admin_users", {
   email: text("email").notNull().unique(),
   passwordHash: text("password_hash").notNull(),
   name: text("name").notNull(),
+  // SUPER_ADMIN = owner (can manage the team), ADMIN = everything else
   role: text("role").notNull().default("SUPER_ADMIN"),
+  // Added by an owner and hasn't set a password from the emailed link yet
+  invitePending: boolean("invite_pending").notNull().default(false),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+// 1b. One-time links for a new admin to set (or an admin to reset) their password
+export const adminSetupTokens = pgTable("admin_setup_tokens", {
+  id: text("id").primaryKey(),
+  userId: text("user_id").notNull().references(() => adminUsers.id, { onDelete: "cascade" }),
+  token: text("token").notNull().unique(), // SHA-256 of the emailed token
+  expiresAt: timestamp("expires_at").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
 // 2. Admin Sessions

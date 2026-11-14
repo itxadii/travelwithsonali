@@ -2,8 +2,10 @@
 
 import React, { useState, useEffect, use } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ChevronLeft, Phone, Mail, CalendarCheck, ShieldCheck } from "lucide-react";
 import { CompassLoader } from "@/components/ui/compass-loader";
+import { DeleteButton } from "../../components/DeleteButton";
 
 interface CustomerProfileData {
   customer: {
@@ -45,6 +47,7 @@ interface CustomerProfileData {
 export default function CustomerProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params);
   const { id } = resolvedParams;
+  const router = useRouter();
 
   const [data, setData] = useState<CustomerProfileData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -202,6 +205,18 @@ export default function CustomerProfilePage({ params }: { params: Promise<{ id: 
           </div>
         </div>
       </div>
+      {/* Permanent delete, kept apart from everyday actions */}
+      <div className="pt-6 border-t border-[#E8DCD5] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <p className="text-xs text-[#7A6862]">Deleting removes this customer for good. It can&apos;t be undone.</p>
+        <DeleteButton
+          endpoint={`/api/admin/customers/${id}`}
+          noun="customer"
+          itemLabel={customer.name}
+          preview={{ kind: "customer", id }}
+          onDeleted={() => router.push("/admin/customers")}
+        />
+      </div>
+
     </div>
   );
 }

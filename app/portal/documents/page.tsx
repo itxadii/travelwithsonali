@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Upload, ShieldCheck, Plus, FileText } from "lucide-react";
+import { Upload, ShieldCheck, Plus, FileText, Trash2 } from "lucide-react";
 import { useEscapeKey } from "@/lib/useEscapeKey";
 import { CompassLoader } from "@/components/ui/compass-loader";
 
@@ -26,6 +26,32 @@ export default function CustomerDocumentsPage() {
   const [summary, setSummary] = useState<SummaryData>({ total: 0, completed: 0, pending: 0 });
   const [loading, setLoading] = useState(true);
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState<DocItem | null>(null);
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
+  useEscapeKey(Boolean(confirmDelete) && !deleting, () => setConfirmDelete(null));
+
+  const deleteDocument = async () => {
+    if (!confirmDelete) return;
+    setDeleting(true);
+    setDeleteError("");
+    try {
+      const res = await fetch(`/api/portal/documents/${confirmDelete.id}`, { method: "DELETE" });
+      const json = await res.json().catch(() => null);
+      if (!res.ok) {
+        setDeleteError(json?.error || "Couldn't delete the document. Please try again.");
+        // It may have just been verified: refresh so the lock shows
+        if (res.status === 409) fetchDocs();
+        return;
+      }
+      setConfirmDelete(null);
+      fetchDocs();
+    } catch {
+      setDeleteError("Couldn't reach the server. Check your connection and try again.");
+    } finally {
+      setDeleting(false);
+    }
+  };
 
   // Form State
   const [documentType, setDocumentType] = useState("Aadhaar");
@@ -184,6 +210,7 @@ export default function CustomerDocumentsPage() {
                   </div>
                 </div>
 
+                <div className="flex flex-col items-end gap-2 shrink-0">
                 <span
                   className={`px-3 py-1 rounded-full text-xs font-bold ${
                     d.status === "Verified"
@@ -195,11 +222,71 @@ export default function CustomerDocumentsPage() {
                 >
                   {d.status}
                 </span>
+                {d.status !== "Verified" && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setDeleteError("");
+                      setConfirmDelete(d);
+                    }}
+                    className="inline-flex items-center gap-1 min-h-9 px-2 rounded-full text-xs font-semibold text-[#7A6862] hover:text-rose-700 hover:bg-rose-50 cursor-pointer"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" aria-hidden="true" />
+                    Delete
+                  </button>
+                )}
+                </div>
               </div>
             ))}
           </div>
         )}
       </div>
+
+      {/* Delete confirmation */}
+      {confirmDelete && (
+        <div
+          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center sm:p-4 bg-black/50 backdrop-blur-xs"
+          onClick={() => !deleting && setConfirmDelete(null)}
+        >
+          <div
+            role="alertdialog"
+            aria-modal="true"
+            aria-labelledby="delete-doc-title"
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-md p-5 sm:p-6 rounded-t-3xl sm:rounded-3xl bg-[#FFFDF9] border border-[#E8DCD5] shadow-2xl space-y-4"
+          >
+            <h2 id="delete-doc-title" className="text-lg font-bold text-[#685752]">
+              Delete {confirmDelete.documentName}?
+            </h2>
+            <p className="text-sm text-[#7A6862]">
+              The file will be removed from your account. You can upload a new one any time before your trip.
+            </p>
+            {deleteError && (
+              <p role="alert" className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-sm text-rose-800">
+                {deleteError}
+              </p>
+            )}
+            <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-2">
+              <button
+                type="button"
+                onClick={() => setConfirmDelete(null)}
+                disabled={deleting}
+                className="min-h-11 px-5 rounded-full bg-[#FDF7F4] border border-[#E8DCD5] text-sm font-semibold text-[#685752] cursor-pointer"
+              >
+                Keep it
+              </button>
+              <button
+                type="button"
+                onClick={deleteDocument}
+                disabled={deleting}
+                className="min-h-11 px-5 rounded-full bg-rose-600 hover:bg-rose-700 text-white text-sm font-semibold cursor-pointer disabled:opacity-60"
+              >
+                {deleting ? "Deleting…" : "Delete document"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Upload Modal */}
       {uploadModalOpen && (

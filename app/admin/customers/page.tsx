@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { GooeyInput } from "@/components/ui/gooey-input";
 import { CompassLoader } from "@/components/ui/compass-loader";
+import { DeleteButton } from "../components/DeleteButton";
 
 interface CustomerItem {
   id: string;
@@ -107,13 +108,23 @@ export default function CustomersPage() {
                       {new Date(c.createdAt).toLocaleDateString("en-IN")}
                     </td>
                     <td data-label="" className="py-3.5 text-right">
-                      <Link
-                        href={`/admin/customers/${c.id}`}
-                        className="px-3 py-1.5 rounded-xl bg-[#FDF7F4] border border-[#E8DCD5] hover:bg-[#4A7244] hover:text-white hover:border-[#8EB486] text-[#685752] text-xs font-semibold transition-colors inline-flex items-center gap-1"
-                      >
-                        <span>Profile</span>
-                        <ArrowUpRight className="w-3 h-3" />
-                      </Link>
+                      <div className="inline-flex items-center gap-1.5">
+                        <Link
+                          href={`/admin/customers/${c.id}`}
+                          className="px-3 py-1.5 rounded-xl bg-[#FDF7F4] border border-[#E8DCD5] hover:bg-[#4A7244] hover:text-white hover:border-[#8EB486] text-[#685752] text-xs font-semibold transition-colors inline-flex items-center gap-1"
+                        >
+                          <span>Profile</span>
+                          <ArrowUpRight className="w-3 h-3" />
+                        </Link>
+                        <DeleteButton
+                          variant="icon"
+                          endpoint={`/api/admin/customers/${c.id}`}
+                          noun="customer"
+                          itemLabel={c.name}
+                          preview={{ kind: "customer", id: c.id }}
+                          onDeleted={() => setCustomerList((prev) => prev.filter((x) => x.id !== c.id))}
+                        />
+                      </div>
                     </td>
                   </tr>
                 ))}

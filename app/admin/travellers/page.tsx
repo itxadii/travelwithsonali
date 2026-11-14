@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { GooeyInput } from "@/components/ui/gooey-input";
 import { CompassLoader } from "@/components/ui/compass-loader";
+import { DeleteButton } from "../components/DeleteButton";
 
 interface TravellerItem {
   id: string;
@@ -92,6 +93,7 @@ export default function TravellersPage() {
                   <th className="pb-3 font-semibold">Departure</th>
                   <th className="pb-3 font-semibold">Masked ID Number</th>
                   <th className="pb-3 font-semibold">ID Status</th>
+                  <th className="pb-3 font-semibold text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#E8DCD5]">
@@ -108,6 +110,16 @@ export default function TravellersPage() {
                       <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
                         {t.idDocumentStatus}
                       </span>
+                    </td>
+                    <td data-label="" className="py-3.5 text-right">
+                      <DeleteButton
+                        variant="icon"
+                        endpoint={`/api/admin/travellers/${t.id}`}
+                        noun="traveller"
+                        itemLabel={`${t.fullName} (${t.bookingCode})`}
+                        note="Their uploaded ID documents are deleted too. The booking itself stays."
+                        onDeleted={() => setTravellersList((prev) => prev.filter((x) => x.id !== t.id))}
+                      />
                     </td>
                   </tr>
                 ))}

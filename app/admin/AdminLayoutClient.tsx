@@ -22,6 +22,7 @@ import {
   X,
   User,
   PanelLeftClose,
+  UsersRound,
 } from "lucide-react";
 import { AdminUserSession } from "@/lib/admin/auth";
 import { GooeyInput } from "@/components/ui/gooey-input";
@@ -43,7 +44,8 @@ export default function AdminLayoutClient({ admin, children }: AdminLayoutClient
     setProfileDropdownOpen(false);
   });
 
-  const isLoginPage = pathname === "/admin/login";
+  // Pages reachable while signed out render without the admin chrome
+  const isLoginPage = pathname === "/admin/login" || pathname === "/admin/set-password";
   // An expired or unknown session cookie passes the proxy (it only checks the cookie exists)
   useEffect(() => {
     if (!admin && !isLoginPage) router.replace(`/admin/login?from=${encodeURIComponent(pathname)}`);
@@ -77,6 +79,7 @@ export default function AdminLayoutClient({ admin, children }: AdminLayoutClient
     { label: "Activity", href: "/admin/notifications", icon: Bell },
     { label: "Reports", href: "/admin/reports", icon: BarChart3 },
     { label: "Analytics", href: "/admin/analytics", icon: Activity },
+    { label: "Team", href: "/admin/team", icon: UsersRound },
     { label: "Settings", href: "/admin/settings", icon: Settings },
   ];
 
@@ -341,7 +344,7 @@ export default function AdminLayoutClient({ admin, children }: AdminLayoutClient
                     <p className="text-xs font-bold text-[#685752]">{admin?.name}</p>
                     <p className="text-xs text-[#7A6862] truncate">{admin?.email}</p>
                     <span className="text-xs uppercase font-bold text-[#4A7244] bg-[#8EB486]/15 px-2 py-0.5 rounded-md inline-block mt-1">
-                      {admin?.role}
+                      {admin?.role === "SUPER_ADMIN" ? "Owner" : "Admin"}
                     </span>
                   </div>
 

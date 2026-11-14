@@ -4,6 +4,7 @@ import { db } from "@/db";
 import { leads, leadFollowups, customers, activityLogs } from "@/db/schema";
 import { eq, desc } from "drizzle-orm";
 import { findCustomerByIdentifier } from "@/lib/portal/auth";
+import { deleteLead } from "@/lib/admin/deletes";
 
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const admin = await getCurrentAdmin();
@@ -113,5 +114,23 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
   } catch (err) {
     console.error("PATCH lead error:", err);
     return NextResponse.json({ error: "Failed to update lead" }, { status: 500 });
+  }
+}
+
+/** Permanently deletes the record (and anything that only belongs to it). */
+export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const admin = await getCurrentAdmin();
+  if (!admin) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const { id } = await params;
+  try {
+    const result = await deleteLead(id, admin.email);
+    if (!result.success) return NextResponse.json({ error: result.error }, { status: result.status });
+    return NextResponse.json(result);
+  } catch (err) {
+    console.error("DELETE deleteLead error:", err);
+    return NextResponse.json({ error: "Couldn't delete it. Please try again." }, { status: 500 });
   }
 }

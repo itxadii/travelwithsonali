@@ -71,7 +71,7 @@ export async function beginAdminLogin(
     const clean = email.trim().toLowerCase();
     const user = (await db.select().from(adminUsers).where(eq(adminUsers.email, clean)))[0];
     const ok = await bcrypt.compare(password, user ? user.passwordHash : await dummyHash());
-    if (!user || !ok) return INVALID;
+    if (!user || !ok || user.invitePending) return INVALID;
 
     return await issueLoginCode(user, meta);
   } catch (err) {

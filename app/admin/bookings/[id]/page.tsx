@@ -2,10 +2,12 @@
 
 import React, { useState, useEffect, use } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ChevronLeft, Plus, CreditCard, Users } from "lucide-react";
 
 import { useEscapeKey } from "@/lib/useEscapeKey";
 import { CompassLoader } from "@/components/ui/compass-loader";
+import { DeleteButton } from "../../components/DeleteButton";
 interface BookingDetailData {
   booking: {
     id: string;
@@ -56,6 +58,7 @@ interface BookingDetailData {
 export default function BookingDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params);
   const { id } = resolvedParams;
+  const router = useRouter();
 
   const [data, setData] = useState<BookingDetailData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -354,7 +357,17 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
                       {p.referenceNumber && <p className="text-xs text-[#666059] mt-1">Ref: {p.referenceNumber}</p>}
                       <p className="text-xs text-[#7A6862]">Recorded by: {p.recordedBy}</p>
                     </div>
-                    <span className="text-xs text-[#7A6862]">{p.paymentDate}</span>
+                    <div className="flex items-center justify-between sm:justify-end gap-2">
+                      <span className="text-xs text-[#7A6862]">{p.paymentDate}</span>
+                      <DeleteButton
+                        variant="icon"
+                        endpoint={`/api/admin/payments/${p.id}`}
+                        noun="payment"
+                        itemLabel={`₹${p.amount.toLocaleString("en-IN")} (${p.paymentMethod})`}
+                        note="The paid amount and balance on this booking will be recalculated."
+                        onDeleted={fetchDetail}
+                      />
+                    </div>
                   </div>
                 ))}
               </div>
@@ -394,15 +407,37 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
                         </p>
                       )}
                     </div>
-                    <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
-                      {t.idDocumentStatus}
-                    </span>
+                    <div className="flex items-center justify-between sm:justify-end gap-2">
+                      <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
+                        {t.idDocumentStatus}
+                      </span>
+                      <DeleteButton
+                        variant="icon"
+                        endpoint={`/api/admin/travellers/${t.id}`}
+                        noun="traveller"
+                        itemLabel={t.fullName}
+                        note="Their uploaded ID documents are deleted too."
+                        onDeleted={fetchDetail}
+                      />
+                    </div>
                   </div>
                 ))}
               </div>
             )}
           </div>
         </div>
+      </div>
+
+      {/* Permanent delete, kept apart from everyday actions */}
+      <div className="pt-6 border-t border-[#E8DCD5] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <p className="text-xs text-[#7A6862]">Deleting removes this booking for good. It can&apos;t be undone.</p>
+        <DeleteButton
+          endpoint={`/api/admin/bookings/${id}`}
+          noun="booking"
+          itemLabel={`${booking.bookingCode} · ${booking.customerName}`}
+          preview={{ kind: "booking", id }}
+          onDeleted={() => router.push("/admin/bookings")}
+        />
       </div>
 
       {/* Add Payment Modal */}
