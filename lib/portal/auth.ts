@@ -1,12 +1,17 @@
 import { cookies } from "next/headers";
 import { db } from "@/db";
-import { customers, customerSessions, customerPasswordResets, customerEmailVerifications } from "@/db/schema";
-import { eq, and, gt, or, sql, desc } from "drizzle-orm";
+import { customers, customerSessions, customerPasswordResets, customerEmailVerifications, customerLoginCodes } from "@/db/schema";
+import { eq, and, gt, lt, ne, or, sql, desc } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 import { createHash, randomInt, randomUUID, timingSafeEqual } from "node:crypto";
-import { sendEmailVerificationEmail, sendPasswordResetEmail } from "@/lib/mailer";
+import { sendCustomerLoginCodeEmail, sendEmailVerificationEmail, sendPasswordResetEmail } from "@/lib/mailer";
 
 const CUSTOMER_COOKIE_NAME = "customer_session";
+/** Short-lived cookie linking the password step to the emailed-code step */
+export const CUSTOMER_CHALLENGE_COOKIE = "customer_login_challenge";
+export const CUSTOMER_CHALLENGE_COOKIE_PATH = "/api/portal/auth";
+const LOGIN_CODE_TTL_MS = 10 * 60 * 1000;
+const MAX_LOGIN_CODE_ATTEMPTS = 5;
 
 export interface CustomerSession {
   id: string;
@@ -67,8 +72,10 @@ export async function findCustomerByIdentifier(identifier: string) {
     .where(
       or(
         eq(customers.phone, clean),
+        // Last 10 digits of the stored number, ignoring spaces/+91/dashes. Matches
+        // customers_phone_last10_idx exactly, so this is an index lookup, not a table scan.
         digits.length >= 10
-          ? sql`regexp_replace(${customers.phone}, '[^0-9]', '', 'g') LIKE ${`%${digits}`}`
+          ? sql`RIGHT(regexp_replace(${customers.phone}, '[^0-9]', '', 'g'), 10) = ${digits}`
           : sql`FALSE`
       )
     );
@@ -87,10 +94,13 @@ export async function loginCustomer(
   error?: string;
   token?: string;
   expiresAt?: Date;
-  reason?: "unverified";
+  reason?: "unverified" | "code";
   email?: string;
   /** For "unverified": whether a fresh code was actually emailed */
   codeSent?: boolean;
+  /** For "code": value for the challenge cookie, and a masked email to show */
+  challenge?: string;
+  emailHint?: string;
 }> {
   try {
     const customer = await findCustomerByIdentifier(loginIdentifier);
@@ -130,6 +140,14 @@ export async function loginCustomer(
       };
     }
 
+    // Customers with a confirmed email always finish with a code sent there
+    if (customer.email) {
+      const issued = await issueCustomerLoginCode(customer);
+      if (!issued.success) return { success: false, error: issued.error };
+      return { success: false, reason: "code", challenge: issued.challenge, emailHint: issued.emailHint };
+    }
+
+    // No email on the account: mobile number + password only
     const { token, expiresAt } = await createCustomerSession(customer.id);
     return { success: true, token, expiresAt };
   } catch (err) {
@@ -372,6 +390,15 @@ export async function getCurrentCustomer(): Promise<CustomerSession | null> {
   }
 }
 
+/** Signs the customer out everywhere except the browser making this request. */
+export async function revokeOtherCustomerSessions(customerId: string): Promise<void> {
+  const cookieStore = await cookies();
+  const token = cookieStore.get(CUSTOMER_COOKIE_NAME)?.value;
+  const conditions = [eq(customerSessions.customerId, customerId)];
+  if (token) conditions.push(ne(customerSessions.token, hashSecret(token)));
+  await db.delete(customerSessions).where(and(...conditions));
+}
+
 export async function logoutCustomer(): Promise<void> {
   try {
     const cookieStore = await cookies();
@@ -462,5 +489,125 @@ export async function verifyCustomerEmail(email: string, code: string): Promise<
   } catch (err) {
     console.error("verifyCustomerEmail error:", err);
     return { success: false, error: "Couldn't confirm your email right now. Please try again." };
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Emailed sign-in code (second step for customers with an email)
+// ---------------------------------------------------------------------------
+
+/** "ra•••••@gmail.com" */
+function maskEmail(email: string): string {
+  const [local, domain] = email.split("@");
+  if (!domain) return email;
+  return `${local.slice(0, 2)}${"•".repeat(Math.max(3, local.length - 2))}@${domain}`;
+}
+
+async function issueCustomerLoginCode(
+  customer: { id: string; name: string; email: string | null }
+): Promise<{ success: true; challenge: string; emailHint: string } | { success: false; error: string }> {
+  if (!customer.email) return { success: false, error: "This account has no email for a sign-in code." };
+
+  await db
+    .update(customerLoginCodes)
+    .set({ used: true })
+    .where(and(eq(customerLoginCodes.customerId, customer.id), eq(customerLoginCodes.used, false)));
+
+  const challenge = randomUUID();
+  const code = randomInt(100000, 1000000).toString();
+  const rowId = randomUUID();
+  await db.insert(customerLoginCodes).values({
+    id: rowId,
+    customerId: customer.id,
+    challenge: hashSecret(challenge),
+    code: hashSecret(code),
+    expiresAt: new Date(Date.now() + LOGIN_CODE_TTL_MS),
+  });
+
+  try {
+    await sendCustomerLoginCodeEmail(customer.email, customer.name, code);
+  } catch (mailErr) {
+    console.error("Customer login code email failed:", mailErr);
+    await db.delete(customerLoginCodes).where(eq(customerLoginCodes.id, rowId));
+    return { success: false, error: "We couldn't email your sign-in code just now. Please try again in a minute." };
+  }
+
+  return { success: true, challenge, emailHint: maskEmail(customer.email) };
+}
+
+async function findPendingLoginCode(challenge: string) {
+  return (
+    await db
+      .select()
+      .from(customerLoginCodes)
+      .where(
+        and(
+          eq(customerLoginCodes.challenge, hashSecret(challenge.trim())),
+          eq(customerLoginCodes.used, false),
+          gt(customerLoginCodes.expiresAt, new Date())
+        )
+      )
+      .limit(1)
+  )[0];
+}
+
+const EXPIRED_LOGIN = "Your sign-in attempt expired. Enter your email and password again.";
+
+/** Checks the emailed code for an in-progress sign-in and opens a session. */
+export async function completeCustomerLogin(
+  challenge: string,
+  code: string
+): Promise<{ success: boolean; error?: string; expired?: boolean; token?: string; expiresAt?: Date }> {
+  try {
+    const pending = await findPendingLoginCode(challenge);
+    if (!pending) return { success: false, expired: true, error: EXPIRED_LOGIN };
+
+    if (!secretsMatch(hashSecret(code.trim()), pending.code)) {
+      const attempts = pending.attempts + 1;
+      const locked = attempts >= MAX_LOGIN_CODE_ATTEMPTS;
+      await db.update(customerLoginCodes).set({ attempts, used: locked }).where(eq(customerLoginCodes.id, pending.id));
+      const left = MAX_LOGIN_CODE_ATTEMPTS - attempts;
+      return locked
+        ? { success: false, expired: true, error: "Too many wrong codes. Enter your email and password again." }
+        : { success: false, error: `That code is wrong. ${left} attempt${left === 1 ? "" : "s"} left.` };
+    }
+
+    const claimed = await db
+      .update(customerLoginCodes)
+      .set({ used: true })
+      .where(and(eq(customerLoginCodes.id, pending.id), eq(customerLoginCodes.used, false)))
+      .returning({ id: customerLoginCodes.id });
+    if (claimed.length === 0) return { success: false, expired: true, error: EXPIRED_LOGIN };
+
+    const customer = (await db.select().from(customers).where(eq(customers.id, pending.customerId)))[0];
+    if (!customer || (customer.status && customer.status !== "Active")) {
+      return { success: false, expired: true, error: "This account is not active. Message us on WhatsApp and we'll sort it out." };
+    }
+
+    const session = await createCustomerSession(customer.id);
+    // Tidy up codes older than a day
+    await db.delete(customerLoginCodes).where(lt(customerLoginCodes.expiresAt, new Date(Date.now() - 24 * 60 * 60 * 1000)));
+    return { success: true, ...session };
+  } catch (err) {
+    console.error("completeCustomerLogin error:", err);
+    return { success: false, error: "Couldn't check the code right now. Please try again." };
+  }
+}
+
+/** Emails a fresh code for the same sign-in attempt; only the newest code works. */
+export async function resendCustomerLoginCode(
+  challenge: string
+): Promise<{ success: boolean; error?: string; expired?: boolean; challenge?: string; emailHint?: string }> {
+  try {
+    const pending = await findPendingLoginCode(challenge);
+    if (!pending) return { success: false, expired: true, error: EXPIRED_LOGIN };
+    const customer = (await db.select().from(customers).where(eq(customers.id, pending.customerId)))[0];
+    if (!customer) return { success: false, expired: true, error: EXPIRED_LOGIN };
+    const issued = await issueCustomerLoginCode(customer);
+    if (!issued.success) return { success: false, error: issued.error };
+    return { success: true, challenge: issued.challenge, emailHint: issued.emailHint };
+  } catch (err) {
+    console.error("resendCustomerLoginCode error:", err);
+    return { success: false, error: "Couldn't send a new code right now." };
   }
 }

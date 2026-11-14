@@ -325,5 +325,59 @@ export async function createTablesIfNotExist() {
     );
   `;
 
+  // Customer sign-in: emailed code step
+  await sql`
+    CREATE TABLE IF NOT EXISTS customer_login_codes (
+      id TEXT PRIMARY KEY,
+      customer_id TEXT NOT NULL REFERENCES customers(id) ON DELETE CASCADE,
+      challenge TEXT NOT NULL UNIQUE,
+      code TEXT NOT NULL,
+      attempts INTEGER NOT NULL DEFAULT 0,
+      expires_at TIMESTAMP NOT NULL,
+      used BOOLEAN NOT NULL DEFAULT FALSE,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+    );
+  `;
+
+  // Indexes. Postgres doesn't index foreign keys on its own, and the customer lookups use
+  // expressions, so each index below mirrors a query the app actually runs.
+  const indexes = [
+    // Sign-in, sign-up, bookings by email: LOWER(TRIM(email)) = $1
+    "CREATE INDEX IF NOT EXISTS customers_email_lower_idx ON customers (LOWER(TRIM(email)))",
+    // Sign-in and lookups by mobile: last 10 digits of the number
+    "CREATE INDEX IF NOT EXISTS customers_phone_last10_idx ON customers (RIGHT(regexp_replace(phone, '[^0-9]', '', 'g'), 10))",
+    "CREATE INDEX IF NOT EXISTS customers_phone_idx ON customers (phone)",
+    "CREATE INDEX IF NOT EXISTS customers_created_at_idx ON customers (created_at DESC)",
+    // Sessions and one-time codes, looked up per customer / admin
+    "CREATE INDEX IF NOT EXISTS customer_sessions_customer_id_idx ON customer_sessions (customer_id)",
+    "CREATE INDEX IF NOT EXISTS customer_password_resets_customer_id_idx ON customer_password_resets (customer_id)",
+    "CREATE INDEX IF NOT EXISTS customer_email_verifications_customer_id_idx ON customer_email_verifications (customer_id)",
+    "CREATE INDEX IF NOT EXISTS customer_login_codes_customer_id_idx ON customer_login_codes (customer_id)",
+    "CREATE INDEX IF NOT EXISTS admin_sessions_user_id_idx ON admin_sessions (user_id)",
+    "CREATE INDEX IF NOT EXISTS admin_login_codes_user_id_idx ON admin_login_codes (user_id)",
+    "CREATE INDEX IF NOT EXISTS admin_setup_tokens_user_id_idx ON admin_setup_tokens (user_id)",
+    // Bookings and everything hanging off them
+    "CREATE INDEX IF NOT EXISTS bookings_customer_id_idx ON bookings (customer_id)",
+    "CREATE INDEX IF NOT EXISTS bookings_created_at_idx ON bookings (created_at DESC)",
+    "CREATE INDEX IF NOT EXISTS travellers_booking_id_idx ON travellers (booking_id)",
+    "CREATE INDEX IF NOT EXISTS travellers_customer_id_idx ON travellers (customer_id)",
+    "CREATE INDEX IF NOT EXISTS payments_booking_id_idx ON payments (booking_id)",
+    "CREATE INDEX IF NOT EXISTS payments_created_at_idx ON payments (created_at DESC)",
+    "CREATE INDEX IF NOT EXISTS documents_customer_id_idx ON documents (customer_id)",
+    "CREATE INDEX IF NOT EXISTS documents_booking_id_idx ON documents (booking_id)",
+    "CREATE INDEX IF NOT EXISTS documents_traveller_id_idx ON documents (traveller_id)",
+    // Leads
+    "CREATE INDEX IF NOT EXISTS leads_created_at_idx ON leads (created_at DESC)",
+    "CREATE INDEX IF NOT EXISTS lead_followups_lead_id_idx ON lead_followups (lead_id)",
+    // Activity feed and per-record history
+    "CREATE INDEX IF NOT EXISTS activity_logs_created_at_idx ON activity_logs (created_at DESC)",
+    "CREATE INDEX IF NOT EXISTS activity_logs_entity_id_idx ON activity_logs (entity_id)",
+    // Public reviews per tour
+    "CREATE INDEX IF NOT EXISTS reviews_tour_slug_approved_idx ON reviews (tour_slug, is_approved)",
+  ];
+  for (const statement of indexes) {
+    await sql.query(statement);
+  }
+
   console.log("✅ Neon PostgreSQL DDL migration complete!");
 }

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getCurrentCustomer } from "@/lib/portal/auth";
+import { getCurrentCustomer, revokeOtherCustomerSessions } from "@/lib/portal/auth";
 import { db } from "@/db";
 import { customers } from "@/db/schema";
 import { eq } from "drizzle-orm";
@@ -14,14 +14,15 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const { currentPassword, newPassword } = body;
+    const currentPassword = typeof body.currentPassword === "string" ? body.currentPassword : "";
+    const newPassword = typeof body.newPassword === "string" ? body.newPassword : "";
 
     if (!currentPassword || !newPassword) {
       return NextResponse.json({ error: "Current password and new password are required." }, { status: 400 });
     }
 
-    if (newPassword.length < 8) {
-      return NextResponse.json({ error: "New password must be at least 8 characters long." }, { status: 400 });
+    if (newPassword.length < 8 || newPassword.length > 128) {
+      return NextResponse.json({ error: "New password must be between 8 and 128 characters." }, { status: 400 });
     }
 
     const rate = await checkRateLimits([
@@ -54,7 +55,10 @@ export async function POST(req: Request) {
       })
       .where(eq(customers.id, customerSession.id));
 
-    return NextResponse.json({ success: true, message: "Password updated successfully!" });
+    // Anyone still signed in with the old password is signed out; this browser stays in
+    await revokeOtherCustomerSessions(customerSession.id);
+
+    return NextResponse.json({ success: true, message: "Password updated. You've been signed out on your other devices." });
   } catch (err) {
     console.error("POST /api/portal/profile/password error:", err);
     return NextResponse.json({ error: "Failed to update password." }, { status: 500 });

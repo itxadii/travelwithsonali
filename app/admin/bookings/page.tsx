@@ -29,6 +29,14 @@ interface BookingListItem {
   createdAt: string;
 }
 
+interface FoundCustomer {
+  id: string;
+  name: string;
+  phone: string;
+  email: string | null;
+  hasAccount: boolean;
+}
+
 export default function BookingsPage() {
   const [bookingsList, setBookingsList] = useState<BookingListItem[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -39,9 +47,13 @@ export default function BookingsPage() {
   const tours = useTourOptions();
   const [saving, setSaving] = useState(false);
   const [formError, setFormError] = useState("");
+  // Booking for an existing customer found by email (or a new one), or a phone-only customer
+  const [noEmail, setNoEmail] = useState(false);
+  const [lookup, setLookup] = useState<{ state: "idle" | "checking" | "found" | "new"; customer?: FoundCustomer }>({ state: "idle" });
 
   // New Booking Form
   const [formData, setFormData] = useState({
+    customerId: "",
     customerName: "",
     customerPhone: "",
     customerEmail: "",
@@ -98,6 +110,38 @@ export default function BookingsPage() {
     }
   };
 
+  /** Looks the email up when the field loses focus and fills in an existing customer. */
+  const lookUpCustomer = async () => {
+    const email = formData.customerEmail.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setLookup({ state: "idle" });
+      return;
+    }
+    setLookup({ state: "checking" });
+    try {
+      const res = await fetch(`/api/admin/customers/lookup?q=${encodeURIComponent(email)}`);
+      const data = res.ok ? await res.json() : { customer: null };
+      if (data.customer) {
+        setLookup({ state: "found", customer: data.customer });
+        setFormData((f) => ({ ...f, customerId: data.customer.id, customerName: data.customer.name, customerPhone: data.customer.phone || "" }));
+      } else {
+        setLookup({ state: "new" });
+        setFormData((f) => ({ ...f, customerId: "" }));
+      }
+    } catch {
+      setLookup({ state: "new" });
+      setFormData((f) => ({ ...f, customerId: "" }));
+    }
+  };
+
+  const openCreateModal = () => {
+    setFormError("");
+    setNoEmail(false);
+    setLookup({ state: "idle" });
+    setFormData((f) => ({ ...f, customerId: "", customerName: "", customerPhone: "", customerEmail: "" }));
+    setCreateModalOpen(true);
+  };
+
   const handleCreateBooking = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
@@ -106,7 +150,7 @@ export default function BookingsPage() {
       const res = await fetch("/api/admin/bookings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, customerEmail: noEmail ? "" : formData.customerEmail }),
       });
 
       if (res.ok) {
@@ -147,7 +191,7 @@ export default function BookingsPage() {
         </div>
 
         <button
-          onClick={() => setCreateModalOpen(true)}
+          onClick={openCreateModal}
           className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#4A7244] hover:bg-[#3F6339] text-white text-xs font-semibold shadow-md transition-all cursor-pointer"
         >
           <Plus className="w-4 h-4" />
@@ -275,30 +319,85 @@ export default function BookingsPage() {
             <h2 className="text-xl font-bold text-[#685752]">Create New Booking</h2>
 
             <form onSubmit={handleCreateBooking} className="space-y-4 text-xs">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* Customer: found by email, or created from these details */}
+              {!noEmail && (
                 <div className="space-y-1">
-                  <label className="text-[#7A6862] font-semibold">Customer Name *</label>
+                  <label htmlFor="booking-email" className="text-[#7A6862] font-semibold">
+                    Customer email *
+                  </label>
                   <input
-                    type="text"
+                    id="booking-email"
+                    type="email"
                     required
-                    value={formData.customerName}
-                    onChange={(e) => setFormData({ ...formData, customerName: e.target.value })}
-                    placeholder="Rahul Verma"
+                    value={formData.customerEmail}
+                    onChange={(e) => {
+                      setFormData({ ...formData, customerEmail: e.target.value, customerId: "" });
+                      setLookup({ state: "idle" });
+                    }}
+                    onBlur={lookUpCustomer}
+                    placeholder="name@example.com"
                     className="w-full p-2.5 rounded-xl bg-[#FDF7F4] border border-[#E8DCD5] text-[#685752] focus:outline-none focus:border-[#8EB486]"
                   />
+                  {lookup.state === "checking" && <p className="text-[#7A6862]">Looking for this customer…</p>}
+                  {lookup.state === "found" && lookup.customer && (
+                    <p className="p-2.5 rounded-xl bg-[#EEF4EC] border border-[#C9DCC4] text-[#2F4A2B]">
+                      Existing customer: <span className="font-semibold">{lookup.customer.name}</span>
+                      {lookup.customer.phone ? ` · ${lookup.customer.phone}` : ""}. The booking will appear in their account
+                      {lookup.customer.hasAccount ? "." : " once they set a password with this email."}
+                    </p>
+                  )}
+                  {lookup.state === "new" && (
+                    <p className="text-[#7A6862]">New customer. Add their name below; we&apos;ll email the booking confirmation here.</p>
+                  )}
                 </div>
-                <div className="space-y-1">
-                  <label className="text-[#7A6862] font-semibold">Customer Phone *</label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.customerPhone}
-                    onChange={(e) => setFormData({ ...formData, customerPhone: e.target.value })}
-                    placeholder="+91 98765 43210"
-                    className="w-full p-2.5 rounded-xl bg-[#FDF7F4] border border-[#E8DCD5] text-[#685752] focus:outline-none focus:border-[#8EB486]"
-                  />
+              )}
+
+              {lookup.state !== "found" && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <label htmlFor="booking-name" className="text-[#7A6862] font-semibold">
+                      Customer name *
+                    </label>
+                    <input
+                      id="booking-name"
+                      type="text"
+                      required
+                      value={formData.customerName}
+                      onChange={(e) => setFormData({ ...formData, customerName: e.target.value })}
+                      placeholder="Rahul Verma"
+                      className="w-full p-2.5 rounded-xl bg-[#FDF7F4] border border-[#E8DCD5] text-[#685752] focus:outline-none focus:border-[#8EB486]"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label htmlFor="booking-phone" className="text-[#7A6862] font-semibold">
+                      Mobile number {noEmail ? "*" : "(optional)"}
+                    </label>
+                    <input
+                      id="booking-phone"
+                      type="tel"
+                      required={noEmail}
+                      value={formData.customerPhone}
+                      onChange={(e) => setFormData({ ...formData, customerPhone: e.target.value })}
+                      placeholder="+91 98765 43210"
+                      className="w-full p-2.5 rounded-xl bg-[#FDF7F4] border border-[#E8DCD5] text-[#685752] focus:outline-none focus:border-[#8EB486]"
+                    />
+                  </div>
                 </div>
-              </div>
+              )}
+
+              <label className="flex items-center gap-2 text-[#7A6862] cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={noEmail}
+                  onChange={(e) => {
+                    setNoEmail(e.target.checked);
+                    setLookup({ state: "idle" });
+                    setFormData((f) => ({ ...f, customerId: "" }));
+                  }}
+                  className="accent-[#4A7244]"
+                />
+                Customer has no email (they&apos;ll sign in with their mobile number)
+              </label>
 
               <div className="space-y-1">
                 <label className="text-[#7A6862] font-semibold">Tour *</label>

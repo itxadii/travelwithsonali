@@ -95,6 +95,17 @@ export async function sendEmailVerificationEmail(to: string, name: string, code:
   });
 }
 
+/** Second step of customer sign-in. */
+export async function sendCustomerLoginCodeEmail(to: string, name: string, code: string) {
+  await send(to, `${code} is your Travel With Sonali sign-in code`, {
+    preheader: `Enter ${code} to finish signing in.`,
+    heading: `Hi ${name}, here's your sign-in code`,
+    intro: ["Enter this code on the website to finish signing in to your account. It expires in 10 minutes."],
+    code,
+    footnote: "If you didn't try to sign in, someone may know your password. Nobody can get in without this code, but please reset your password from the sign-in page.",
+  });
+}
+
 export async function sendPasswordResetEmail(to: string, name: string, code: string, resetLink: string) {
   await send(to, `${code} is your password reset code`, {
     preheader: `Use ${code} or the button in this email to set a new password.`,

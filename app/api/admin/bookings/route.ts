@@ -82,32 +82,40 @@ export async function POST(request: Request) {
 
     let targetCustomerId = customerId;
 
-    // Check if customer exists by phone or email, or create new if not found
-    if (!targetCustomerId) {
-      if (!customerName || !customerPhone) {
-        return NextResponse.json({ error: "Customer Name and Phone are required." }, { status: 400 });
+    // Customer: the one picked by email in the form, else found by email (then mobile), else created
+    const email = typeof customerEmail === "string" ? customerEmail.trim().toLowerCase() : "";
+    const phone = typeof customerPhone === "string" ? customerPhone.trim() : "";
+
+    if (targetCustomerId) {
+      const picked = (await db.select({ id: customers.id }).from(customers).where(eq(customers.id, targetCustomerId)))[0];
+      if (!picked) return NextResponse.json({ error: "That customer no longer exists. Check the email again." }, { status: 400 });
+    } else {
+      if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        return NextResponse.json({ error: "Enter a valid customer email." }, { status: 400 });
+      }
+      if (!email && !phone) {
+        return NextResponse.json({ error: "Enter the customer's email, or their mobile number if they have no email." }, { status: 400 });
       }
 
       const existingCustomer =
-        (await findCustomerByIdentifier(customerPhone)) ||
-        (customerEmail ? await findCustomerByIdentifier(customerEmail) : null);
+        (email ? await findCustomerByIdentifier(email) : null) || (phone ? await findCustomerByIdentifier(phone) : null);
 
       if (existingCustomer) {
         targetCustomerId = existingCustomer.id;
-        // Update customer email if provided and previously missing
-        if (!existingCustomer.email && customerEmail) {
-          await db
-            .update(customers)
-            .set({ email: customerEmail.trim().toLowerCase() })
-            .where(eq(customers.id, existingCustomer.id));
+        // Add the email if this customer didn't have one yet
+        if (!existingCustomer.email && email) {
+          await db.update(customers).set({ email }).where(eq(customers.id, existingCustomer.id));
         }
       } else {
+        if (!customerName || !String(customerName).trim()) {
+          return NextResponse.json({ error: "Enter the customer's name." }, { status: 400 });
+        }
         targetCustomerId = `cust-${crypto.randomUUID()}`;
         await db.insert(customers).values({
           id: targetCustomerId,
-          name: customerName.trim(),
-          phone: customerPhone.trim(),
-          email: customerEmail ? customerEmail.trim().toLowerCase() : null,
+          name: String(customerName).trim(),
+          phone,
+          email: email || null,
         });
       }
     }

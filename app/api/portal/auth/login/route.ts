@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { loginCustomer, normalizeIdentifier } from "@/lib/portal/auth";
+import { CUSTOMER_CHALLENGE_COOKIE, CUSTOMER_CHALLENGE_COOKIE_PATH, loginCustomer, normalizeIdentifier } from "@/lib/portal/auth";
 import { checkRateLimits, getClientIp, tooManyRequests } from "@/lib/rateLimit";
 
 export async function POST(req: Request) {
@@ -21,6 +21,17 @@ export async function POST(req: Request) {
     const result = await loginCustomer(loginIdentifier, password);
 
     if (!result.success) {
+      if (result.reason === "code" && result.challenge) {
+        const response = NextResponse.json({ requiresCode: true, emailHint: result.emailHint });
+        response.cookies.set(CUSTOMER_CHALLENGE_COOKIE, result.challenge, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "lax",
+          maxAge: 10 * 60,
+          path: CUSTOMER_CHALLENGE_COOKIE_PATH,
+        });
+        return response;
+      }
       if (result.reason === "unverified") {
         return NextResponse.json(
           { error: result.error, reason: "unverified", email: result.email, codeSent: result.codeSent },

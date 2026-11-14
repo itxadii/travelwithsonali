@@ -158,6 +158,18 @@ export const customerSessions = pgTable("customer_sessions", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+// 6a. Customer Sign-in Codes (second step for customers with an email: a 6-digit emailed code)
+export const customerLoginCodes = pgTable("customer_login_codes", {
+  id: text("id").primaryKey(),
+  customerId: text("customer_id").notNull().references(() => customers.id, { onDelete: "cascade" }),
+  challenge: text("challenge").notNull().unique(), // hashed cookie value linking both steps
+  code: text("code").notNull(), // hashed 6-digit code
+  attempts: integer("attempts").notNull().default(0),
+  expiresAt: timestamp("expires_at").notNull(),
+  used: boolean("used").notNull().default(false),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 // 6b. Customer Password Resets
 export const customerPasswordResets = pgTable("customer_password_resets", {
   id: text("id").primaryKey(),
