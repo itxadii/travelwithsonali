@@ -191,6 +191,8 @@ export default function InstagramRoundCarousel({ data }: InstagramRoundCarouselP
     const onWheel = (e: WheelEvent) => {
       if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
       e.preventDefault();
+      // Tell Lenis (listening on window, after us) not to also scroll the page for this event
+      (e as WheelEvent & { lenisStopPropagation?: boolean }).lenisStopPropagation = true;
       stopInertia();
       moveTo(position + e.deltaX);
     };
@@ -199,7 +201,6 @@ export default function InstagramRoundCarousel({ data }: InstagramRoundCarouselP
     const onFocusIn = (e: FocusEvent) => {
       const card = (e.target as HTMLElement).closest("a");
       if (!card) return;
-      viewport.scrollLeft = 0; // focus can scroll overflow:hidden boxes; we position via transform
       const left = card.offsetLeft;
       if (left < position || left + card.offsetWidth > position + viewport.clientWidth) moveTo(left - 16);
     };
@@ -264,10 +265,12 @@ export default function InstagramRoundCarousel({ data }: InstagramRoundCarouselP
         </div>
 
         {/* Horizontal Carousel Track with Bigger Cards & Low Margins */}
+        {/* overflow-clip, not overflow-hidden: a clipped box isn't a scroll container, so a vertical
+            swipe starting on a card goes straight to the page. (A data-lenis-prevent-* attribute here
+            would add overscroll-behavior: contain and trap that swipe.) */}
         <div
           ref={viewportRef}
-          data-lenis-prevent-horizontal
-          className="w-full overflow-hidden my-auto py-2 touch-pan-y"
+          className="w-full overflow-clip my-auto py-2 touch-pan-y"
           onClickCapture={(e) => {
             if (draggedRef.current) {
               e.preventDefault();
